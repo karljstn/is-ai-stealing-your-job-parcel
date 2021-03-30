@@ -1,0 +1,18 @@
+{
+    "patients": [
+        {
+            "surname": "Charles",
+            "name": "Alfred",
+            "born": "06/20/1987",
+            "case": "Came to the ER after puking blood and “something that looked like graphite” (?)",
+            "medical_history": "Multiple instances of unidentified objects insterted in various parts of the body"
+        },
+        {
+            "surname": "Bernard",
+            "name": "Juppé",
+            "born": "hier",
+            "case": "Le frero veut canner",
+            "medical_history": "Gros fumeur de chanvre"
+        }
+    ]
+}
