@@ -41,9 +41,10 @@ export default Vue.extend({
 		};
 	},
 	mounted() {
-		store.state.scene && store.state.scene.LandingPage.start();
+		store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
+		store.state.scene?.LandingPage.start();
 		setTimeout(() => {
-			store.state.scene && store.state.scene.LandingPage.hand.wave();
+			store.state.scene?.LandingPage.hand.wave();
 		}, TRANSITIONS.DURATION.LEAVE * 100);
 	},
 	components: {

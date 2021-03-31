@@ -62,15 +62,14 @@ class Benchmark {
     if (this.pane)
       this.pane.addMonitor(this.PARAMS, "averageFPS", {
         view: "graph",
-        interval: 200,
+        interval: 1000,
         min: 0,
-        max: 62,
+        max: 1000,
       })
   }
 
   checkFPS = (deltaTime: number) => {
     //from https://codesandbox.io/s/caixa-7b0iv?file=/sketch.js:4987-5086
-
     const fps = 1000 / deltaTime
     this.PARAMS.arrFPS.push(fps)
 
@@ -80,8 +79,8 @@ class Benchmark {
 
       if (!this.PARAMS.readyFPS && this.PARAMS.averageFPS) {
         this.PARAMS.readyFPS = true
-        this.PARAMS.scoreFPS = round(clamp(this.PARAMS.averageFPS / this.PARAMS.maxFPS, 0, 1), 1)
-        if (this.pane) this.pane.addInput(this.PARAMS, "scoreFPS", { min: 0, max: 1 })
+        // this.PARAMS.scoreFPS = round(clamp(this.PARAMS.averageFPS / this.PARAMS.maxFPS, 0, 1), 1)
+        // if (this.pane) this.pane.addInput(this.PARAMS, "scoreFPS", { min: 0, max: 1 })
       }
     }
   }

@@ -22,7 +22,7 @@ class Hand {
 		this.pane = pane
 		this.size = size
 		this.params = {
-			animSpeed: 0.0025,
+			animSpeed: 0.005,
 			size: size * MODELS.HAND.scale
 		}
 		this.group = null

@@ -29,7 +29,8 @@ class FullScreenPlane implements ThreeMesh {
 			uColorFinal: { value: new Color(PALETTE.LIGHTBLUE) },
 			uMousePos: { value: new Vector2() },
 			uAspectHorizontal: { value: window.innerWidth / window.innerHeight },
-			uTargetOffset: { value: new Vector2() }
+			uTargetOffset: { value: new Vector2() },
+			uTransitions: { value: false }
 		}
 		const width = viewport.width * 2;
 		const height = viewport.height * 2;
@@ -43,9 +44,12 @@ class FullScreenPlane implements ThreeMesh {
 
 	start() {
 		this.pane && this.pane.addInput(this.uniforms.uMixFactor, 'value', { label: "Loader Mix Factor", min: 0, max: 1 })
-		// this.pane && this.pane.addInput(this.uniforms.uAlpha, 'value', { label: "Loader Alpha", min: 0, max: 1 })
-
 		this.object3d.position.setZ(-1)
+	}
+
+	toggleTransitions() {
+		const value = this.material.uniforms.uTransitions.value
+		this.material.uniforms.uTransitions.value = !value;
 	}
 
 	update(dt = 0) {

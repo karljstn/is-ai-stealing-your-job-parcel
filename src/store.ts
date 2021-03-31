@@ -10,7 +10,7 @@ const store = new Vuex.Store({
         progression: 0,
         devMode: {
             enabled: true,
-            benchmark: false,
+            benchmark: true,
             loader: true,
             tweakpane: true,
             goToProgression: 0,

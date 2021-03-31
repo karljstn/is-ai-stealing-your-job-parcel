@@ -123,7 +123,8 @@ export default class Scene {
         this.setEvents()
 
         if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)
-            this.Benchmark && this.Benchmark.start()
+            // this.Benchmark && this.Benchmark.start()
+            this.Benchmark?.addGUI()
 
         raf.subscribe(RAFS.MAIN, this.render)
 
@@ -169,12 +170,14 @@ export default class Scene {
     }
 
     render = (dt = 0) => {
-        if (!this.PARAMS.readyFPS && (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)) {
-            this.Benchmark && this.Benchmark.update(dt)
-        } else {
-            this.controls.update()
-            this.Benchmark && this.Benchmark.checkFPS(dt)
-        }
+        // if (!this.PARAMS.readyFPS && (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)) {
+        //     this.Benchmark && this.Benchmark.update(dt)
+        // } else {
+        //     this.controls.update()
+        //     this.Benchmark && this.Benchmark.checkFPS(dt)
+        // }
+
+        this.Benchmark?.checkFPS(dt)
         this.renderer.render(this.scene, this.camera)
         // this.composer.render()
 
