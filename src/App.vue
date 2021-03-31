@@ -28,7 +28,6 @@ if(store.state.devMode.enabled && store.state.devMode.goToProgression) store.com
 
 export default Vue.extend({
     name: "Home",
-   
 })
 
 </script>

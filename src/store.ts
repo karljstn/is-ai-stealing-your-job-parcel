@@ -11,9 +11,9 @@ const store = new Vuex.Store({
         devMode: {
             enabled: true,
             benchmark: false,
-            loader: true,
+            loader: false,
             tweakpane: true,
-            goToProgression: 0
+            goToProgression: 8
         },
         load: {
             isVueReady: false,

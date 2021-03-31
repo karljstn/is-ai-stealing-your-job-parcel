@@ -1,9 +1,9 @@
 import * as THREE from "three"
-
+import raf from '~/util/raf'
 // import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import store from '~/store'
-import { raf } from "rafz"
+// import { raf } from "rafz"
 import { ThreeGroup } from "~/interfaces/Three"
 // import radio from "~/assets/homer.jpg"
 
@@ -11,6 +11,9 @@ import fragment from "~/shaders/fresnel/fragment.glsl"
 import vertex from "~/shaders/fresnel/vertex.glsl"
 
 import gsap from "gsap"
+
+
+
 
 export default class Radio implements ThreeGroup {
     group: THREE.Group
@@ -25,6 +28,8 @@ export default class Radio implements ThreeGroup {
     mouse: THREE.Vector2
     camera: THREE.PerspectiveCamera
     controls: OrbitControls
+
+    // test: Function
 
     selectedObjects: THREE.Object3D[]
     mouseCoords: THREE.Vector2
@@ -88,13 +93,35 @@ export default class Radio implements ThreeGroup {
             this.isDragging = false
         })
 
-        this.update()
 
+        raf.subscribe('radioUpdate', this.update)
+
+        this.update = this.update.bind(this)
+        this.update()
+        console.log('HERE TEST')
+
+        // this.test = this.update
 
 
         // setInterval(() => {
         //     console.log(this.currentIntersect)
         // }, 1000)
+
+
+        // if (module.hot) {
+        //     module.hot.dispose(() => {
+        //         // module is about to be replaced
+        //         console.log('dispose')
+        //         raf.cancel(this.update)
+        //     })
+
+        //     module.hot.accept(() => {
+        //         console.log('accept')
+
+        //         this.update()
+        //         // module or one of its dependencies was just updated
+        //     })
+        // }
 
     }
 
@@ -158,10 +185,22 @@ export default class Radio implements ThreeGroup {
         }
     }
 
+    clear() {
+        console.log('CLEAR THIS MF RAF')
+
+        // raf.cancel(this.test)
+    }
+
 
 
     update(dt = 0) {
+        // console.log('haaaeaazedazeaere')
+        // console.log(this)
+
         if (!this.isDragging && this.isReady) {
+
+
+
             this.raycaster.setFromCamera(this.mouse, this.camera)
             const intersects = this.raycaster.intersectObjects(this.group.children)
 
@@ -185,7 +224,12 @@ export default class Radio implements ThreeGroup {
             }
         }
 
+        // console.log('ab')
 
-        raf((dt: number) => this.update(dt))
+
+        // raf((dt: number) => this.update(dt))
     }
+
+
 }
+
