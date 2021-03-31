@@ -18,14 +18,6 @@ import CanvasThree from '~/components/Canvas/CanvasThree.vue';
 
 import SectionTransition from '~/components/Transitions/SectionTransition.vue';
 import LoaderTransition from '~/components/Transitions/LoaderTransition.vue';
-import GameChoice from '~/components/Sections/Game/GameChoice.vue';
-import GameRadiology from '~/components/Sections/Game/GameRadiology.vue';
-import LandingPagePlaceholder from '~/components/Sections/LandingPage/LandingPage.vue';
-import DefinitionOne from '~/components/Sections/Definition/QuestionOne.vue';
-import DefinitionTwo from '~/components/Sections/Definition/QuestionTwo.vue';
-import DefinitionThree from '~/components/Sections/Definition/QuestionThree.vue';
-import FieldOne from '~/components/Sections/Field/QuestionOne.vue';
-import FieldTwo from '~/components/Sections/Field/QuestionTwo.vue';
 
 export default Vue.extend({
 	name: 'Home',
@@ -78,47 +70,10 @@ export default Vue.extend({
 	},
 	components: {
 		CanvasThree,
-		LandingPagePlaceholder,
-		DefinitionOne,
-		DefinitionTwo,
-		DefinitionThree,
-		GameChoice,
-		GameRadiology,
-		FieldOne,
-		FieldTwo,
 		SectionTransition,
 		LoaderTransition,
 	},
 	mounted() {
-		// const data = { answers: { jobreplacementbefore: "0" } };
-
-		// patchData(answersURL, data)
-		//   .then(data => {
-		//     console.log(data) // JSON data parsed by `data.json()` call
-		//   })
-		//   .catch(error => {
-		//     console.error("Error:", error)
-		//   })
-
-		// patchData("https://is-ai-stealing.herokuapp.com/items/", data)
-		//   .then(data => {
-		//     console.log(data) // JSON data parsed by `data.json()` call
-		//   })
-		//   .catch(error => {
-		//     console.error("Error:", error)
-		//   })
-
-		// postData("https://is-ai-stealing.herokuapp.com/auth/login", {
-		//   email: "ac2031@hotmail.com",
-		//   password: "Bitch123@!",
-		// })
-		//   .then((response) => response)
-		//   .then((response) => console.log(response))
-
-		// fetch(answersURL)
-		//   .then((response) => response.json())
-		//   .then((answers) => console.log(answers.data))
-
 		this.$nextTick(() => {
 			store.commit('toggleIsVueReady');
 
@@ -136,8 +91,6 @@ export default Vue.extend({
 
 <style lang="scss">
 section {
-	// position: absolute;
-	// pointer-events: none;
 	height: 100vh;
 	width: 100%;
 	display: flex;

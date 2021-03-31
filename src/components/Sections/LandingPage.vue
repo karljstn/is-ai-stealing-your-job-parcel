@@ -2,19 +2,9 @@
 	<section>
 		<div class="container">
 			<div class="paragraphs">
-				<SaveRect v-show="progression === 0" :rectName="helloRect">
-					<p class="hello">
-						Hello there
-					</p>
-				</SaveRect>
-				<p v-show="progression === 1" class="threatened">
-					I'm pretty sure you're a poor 20-something who just had a panic attack after falling into the rabbit
-					hole of alarming headlines about AI, and your first move was to search on google if your field is
-					going to be AI-ruled in 10yrs from now-on.
-				</p>
-				<p v-show="progression === 2" class="amiright">Am I right?</p>
+				<p>Throw your biases away</p>
 			</div>
-			<div v-show="progression === 2" class="form">
+			<div class="form">
 				<QuestionForm>
 					<Button value="yes">Yes...</Button>
 					<Button value="no">No, I'm just here to learn</Button>
@@ -45,7 +35,7 @@ export default Vue.extend({
 		store.state.scene?.LandingPage.start();
 		setTimeout(() => {
 			store.state.scene?.LandingPage.hand.wave();
-		}, TRANSITIONS.DURATION.LEAVE * 100);
+		}, TRANSITIONS.DURATION.LEAVE * 2000);
 	},
 	components: {
 		QuestionForm,

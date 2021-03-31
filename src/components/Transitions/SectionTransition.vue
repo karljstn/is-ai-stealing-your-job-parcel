@@ -6,19 +6,21 @@
 
 <script lang="ts">
 import { TRANSITIONS } from '~/constants/TRANSITIONS';
-import LandingPage from '~/components/Sections/LandingPage/LandingPage.vue';
-import DefinitionOne from '~/components/Sections/Definition/QuestionOne.vue';
-import DefinitionTwo from '~/components/Sections/Definition/QuestionTwo.vue';
-import DefinitionThree from '~/components/Sections/Definition/QuestionThree.vue';
-import FieldOne from '~/components/Sections/Field/QuestionOne.vue';
-import FieldTwo from '~/components/Sections/Field/QuestionTwo.vue';
-import GameChoice from '~/components/Sections/Game/GameChoice.vue';
-import GameQuestion from '~/components/Sections/Game/GameQuestion.vue';
-import GameRadiology from '~/components/Sections/Game/GameRadiology.vue';
-import EndArticle from '~/components/Sections/End/EndArticle.vue';
-import EndChangedYourMind from '~/components/Sections/End/EndChangedYourMind.vue';
-import EndRemedy from '~/components/Sections/End/EndRemedy.vue';
-import EpilogueHub from '~/components/Sections/Epilogue/EpilogueHub.vue';
+import LandingPage from '~components/Sections/LandingPage.vue';
+import IntroOne from '~/components/Sections/1_Intro/1_IntroHello.vue';
+import IntroTwo from '~/components/Sections/1_Intro/2_IntroGuess.vue';
+import IntroThree from '~/components/Sections/1_Intro/3_IntroThreatened.vue';
+import IntroFour from '~/components/Sections/1_Intro/4_IntroAI.vue';
+import IntroFive from '~/components/Sections/1_Intro/5_IntroQuestion.vue';
+import DefinitionOne from '~/components/Sections/2_Definition/1_Definition.vue';
+import DefinitionTwo from '~/components/Sections/2_Definition/2_Definition.vue';
+import DefinitionThree from '~/components/Sections/2_Definition/3_Definition.vue';
+import GameOne from '~/components/Sections/3_Game/1_GameChoice.vue';
+import GameTwo from '~/components/Sections/3_Game/2_GameRadiology.vue';
+import EndOne from '~/components/Sections/4_End/1_EndArticle.vue';
+import EndTwo from '~/components/Sections/4_End/2_EndChangedYourMind.vue';
+import EndThree from '~/components/Sections/4_End/3_EndRemedy.vue';
+import Epilogue from '~/components/Sections/5_Epilogue/1_Epilogue.vue';
 
 import gsap from 'gsap';
 import store from '~/store';
@@ -29,83 +31,43 @@ export default Vue.extend({
 	name: 'section-transition',
 	computed: {
 		view() {
-			let component: string;
+			const components = [
+				'LandingPage',
+				'IntroOne',
+				'IntroTwo',
+				'IntroThree',
+				'IntroFour',
+				'IntroFive',
+				'DefinitionOne',
+				'DefinitionTwo',
+				'DefinitionThree',
+				'GameOne',
+				'GameTwo',
+				'EndOne',
+				'EndTwo',
+				'EndThree',
+				'Epilogue',
+			];
 
-			switch (store.state.progression) {
-				case 0:
-					component = 'LandingPage';
-					break;
-
-				case 1:
-					component = 'DefinitionOne';
-					break;
-
-				case 2:
-					component = 'DefinitionTwo';
-					break;
-
-				case 3:
-					component = 'DefinitionThree';
-					break;
-
-				case 4:
-					component = 'FieldOne';
-					break;
-
-				case 5:
-					component = 'FieldTwo';
-					break;
-
-				case 6:
-					component = 'GameChoice';
-					break;
-
-				case 7:
-					component = 'GameQuestion';
-					break;
-
-				case 8:
-					component = 'GameRadiology';
-					break;
-
-				case 9:
-					component = 'EndArticle';
-					break;
-
-				case 10:
-					component = 'EndChangedYourMind';
-					break;
-
-				case 11:
-					component = 'EndRemedy';
-					break;
-
-				case 12:
-					component = 'EpilogueHub';
-					break;
-
-				default:
-					component = 'LandingPage';
-					break;
-			}
-
-			return component;
+			return components[store.state.progression];
 		},
 	},
 	components: {
 		LandingPage,
+		IntroOne,
+		IntroTwo,
+		IntroThree,
+		IntroFour,
+		IntroFive,
 		DefinitionOne,
 		DefinitionTwo,
 		DefinitionThree,
-		FieldOne,
-		FieldTwo,
-		GameChoice,
-		GameQuestion,
-		GameRadiology,
-		EndArticle,
-		EndChangedYourMind,
-		EndRemedy,
-		EpilogueHub,
+		GameOne,
+		GameTwo,
+		EndOne,
+		EndTwo,
+		EndThree,
+		Epilogue,
 	},
 	methods: {
 		enter(el: HTMLElement, done: Function) {
