@@ -33,6 +33,13 @@ declare module "*.glb" {
     export default content
 }
 
+declare var module: {
+    hot: {
+        accept(callback?: () => void): void,
+        dispose(callback?: () => void): void,
+    }
+}
+
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'
