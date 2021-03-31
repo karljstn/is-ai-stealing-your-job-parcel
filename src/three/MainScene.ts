@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { raf } from "rafz"
+import raf from '~three/Singletons/RAF'
 import Tweakpane from "tweakpane"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
@@ -14,8 +14,7 @@ import { PARAMS } from "~/types/"
 import Loader from "./Loader"
 import store from '~/store'
 import LandingPage from "./Scenes/LandingPage"
-import { PALETTE } from "~/constants/PALETTE"
-import { Color } from "three"
+import { RAFS } from "~constants/RAFS"
 
 export default class Scene {
     // Data
@@ -98,7 +97,7 @@ export default class Scene {
         this.meshes = []
 
         // this.morphingMesh = new MorphingMesh()
-        this.radio = new Radio(this.camera, this.raycaster, this.mouse, this.controls)
+        this.radio = new Radio(this.camera, this.raycaster, this.mouse, this.controls, this.pane)
 
         this.resize() //has to be done before Benchmark
 
@@ -126,8 +125,7 @@ export default class Scene {
         if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)
             this.Benchmark && this.Benchmark.start()
 
-        this.render()
-
+        raf.subscribe(RAFS.MAIN, this.render)
 
         store.commit('toggleIsThreeReady')
     }
@@ -146,7 +144,6 @@ export default class Scene {
         window.addEventListener("resize", this.resize.bind(this))
         window.addEventListener("mousemove", this.mousemove.bind(this))
     }
-
 
     resize() {
         this.w = window.innerWidth
@@ -171,7 +168,7 @@ export default class Scene {
         this.mouse.y = - (e.clientY / this.h) * 2 + 1
     }
 
-    render(dt = 0) {
+    render = (dt = 0) => {
         if (!this.PARAMS.readyFPS && (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)) {
             this.Benchmark && this.Benchmark.update(dt)
         } else {
@@ -187,8 +184,10 @@ export default class Scene {
 
         this.pane && this.pane.refresh()
 
-        this.LandingPage?.update(dt) //switch, ou un map
-
-        raf((dt: number) => this.render(dt))
+        this.LandingPage?.update(dt) //dans le futur: switch, ou un map
     }
 }
+
+module.hot.dispose(() => {
+    raf.unsubscribe(RAFS.MAIN)
+})

@@ -1,5 +1,4 @@
 import * as THREE from "three"
-import { raf } from "rafz"
 import fragment from "~/shaders/particlesExplosion/fragment.glsl"
 import vertex from "~/shaders/particlesExplosion/vertex.glsl"
 import t from "~/assets/mort.jpg"
@@ -95,6 +94,5 @@ export default class MorphingMesh implements ThreeMesh {
 
   update(dt = 0) {
     this.material.uniforms.time.value += dt / 100
-    raf((dt: number) => this.update(dt))
   }
 }

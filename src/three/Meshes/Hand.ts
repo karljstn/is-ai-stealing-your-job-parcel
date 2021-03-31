@@ -4,6 +4,8 @@ import LoadManager from '~/three/Singletons/LoadManager'
 import { MODELS } from '~/constants/MODELS'
 import { AnimationAction, AnimationClip, PerspectiveCamera, WebGLRenderer } from "three"
 import Tweakpane from "tweakpane"
+import raf from "~three/Singletons/RAF"
+import { RAFS } from "~constants/RAFS"
 // import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
 class Hand {
@@ -31,7 +33,12 @@ class Hand {
 		this.loader = new GLTFLoader(LoadManager.manager)
 	}
 
-	load() {
+	start = () => {
+		this.tweaks()
+		raf.subscribe(RAFS.HAND, this.update)
+	}
+
+	load = () => {
 		this.loader.load(MODELS.HAND.url, (gltf) => {
 			this.group = gltf.scene
 			this.group.scale.set(this.params.size, this.params.size, this.params.size)
@@ -47,7 +54,7 @@ class Hand {
 		})
 	}
 
-	tweaks() {
+	tweaks = () => {
 		if (this.pane) {
 			const speedInput = this.pane.addInput(this.params, 'animSpeed', { label: "Wave speed", min: this.params.animSpeed * 0.33, max: this.params.animSpeed * 3 })
 			const sizeInput = this.pane.addInput(this.params, 'size', { label: "Hand size", min: this.size * MODELS.HAND.scale * 0.33, max: this.size * MODELS.HAND.scale * 3 })
@@ -67,15 +74,15 @@ class Hand {
 		}
 	}
 
-	wave() {
+	wave = () => {
 		if (!this.waveAction) return
 
 		this.waveAction.reset()
 		this.waveAction.play()
 	}
 
-	update(dt: number = 0) {
-		this.mixer?.update(dt)
+	update = (dt: number = 0) => {
+		this.mixer && this.mixer.update(dt)
 	}
 }
 

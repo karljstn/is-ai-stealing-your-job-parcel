@@ -5,6 +5,7 @@ import { PerspectiveCamera, PointLight, Scene, Vector2, Vector3, WebGLRenderer }
 import { RECTS } from "~/constants/RECTS"
 import Hand from "../Meshes/Hand";
 import Tweakpane from "tweakpane";
+import raf from "~three/Singletons/RAF"
 
 class LandingPage {
 	viewport: Viewport
@@ -43,8 +44,7 @@ class LandingPage {
 
 				this.hand.group.position.set(x, y, 0)
 				this.scene.add(this.hand.group)
-
-				this.hand.tweaks()
+				this.hand.start()
 			}
 		}, 100);
 	}

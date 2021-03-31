@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvasThree" />
+	<canvas ref="canvasThree" />
 </template>
 
 <script lang="js">
@@ -15,7 +15,7 @@ export default Vue.extend({
     const scene = new Scene(this.$refs.canvasThree, 60);
     scene.start()
 
-    scene.startRadiologist()
+    if(store.state.devMode.forceRadiologist) scene.startRadiologist()
     store.commit("setScene", scene)
   },
   // destroyed(){
@@ -32,13 +32,13 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  outline: none;
-  z-index: $canvas;
+	position: fixed;
+	top: 0;
+	left: 0;
+	outline: none;
+	z-index: $canvas;
 }
 </style>
