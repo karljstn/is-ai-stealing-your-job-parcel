@@ -1,0 +1,8 @@
+export const PALETTE = {
+	DARKBLUE: "#18288D",
+	LIGHTBLUE: "#2653AF",
+	PINK: "#ECA39D",
+	ORANGE: "#FFC13D",
+	WHITE: "#F7F7F4",
+	BLACK: "#1F1D1E"
+}

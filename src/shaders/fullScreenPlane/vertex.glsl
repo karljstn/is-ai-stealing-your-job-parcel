@@ -8,8 +8,8 @@ void main(){
     // set if you use THREE.Points
     //  gl_PointSize = 2.;
 
-    // gl_Position = projectedPosition;
-    gl_Position = vec4(position, 1.0);
+    gl_Position = projectedPosition;
+    // gl_Position = vec4(position, 1.0);
 
     vUv = uv;
 }

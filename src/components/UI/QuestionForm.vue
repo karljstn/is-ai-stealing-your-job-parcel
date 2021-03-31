@@ -1,33 +1,38 @@
 <template>
-  <form @submit="onSubmit">
-    <slot />
-    <!-- example : -->
-    <!-- <button value="test1">testing1</button> -->
-    <!-- <button value="test2">testing2</button> -->
-  </form>
+	<form @submit="onSubmit">
+		<slot />
+		<!-- example : -->
+		<!-- <button value="test1">testing1</button> -->
+		<!-- <button value="test2">testing2</button> -->
+	</form>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import store from "~/store";
+import Vue from 'vue';
+import store from '~/store';
 
 export interface SubmitEvent {
-  submitter: HTMLFormElement;
+	submitter: HTMLFormElement;
 }
 
 export default Vue.extend({
-  methods: {
-    onSubmit: (e: Event & SubmitEvent) => {
-      e.preventDefault();
+	methods: {
+		onSubmit: (e: Event & SubmitEvent) => {
+			e.preventDefault();
 
-      if (!e.submitter) return;
+			if (!e.submitter) return;
 
-      store.commit("incrementProgression");
-      console.log(store.state.progression);
-    },
-  },
+			store.commit('incrementProgression');
+			console.log(store.state.progression);
+		},
+	},
 });
 </script>
 
 <style lang="scss" scoped>
+form {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
 </style>

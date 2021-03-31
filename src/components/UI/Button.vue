@@ -1,19 +1,21 @@
 <template>
-  <button :value="value"><slot /></button>
+	<button :value="value"><slot /></button>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-  props: ["value"],
+	props: ['value'],
 });
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/variables.scss';
+
 button {
-  margin: 0 1rem;
-  padding: 1rem;
-  cursor: pointer;
+	font-size: $text-size * 0.8;
+	padding: 1rem;
+	cursor: pointer;
 }
 </style>

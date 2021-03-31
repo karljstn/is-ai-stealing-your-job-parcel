@@ -9,6 +9,5 @@ export type PARAMS = {
     averageFPS: number
     arrFPS: number[]
     scoreFPS: number
-    testValue: number
     viewport: Viewport
 }

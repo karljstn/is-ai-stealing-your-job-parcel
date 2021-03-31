@@ -16,20 +16,18 @@ This section talks briefly about various important directories and data structur
 
 ### `src/classes/`
 
-Typescript (TS) classes. To be initialized from Vue components, usually at `mount()`.
+To be initialized from Vue components, usually at `mount()`.
 
 ### `src/classes/three/`
 
-ThreeJS code lives here.
-
-- `MainScene.ts`: responsible for overall scene setup and logic.
-- `Benchmark.ts`: stress-tests a device to obtain raw FPS data, used to configure quality settings.
+-   `MainScene.ts`: responsible for overall scene setup and logic.
+-   `Benchmark.ts`: stress-tests a device to obtain raw FPS data, used to configure quality settings.
 
 ### `src/components/`
 
 VueJS components, divided in four categories:
 
-- **Sections** : main sub-sections of the website, each one ending with a way to progress to the next sub-section,
+-   **Sections** : main sub-sections of the website, each one ending with a way to progress to the next sub-section,
 
 ### `src/views/`
 

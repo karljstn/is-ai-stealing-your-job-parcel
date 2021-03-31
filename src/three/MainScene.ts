@@ -6,18 +6,16 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 
-import Cube from "./Meshes/Cube"
-// import MorphingMesh from "./Meshes/MorphingMesh"
 import Radio from "./Games/Radiologist/Radio"
 
 import Benchmark from "./Benchmark"
 import { clamp, getViewport } from "~/util/"
-import { Mesh } from "three"
-import { ThreeGroup } from "~/interfaces/Three"
 import { PARAMS } from "~/types/"
 import Loader from "./Loader"
 import store from '~/store'
-import FresnelTorus from "./Meshes/FresnelTorus"
+import LandingPage from "./Scenes/LandingPage"
+import { PALETTE } from "~/constants/PALETTE"
+import { Color } from "three"
 
 export default class Scene {
     // Data
@@ -30,10 +28,10 @@ export default class Scene {
     camera: THREE.PerspectiveCamera
     scene: THREE.Scene
     renderer: THREE.WebGLRenderer
+    light: THREE.PointLight
 
     // renderPass: RenderPass
     // composer: EffectComposer
-
 
     controls: OrbitControls
     raycaster: THREE.Raycaster
@@ -44,6 +42,7 @@ export default class Scene {
 
     Benchmark: Benchmark | null
     Loader: Loader | null
+    LandingPage: LandingPage
 
     constructor(canvas: HTMLCanvasElement, maxFPS: number) {
         this.PARAMS = {
@@ -52,7 +51,6 @@ export default class Scene {
             averageFPS: 0,
             arrFPS: [],
             scoreFPS: 0,
-            testValue: 0,
             viewport: {
                 height: 0,
                 width: 0,
@@ -60,8 +58,9 @@ export default class Scene {
         }
         this.w = window.innerWidth
         this.h = window.innerHeight
+        const paneEl = document.querySelector('.tp-dfwv')
 
-        if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.tweakpane)
+        if (!paneEl && (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.tweakpane))
             this.pane = new Tweakpane()
         else
             this.pane = null
@@ -70,7 +69,7 @@ export default class Scene {
         this.camera.position.z = 1 //z has to be different than 0 for getViewport to work
         this.scene = new THREE.Scene()
 
-        this.renderer = new THREE.WebGLRenderer({ canvas })
+        this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
         this.renderer.setSize(this.w, this.h)
         this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2)) //limiter à 2
 
@@ -83,6 +82,12 @@ export default class Scene {
 
         // this.outlinePass = new OutlinePass(new THREE.Vector2(this.w, this.h), this.scene, this.camera)
         // this.composer.addPass(this.outlinePass)
+
+        const ambientLight = new THREE.AmbientLight("#fff", 0.75)
+        this.scene.add(ambientLight)
+
+        this.light = new THREE.PointLight("#fff", 0.25)
+        this.scene.add(this.light)
 
         this.mouse = new THREE.Vector2(-1, -1)
         this.raycaster = new THREE.Raycaster()
@@ -109,12 +114,10 @@ export default class Scene {
             this.Benchmark = null
         }
 
-        // this.Loader = new Loader(this.PARAMS.viewport, this.scene, this.camera)
-        this.Loader = null
+        if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.loader) this.Loader = new Loader(this.PARAMS.viewport, this.scene, this.camera, this.pane)
+        else this.Loader = null
 
-        const fresnel = new FresnelTorus(0.5)
-        this.meshes.push(fresnel)
-        this.scene.add(fresnel)
+        this.LandingPage = new LandingPage(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
     }
 
     start() {
@@ -157,7 +160,6 @@ export default class Scene {
 
         // this.composer.setSize(this.w, this.h)
 
-
         this.PARAMS.viewport = getViewport(this.camera)
         if (this.Loader) this.Loader.fullScreenPlane.uniforms.uAspectHorizontal.value = window.innerWidth / window.innerHeight
     }
@@ -183,10 +185,9 @@ export default class Scene {
 
         this.renderer.render(this.scene, this.camera)
 
-        for (let index = 0; index < this.meshes.length; index++) {
-            const element = this.meshes[index] as FresnelTorus
-            element.update()
-        }
+        this.pane && this.pane.refresh()
+
+        this.LandingPage?.update(dt) //switch, ou un map
 
         raf((dt: number) => this.render(dt))
     }
