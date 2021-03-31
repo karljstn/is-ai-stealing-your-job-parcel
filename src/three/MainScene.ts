@@ -184,7 +184,7 @@ export default class Scene {
 
         this.pane && this.pane.refresh()
 
-        this.LandingPage?.update(dt) //dans le futur: switch, ou un map
+        this.LandingPage?.update(dt) //TODO: switch based on progress
     }
 }
 

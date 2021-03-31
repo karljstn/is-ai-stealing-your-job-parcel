@@ -157,7 +157,7 @@ export default class Radio implements ThreeGroup {
         raf.unsubscribe('radioUpdate')
     }
 
-    update(dt = 0) {
+    update = (dt = 0) => {
         if (!this.isDragging && this.isReady) {
             this.raycaster.setFromCamera(this.mouse, this.camera)
             const intersects = this.raycaster.intersectObjects(this.group.children)

@@ -1,49 +1,34 @@
 class RAF {
-    callbacks: {
-        name: string,
-        callback: Function
-    }[]
+    callbacks: Map<string, (dt: number) => void>
     time: number
 
     constructor() {
-        this.bind()
-        this.callbacks = []
+        this.callbacks = new Map<string, (dt: number) => void>()
         this.time = performance.now()
         this.render()
     }
 
-    subscribe(name: string, callback: Function) {
+    subscribe = (name: string, callback: (dt: number) => void) => {
         console.log('subscribe : ', name)
-        this.callbacks.push({
-            name: name,
-            callback: callback
-        })
+        this.callbacks.set(
+            name,
+            callback
+        )
     }
 
-    unsubscribe(name: string) {
+    unsubscribe = (name: string) => {
         console.log('unsubscribe : ', name)
-        for (let i = 0; i < this.callbacks.length; i++) {
-            if (this.callbacks[i].name == name) this.callbacks.splice(i, i + 1)
-        }
+        this.callbacks.delete(name)
     }
 
-    render() {
+    render = () => {
         requestAnimationFrame(this.render)
 
-        const deltaTime = performance.now() - this.time
+        const dt = performance.now() - this.time
 
-        for (let i = 0; i < this.callbacks.length; i++) {
-            this.callbacks[i].callback(deltaTime)
-        }
+        this.callbacks.forEach((cb) => cb(dt))
 
         this.time = performance.now()
-    }
-
-    bind() {
-        this.subscribe = this.subscribe.bind(this)
-        this.unsubscribe = this.unsubscribe.bind(this)
-        this.render = this.render.bind(this)
-
     }
 }
 
