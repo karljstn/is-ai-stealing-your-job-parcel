@@ -1,10 +1,12 @@
 class RAF {
     callbacks: Map<string, (dt: number) => void>
     time: number
+    rafID: number
 
     constructor() {
         this.callbacks = new Map<string, (dt: number) => void>()
         this.time = performance.now()
+        this.rafID = 0;
         this.render()
     }
 
@@ -22,7 +24,7 @@ class RAF {
     }
 
     render = () => {
-        requestAnimationFrame(this.render)
+        this.rafID = requestAnimationFrame(this.render)
 
         const dt = performance.now() - this.time
 
@@ -34,3 +36,7 @@ class RAF {
 
 const instance = new RAF()
 export default instance
+
+module.hot.dispose(() => {
+    cancelAnimationFrame(instance.rafID)
+})
