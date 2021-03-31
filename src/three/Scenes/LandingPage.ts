@@ -23,13 +23,14 @@ class LandingPage {
 		const light = new PointLight("#fff", 1, 1, 1)
 		this.scene.add(light)
 
+		this.hand.load()
+
 		let rect = store.state.rects.get(RECTS.INTRO.HELLO)
 
 		const intervalID = setInterval(() => {
 			rect = store.state.rects.get(RECTS.INTRO.HELLO)
 			if (rect && this.hand.group) {
 				clearInterval(intervalID)
-
 				// Upper left
 				let { x, y } = rectToThree(this.viewport, rect)
 
@@ -42,6 +43,8 @@ class LandingPage {
 
 				this.hand.group.position.set(x, y, 0)
 				this.scene.add(this.hand.group)
+
+				this.hand.tweaks()
 			}
 		}, 100);
 	}
