@@ -40,7 +40,7 @@ export default class Scene {
     mouse: THREE.Vector2
     clock: THREE.Clock
     meshes: THREE.Mesh[]
-    radio: ThreeGroup
+    radio: Radio
 
     Benchmark: Benchmark | null
     Loader: Loader | null

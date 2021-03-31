@@ -1,14 +1,9 @@
 <template>
   <section>
-    <h1>oui</h1>
-    <!-- <Toolbar :nextCase="this.nextCase" :updateTool="this.updateTool" />
     <Timer />
+    <!-- <Toolbar :nextCase="this.nextCase" :updateTool="this.updateTool" />
+    
     <PatientFile /> -->
-    <!-- <div class="skip">
-      <QuestionForm>
-        <Button value="yes">Skip</Button>
-      </QuestionForm>
-    </div> -->
   </section>
 </template>
 
@@ -30,63 +25,31 @@ export default Vue.extend({
   //     selectedTool: null,
   //   }
   // },
-  // mounted() {
-  //   // store.state.scene.startRadiologist()
-  // },
-  // components: {
-  //   Toolbar,
-  //   Timer,
-  //   PatientFile,
-  //   QuestionForm,
-  //   Button,
-  // },
-  // unmounted() {
-  //   store.state.scene.destroyRadiologist()
-  // },
-  // methods: {
-  //   nextCase() {
-  //     console.log("next case", this.case)
-  //     console.log(this.data[this.case])
-  //     this.case++
-  //     //update radio
-  //     //reset timer
-  //     //update case
-  //   },
-  //   updateTool(tool) {
-  //     console.log("update tool", tool)
-  //     if (this.selectedTool !== tool) {
-  //       //turn on tool
-  //       this.selectedTool = tool
-  //       switch (tool) {
-  //         case "zoom":
-  //           store.state.scene.radio.zoomMaterial.uniforms.scale.value = 2
-  //           break
-  //         default:
-  //           break
-  //       }
-  //     } else {
-  //       switch (tool) {
-  //         case "zoom":
-  //           store.state.scene.radio.zoomMaterial.uniforms.scale.value = 1
-  //           break
-  //         default:
-  //           break
-  //       }
-  //       //turn off tool
-  //       this.selectedTool = null
-  //     }
-  //   },
-  // },
+  mounted() {
+    // store.state.scene.startRadiologist()
+  },
+  unmounted() {
+    store.state.scene.destroyRadiologist();
+  },
+  components: {
+    // Toolbar,
+    Timer,
+    // PatientFile,
+    // QuestionForm,
+    // Button,
+  },
+
+  methods: {
+    nextCase() {
+      console.log("next case", this.case);
+      console.log(this.data[this.case]);
+      this.case++;
+    },
+  },
 });
 </script>
 
 <style lang="scss" scoped>
-.skip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 section {
   // width: initial;
   height: initial;

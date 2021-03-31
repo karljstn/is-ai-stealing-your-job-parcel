@@ -95,6 +95,7 @@ export default class Radio implements ThreeGroup {
         // setInterval(() => {
         //     console.log(this.currentIntersect)
         // }, 1000)
+
     }
 
 
@@ -124,6 +125,12 @@ export default class Radio implements ThreeGroup {
                 (Math.random() - 0.5) * 10,
             )
 
+            // this.boxMeshes[i].scale.set(
+            //     (Math.random() - 0.5) * 10,
+            //     (Math.random() - 0.5) * 10,
+            //     (Math.random() - 0.5) * 10,
+            // )
+
             this.group.add(this.boxMeshes[i])
             this.isReady = true
         }
@@ -136,6 +143,8 @@ export default class Radio implements ThreeGroup {
         }
 
         if (this.currentIntersect) {
+            console.log(this.currentIntersect)
+
             this.progress++
             this.nextCase()
         }
@@ -156,90 +165,27 @@ export default class Radio implements ThreeGroup {
             this.raycaster.setFromCamera(this.mouse, this.camera)
             const intersects = this.raycaster.intersectObjects(this.group.children)
 
-
-
             if (intersects.length) {
-                //the mouse is hovering some 3d element
-                //can be multiple elements
-
 
                 if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) {
-                    // intersects[0].object
-
                     this.currentIntersect.object.material.uniforms.outline.value = 0.5
                     this.currentIntersect = intersects[0]
                     this.currentIntersect.object.material.uniforms.outline.value = 1
-                    console.log('changed')
-
-
                 }
 
                 this.currentIntersect = intersects[0]
                 this.currentIntersect.object.material.uniforms.outline.value = 1
 
-
             } else {
                 if (this.currentIntersect) {
                     this.currentIntersect.object.material.uniforms.outline.value = 0.5
                 }
+
+                this.currentIntersect = null
             }
-
-            //     if (this.currentIntersect) {
-            //         // console.log('heree')
-
-            //         // gsap.to(this.currentIntersect.object.material.uniforms.outline, {
-            //         //     value: 1,
-            //         //     duration: 0.5
-            //         // })
-
-
-            //         console.log('setting uniforms to 0.2')
-            //         this.currentIntersect.object.material.uniforms.outline.value = 0.2
-            //     }
-
-
-            //     this.currentIntersect = intersects[0]
-            //     this.currentIntersect.object.material.uniforms.outline.value = 1
-            //     console.log('setting uniforms to 1')
-
-
-
-            // } else {
-            //     if (this.currentIntersect) {
-            //         console.log('out')
-
-            //         console.log('setting uniforms to 0.2')
-            //         this.currentIntersect.object.material.uniforms.outline.value = 0.2
-            //     }
-            //     this.currentIntersect = null
-
-            // }
         }
 
 
         raf((dt: number) => this.update(dt))
     }
 }
-
-
-
-        //mouseover
-        // for (const intersect of intersects) {
-        //     const mesh: THREE.Mesh = intersect.object as THREE.Mesh
-        //     const material: THREE.MeshBasicMaterial = mesh.material as THREE.MeshBasicMaterial
-
-        //     material.color.set('#0000ff')
-        //     console.log(intersects[0])
-        // }
-
-        // for (const object of this.group.children) {
-
-        //     const mesh: THREE.Mesh = object as THREE.Mesh
-        //     const material: THREE.MeshBasicMaterial = mesh.material as THREE.MeshBasicMaterial
-
-        //     if (!intersects.find(intersect => intersect.object === object)) {
-        //         material.color.set('#ff0000')
-        //     }
-        // }
-
-        // console.log(intersects.length)

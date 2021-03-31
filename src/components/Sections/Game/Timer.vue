@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import store from "~/store";
 
 export default Vue.extend({
   mounted() {
@@ -17,7 +18,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      countdown: 30,
+      countdown: 60,
       interval: 0,
       placeholder: "0",
     };
@@ -46,6 +47,7 @@ export default Vue.extend({
       this.countdown = newCountdown;
     },
     stopCountdown() {
+      // store.state.scene?.radio.endGame();
       clearInterval(this.interval);
     },
   },
