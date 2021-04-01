@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="infos">
+    <!-- <ul class="infos">
       <li>Robert Deniro</li>
       <li>male</li>
       <li>01/08/1997</li>
@@ -30,7 +30,7 @@
       <br />
       <li>P 98 H 02 L29</li>
       <li>TSE/SE/ME(23)</li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -40,6 +40,9 @@ export default {};
 
 
 <style lang="scss" scoped>
+div {
+  width: initial;
+}
 ul {
   color: white;
   list-style: none;

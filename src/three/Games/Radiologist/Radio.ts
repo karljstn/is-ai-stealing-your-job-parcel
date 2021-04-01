@@ -242,9 +242,6 @@ export default class Radio implements ThreeGroup {
             return
         }
 
-        console.log(this.currentIntersect.object.id)
-        console.log(this.errorMesh?.id)
-
         if (this.currentIntersect && this.currentIntersect.object == this.errorMesh) {
             this.errorMesh = null
             this.currentIntersect = null

@@ -48,7 +48,7 @@ export default Vue.extend({
       this.countdown = newCountdown;
     },
     stopCountdown() {
-      store.state.scene?.radio.endGame();
+      // store.state.scene?.radio.endGame();
       clearInterval(this.interval);
     },
   },
@@ -59,7 +59,7 @@ export default Vue.extend({
   // position: absolute;
   // bottom: 10px;
   // left: 10px;
-  font-size: 1em;
+  font-size: 1.6em;
   color: white;
 }
 </style>
