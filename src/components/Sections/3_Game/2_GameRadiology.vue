@@ -9,7 +9,7 @@
     <button class="patient-file-button" v-on:click="this.openPatientFile">
       Patient file
     </button>
-    <button class="ai-button">AI</button>
+    <button class="ai-button" v-on:click="this.useAI">AI</button>
   </section>
 </template>
 
@@ -56,9 +56,10 @@ export default Vue.extend({
     setTutorial(cond: Boolean) {
       this.tutorial = cond;
     },
+    useAI() {
+      store.state.scene?.radio.useAI();
+    },
     openPatientFile() {
-      console.log("alloa");
-
       this.patientFile = !this.patientFile;
       store.state.scene?.radio.patientFile(this.patientFile);
     },

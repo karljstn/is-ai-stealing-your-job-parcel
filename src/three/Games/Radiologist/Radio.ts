@@ -10,6 +10,8 @@ import { ThreeGroup } from "~/interfaces/Three"
 import { MODELS } from '~/constants/MODELS'
 import LoadManager from '~/three/Singletons/LoadManager'
 
+import { Bounce } from 'gsap'
+
 // import { Text } from 'troika-three-text'
 
 import fragment from "~/shaders/fresnel/fragment.glsl"
@@ -205,7 +207,7 @@ export default class Radio implements ThreeGroup {
 
 
             if (i === 0) {
-                boxMaterial.uniforms.baseColor.value = new THREE.Vector3(1, 1, 1)
+                boxMaterial.uniforms.baseColor.value = new THREE.Vector3(0.3, 0, 0)
                 boxMaterial.uniforms.isError.value = 1
 
             }
@@ -258,8 +260,14 @@ export default class Radio implements ThreeGroup {
         }
     }
 
-    cheat() {
-
+    useAI() {
+        if (this.errorMesh) {
+            gsap.to(this.errorMesh.material.uniforms.baseColor.value, {
+                x: 1,
+                y: 1,
+                z: 1
+            })
+        }
     }
 
     endGame() {
