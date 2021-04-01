@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <!-- <ul class="infos">
+  <div class="side-container">
+    <ul class="infos">
       <li>Robert Deniro</li>
       <li>male</li>
       <li>01/08/1997</li>
@@ -30,7 +30,7 @@
       <br />
       <li>P 98 H 02 L29</li>
       <li>TSE/SE/ME(23)</li>
-    </ul> -->
+    </ul>
   </div>
 </template>
 
@@ -40,9 +40,14 @@ export default {};
 
 
 <style lang="scss" scoped>
-div {
+.side-container {
   width: initial;
+  position: absolute;
+  top: 50%;
+  left: 400px;
+  transform: translate(0%, -50%);
 }
+
 ul {
   color: white;
   list-style: none;
@@ -50,23 +55,15 @@ ul {
 }
 
 .infos {
-  position: absolute;
-  left: 0;
-  top: 10%;
+  margin-bottom: 50px;
 }
 
 .infos-2 {
-  position: absolute;
-  left: 0;
-  bottom: 20%;
+  margin-top: 50px;
 }
 
 .range {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 3px;
+  width: 1px;
   height: 300px;
   background-color: white;
 
@@ -77,7 +74,7 @@ ul {
     height: 301px;
     li {
       width: 10px;
-      height: 2px;
+      height: 1px;
       background-color: white;
     }
   }
