@@ -12,8 +12,8 @@ const store = new Vuex.Store({
       enabled: true,
       benchmark: true,
       loader: true,
-      tweakpane: true,
-      goToProgression: 0, //10 for radiologist
+      tweakpane: false,
+      goToProgression: 0, //9 for radiologist
       forceRadiologist: false, //forces start radiologist in mainscene for hot reloading
     },
     load: {
@@ -26,6 +26,7 @@ const store = new Vuex.Store({
     eases: new Map<string, typeof CustomEase>(),
     scene: null,
     rects: new Map<string, DOMRect>(),
+    count: 0,
   } as StoreState,
   mutations: {
     incrementProgression(state) {
@@ -58,6 +59,9 @@ const store = new Vuex.Store({
       if (state.rects.get(payload.name))
         return console.warn("Rect already set");
       state.rects.set(payload.name, payload.rect);
+    },
+    updateCount(state, payload) {
+      state.count = payload;
     },
   },
   actions: {},

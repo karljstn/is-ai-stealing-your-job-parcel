@@ -10,13 +10,14 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { Timeout } from "~../node_modules/rafz/dist/raf";
 import store from "~/store";
 
 export default Vue.extend({
   mounted() {
     this.startCountdown();
   },
-  data() {
+  data(): { countdown: number; interval: any; placeholder: string } {
     return {
       countdown: 60,
       interval: 0,
@@ -55,9 +56,10 @@ export default Vue.extend({
 </script>
 <style lang="scss">
 .timer {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  font-size: 1.5em;
+  // position: absolute;
+  // bottom: 10px;
+  // left: 10px;
+  font-size: 1.6em;
+  color: white;
 }
 </style>

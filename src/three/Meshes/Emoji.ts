@@ -26,8 +26,8 @@ class Emoji {
   animations: AnimationClip[] | null;
   waveAction: AnimationAction | null;
   loader: GLTFLoader;
-  bakedMaterial: MeshBasicMaterial;
-  bakedTexture: Texture;
+  // bakedMaterial: MeshBasicMaterial;
+  // bakedTexture: Texture;
 
   constructor(size: number, pane: Tweakpane | null, scene: Scene) {
     this.params = {
@@ -42,9 +42,9 @@ class Emoji {
     this.animations = null;
     this.waveAction = null;
     this.loader = new GLTFLoader(LoadManager.manager);
-    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI.BAKE);
-    this.bakedTexture.flipY = false;
-    this.bakedMaterial = new MeshBasicMaterial({ map: this.bakedTexture });
+    // this.bakedTexture = new TextureLoader().load(MODELS.EMOJI.BAKE);
+    // this.bakedTexture.flipY = false;
+    // this.bakedMaterial = new MeshBasicMaterial({ map: this.bakedTexture });
   }
 
   start = () => {

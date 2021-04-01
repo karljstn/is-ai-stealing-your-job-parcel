@@ -12,8 +12,13 @@
 		"baseUrl": "./src",
 		"allowSyntheticDefaultImports": true,
 		"paths": {
-			"~*": ["./*"]
+			"~*": [
+				"./*"
+			]
 		}
 	},
-	"include": ["src/**/*", "vue-shim.d.ts"]
+	"include": [
+		"src/**/*",
+		"vue-shim.d.ts"
+	]
 }
