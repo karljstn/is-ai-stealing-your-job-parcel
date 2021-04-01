@@ -5,6 +5,7 @@
 				Hello there
 			</p>
 		</SaveRect>
+		<autoskip />
 	</section>
 </template>
 
@@ -34,6 +35,7 @@ export default Vue.extend({
 		Autoskip,
 	},
 	mounted() {
+		console.log('wtf2');
 		store.state.scene?.IntroHand.start();
 		setTimeout(() => {
 			store.state.scene?.IntroHand.hand.wave();
@@ -48,9 +50,6 @@ export default Vue.extend({
 				window.removeEventListener('wheel', onWheel);
 			}
 		};
-
-		window.addEventListener('mousewheel', onWheel);
-		window.addEventListener('wheel', onWheel);
 	},
 	destroyed() {
 		store.state.scene.IntroHand.hand.destroy();

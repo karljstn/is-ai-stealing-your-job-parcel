@@ -74,7 +74,9 @@ class Trashcan {
 		this.animations?.forEach((anim) => {
 			const clip = this.mixer?.clipAction(anim)
 			if (clip) {
-				clip.loop = THREE.LoopOnce; clip.reset()
+				clip.loop = THREE.LoopOnce;
+				clip.clampWhenFinished = true;
+				clip.reset()
 				clip.play()
 			}
 		});

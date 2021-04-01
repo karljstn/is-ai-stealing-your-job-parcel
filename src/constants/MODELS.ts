@@ -8,6 +8,6 @@ export const MODELS = {
 	},
 	TRASHCAN: {
 		URL: trashcan,
-		SCALE: 0.02
+		SCALE: 0.15
 	}
 }

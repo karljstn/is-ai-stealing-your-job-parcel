@@ -41,12 +41,18 @@ export default Vue.extend({
 			if (pixelSpeed > 1) {
 				window.removeEventListener('mousewheel', onWheel);
 				window.removeEventListener('wheel', onWheel);
-				store.commit('incrementProgression');
+				store.state.scene?.LandingPage.trashcan.drop();
+				setTimeout(() => {
+					store.commit('incrementProgression');
+				}, 2000);
 			}
 		};
 
 		window.addEventListener('mousewheel', onWheel);
 		window.addEventListener('wheel', onWheel);
+	},
+	destroyed() {
+		store.state.scene?.LandingPage.trashcan.destroy();
 	},
 	components: {
 		QuestionForm,

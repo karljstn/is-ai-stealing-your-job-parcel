@@ -22,10 +22,10 @@ class LandingPage {
 	start() {
 		this.trashcan.load()
 
-		let rect = store.state.rects.get(RECTS.INTRO.HELLO)
+		let rect = store.state.rects.get(RECTS.LANDING)
 
 		const intervalID = setInterval(() => {
-			rect = store.state.rects.get(RECTS.INTRO.HELLO)
+			rect = store.state.rects.get(RECTS.LANDING)
 			if (rect && this.trashcan.group) {
 				clearInterval(intervalID)
 				// Upper left
@@ -35,7 +35,7 @@ class LandingPage {
 				x += ((rect.width / 2) / window.innerWidth) * this.viewport.width
 				y -= ((rect.height / 2) / window.innerWidth) * this.viewport.height
 
-				y -= 0.1
+				y -= this.viewport.height * 0.25
 
 				this.trashcan.group.position.set(x, y, 0)
 				this.scene.add(this.trashcan.group)
@@ -49,11 +49,11 @@ class LandingPage {
 		// const mouse = { x: this.mouse.x / 2 + 0.5, y: this.mouse.y / 2 + 0.5 }
 
 		if (!this.trashcan.group) return
-		const position = this.trashcan.group.position
-		const mouse = new Vector3(this.mouse.x * this.viewport.width, this.mouse.y * this.viewport.height, 0)
-		const rotationFactor = 0.07
-		const target = this.trashcan.group.rotation.toVector3().clone().subVectors(mouse, position).multiplyScalar(rotationFactor)
-		this.trashcan.group.rotation.setFromVector3(target)
+		// const position = this.trashcan.group.position
+		// const mouse = new Vector3(this.mouse.x * this.viewport.width, this.mouse.y * this.viewport.height, 0)
+		// const rotationFactor = 0.07
+		// const target = this.trashcan.group.rotation.toVector3().clone().subVectors(mouse, position).multiplyScalar(rotationFactor)
+		// this.trashcan.group.rotation.setFromVector3(target)
 		this.trashcan.update(dt)
 	}
 }
