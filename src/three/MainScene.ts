@@ -13,8 +13,9 @@ import { clamp, getViewport } from "~/util/"
 import { PARAMS } from "~/types/"
 import Loader from "./Loader"
 import store from '~/store'
-import LandingPage from "./Scenes/LandingPage"
+import IntroHello from "./Scenes/IntroHello"
 import { RAFS } from "~constants/RAFS"
+import LandingPage from "./Scenes/LandingPage"
 
 export default class Scene {
     // Data
@@ -42,6 +43,7 @@ export default class Scene {
     Benchmark: Benchmark | null
     Loader: Loader | null
     LandingPage: LandingPage
+    IntroHand: IntroHello
 
     constructor(canvas: HTMLCanvasElement, maxFPS: number) {
         this.PARAMS = {
@@ -116,6 +118,7 @@ export default class Scene {
         if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.loader) this.Loader = new Loader(this.PARAMS.viewport, this.scene, this.camera, this.pane)
         else this.Loader = null
 
+        this.IntroHand = new IntroHello(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
         this.LandingPage = new LandingPage(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
     }
 
@@ -187,7 +190,7 @@ export default class Scene {
 
         this.pane && this.pane.refresh()
 
-        this.LandingPage?.update(dt) //TODO: switch based on progress
+        this.IntroHand?.update(dt) //TODO: switch based on progress
     }
 }
 

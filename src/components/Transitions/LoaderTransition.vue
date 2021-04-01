@@ -27,16 +27,8 @@ export default Vue.extend({
 		const ease = store.state.eases.get('test');
 		const uniforms =
 			store.state.scene && store.state.scene.Loader && store.state.scene.Loader.fullScreenPlane.uniforms;
-		// const destroy = store.state.scene && store.state.scene.Loader && store.state.scene.Loader.destroy
 		const duration = 0.5;
 		isLoader && uniforms && gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: duration });
-		// isLoader &&
-		// 	uniforms &&
-		// 	gsap.to(uniforms.uAlpha, {
-		// 		value: 0,
-		// 		ease: ease,
-		// 		duration: duration,
-		// 	});
 	},
 });
 </script>

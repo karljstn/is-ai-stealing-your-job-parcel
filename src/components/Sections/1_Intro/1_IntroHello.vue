@@ -5,11 +5,6 @@
 				Hello there
 			</p>
 		</SaveRect>
-
-		<QuestionForm>
-			<Button value="yes">Of course!</Button>
-			<Button value="no">Not sure...</Button>
-		</QuestionForm>
 	</section>
 </template>
 
@@ -17,8 +12,13 @@
 import Button from '~/components/UI/Button';
 import QuestionForm from '~/components/UI/QuestionForm';
 import SaveRect from '~/components/Common/SaveRect.vue';
+import Autoskip from '~/components/Common/Autoskip.vue';
 import { RECTS } from '~/constants/RECTS';
+import { TRANSITIONS } from '~constants/TRANSITIONS';
+import NormalizeWheel from 'normalize-wheel';
+
 import Vue from 'vue';
+import store from '~store';
 
 export default Vue.extend({
 	data() {
@@ -31,6 +31,29 @@ export default Vue.extend({
 		SaveRect,
 		QuestionForm,
 		Button,
+		Autoskip,
+	},
+	mounted() {
+		store.state.scene?.IntroHand.start();
+		setTimeout(() => {
+			store.state.scene?.IntroHand.hand.wave();
+		}, TRANSITIONS.DURATION.LEAVE * 2000);
+
+		const onWheel = event => {
+			const normalized = NormalizeWheel(event);
+			const pixelSpeed = normalized.pixelY;
+			if (pixelSpeed > 1) {
+				store.commit('incrementProgression');
+				window.removeEventListener('mousewheel', onWheel);
+				window.removeEventListener('wheel', onWheel);
+			}
+		};
+
+		window.addEventListener('mousewheel', onWheel);
+		window.addEventListener('wheel', onWheel);
+	},
+	destroyed() {
+		store.state.scene.IntroHand.hand.destroy();
 	},
 });
 </script>

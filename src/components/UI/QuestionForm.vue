@@ -23,7 +23,6 @@ export default Vue.extend({
 			if (!e.submitter) return;
 
 			store.commit('incrementProgression');
-			console.log(store.state.progression);
 		},
 	},
 });

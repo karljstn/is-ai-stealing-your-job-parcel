@@ -3,43 +3,44 @@ import { Viewport } from "~/types";
 import { rectToThree } from "~/util";
 import { PerspectiveCamera, PointLight, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { RECTS } from "~/constants/RECTS"
-import Trashcan from "../Meshes/Trashcan";
+import Hand from "../Meshes/Hand";
 import Tweakpane from "tweakpane";
 
-class LandingPage {
+class IntroHello {
 	viewport: Viewport
 	scene: Scene
-	trashcan: Trashcan
+	hand: Hand
 	mouse: Vector2
 
 	constructor(viewport: Viewport, scene: Scene, mouse: Vector2, pane: Tweakpane | null) {
 		this.viewport = viewport
 		this.scene = scene
-		this.trashcan = new Trashcan(1, pane, scene)
+		this.hand = new Hand(1, pane, scene)
 		this.mouse = mouse;
 	}
 
 	start() {
-		this.trashcan.load()
+		this.hand.load()
 
 		let rect = store.state.rects.get(RECTS.INTRO.HELLO)
 
 		const intervalID = setInterval(() => {
 			rect = store.state.rects.get(RECTS.INTRO.HELLO)
-			if (rect && this.trashcan.group) {
+			if (rect && this.hand.group) {
 				clearInterval(intervalID)
 				// Upper left
 				let { x, y } = rectToThree(this.viewport, rect)
 
-				// Bottom Middle
-				x += ((rect.width / 2) / window.innerWidth) * this.viewport.width
+				// Bottom right
+				x += (rect.width / window.innerWidth) * this.viewport.width
 				y -= ((rect.height / 2) / window.innerWidth) * this.viewport.height
 
-				y -= 0.1
+				// Small offset
+				y -= (rect.height / 4) / window.innerHeight
 
-				this.trashcan.group.position.set(x, y, 0)
-				this.scene.add(this.trashcan.group)
-				this.trashcan.start()
+				this.hand.group.position.set(x, y, 0)
+				this.scene.add(this.hand.group)
+				this.hand.start()
 			}
 		}, 100);
 	}
@@ -48,14 +49,14 @@ class LandingPage {
 		// from -1 -> 1 to 0 -> 1
 		// const mouse = { x: this.mouse.x / 2 + 0.5, y: this.mouse.y / 2 + 0.5 }
 
-		if (!this.trashcan.group) return
-		const position = this.trashcan.group.position
+		if (!this.hand.group) return
+		const position = this.hand.group.position
 		const mouse = new Vector3(this.mouse.x * this.viewport.width, this.mouse.y * this.viewport.height, 0)
 		const rotationFactor = 0.07
-		const target = this.trashcan.group.rotation.toVector3().clone().subVectors(mouse, position).multiplyScalar(rotationFactor)
-		this.trashcan.group.rotation.setFromVector3(target)
-		this.trashcan.update(dt)
+		const target = this.hand.group.rotation.toVector3().clone().subVectors(mouse, position).multiplyScalar(rotationFactor)
+		this.hand.group.rotation.setFromVector3(target)
+		this.hand.update(dt)
 	}
 }
 
-export default LandingPage
+export default IntroHello

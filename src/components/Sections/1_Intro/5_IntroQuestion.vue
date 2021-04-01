@@ -1,15 +1,19 @@
 <template>
 	<section>
-		<SaveRect :rectName="helloRect">
-			<p class="hello">
-				Am I right ?
-			</p>
-		</SaveRect>
+		<div class="container">
+			<SaveRect :rectName="helloRect">
+				<p class="hello">
+					Am I right ?
+				</p>
+			</SaveRect>
 
-		<QuestionForm>
-			<Button value="yes">Of course!</Button>
-			<Button value="no">Not sure...</Button>
-		</QuestionForm>
+			<div class="form">
+				<QuestionForm>
+					<Button value="yes">Yes!</Button>
+					<Button value="no">No, my job is fine</Button>
+				</QuestionForm>
+			</div>
+		<div>
 	</section>
 </template>
 
@@ -35,4 +39,16 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.container{
+	width: 700px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	.form{
+		width: 50%;
+		margin-top: 4rem;
+	}
+}
+</style>

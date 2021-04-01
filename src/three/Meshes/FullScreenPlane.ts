@@ -25,16 +25,14 @@ class FullScreenPlane implements ThreeMesh {
 			uTime: { value: 0 },
 			uAlpha: { value: 1 },
 			uMixFactor: { value: 0 },
-			uColorInitial: { value: new Color(PALETTE.ORANGE) },
-			uColorFinal: { value: new Color(PALETTE.LIGHTBLUE) },
+			uColorInitial: { value: new Color(PALETTE.BLACK) },
+			uColorFinal: { value: new Color(PALETTE.WHITE) },
 			uMousePos: { value: new Vector2() },
 			uAspectHorizontal: { value: window.innerWidth / window.innerHeight },
 			uTargetOffset: { value: new Vector2() },
 			uTransitions: { value: false }
 		}
-		const width = viewport.width * 2;
-		const height = viewport.height * 2;
-		this.geometry = new PlaneBufferGeometry(width, height, 1, 1)
+		this.geometry = new PlaneBufferGeometry(1, 1, 1, 1)
 		this.material = new ShaderMaterial({ uniforms: this.uniforms, vertexShader: vertex, fragmentShader: fragment, transparent: true })
 		this.material.depthWrite = false
 		this.object3d = new Mesh(this.geometry, this.material)
@@ -45,11 +43,19 @@ class FullScreenPlane implements ThreeMesh {
 	start() {
 		this.pane && this.pane.addInput(this.uniforms.uMixFactor, 'value', { label: "Loader Mix Factor", min: 0, max: 1 })
 		this.object3d.position.setZ(-1)
+		this.resize()
+		window.addEventListener('resize', this.resize)
 	}
 
 	toggleTransitions() {
 		const value = this.material.uniforms.uTransitions.value
 		this.material.uniforms.uTransitions.value = !value;
+	}
+
+	resize = () => {
+		const width = this.viewport.width * 2;
+		const height = this.viewport.height * 2;
+		this.object3d.scale.set(width, height, 0)
 	}
 
 	update(dt = 0) {

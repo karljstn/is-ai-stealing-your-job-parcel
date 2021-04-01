@@ -22,14 +22,14 @@ section {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	color: $white;
+	color: $black;
 
 	> div {
 		width: 700px;
 	}
 
 	p {
-		color: white;
+		color: $black;
 		font-size: $text-size;
 		line-height: 160%;
 	}

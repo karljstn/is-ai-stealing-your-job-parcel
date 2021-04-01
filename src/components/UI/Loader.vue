@@ -1,8 +1,6 @@
 <template>
 	<div class="container">
-		<!-- <div class="bar" /> -->
-		<div class="text">L E A R N I N G</div>
-		<!-- <div class="bar" /> -->
+		<div class="text">Learning...</div>
 	</div>
 </template>
 
@@ -23,16 +21,9 @@ export default Vue.extend({});
 	align-items: center;
 
 	.text {
-		color: white;
+		color: $black;
 		padding: 0 1rem;
 		font-size: $title-size;
 	}
-
-	// .bar {
-	//   width: 0.4rem;
-	//   background: white;
-	//   height: $title-size - 0.5;
-	//   margin: 0 0 0.3rem 0;
-	// }
 }
 </style>

@@ -89,18 +89,4 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-section {
-	height: 100vh;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	color: white;
-
-	p {
-		color: white;
-	}
-}
-</style>
+<style lang="scss"></style>

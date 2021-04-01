@@ -2,5 +2,6 @@ export const RAFS = {
 	RADIO: "radioUpdate",
 	MAIN: 'mainUpdate',
 	TYPER: 'typerUpdate',
-	HAND: 'handUpdate'
+	HAND: 'handUpdate',
+	TRASHCAN: 'trashcanUpdate'
 }

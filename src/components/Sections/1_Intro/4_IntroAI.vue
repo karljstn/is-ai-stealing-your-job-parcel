@@ -5,11 +5,7 @@
 				by Artificial Intelligence
 			</p>
 		</SaveRect>
-
-		<QuestionForm>
-			<Button value="yes">Of course!</Button>
-			<Button value="no">Not sure...</Button>
-		</QuestionForm>
+		<autoskip />
 	</section>
 </template>
 
@@ -19,11 +15,12 @@ import QuestionForm from '~/components/UI/QuestionForm';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
+import Autoskip from '~components/Common/Autoskip.vue';
 
 export default Vue.extend({
 	data() {
 		return {
-			helloRect: RECTS.INTRO.HELLO,
+			helloRect: RECTS.INTRO.AI,
 			progression: 0,
 		};
 	},
@@ -31,6 +28,7 @@ export default Vue.extend({
 		SaveRect,
 		QuestionForm,
 		Button,
+		Autoskip,
 	},
 });
 </script>

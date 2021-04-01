@@ -6,9 +6,8 @@ import { AnimationAction, AnimationClip, PerspectiveCamera, Scene, WebGLRenderer
 import Tweakpane from "tweakpane"
 import raf from "~three/Singletons/RAF"
 import { RAFS } from "~constants/RAFS"
-// import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
-class Hand {
+class Trashcan {
 	params: { animSpeed: number, size: number }
 	size: number
 	pane: Tweakpane | null
@@ -19,10 +18,10 @@ class Hand {
 	waveAction: AnimationAction | null
 	loader: GLTFLoader
 
-	constructor(size: number, pane: Tweakpane | null, scene: Scene) { //camera: PerspectiveCamera, renderer: WebGLRenderer
+	constructor(size: number, pane: Tweakpane | null, scene: Scene) {
 		this.params = {
 			animSpeed: 0.005,
-			size: size * MODELS.HAND.SCALE
+			size: size * MODELS.TRASHCAN.SCALE
 		}
 		this.size = size
 		this.pane = pane
@@ -36,11 +35,11 @@ class Hand {
 
 	start = () => {
 		this.tweaks()
-		raf.subscribe(RAFS.HAND, this.update)
+		raf.subscribe(RAFS.TRASHCAN, this.update)
 	}
 
 	load = () => {
-		this.loader.load(MODELS.HAND.URL, (gltf) => {
+		this.loader.load(MODELS.TRASHCAN.URL, (gltf) => {
 			this.group = gltf.scene
 			this.group.scale.set(this.params.size, this.params.size, this.params.size)
 
@@ -48,18 +47,14 @@ class Hand {
 			this.mixer = new THREE.AnimationMixer(this.group)
 			this.mixer.timeScale = this.params.animSpeed
 			this.animations = gltf.animations
-			const clip = THREE.AnimationClip.findByName(this.animations, 'ArmatureAction');
-			this.waveAction = this.mixer.clipAction(clip)
-			this.waveAction.loop = THREE.LoopOnce
-			this.waveAction.clampWhenFinished = true
 		})
 	}
 
 	tweaks = () => {
 		if (this.pane) {
-			const speedInput = this.pane.addInput(this.params, 'animSpeed', { label: "Wave speed", min: this.params.animSpeed * 0.33, max: this.params.animSpeed * 3 })
-			const sizeInput = this.pane.addInput(this.params, 'size', { label: "Hand size", min: this.size * MODELS.HAND.SCALE * 0.33, max: this.size * MODELS.HAND.SCALE * 3 })
-			const btn = this.pane && this.pane.addButton({ title: "Wave" })
+			const speedInput = this.pane.addInput(this.params, 'animSpeed', { label: "Drop speed", min: this.params.animSpeed * 0.33, max: this.params.animSpeed * 3 })
+			const sizeInput = this.pane.addInput(this.params, 'size', { label: "Trashcan size", min: this.size * MODELS.HAND.SCALE * 0.33, max: this.size * MODELS.HAND.SCALE * 3 })
+			const btn = this.pane && this.pane.addButton({ title: "Drop" })
 
 			speedInput && speedInput.on('change', (speed: any) => {
 				if (this.mixer) this.mixer.timeScale = speed.value
@@ -68,18 +63,21 @@ class Hand {
 				this.group?.scale.set(size.value, size.value, size.value)
 			})
 			btn && btn.on('click', () => {
-				this.wave()
+				this.drop()
 			})
 		} else {
 			console.warn("no tweakpane")
 		}
 	}
 
-	wave = () => {
-		if (!this.waveAction) return
-
-		this.waveAction.reset()
-		this.waveAction.play()
+	drop = () => {
+		this.animations?.forEach((anim) => {
+			const clip = this.mixer?.clipAction(anim)
+			if (clip) {
+				clip.loop = THREE.LoopOnce; clip.reset()
+				clip.play()
+			}
+		});
 	}
 
 	update = (dt: number = 0) => {
@@ -88,9 +86,9 @@ class Hand {
 
 	destroy = () => {
 		this.group && this.scene.remove(this.group)
-		raf.unsubscribe(RAFS.HAND)
+		raf.unsubscribe(RAFS.TRASHCAN)
 	}
 }
 
-export default Hand
+export default Trashcan
 

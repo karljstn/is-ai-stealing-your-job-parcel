@@ -2,13 +2,12 @@
 	<section>
 		<div class="container">
 			<div class="paragraphs">
-				<p>Throw your biases away</p>
-			</div>
-			<div class="form">
-				<QuestionForm>
-					<Button value="yes">Yes...</Button>
-					<Button value="no">No, I'm just here to learn</Button>
-				</QuestionForm>
+				<save-rect :rectName="rect">
+					<p>
+						Scroll to throw <br />
+						your biases away
+					</p>
+				</save-rect>
 			</div>
 		</div>
 	</section>
@@ -21,26 +20,39 @@ import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import Vue from 'vue';
 import store from '~/store';
-import { TRANSITIONS } from '~/constants/TRANSITIONS';
+import Autoskip from '~components/Common/Autoskip.vue';
+import NormalizeWheel from 'normalize-wheel';
+
 export default Vue.extend({
 	name: 'landing-page',
 	data() {
 		return {
-			helloRect: RECTS.INTRO.HELLO,
+			rect: RECTS.LANDING,
 			progression: 0,
 		};
 	},
 	mounted() {
 		store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
 		store.state.scene?.LandingPage.start();
-		setTimeout(() => {
-			store.state.scene?.LandingPage.hand.wave();
-		}, TRANSITIONS.DURATION.LEAVE * 2000);
+
+		const onWheel = (event: any) => {
+			const normalized = NormalizeWheel(event);
+			const pixelSpeed = normalized.pixelY;
+			if (pixelSpeed > 1) {
+				window.removeEventListener('mousewheel', onWheel);
+				window.removeEventListener('wheel', onWheel);
+				store.commit('incrementProgression');
+			}
+		};
+
+		window.addEventListener('mousewheel', onWheel);
+		window.addEventListener('wheel', onWheel);
 	},
 	components: {
 		QuestionForm,
 		Button,
 		SaveRect,
+		Autoskip,
 	},
 });
 </script>
@@ -56,6 +68,8 @@ export default Vue.extend({
 		align-items: center;
 		p {
 			transition: opacity 0.2s ease-in-out;
+			font-size: 4rem;
+			text-align: center;
 		}
 		.hello,
 		.threatened,

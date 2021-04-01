@@ -20,7 +20,7 @@ const store = new Vuex.Store({
             isVueReady: false,
             isThreeReady: false,
             isLoaderReady: false,
-            minLoaderDuration: 4000,
+            minLoaderDuration: 1500,
             pauseBeforeLoaderDuration: 500
         },
         eases: new Map<string, typeof CustomEase>(),
@@ -30,6 +30,7 @@ const store = new Vuex.Store({
     mutations: {
         incrementProgression(state) {
             ++state.progression
+            console.log(state.progression);
         },
         decrementProgression(state) {
             --state.progression
