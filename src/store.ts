@@ -11,10 +11,10 @@ const store = new Vuex.Store({
         devMode: {
             enabled: true,
             benchmark: true,
-            loader: true,
+            loader: false,
             tweakpane: false,
-            goToProgression: 0, //10 for radiologist
-            forceRadiologist: false //forces start radiologist in mainscene for hot reloading
+            goToProgression: 10, //10 for radiologist
+            forceRadiologist: true //forces start radiologist in mainscene for hot reloading
         },
         load: {
             isVueReady: false,
@@ -30,7 +30,7 @@ const store = new Vuex.Store({
     mutations: {
         incrementProgression(state) {
             ++state.progression
-            console.log(state.progression);
+            console.log(state.progression)
         },
         decrementProgression(state) {
             --state.progression

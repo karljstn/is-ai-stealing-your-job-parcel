@@ -89,7 +89,6 @@ export default class Radio implements ThreeGroup {
 
         raf.subscribe('radioUpdate', this.update)
 
-        this.update = this.update.bind(this)
         this.update()
     }
 
@@ -138,8 +137,6 @@ export default class Radio implements ThreeGroup {
         }
 
         if (this.currentIntersect) {
-            console.log(this.currentIntersect)
-
             this.progress++
             this.nextCase()
         }
@@ -155,9 +152,11 @@ export default class Radio implements ThreeGroup {
         this.camera.position.z = 1
     }
 
-    clear() {
-        raf.unsubscribe('radioUpdate')
-    }
+    // clear() {
+    //     console.log('here clear')
+
+    //     raf.unsubscribe('radioUpdate')
+    // }
 
     update = (dt = 0) => {
         if (!this.isDragging && this.isReady) {
@@ -184,10 +183,5 @@ export default class Radio implements ThreeGroup {
             }
         }
 
-        // console.log('radiologist render')
     }
 }
-
-module.hot.dispose(() => {
-    raf.unsubscribe('radioUpdate')
-})

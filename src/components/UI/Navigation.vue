@@ -15,25 +15,23 @@
 <script lang="ts">
 import Vue from "vue";
 
-export default Vue.extend({
-
-});
+export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
-	nav{
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		padding: 50px;
-		.right{
-			position: absolute;
-			right: 0;
-		}
-		.bottom{
-			bottom: 0;
-		}
-	}
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 50px;
+  .right {
+    position: absolute;
+    right: 0;
+  }
+  .bottom {
+    bottom: 0;
+  }
+}
 </style>
