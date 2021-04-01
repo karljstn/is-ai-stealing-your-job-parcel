@@ -5,3 +5,5 @@ export const RAFS = {
 	HAND: 'handUpdate',
 	TRASHCAN: 'trashcanUpdate'
 }
+
+//TODO: enums ? research typescript

@@ -6,32 +6,29 @@
 		<div class="right">
 			<span>menu</span>
 		</div>
-		<div class="bottom">
-			<span>mute<span>
-		</div>
 	</nav>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/variables.scss';
+
 nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding: 50px;
-  .right {
-    position: absolute;
-    right: 0;
-  }
-  .bottom {
-    bottom: 0;
-  }
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	padding: $menu-padding;
+	display: flex;
+	justify-content: space-between;
+	h3,
+	span {
+		font-weight: 200;
+	}
 }
 </style>

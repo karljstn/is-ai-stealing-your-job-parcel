@@ -115,8 +115,8 @@ export default class Scene {
             this.Benchmark = null
         }
 
-        if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.loader) this.Loader = new Loader(this.PARAMS.viewport, this.scene, this.camera, this.pane)
-        else this.Loader = null
+        if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.loader) { this.Loader = new Loader(this.PARAMS.viewport, this.scene, this.camera, this.pane) }
+        else { this.Loader = null }
 
         this.IntroHand = new IntroHello(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
         this.LandingPage = new LandingPage(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
@@ -126,7 +126,6 @@ export default class Scene {
         this.setEvents()
 
         if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)
-            // this.Benchmark && this.Benchmark.start()
             this.Benchmark?.addGUI()
 
         raf.subscribe(RAFS.MAIN, this.render)
@@ -141,6 +140,7 @@ export default class Scene {
     }
 
     destroyRadiologist() {
+        this.camera.position.z = 1
         this.scene.remove(this.radio.group)
     }
 
@@ -173,16 +173,8 @@ export default class Scene {
     }
 
     render = (dt = 0) => {
-        // if (!this.PARAMS.readyFPS && (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)) {
-        //     this.Benchmark && this.Benchmark.update(dt)
-        // } else {
-        //     this.controls.update()
-        //     this.Benchmark && this.Benchmark.checkFPS(dt)
-        // }
-
         this.Benchmark?.checkFPS(dt)
         this.renderer.render(this.scene, this.camera)
-        // this.composer.render()
 
         this.Loader && this.Loader.update(dt)
 
@@ -196,4 +188,7 @@ export default class Scene {
 
 module.hot.dispose(() => {
     raf.unsubscribe(RAFS.MAIN)
+    // TODO: dispose Three things - renderer etc
 })
+
+//TODO: on accept, check if class already instanced
