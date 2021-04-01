@@ -39,10 +39,13 @@ declare var module: {
         dispose(callback?: () => void): void,
     }
 }
+// declare module 'troika-three-text'
 
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'
 declare module '*.svg'
 
-declare module 'normalize-wheel';
+declare module '*.json'
+
+declare module 'normalize-wheel'

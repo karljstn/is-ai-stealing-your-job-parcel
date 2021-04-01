@@ -1,5 +1,7 @@
 import hand from '~/assets/Models/hand/hand_30_03_v2.glb'
 import trashcan from '~/assets/Models/trashcan/v2.glb'
+import skull from '~/assets/Models/skull/skull.glb'
+import clipboard from '~/assets/Models/clipboard/clipboard.glb'
 
 export const MODELS = {
 	HAND: {
@@ -9,5 +11,13 @@ export const MODELS = {
 	TRASHCAN: {
 		URL: trashcan,
 		SCALE: 0.15
+	},
+	SKULL: {
+		URL: skull,
+		SCALE: 3
+	},
+	CLIPBOARD: {
+		URL: clipboard,
+		SCALE: .1
 	}
 }

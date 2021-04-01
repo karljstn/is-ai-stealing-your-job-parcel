@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import CustomEase from "~/lib/CustomEase/src/CustomEase"
 import { StoreState } from "~/interfaces/Vue"
+import { StaticReadUsage } from 'three'
 
 Vue.use(Vuex)
 
@@ -25,7 +26,8 @@ const store = new Vuex.Store({
         },
         eases: new Map<string, typeof CustomEase>(),
         scene: null,
-        rects: new Map<string, DOMRect>()
+        rects: new Map<string, DOMRect>(),
+        count: 0
     } as StoreState,
     mutations: {
         incrementProgression(state) {
@@ -57,7 +59,10 @@ const store = new Vuex.Store({
         setRect(state, payload) {
             if (state.rects.get(payload.name)) return console.warn('Rect already set')
             state.rects.set(payload.name, payload.rect)
-        }
+        },
+        updateCount(state, payload) {
+            state.count = payload
+        },
     },
     actions: {},
     modules: {},

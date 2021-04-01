@@ -1,6 +1,6 @@
 
 import MainScene from '~/three/MainScene'
-import { CustomEase } from 'gsap/all';
+import { CustomEase } from 'gsap/all'
 
 export interface StoreState {
     progression: number,
@@ -20,5 +20,6 @@ export interface StoreState {
     },
     eases: Map<string, typeof CustomEase>,
     scene: MainScene | null,
-    rects: Map<string, DOMRect>
+    rects: Map<string, DOMRect>,
+    count: number
 }
