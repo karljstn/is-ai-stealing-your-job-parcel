@@ -1,7 +1,7 @@
 // how to:
 //@import "~@/styles/variables";
 
-//couleurs
+// couleurs
 $pink: '#F2C0C8';
 $orange: '#F4933B';
 $white: '#F7F7F5';
@@ -11,12 +11,15 @@ $black: '#122E35';
 // GRAY: "#E1D0F4",
 // YELLOW: "#FFC45C",
 
-//z-index
+// z-index
 $canvas: -1;
 $content: 0;
 $menus: 1;
-//fonts
+// fonts
 
-//sizes
+// sizes
 $text-size: 2rem;
 $title-size: 3rem;
+
+//paddings
+$menu-padding: 50px;

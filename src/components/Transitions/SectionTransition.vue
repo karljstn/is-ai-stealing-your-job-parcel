@@ -40,7 +40,6 @@ export default Vue.extend({
 				'IntroFive',
 				'DefinitionOne',
 				'DefinitionTwo',
-				'DefinitionThree',
 				'GameOne',
 				'GameTwo',
 				'EndOne',

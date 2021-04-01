@@ -1,17 +1,35 @@
 @font-face {
-  font-family: "BTP";
-  src: url("/assets/fonts/btp-normal-webfont.woff2") format("woff2"),
-    url("/assets/fonts/btp-normal-webfont.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'BTP';
+	src: url('/assets/Fonts/btp-normal-webfont.woff2') format('woff2'),
+		url('/assets/Fonts/btp-normal-webfont.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: "BTP";
-  src: url("/assets/fonts/btp-rotated-webfont.woff2") format("woff2"),
-    url("/assets/fonts/btp-rotated-webfont.woff") format("woff");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+	font-family: 'BTP';
+	src: url('/assets/Fonts/btp-rotated-webfont.woff2') format('woff2'),
+		url('/assets/Fonts/btp-rotated-webfont.woff') format('woff');
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'BTP';
+	src: url('/assets/Fonts/btp-light-webfont.woff2') format('woff2'),
+		url('/assets/Fonts/btp-light-webfont.woff') format('woff');
+	font-weight: 200;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'BTP';
+	src: url('/assets/Fonts/btp-lightrotated-webfont.woff2') format('woff2'),
+		url('/assets/Fonts/btp-lightrotated-webfont.woff') format('woff');
+	font-weight: 200;
+	font-style: italic;
+	font-display: swap;
 }

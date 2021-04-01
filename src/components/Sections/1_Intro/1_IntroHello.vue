@@ -15,7 +15,7 @@ import Autoskip from "~/components/Common/Autoskip.vue";
 import { RECTS } from "~/constants/RECTS";
 import { TRANSITIONS } from "~constants/TRANSITIONS";
 import NormalizeWheel from "normalize-wheel";
-
+import gsap from "gsap";
 import Vue from "vue";
 import store from "~store";
 
@@ -33,24 +33,17 @@ export default Vue.extend({
     Autoskip,
   },
   mounted() {
-    console.log("wtf2");
-    store.state.scene.IntroHand.start();
-    setTimeout(() => {
-      store.state.scene.IntroHand.hand.wave();
-    }, TRANSITIONS.DURATION.LEAVE * 2000);
-
-    const onWheel = (event) => {
-      const normalized = NormalizeWheel(event);
-      const pixelSpeed = normalized.pixelY;
-      if (pixelSpeed > 1) {
-        store.commit("incrementProgression");
-        window.removeEventListener("mousewheel", onWheel);
-        window.removeEventListener("wheel", onWheel);
-      }
-    };
+    store.state.scene.IntroHello.start();
   },
   destroyed() {
-    store.state.scene.IntroHand.hand.destroy();
+    const ease = store.state.eases.get("test");
+    const uniforms =
+      store.state.scene &&
+      store.state.scene.Loader &&
+      store.state.scene.Loader.fullScreenPlane.uniforms;
+    uniforms &&
+      gsap.to(uniforms.uMixFactor, { value: 1, ease: ease, duration: 0.5 });
+    store.state.scene.IntroHello.emoji.destroy();
   },
 });
 </script>

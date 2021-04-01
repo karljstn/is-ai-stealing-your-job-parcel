@@ -36,15 +36,16 @@ export default Vue.extend({
     },
   },
   mounted() {
-    // console.log(store.state.radio);
-    // store.commit('setRect', { name: this.$props.rectName, rect: element.getBoundingClientRect() });
-    // this.nextCase();
-    // store.state.scene.startRadiologist();
-    // store.state.scene.Loader.fullScreenPlane.hide();
+    if (!store.state.devMode.forceRadiologist) {
+      store.state.scene?.startRadiologist();
+      store.state.scene?.Loader?.fullScreenPlane.hide();
+    }
   },
   destroyed() {
-    // store.state.scene.destroyRadiologist();
-    // store.state.scene.Loader.fullScreenPlane.show();
+    if (!store.state.devMode.forceRadiologist) {
+      store.state.scene?.destroyRadiologist();
+      store.state.scene?.Loader?.fullScreenPlane.show();
+    }
   },
   components: {
     Panel,

@@ -7,3 +7,5 @@ export const PALETTE = {
 	ORANGE: "#F4933B",
 	YELLOW: "#FFC45C",
 }
+
+//TODO: put this in the store 

@@ -24,9 +24,9 @@ class RAF {
     }
 
     render = () => {
-        this.rafID = requestAnimationFrame(this.render)
+        this.rafID = requestAnimationFrame(this.render) //TODO: check native time value
 
-        const dt = performance.now() - this.time
+        const dt = performance.now() - this.time //TODO: instance performance.now()
 
         this.callbacks.forEach((cb) => cb(dt))
 
