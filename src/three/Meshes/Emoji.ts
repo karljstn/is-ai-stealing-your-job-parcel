@@ -55,10 +55,6 @@ class Emoji {
   load = () => {
     this.loader.load(MODELS.EMOJI.URL, (gltf) => {
       this.group = gltf.scene;
-      this.group.traverse((child) => {
-        const mesh = child as Mesh;
-        // mesh.material = this.bakedMaterial;
-      });
       this.group.scale.set(
         this.params.size,
         this.params.size,
