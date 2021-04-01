@@ -222,8 +222,10 @@ export default class Scene {
   }
 
   destroyRadiologist() {
-    this.camera.position.z = 1;
+    this.camera.position.set(0,0,1)
     this.scene.remove(this.radio.group);
+    console.log(this.camera.position);
+    
   }
 
   setEvents() {
@@ -272,6 +274,8 @@ export default class Scene {
     this.renderer.render(this.scene, this.camera);
 
     this.pane && this.pane.refresh();
+
+    this.controls.update();
 
     this.IntroHello?.update(dt); //TODO: switch based on progress
   };

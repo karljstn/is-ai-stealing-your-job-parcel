@@ -136,7 +136,7 @@ export default class Radio implements ThreeGroup {
             this.clipboard = gltf.scene
             this.clipboard.scale.set(MODELS.CLIPBOARD.SCALE, MODELS.CLIPBOARD.SCALE, MODELS.CLIPBOARD.SCALE)
             this.clipboard.rotation.x = Math.PI / 2
-            this.clipboard.position.x = 20
+            this.clipboard.position.x = 50
 
             this.group.add(gltf.scene)
 
@@ -181,7 +181,7 @@ export default class Radio implements ThreeGroup {
             })
             gsap.to(this.clipboard.position, {
                 duration: 0.5,
-                x: 20,
+                x: 50,
             })
         }
 
@@ -259,6 +259,8 @@ export default class Radio implements ThreeGroup {
 
     useAI() {
         if (this.errorMesh) {
+            console.log('here')
+
             gsap.to(this.errorMesh.material.uniforms.baseColor.value, {
                 x: 1,
                 y: 1,
@@ -268,6 +270,9 @@ export default class Radio implements ThreeGroup {
     }
 
     endGame() {
+        this.progress++
+        store.commit('updateCount', this.progress)
+
         gsap.to(this.group.position, {
             y: -30,
             duration: 1,
@@ -282,10 +287,7 @@ export default class Radio implements ThreeGroup {
             }
         })
 
-
-
     }
-
 
     update = (dt = 0) => {
         if (!this.isDragging && this.isReady) {
@@ -300,7 +302,6 @@ export default class Radio implements ThreeGroup {
                     this.currentIntersect.object.material.uniforms.outline.value = 1
                 }
 
-                // console.log(this.currentIntersect?.object.id)
                 this.currentIntersect = intersects[0]
                 this.currentIntersect.object.material.uniforms.outline.value = 1
 
@@ -308,6 +309,8 @@ export default class Radio implements ThreeGroup {
                 if (this.currentIntersect) {
                     this.currentIntersect.object.material.uniforms.outline.value = 0.5
                 }
+
+
 
                 this.currentIntersect = null
             }

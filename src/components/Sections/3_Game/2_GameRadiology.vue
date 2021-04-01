@@ -6,10 +6,13 @@
     <button class="tutorial" v-on:click="tutorial = !tutorial">?</button>
     <Tutorial v-if="tutorial" v-bind:setTutorial="this.setTutorial"></Tutorial>
 
-    <button class="patient-file-button" v-on:click="this.openPatientFile">
-      Patient file
-    </button>
-    <button class="ai-button" v-on:click="this.useAI">AI</button>
+    <div class="button-container">
+      <button class="ai-button" v-on:click="this.useAI"></button>
+      <button
+        class="patient-file-button"
+        v-on:click="this.openPatientFile"
+      ></button>
+    </div>
   </section>
 </template>
 
@@ -20,8 +23,10 @@ import store from "~/store";
 import Tutorial from "./Radiologist/Tutorial.vue";
 import Side from "./Radiologist/Side.vue";
 import Panel from "./Radiologist/Panel.vue";
-import PatientFile from "./Radiologist/PatientFile.vue";
-import data from "~/assets/Games/Radiologist/data.json";
+
+import gsap from "gsap";
+// import PatientFile from "./Radiologist/PatientFile.vue";
+// import data from "~/assets/Games/Radiologist/data.json";
 
 export default Vue.extend({
   data(): { tutorial: Boolean; patientFile: Boolean } {
@@ -36,12 +41,27 @@ export default Vue.extend({
     },
   },
   mounted() {
+    // const ease = store.state.eases.get("test");
+    // const uniforms =
+    //   store.state.scene &&
+    //   store.state.scene.Loader &&
+    //   store.state.scene.Loader.fullScreenPlane.uniforms;
+    // uniforms &&
+    //   gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
+
+    // console.log(uniforms?.uMixFactor);
+
+    // console.log(store.state.scene?.scene);
+
+    store.state.scene?.renderer.setClearColor(0x231f38, 1);
+
     if (!store.state.devMode.forceRadiologist) {
       store.state.scene?.startRadiologist();
       store.state.scene?.Loader?.fullScreenPlane.hide();
     }
   },
   destroyed() {
+    store.state.scene?.renderer.setClearColor(0x000000, 1);
     if (!store.state.devMode.forceRadiologist) {
       store.state.scene?.destroyRadiologist();
       store.state.scene?.Loader?.fullScreenPlane.show();
@@ -76,45 +96,53 @@ section {
   height: initial;
   display: initial;
 
-  .patient-file-button {
-    padding: 10px 20px;
-    width: 115px;
-    background-color: white;
+  .button-container {
     position: absolute;
-    bottom: 10px;
-    right: 180px;
+    top: 50%;
+    right: 10px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #302d4c;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    padding: 20px;
+    border-radius: 20px;
 
-    &:after {
-      content: "";
+    .patient-file-button {
       background-image: url("~assets/Games/Radiologist/patient_file.png");
       background-size: contain;
       background-repeat: no-repeat;
       width: 70px;
       height: 70px;
-      position: absolute;
-      left: -40px;
-      top: -20px;
+      border: none;
+      background-color: transparent;
+      outline: none;
+      transition: all 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.2);
+      }
     }
-  }
 
-  .ai-button {
-    padding: 10px 20px;
-    background-color: white;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    width: 115px;
-
-    &:after {
-      content: "";
+    .ai-button {
+      border: none;
       background-image: url("~assets/Games/Radiologist/ordi.png");
       background-size: contain;
       background-repeat: no-repeat;
       width: 70px;
       height: 70px;
-      position: absolute;
-      left: -40px;
-      top: -20px;
+      background-color: transparent;
+      margin-bottom: 20px;
+      outline: none;
+      transition: all 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 
