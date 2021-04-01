@@ -26,6 +26,10 @@ nav {
 	padding: $menu-padding;
 	display: flex;
 	justify-content: space-between;
+	h3 {
+		width: 150px;
+		transform: rotate(-15deg);
+	}
 	h3,
 	span {
 		font-weight: 200;

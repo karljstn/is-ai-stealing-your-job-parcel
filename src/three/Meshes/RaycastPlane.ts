@@ -1,16 +1,14 @@
-import { PlaneBufferGeometry, ShaderMaterial, IUniform, Mesh, Color, Vector2, PerspectiveCamera } from 'three'
+import { PlaneBufferGeometry, ShaderMaterial, IUniform, Mesh, Color, Vector2 } from 'three'
 import { Viewport } from "~/types/"
 import { ThreeMesh } from '~/interfaces/Three'
 import fragment from "~/shaders/fullScreenPlane/fragment.glsl"
 import vertex from "~/shaders/fullScreenPlane/vertex.glsl"
 import Tweakpane from 'tweakpane'
 import { PALETTE } from '~/constants/PALETTE'
-import { getViewport } from '~util'
 
 class FullScreenPlane implements ThreeMesh {
 	viewport: Viewport
 	pane: Tweakpane | null
-	camera: PerspectiveCamera
 
 	timeSpeed: number
 	uniforms: { [name: string]: IUniform }
@@ -19,16 +17,15 @@ class FullScreenPlane implements ThreeMesh {
 	material: ShaderMaterial
 	object3d: Mesh
 
-	constructor(viewport: Viewport, pane: Tweakpane | null, camera: PerspectiveCamera) {
+	constructor(viewport: Viewport, pane: Tweakpane | null) {
 		this.viewport = viewport
 		this.pane = pane
-		this.camera = camera
 		this.timeSpeed = 0.01
 		this.uniforms = {
 			uTime: { value: 0 },
 			uAlpha: { value: 1 },
 			uMixFactor: { value: 0 },
-			uColorInitial: { value: new Color(PALETTE.GRAY) },
+			uColorInitial: { value: new Color(PALETTE.BLACK) },
 			uColorFinal: { value: new Color(PALETTE.WHITE) },
 			uMousePos: { value: new Vector2() },
 			uAspectHorizontal: { value: window.innerWidth / window.innerHeight },
@@ -44,13 +41,9 @@ class FullScreenPlane implements ThreeMesh {
 	}
 
 	start() {
-		const width = getViewport(this.camera).width * 2;
-		const height = getViewport(this.camera).height * 2;
-		this.object3d.scale.set(width, height, 0)
-
 		this.pane && this.pane.addInput(this.uniforms.uMixFactor, 'value', { label: "Loader Mix Factor", min: 0, max: 1 })
 		this.object3d.position.setZ(-1)
-
+		this.resize()
 		window.addEventListener('resize', this.resize)
 	}
 
@@ -60,11 +53,9 @@ class FullScreenPlane implements ThreeMesh {
 	}
 
 	resize = () => {
-		setTimeout(() => {
-			const width = getViewport(this.camera).width * 2;
-			const height = getViewport(this.camera).height * 2;
-			this.object3d.scale.set(width, height, 0)
-		}, 1);
+		const width = this.viewport.width * 2;
+		const height = this.viewport.height * 2;
+		this.object3d.scale.set(width, height, 0)
 	}
 
 	hide = () => {

@@ -61,6 +61,7 @@ const store = new Vuex.Store({
     },
     actions: {},
     modules: {},
+    // TODO: computed() with isDev
 })
 
 export default store

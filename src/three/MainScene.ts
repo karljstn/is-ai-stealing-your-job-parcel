@@ -10,16 +10,18 @@ import Radio from "./Games/Radiologist/Radio"
 
 import Benchmark from "./Benchmark"
 import { clamp, getViewport } from "~/util/"
-import { PARAMS } from "~/types/"
+import { MainSceneParams } from "~/types/"
 import Loader from "./Loader"
 import store from '~/store'
 import IntroHello from "./Scenes/IntroHello"
 import { RAFS } from "~constants/RAFS"
 import LandingPage from "./Scenes/LandingPage"
+import { Vector3 } from "three"
+import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event"
 
 export default class Scene {
     // Data
-    PARAMS: PARAMS
+    params: MainSceneParams
     w: number
     h: number
 
@@ -46,7 +48,7 @@ export default class Scene {
     IntroHand: IntroHello
 
     constructor(canvas: HTMLCanvasElement, maxFPS: number) {
-        this.PARAMS = {
+        this.params = {
             maxFPS: maxFPS,
             readyFPS: false,
             averageFPS: 0,
@@ -56,6 +58,8 @@ export default class Scene {
                 height: 0,
                 width: 0,
             },
+            light: { pos: new Vector3(5.6, 0.9, 0), intensity: 3 }
+
         }
         this.w = window.innerWidth
         this.h = window.innerHeight
@@ -87,7 +91,9 @@ export default class Scene {
         const ambientLight = new THREE.AmbientLight("#fff", 0.75)
         this.scene.add(ambientLight)
 
-        this.light = new THREE.PointLight("#fff", 0.25)
+        this.light = new THREE.PointLight("#fff", 0.25, 20, 1)
+        this.light.position.set(this.params.light.pos.x, this.params.light.pos.y, this.params.light.pos.z)
+        this.light.intensity = this.params.light.intensity
         this.scene.add(this.light)
 
         this.mouse = new THREE.Vector2(-1, -1)
@@ -106,7 +112,7 @@ export default class Scene {
         if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.benchmark)
             this.Benchmark = new Benchmark({
                 pane: this.pane,
-                PARAMS: this.PARAMS,
+                PARAMS: this.params,
                 scene: this.scene,
                 renderer: this.renderer,
             })
@@ -115,11 +121,27 @@ export default class Scene {
             this.Benchmark = null
         }
 
-        if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.loader) { this.Loader = new Loader(this.PARAMS.viewport, this.scene, this.camera, this.pane) }
+        if (!store.state.devMode.enabled || store.state.devMode.enabled && store.state.devMode.loader) { this.Loader = new Loader(this.params.viewport, this.scene, this.camera, this.pane) }
         else { this.Loader = null }
 
-        this.IntroHand = new IntroHello(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
-        this.LandingPage = new LandingPage(this.PARAMS.viewport, this.scene, this.mouse, this.pane)
+        this.IntroHand = new IntroHello(this.params.viewport, this.scene, this.mouse, this.pane)
+        this.LandingPage = new LandingPage(this.params.viewport, this.scene, this.mouse, this.pane)
+
+        this.tweaks()
+    }
+
+    tweaks() {
+        if (this.pane) {
+            const lightPosInput = this.pane.addInput(this.params.light, 'pos', { label: "Point light position", min: -this.params.viewport.height / 2, max: this.params.viewport.height / 2 })
+            const lightIntensityInput = this.pane.addInput(this.params.light, 'intensity', { label: "Point light intensity", min: 0, max: this.params.light.intensity * 2 })
+
+            lightPosInput.on('change', (e: TpChangeEvent<Vector3>) => {
+                this.light.position.set(e.value.x, e.value.y, e.value.z)
+            })
+            lightIntensityInput.on('change', (e: TpChangeEvent<number>) => {
+                this.light.intensity = e.value
+            })
+        }
     }
 
     start() {
@@ -161,7 +183,7 @@ export default class Scene {
 
         // this.composer.setSize(this.w, this.h)
 
-        this.PARAMS.viewport = getViewport(this.camera)
+        this.params.viewport = getViewport(this.camera)
         if (this.Loader) this.Loader.fullScreenPlane.uniforms.uAspectHorizontal.value = window.innerWidth / window.innerHeight
     }
 

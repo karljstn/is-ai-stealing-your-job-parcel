@@ -22,6 +22,7 @@ import Vue from 'vue';
 import store from '~/store';
 import Autoskip from '~components/Common/Autoskip.vue';
 import NormalizeWheel from 'normalize-wheel';
+import gsap from 'gsap';
 
 export default Vue.extend({
 	name: 'landing-page',
@@ -42,6 +43,7 @@ export default Vue.extend({
 				window.removeEventListener('mousewheel', onWheel);
 				window.removeEventListener('wheel', onWheel);
 				store.state.scene?.LandingPage.trashcan.drop();
+
 				setTimeout(() => {
 					store.commit('incrementProgression');
 				}, 2000);

@@ -35,7 +35,7 @@ class LandingPage {
 				x += ((rect.width / 2) / window.innerWidth) * this.viewport.width
 				y -= ((rect.height / 2) / window.innerWidth) * this.viewport.height
 
-				y -= this.viewport.height * 0.25
+				y -= this.viewport.height * 0.33
 
 				this.trashcan.group.position.set(x, y, 0)
 				this.scene.add(this.trashcan.group)

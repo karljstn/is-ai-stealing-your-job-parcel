@@ -36,6 +36,7 @@ class IntroHello {
 				y -= ((rect.height / 2) / window.innerWidth) * this.viewport.height
 
 				// Small offset
+				x += 0.1
 				y -= (rect.height / 4) / window.innerHeight
 
 				this.hand.group.position.set(x, y, 0)

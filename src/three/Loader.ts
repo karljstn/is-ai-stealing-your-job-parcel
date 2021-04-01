@@ -1,16 +1,16 @@
 import FullScreenPlane from "~/three/Meshes/FullScreenPlane"
 import { Viewport } from "~/types"
-import { raf } from "rafz"
-import { Camera, Scene } from "three"
+
+import { PerspectiveCamera, Scene } from "three"
 import Tweakpane from "tweakpane"
 
 class Loader {
 	fullScreenPlane: FullScreenPlane
-	camera: Camera
+	camera: PerspectiveCamera
 	scene: Scene
 
-	constructor(viewport: Viewport, scene: Scene, camera: Camera, pane: Tweakpane | null) {
-		this.fullScreenPlane = new FullScreenPlane(viewport, pane)
+	constructor(viewport: Viewport, scene: Scene, camera: PerspectiveCamera, pane: Tweakpane | null) {
+		this.fullScreenPlane = new FullScreenPlane(viewport, pane, camera)
 		this.scene = scene
 		this.camera = camera
 
@@ -27,7 +27,6 @@ class Loader {
 
 	update = (dt = 0) => {
 		this.fullScreenPlane.update(dt)
-		raf((dt: number) => this.update(dt))
 	}
 }
 
