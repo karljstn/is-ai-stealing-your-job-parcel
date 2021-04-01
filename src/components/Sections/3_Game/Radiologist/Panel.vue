@@ -37,6 +37,7 @@ export default {
 
   h4 {
     color: #5331d4;
+    font-size: 1.3em;
   }
 
   .top {
@@ -44,11 +45,14 @@ export default {
     padding: 20px;
     margin-bottom: 50px;
     border-radius: 20px;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   }
 
   .bottom {
     padding: 20px;
     background-color: #302d4c;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 20px;
   }
 
   .notification-header {
@@ -57,7 +61,7 @@ export default {
   }
 
   .notification {
-    font-size: 1em;
+    font-size: 0.9em;
     padding: 10px;
     background-color: #403e66;
     border-radius: 15px;
