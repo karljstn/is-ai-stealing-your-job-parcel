@@ -58,6 +58,14 @@ class FullScreenPlane implements ThreeMesh {
 		this.object3d.scale.set(width, height, 0)
 	}
 
+	hide = () => {
+		this.object3d.visible = false
+	}
+
+	show = () => {
+		this.object3d.visible = true
+	}
+
 	update(dt = 0) {
 		this.material.uniforms.uTime.value = performance.now()
 	}

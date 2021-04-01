@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+	<div>
+		<router-view />
+	</div>
 </template>
 
 <script lang="js">
@@ -29,7 +29,6 @@ if(store.state.devMode.enabled && store.state.devMode.goToProgression) store.com
 export default Vue.extend({
     name: "Home",
 })
-
 </script>
 
 <style lang="scss"></style>

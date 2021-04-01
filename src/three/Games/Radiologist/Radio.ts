@@ -151,6 +151,8 @@ export default class Radio implements ThreeGroup {
         for (let i = 0; i < 30; i++) {
             this.group.remove(this.boxMeshes[i])
         }
+
+        this.camera.position.z = 1
     }
 
     clear() {

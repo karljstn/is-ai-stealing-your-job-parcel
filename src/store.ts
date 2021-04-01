@@ -12,9 +12,9 @@ const store = new Vuex.Store({
             enabled: true,
             benchmark: true,
             loader: true,
-            tweakpane: true,
-            goToProgression: 0,
-            forceRadiologist: false
+            tweakpane: false,
+            goToProgression: 0, //10 for radiologist
+            forceRadiologist: false //forces start radiologist in mainscene for hot reloading
         },
         load: {
             isVueReady: false,

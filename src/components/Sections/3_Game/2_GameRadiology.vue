@@ -24,11 +24,12 @@ export default Vue.extend({
 	//   }
 	// },
 	mounted() {
-		// console.log("start radiologist is called");
-		// store.state.scene.startRadiologist();
+		store.state.scene.startRadiologist();
+		store.state.scene.Loader.fullScreenPlane.hide();
 	},
 	destroyed() {
 		store.state.scene.destroyRadiologist();
+		store.state.scene.Loader.fullScreenPlane.show();
 	},
 	components: {
 		// Toolbar,

@@ -15,6 +15,7 @@ import gsap from 'gsap';
 import store from '~/store';
 
 import CanvasThree from '~/components/Canvas/CanvasThree.vue';
+import Navigation from '~/components/UI/Navigation.vue';
 
 import SectionTransition from '~/components/Transitions/SectionTransition.vue';
 import LoaderTransition from '~/components/Transitions/LoaderTransition.vue';
@@ -72,6 +73,7 @@ export default Vue.extend({
 		CanvasThree,
 		SectionTransition,
 		LoaderTransition,
+		Navigation,
 	},
 	mounted() {
 		this.$nextTick(() => {
