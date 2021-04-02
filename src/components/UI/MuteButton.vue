@@ -5,13 +5,13 @@
 </template>
 
 <style lang="scss" scoped>
-@import '../../styles/variables.scss';
-  .bottom {
-		position: absolute;
-    bottom: 0;
-		padding: $menu-padding;
-		span{
-			font-weight: 200;
-		}
+@import "~/styles/_variables.scss";
+.bottom {
+  position: absolute;
+  bottom: 0;
+  padding: $menu-padding;
+  span {
+    font-weight: 200;
   }
+}
 </style>
