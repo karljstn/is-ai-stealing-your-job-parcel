@@ -10,11 +10,12 @@
 			"problem solving"
 		</p>
 		<p>Do you get it now ??</p>
-
-		<QuestionForm>
-			<Button value="yes">MHHHH not really</Button>
-			<Button value="no">I already knew it</Button>
-		</QuestionForm>
+		<div class="form">
+			<QuestionForm>
+				<Button value="yes">MHHHH not really</Button>
+				<Button value="no">I already knew it</Button>
+			</QuestionForm>
+		</div>
 	</section>
 </template>
 
@@ -38,4 +39,8 @@ export default Vue.extend({
 			margin: 1rem 0;
 		}
 	}
+	.form{
+	margin-top: 45px;
+	width: 600px;
+}
 </style>

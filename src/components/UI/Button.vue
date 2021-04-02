@@ -17,5 +17,7 @@ button {
   font-size: $text-size * 0.8;
   padding: 1rem;
   cursor: pointer;
+  background: $white;
+  border: none;
 }
 </style>

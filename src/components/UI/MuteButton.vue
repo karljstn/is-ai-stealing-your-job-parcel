@@ -7,7 +7,7 @@
 <style lang="scss" scoped>
 @import "~/styles/_variables.scss";
 .bottom {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   padding: $menu-padding;
   span {

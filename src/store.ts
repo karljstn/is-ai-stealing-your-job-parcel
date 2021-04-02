@@ -20,7 +20,7 @@ const store = new Vuex.Store({
             isVueReady: false,
             isThreeReady: false,
             isLoaderReady: false,
-            minLoaderDuration: 1500,
+            minLoaderDuration: 3000,
             pauseBeforeLoaderDuration: 500,
         },
         eases: new Map<string, typeof CustomEase>(),

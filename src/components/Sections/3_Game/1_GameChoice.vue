@@ -1,11 +1,13 @@
 <template>
   <section>
-    <div>
-      <span>Ok, now, is AI going to replace</span>
-      <QuestionForm>
-        <Button value="yes">Radiologists</Button>
-      </QuestionForm>
-      <span>?</span>
+    <div class="container">
+      <p>Ok, now, is AI going to replace</p>
+      <div class="form">
+        <QuestionForm>
+          <Button value="yes">Radiologists</Button>
+        </QuestionForm>
+      </div>
+      <p>?</p>
     </div>
   </section>
 </template>
@@ -24,4 +26,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.container{
+  display: flex;
+  .form{
+    width: 230px;
+    margin-left: 50px;
+  }
+}
 </style>

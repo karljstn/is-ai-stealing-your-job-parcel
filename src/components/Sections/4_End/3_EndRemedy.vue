@@ -1,12 +1,13 @@
 <template>
   <section>
+    <div class="container">
     <p>in reality, the future is pretty uncertain</p>
     <p>
       we have no precedent on what’s coming, and even ai experts themselves have
       very divergent opinions on the subject
     </p>
     <p>
-      Wether high levelmachine intelligence (also konw as “strong” ai) will have
+      Wether high levelmachine intelligence (also known as “strong” ai) will have
       a positive or negative impact,
     </p>
     <img src="~/assets/Charts/GRAPHIC1.png" alt="chart" />
@@ -34,9 +35,11 @@
     </p>
     <p>That being said, try bringing this up to Jeff Bezos.</p>
     <p>What’s your take on this topic?</p>
+
     <QuestionForm>
       <Button value="yes">Next</Button>
     </QuestionForm>
+    </div>
   </section>
 </template>
 
@@ -56,5 +59,18 @@ export default Vue.extend({
 <style lang="scss" scoped>
 section {
   height: auto;
+  .container{
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    p{
+      font-size: 1.5rem;
+    }
+    img{
+      align-self: center;
+      width: 600px;
+      margin: 100px 0;
+    }
+  }
 }
 </style>
