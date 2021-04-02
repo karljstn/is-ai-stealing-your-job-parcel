@@ -16,6 +16,7 @@ import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
+import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	data() {
@@ -30,6 +31,18 @@ export default Vue.extend({
 		Button,
 		Autoskip,
 	},
+	destroyed(){
+		// const ease = store.state.eases.get("test");
+		// const uniforms =
+		// store.state.scene &&
+		// store.state.scene.Loader &&
+		// store.state.scene.Loader.fullScreenPlane.uniforms;
+		// uniforms &&
+		// gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5, onComplete: ()=>{
+		// 	// uniforms.uColorFinal.value = PALETTE.BLACK
+		// 	// uniforms.uColorFinal.value = PALETTE.PINK
+		// } });
+	}
 });
 </script>
 

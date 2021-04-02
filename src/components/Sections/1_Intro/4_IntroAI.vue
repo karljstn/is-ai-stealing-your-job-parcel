@@ -2,7 +2,7 @@
 	<section>
 		<SaveRect :rectName="helloRect">
 			<p class="hello">
-				by Artificial Intelligence
+				by <span>Artificial Intelligence</span>
 			</p>
 		</SaveRect>
 		<autoskip />
@@ -36,5 +36,8 @@ export default Vue.extend({
 <style lang="scss" scoped>
 p {
 	font-size: 4rem;
+	span{
+			font-style: italic;
+	}
 }
 </style>

@@ -31,4 +31,11 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+	section{
+		align-items: flex-start;
+		p{
+			margin: 1rem 0;
+		}
+	}
+</style>

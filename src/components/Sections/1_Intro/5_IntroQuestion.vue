@@ -9,8 +9,8 @@
 
 			<div class="form">
 				<QuestionForm>
-					<Button value="yes">Yes!</Button>
-					<Button value="no">No, my job is fine</Button>
+					<Button size="2.1" value="yes">😧</Button>
+					<Button size="2.1" value="no">🤓</Button>
 				</QuestionForm>
 			</div>
 		<div>
@@ -18,13 +18,15 @@
 </template>
 
 <script>
-import Button from '~/components/UI/Button';
+import Button from '~/components/UI/ButtonEmoji';
 import QuestionForm from '~/components/UI/QuestionForm';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import store from '~/store'
 import gsap from 'gsap'
+import { Color } from 'three';
+import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	data() {
@@ -39,12 +41,14 @@ export default Vue.extend({
 		Button,
 	},
 	destroyed(){
-		const ease = store.state.eases.get('test');
-		const uniforms =
-			store.state.scene &&
-			store.state.scene.Loader &&
-			store.state.scene.Loader.fullScreenPlane.uniforms;
-		uniforms && gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
+		// const ease = store.state.eases.get('test');
+		// const uniforms =
+		// 	store.state.scene &&
+		// 	store.state.scene.Loader &&
+		// 	store.state.scene.Loader.fullScreenPlane.uniforms;
+		// // uniforms.uColorInitial.value = new Color(PALETTE.PINK)
+		// uniforms && gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
+		
 	}
 });
 </script>
@@ -52,6 +56,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .container{
 	p{
+		font-size: 4rem;
 	}
 	width: 700px;
 	display: flex;
