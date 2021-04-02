@@ -41,6 +41,9 @@ declare var module: {
 }
 // declare module 'troika-three-text'
 
+declare module 'howler'
+
+declare module '*.mp3'
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'
