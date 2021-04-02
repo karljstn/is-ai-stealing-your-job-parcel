@@ -3,6 +3,8 @@ import raf from "~three/Singletons/RAF";
 import Tweakpane from "tweakpane";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
+import {SOUNDS} from '~/constants/SOUNDS'
+
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 
@@ -173,6 +175,10 @@ export default class Scene {
     );
 
     this.tweaks();
+
+    console.log(SOUNDS);
+    // SOUNDS.background.play()
+    
   }
 
   tweaks() {
