@@ -5,23 +5,26 @@ import { PerspectiveCamera, PointLight, Scene, Vector2, Vector3, WebGLRenderer }
 import { RECTS } from "~/constants/RECTS"
 import Trashcan from "../Meshes/Trashcan";
 import Tweakpane from "tweakpane";
+import TrashcanBake from "~three/Meshes/TrashcanBake";
 
 class LandingPage {
 	viewport: Viewport
 	scene: Scene
 	trashcan: Trashcan
+	trashcanBake: TrashcanBake
 	mouse: Vector2
 
 	constructor(viewport: Viewport, scene: Scene, mouse: Vector2, pane: Tweakpane | null) {
 		this.viewport = viewport
 		this.scene = scene
 		this.trashcan = new Trashcan(1, pane, scene)
+		this.trashcanBake = new TrashcanBake(1, scene)
 		this.mouse = mouse;
+		this.trashcan.load()
+		this.trashcanBake.load()
 	}
 
 	start() {
-		this.trashcan.load()
-
 		let rect = store.state.rects.get(RECTS.LANDING)
 
 		const intervalID = setInterval(() => {
@@ -40,6 +43,11 @@ class LandingPage {
 				this.trashcan.group.position.set(x, y, 0)
 				this.scene.add(this.trashcan.group)
 				this.trashcan.start()
+
+				if (this.trashcanBake.group) {
+					this.trashcanBake.group.position.set(x, y, 0)
+					this.scene.add(this.trashcanBake.group)
+				}
 			}
 		}, 100);
 	}

@@ -1,5 +1,7 @@
 import hand from "~/assets/Models/hand/hand_30_03_v2.glb";
 import trashcan from "~/assets/Models/trashcan/v4.glb";
+import bakedTrashcan from "~/assets/Models/trashcan/bakedTrashcanV2.glb";
+import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";
 import skull from "~/assets/Models/skull/skull.glb";
 import clipboard from "~/assets/Models/clipboard/clipboard.glb";
 import emoji from "~/assets/Models/emoji-love/emoji.glb";
@@ -12,6 +14,11 @@ export const MODELS = {
   TRASHCAN: {
     URL: trashcan,
     SCALE: 0.15,
+  },
+  BAKED_TRASHCAN: {
+    URL: bakedTrashcan,
+    SCALE: 0.15,
+    TEXTURE: bakedTrashcanTexture
   },
   SKULL: {
     URL: skull,
