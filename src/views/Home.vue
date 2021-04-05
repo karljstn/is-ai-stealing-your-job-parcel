@@ -35,6 +35,9 @@ export default Vue.extend({
 		view() {
 			let component = 'LoaderTransition';
 
+			//TODO: add real loader
+			//TODO: add preloading fonts
+
 			if (!store.state.devMode.enabled || (store.state.devMode.enabled && store.state.devMode.loader)) {
 				if (store.state.load.isVueReady && !store.state.load.isLoaderReady) component = 'LoaderTransition';
 				else if (store.state.load.isVueReady && store.state.load.isThreeReady && store.state.load.isLoaderReady)

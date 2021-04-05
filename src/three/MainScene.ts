@@ -18,6 +18,7 @@ import { RAFS } from "~constants/RAFS";
 import LandingPage from "./Scenes/LandingPage";
 import { Vector3 } from "three";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
+import FullScreenPlane from "./Meshes/FullScreenPlane";
 
 export default class Scene {
   // Data
@@ -46,6 +47,7 @@ export default class Scene {
   Loader: Loader | null;
   LandingPage: LandingPage;
   IntroHello: IntroHello;
+  FullScreenPlane: FullScreenPlane | null
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -158,8 +160,11 @@ export default class Scene {
         this.camera,
         this.pane
       );
+      this.FullScreenPlane = null
     } else {
       this.Loader = null;
+      this.FullScreenPlane = new FullScreenPlane(this.params.viewport, this.camera)
+      this.scene.add(this.FullScreenPlane.object3d)
     }
 
     this.IntroHello = new IntroHello(

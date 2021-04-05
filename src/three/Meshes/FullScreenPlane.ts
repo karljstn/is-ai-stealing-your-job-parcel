@@ -6,6 +6,7 @@ import vertex from "~/shaders/fullScreenPlane/vertex.glsl"
 import Tweakpane from 'tweakpane'
 import { PALETTE } from '~/constants/PALETTE'
 import { getViewport } from '~util'
+import store from '~store'
 
 class FullScreenPlane implements ThreeMesh {
 	viewport: Viewport
@@ -19,9 +20,9 @@ class FullScreenPlane implements ThreeMesh {
 	material: ShaderMaterial
 	object3d: Mesh
 
-	constructor(viewport: Viewport, pane: Tweakpane | null, camera: PerspectiveCamera) {
+	constructor(viewport: Viewport, camera: PerspectiveCamera) {
 		this.viewport = viewport
-		this.pane = pane
+		this.pane = store.state.tweakpane
 		this.camera = camera
 		this.timeSpeed = 0.01
 		this.uniforms = {

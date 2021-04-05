@@ -10,7 +10,7 @@ class Loader {
 	scene: Scene
 
 	constructor(viewport: Viewport, scene: Scene, camera: PerspectiveCamera, pane: Tweakpane | null) {
-		this.fullScreenPlane = new FullScreenPlane(viewport, pane, camera)
+		this.fullScreenPlane = new FullScreenPlane(viewport, camera)
 		this.scene = scene
 		this.camera = camera
 

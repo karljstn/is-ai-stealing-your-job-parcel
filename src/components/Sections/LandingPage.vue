@@ -1,13 +1,18 @@
 <template>
 	<section>
 		<div class="container">
-			<div class="paragraphs">
+			<div class="landing-paragraphs">
 				<save-rect :rectName="rect">
-					<p>
-						Scroll to throw <br />
-						your biases away
-					</p>
-					<SplitText text="ay ay"></SplitText>
+					<SplitText ref="scroll" text="Scroll"></SplitText>
+					<span>&nbsp;</span>
+					<SplitText ref="to" text="to"></SplitText>
+					<span>&nbsp;</span>
+					<SplitText ref="throw" text="throw"></SplitText>
+					<SplitText ref="your" text="your"></SplitText>
+					<span>&nbsp;</span>
+					<SplitText ref="biases" text="biases"></SplitText>
+					<span>&nbsp;</span>
+					<SplitText ref="away" text="away"></SplitText>
 				</save-rect>
 			</div>
 		</div>
@@ -24,7 +29,6 @@ import SplitText from '~components/Common/SplitText.vue';
 import Vue from 'vue';
 import store from '~/store';
 import NormalizeWheel from 'normalize-wheel';
-import gsap from 'gsap';
 
 export default Vue.extend({
 	name: 'landing-page',
@@ -35,9 +39,15 @@ export default Vue.extend({
 		};
 	},
 	mounted() {
+		// Three
 		store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
 		store.state.scene?.LandingPage.start();
 
+		// Text animations
+		const refs: any[] = Object.values(this.$refs);
+		refs.forEach(ref => ref.fadeIn());
+
+		// Events
 		const onWheel = (event: any) => {
 			const normalized = NormalizeWheel(event);
 			const pixelSpeed = normalized.pixelY;
@@ -71,17 +81,12 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .container {
 	position: relative;
-	.paragraphs {
+	.landing-paragraphs {
 		display: flex;
 		flex-direction: column;
 		height: 50vh;
 		justify-content: center;
 		align-items: center;
-		p {
-			transition: opacity 0.2s ease-in-out;
-			font-size: 4rem;
-			text-align: center;
-		}
 		.hello,
 		.threatened,
 		.amiright {
@@ -99,6 +104,22 @@ export default Vue.extend({
 	.hide {
 		display: none;
 		opacity: 0;
+	}
+}
+</style>
+
+<style lang="scss">
+.landing-paragraphs {
+	> div {
+		display: flex;
+		flex-wrap: wrap;
+		width: 540px;
+		justify-content: center;
+		align-items: center;
+		span {
+			font-size: 4rem;
+			text-align: center;
+		}
 	}
 }
 </style>
