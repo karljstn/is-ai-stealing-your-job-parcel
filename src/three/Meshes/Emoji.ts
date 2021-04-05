@@ -24,7 +24,7 @@ import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 
 class Emoji {
-  params: { animSpeed: number; size: number, pos: {x: number, y: number, z: number}, factor: number, initialPos: Vector3 };
+  params: { animSpeed: number; size: number, pos: { x: number, y: number, z: number }, factor: number, initialPos: Vector3 };
   size: number;
   pane: Tweakpane | null;
   scene: Scene;
@@ -43,7 +43,7 @@ class Emoji {
     this.params = {
       animSpeed: 0.005,
       size: size * MODELS.EMOJI.SCALE,
-      pos: {x: 0, y: 0, z:0},
+      pos: { x: 0, y: 0, z: 0 },
       factor: 0,
       initialPos: new Vector3()
     };
@@ -73,7 +73,7 @@ class Emoji {
       );
     });
 
-    
+
     let rect = store.state.rects.get(RECTS.INTRO.HELLO);
 
     const intervalID = setInterval(() => {
@@ -104,29 +104,28 @@ class Emoji {
   };
 
   tweaks = () => {
-    if (this.pane) {
-      const sizeInput = this.pane.addInput(this.params, "size", {
-        label: "Emoji size",
-        min: this.size * MODELS.EMOJI.SCALE * 0.33,
-        max: this.size * MODELS.EMOJI.SCALE * 3,
-      });
+    if (!this.pane) return
 
-      sizeInput &&
-        sizeInput.on("change", (size: any) => {
-          this.group?.scale.set(size.value, size.value, size.value);
-        });
-    } else {
-      console.warn("no tweakpane");
-    }
+    const folder = this.pane.addFolder({ title: 'Emoji', expanded: false })
+
+    const sizeInput = folder.addInput(this.params, "size", {
+      label: "Emoji size",
+      min: this.size * MODELS.EMOJI.SCALE * 0.33,
+      max: this.size * MODELS.EMOJI.SCALE * 3,
+    });
+
+    sizeInput.on("change", (size: any) => {
+      this.group?.scale.set(size.value, size.value, size.value);
+    });
   };
 
   update = (dt: number = 0) => {
     const mouse = new Vector3(this.mouse.x * this.viewport.width / 2, this.mouse.y * this.viewport.height / 2, 0)
 
-    if(this.group){
-      if(mouse.distanceTo(this.group?.position) < 0.12){
-        gsap.to(this.group.position, {x: mouse.x, y:mouse.y, duration: 0.5})
-      }else{
+    if (this.group) {
+      if (mouse.distanceTo(this.group?.position) < 0.12) {
+        gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 })
+      } else {
 
       }
     }

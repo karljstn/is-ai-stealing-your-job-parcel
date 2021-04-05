@@ -72,8 +72,11 @@ export default class Scene {
       !paneEl &&
       (!store.state.devMode.enabled ||
         (store.state.devMode.enabled && store.state.devMode.tweakpane))
-    )
-      this.pane = new Tweakpane();
+    ) {
+      store.commit('setPane', new Tweakpane());
+      this.pane = store.state.tweakpane
+    }
+
     else this.pane = null;
 
     this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000);
@@ -176,29 +179,31 @@ export default class Scene {
   }
 
   tweaks() {
-    if (this.pane) {
-      const lightPosInput = this.pane.addInput(this.params.light, "pos", {
-        label: "Directional light position",
-        min: -this.params.viewport.height / 2,
-        max: this.params.viewport.height / 2,
-      });
-      const lightIntensityInput = this.pane.addInput(
-        this.params.light,
-        "intensity",
-        {
-          label: "Directional light intensity",
-          min: 0,
-          max: this.params.light.intensity * 2,
-        }
-      );
+    if (!this.pane) return
 
-      lightPosInput.on("change", (e: TpChangeEvent<Vector3>) => {
-        this.light.position.set(e.value.x, e.value.y, e.value.z);
-      });
-      lightIntensityInput.on("change", (e: TpChangeEvent<number>) => {
-        this.light.intensity = e.value;
-      });
-    }
+    const folder = this.pane.addFolder({ title: 'Light', expanded: false })
+    const lightPosInput = folder.addInput(this.params.light, "pos", {
+      label: "Directional light position",
+      min: -this.params.viewport.height / 2,
+      max: this.params.viewport.height / 2,
+    });
+    const lightIntensityInput = folder.addInput(
+      this.params.light,
+      "intensity",
+      {
+        label: "Directional light intensity",
+        min: 0,
+        max: this.params.light.intensity * 2,
+      }
+    );
+
+    lightPosInput.on("change", (e: TpChangeEvent<Vector3>) => {
+      this.light.position.set(e.value.x, e.value.y, e.value.z);
+    });
+    lightIntensityInput.on("change", (e: TpChangeEvent<number>) => {
+      this.light.intensity = e.value;
+    });
+
   }
 
   start() {
@@ -208,7 +213,7 @@ export default class Scene {
       !store.state.devMode.enabled ||
       (store.state.devMode.enabled && store.state.devMode.benchmark)
     )
-      this.Benchmark?.addGUI();
+      this.Benchmark?.tweaks();
 
     raf.subscribe(RAFS.MAIN, this.render);
 
@@ -222,10 +227,10 @@ export default class Scene {
   }
 
   destroyRadiologist() {
-    this.camera.position.set(0,0,1)
+    this.camera.position.set(0, 0, 1)
     this.scene.remove(this.radio.group);
     console.log(this.camera.position);
-    
+
   }
 
   setEvents() {
@@ -281,9 +286,9 @@ export default class Scene {
   };
 }
 
-module.hot.dispose(() => {
-  raf.unsubscribe(RAFS.MAIN);
-  // TODO: dispose Three things - renderer etc
-});
+// module.hot.dispose(() => {
+//   raf.unsubscribe(RAFS.MAIN);
+//   // TODO: dispose Three things - renderer etc
+// });
 
 //TODO: on accept, check if class already instanced
