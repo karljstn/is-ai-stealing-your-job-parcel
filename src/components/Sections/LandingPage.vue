@@ -29,6 +29,7 @@ import SplitText from '~components/Common/SplitText.vue';
 import Vue from 'vue';
 import store from '~/store';
 import NormalizeWheel from 'normalize-wheel';
+import gsap from 'gsap';
 
 export default Vue.extend({
 	name: 'landing-page',
@@ -36,6 +37,7 @@ export default Vue.extend({
 		return {
 			rect: RECTS.LANDING,
 			progression: 0,
+			show: true,
 		};
 	},
 	mounted() {
@@ -45,7 +47,26 @@ export default Vue.extend({
 
 		// Text animations
 		const refs: any[] = Object.values(this.$refs);
-		refs.forEach(ref => ref.fadeIn());
+		const elements: HTMLElement[] = refs.map(ref => ref.$refs.container);
+		const timelineSettings = {
+			staggerValue: 0.1,
+		};
+
+		const timeline = gsap.timeline({ paused: true });
+		timeline.addLabel('show').set(elements, { opacity: 1, stagger: timelineSettings.staggerValue });
+		timeline.addLabel('hide').set(elements, { opacity: 0, stagger: timelineSettings.staggerValue });
+		setTimeout(() => {
+			refs[0].wobble();
+			timeline.tweenFromTo('show', 'hide');
+		}, 500);
+
+		// Tweaks
+		const folder = store.state.tweakpane?.addFolder({ title: 'Text' });
+		const button = folder?.addButton({ title: 'Toggle' });
+		button?.on('click', () => {
+			this.show = !this.show;
+			this.show ? timeline.tweenFromTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
+		});
 
 		// Events
 		const onWheel = (event: any) => {
@@ -113,11 +134,11 @@ export default Vue.extend({
 	> div {
 		display: flex;
 		flex-wrap: wrap;
-		width: 540px;
+		width: 700px;
 		justify-content: center;
 		align-items: center;
 		span {
-			font-size: 4rem;
+			font-size: 5rem;
 			text-align: center;
 		}
 	}

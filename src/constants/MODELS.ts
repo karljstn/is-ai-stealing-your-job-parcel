@@ -1,5 +1,5 @@
 import hand from "~/assets/Models/hand/hand_30_03_v2.glb";
-import trashcan from "~/assets/Models/trashcan/v4.glb";
+import trashcan from "~/assets/Models/trashcan/v5.glb";
 import bakedTrashcan from "~/assets/Models/trashcan/bakedTrashcanV2.glb";
 import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";
 import skull from "~/assets/Models/skull/skull.glb";

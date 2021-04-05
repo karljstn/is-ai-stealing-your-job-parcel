@@ -51,29 +51,35 @@ export default Vue.extend({
 	},
 	methods: {
 		enter(el: HTMLElement, done: Function) {
-			const ease = store.state.eases.get('test');
+			// const ease = store.state.eases.get('test');
 
-			gsap.to(el, {
-				duration: 1.0,
-				opacity: 1,
-				ease: ease,
-				onComplete: () => {
-					done();
-				},
-			});
+			// gsap.to(el, {
+			// 	duration: 1.0,
+			// 	opacity: 1,
+			// 	ease: ease,
+			// 	onComplete: () => {
+			// 		done();
+			// 	},
+			// });
+
+			// gsap.set(el, { duration: 0, opacity: 1 });
+
+			done();
 		},
 		leave(el: HTMLElement, done: Function) {
-			const ease = store.state.eases.get('test');
-			const duration = 0.5;
+			// const ease = store.state.eases.get('test');
+			// const duration = 0.5;
 
-			gsap.to(el, {
-				duration: duration,
-				opacity: 0,
-				ease: ease,
-				onComplete: () => {
-					done();
-				},
-			});
+			// gsap.to(el, {
+			// 	duration: duration,
+			// 	opacity: 0,
+			// 	ease: ease,
+			// 	onComplete: () => {
+			// 		done();
+			// 	},
+			// });
+
+			done();
 		},
 	},
 	components: {
