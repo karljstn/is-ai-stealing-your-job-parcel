@@ -177,7 +177,7 @@ export default class Scene {
     this.tweaks();
 
     console.log(SOUNDS);
-    // SOUNDS.background.play()
+    SOUNDS.background.play()
     
   }
 
