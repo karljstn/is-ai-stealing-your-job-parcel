@@ -46,6 +46,7 @@ export default class Radio implements ThreeGroup {
 
     skull: THREE.Group
     clipboard: THREE.Group
+    background: THREE.Group
 
     currentIntersect: any
     boxGeometry: THREE.DodecahedronGeometry
@@ -143,6 +144,15 @@ export default class Radio implements ThreeGroup {
 
 
 
+        })
+
+        this.loader.load(MODELS.RADIOLOGIST_BACKGROUND.URL, gltf => {
+            this.background = gltf.scene
+            this.background.scale.set(MODELS.RADIOLOGIST_BACKGROUND.SCALE, MODELS.RADIOLOGIST_BACKGROUND.SCALE, MODELS.RADIOLOGIST_BACKGROUND.SCALE)
+            this.background.rotation.y = Math.PI / 2
+            // this.background.position.x = 50
+
+            this.group.add(gltf.scene)
         })
 
         // this.group.add(this.text)
@@ -290,6 +300,9 @@ export default class Radio implements ThreeGroup {
     }
 
     update = (dt = 0) => {
+
+        // this.background?.lookAt(this.camera.position)
+
         if (!this.isDragging && this.isReady) {
             this.raycaster.setFromCamera(this.mouse, this.camera)
             const intersects = this.raycaster.intersectObjects(this.meshesGroup.children)

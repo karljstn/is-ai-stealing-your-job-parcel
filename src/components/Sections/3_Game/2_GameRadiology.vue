@@ -1,10 +1,13 @@
 <template>
   <section>
-    <Panel v-bind:case="this.case"></Panel>
+    <!-- <Panel v-bind:case="this.case"></Panel>
     <Side v-bind:case="this.case"></Side>
 
     <button class="tutorial" v-on:click="tutorial = !tutorial">?</button>
-    <Tutorial v-if="tutorial" v-bind:setTutorial="this.setTutorial"></Tutorial>
+    <ControlsTutorial
+      v-if="tutorial"
+      v-bind:setTutorial="this.setTutorial"
+    ></ControlsTutorial>
 
     <div class="button-container">
       <button class="ai-button" v-on:click="this.useAI"></button>
@@ -12,7 +15,15 @@
         class="patient-file-button"
         v-on:click="this.openPatientFile"
       ></button>
-    </div>
+    </div> -->
+
+    <TutorialManager
+      v-bind:tutorialCount="tutorialCount"
+      v-bind:setTutorialCount="this.setTutorialCount"
+      ref="tutorialManager"
+    ></TutorialManager>
+
+    <Countdown v-if="this.tutorialCount >= 2"></Countdown>
   </section>
 </template>
 
@@ -20,26 +31,37 @@
 import Vue from "vue";
 import store from "~/store";
 
-import Tutorial from "./Radiologist/Tutorial.vue";
+import ControlsTutorial from "./Radiologist/Tutorial/ControlsTutorial.vue";
 import Side from "./Radiologist/Side.vue";
 import Panel from "./Radiologist/Panel.vue";
+import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
+import Countdown from "./Radiologist/Tutorial/Countdown.vue";
 
 import gsap from "gsap";
 // import PatientFile from "./Radiologist/PatientFile.vue";
 // import data from "~/assets/Games/Radiologist/data.json";
 
 export default Vue.extend({
-  data(): { tutorial: Boolean; patientFile: Boolean } {
+  data(): { tutorial: Boolean; patientFile: Boolean; tutorialCount: number } {
     return {
       tutorial: false,
       patientFile: false,
+      tutorialCount: 0,
     };
   },
+
   computed: {
     case() {
       return store.state.count;
     },
   },
+
+  watch: {
+    tutorialCount(newVal) {
+      console.log("here");
+    },
+  },
+
   mounted() {
     // const ease = store.state.eases.get("test");
     // const uniforms =
@@ -70,7 +92,9 @@ export default Vue.extend({
   components: {
     Panel,
     Side,
-    Tutorial,
+    ControlsTutorial,
+    TutorialManager,
+    Countdown,
   },
 
   methods: {
@@ -83,6 +107,22 @@ export default Vue.extend({
     openPatientFile() {
       this.patientFile = !this.patientFile;
       store.state.scene?.radio.patientFile(this.patientFile);
+    },
+    setTutorialCount() {
+      console.log("set tutorial count", this.tutorialCount);
+
+      if (this.tutorialCount === 1) {
+        console.log("tutorialCount", this.tutorialCount);
+
+        console.log(this.$refs.tutorialManager.$el);
+
+        gsap.to(this.$refs.tutorialManager?.$el, {
+          duration: 1,
+          scale: 0,
+        });
+      }
+
+      this.tutorialCount++;
     },
   },
 });
@@ -157,6 +197,7 @@ section {
     color: white;
     cursor: pointer;
     font-size: 2em;
+    z-index: 10;
   }
 }
 </style>
