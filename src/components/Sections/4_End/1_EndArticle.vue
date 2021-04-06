@@ -5,10 +5,13 @@
       think.
     </p>
     <p>Here's an article on this exact topic.</p>
-    <a href="#"><div class="article" /></a>
-    <QuestionForm>
-      <Button value="yes">Next</Button>
-    </QuestionForm>
+    <a href="#"><div class="article"><img src="~/assets/Misc/article.jpg" alt="article" /></div></a>
+    <a href="#"><div class="article"><img src="~/assets/Misc/text.jpg" alt="article" /></div></a>
+    <div class="form">
+      <QuestionForm>
+        <Button value="yes">Next</Button>
+      </QuestionForm>
+    </div>
   </section>
 </template>
 
@@ -27,8 +30,15 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .article {
-  width: 40vw;
-  height: 300px;
-  background: grey;
+  width: 20vw;
+
+  img{
+    width: 100%;
+
+  }
+
+  .form{
+    width: 300px;
+  }
 }
 </style>

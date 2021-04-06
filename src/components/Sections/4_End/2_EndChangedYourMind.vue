@@ -2,9 +2,11 @@
   <section>
     <p>Changed your mind ? Is AI going to replace <b>radiologists</b> ?</p>
     <div class="slider"><input type="range" /></div>
-    <QuestionForm>
-      <Button value="yes">Next</Button>
-    </QuestionForm>
+    <div class="form">
+      <QuestionForm>
+        <Button value="yes">Next</Button>
+      </QuestionForm>
+    </div>
   </section>
 </template>
 
@@ -21,4 +23,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .form{
+    width: 90px;
+  }
+</style>

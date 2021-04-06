@@ -3,11 +3,13 @@
 		<p>
 			Well, let me tell you: you've come to the right place ! First and foremost, do you even know what ai is?
 		</p>
-
-		<QuestionForm>
-			<Button value="yes">Of course!</Button>
-			<Button value="no">Not sure...</Button>
-		</QuestionForm>
+		
+		<div class="form">
+			<QuestionForm>
+				<Button value="yes">Of course!</Button>
+				<Button value="no">Not sure...</Button>
+			</QuestionForm>
+		</div>
 	</section>
 </template>
 
@@ -24,4 +26,9 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form{
+	margin-top: 45px;
+	width: 400px;
+}
+</style>

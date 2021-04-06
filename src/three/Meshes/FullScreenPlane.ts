@@ -47,11 +47,17 @@ class FullScreenPlane implements ThreeMesh {
 		const width = getViewport(this.camera).width * 2;
 		const height = getViewport(this.camera).height * 2;
 		this.object3d.scale.set(width, height, 0)
-
-		this.pane && this.pane.addInput(this.uniforms.uMixFactor, 'value', { label: "Loader Mix Factor", min: 0, max: 1 })
 		this.object3d.position.setZ(-1)
 
+		this.tweaks()
+
 		window.addEventListener('resize', this.resize)
+	}
+
+	tweaks() {
+		if (!this.pane) return
+		const folder = this.pane.addFolder({ title: 'Background', expanded: false })
+		folder.addInput(this.uniforms.uMixFactor, 'value', { label: "Loader Mix Factor", min: 0, max: 1 })
 	}
 
 	toggleTransitions() {

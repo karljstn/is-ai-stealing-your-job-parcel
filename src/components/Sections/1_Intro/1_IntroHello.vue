@@ -18,6 +18,8 @@ import NormalizeWheel from "normalize-wheel";
 import gsap from "gsap";
 import Vue from "vue";
 import store from "~store";
+import { PALETTE } from "~constants/PALETTE";
+import { Color } from "three";
 
 export default Vue.extend({
   data() {
@@ -42,7 +44,10 @@ export default Vue.extend({
       store.state.scene.Loader &&
       store.state.scene.Loader.fullScreenPlane.uniforms;
     uniforms &&
-      gsap.to(uniforms.uMixFactor, { value: 1, ease: ease, duration: 0.5 });
+      gsap.to(uniforms.uMixFactor, { value: 1, ease: ease, duration: 0.5, onComplete: ()=>{
+        // uniforms.uColorFinal.value = PALETTE.BLACK
+        // uniforms.uColorFinal.value = new Color(PALETTE.BLACK)
+      } });
     store.state.scene.IntroHello.emoji.destroy();
   },
 });

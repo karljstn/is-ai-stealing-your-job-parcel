@@ -22,6 +22,7 @@ import MuteButton from '~/components/UI/MuteButton.vue';
 
 import SectionTransition from '~/components/Transitions/SectionTransition.vue';
 import LoaderTransition from '~/components/Transitions/LoaderTransition.vue';
+import Tweakpane from 'tweakpane';
 
 export default Vue.extend({
 	name: 'Home',

@@ -14,10 +14,10 @@ export default Vue.extend({
 @import "~/styles/_variables.scss";
 
 button {
-  font-size: $text-size * 0.8;
+  font-size: $text-size * 2.5;
   padding: 1rem;
   cursor: pointer;
-  background: $white;
+  background: none;
   border: none;
 }
 </style>
