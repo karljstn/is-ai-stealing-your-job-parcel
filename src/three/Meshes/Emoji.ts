@@ -18,13 +18,19 @@ import Tweakpane from "tweakpane";
 import raf from "~three/Singletons/RAF";
 import { RAFS } from "~constants/RAFS";
 import { Viewport } from "~types";
-import gsap from 'gsap'
+import gsap from "gsap";
 import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 
 class Emoji {
-  params: { animSpeed: number; size: number, pos: { x: number, y: number, z: number }, factor: number, initialPos: Vector3 };
+  params: {
+    animSpeed: number;
+    size: number;
+    pos: { x: number; y: number; z: number };
+    factor: number;
+    initialPos: Vector3;
+  };
   size: number;
   pane: Tweakpane | null;
   scene: Scene;
@@ -33,19 +39,25 @@ class Emoji {
   animations: AnimationClip[] | null;
   waveAction: AnimationAction | null;
   loader: GLTFLoader;
-  mouse: Vector2
-  viewport: Viewport
-  isMoving: boolean
+  mouse: Vector2;
+  viewport: Viewport;
+  isMoving: boolean;
   // bakedMaterial: MeshBasicMaterial;
   // bakedTexture: Texture;
 
-  constructor(size: number, pane: Tweakpane | null, scene: Scene, mouse: Vector2, viewport: Viewport) {
+  constructor(
+    size: number,
+    pane: Tweakpane | null,
+    scene: Scene,
+    mouse: Vector2,
+    viewport: Viewport
+  ) {
     this.params = {
       animSpeed: 0.005,
       size: size * MODELS.EMOJI.SCALE,
       pos: { x: 0, y: 0, z: 0 },
       factor: 0,
-      initialPos: new Vector3()
+      initialPos: new Vector3(),
     };
     this.size = size;
     this.pane = pane;
@@ -55,9 +67,9 @@ class Emoji {
     this.animations = null;
     this.waveAction = null;
     this.loader = new GLTFLoader(LoadManager.manager);
-    this.mouse = mouse
-    this.viewport = viewport
-    this.isMoving = false
+    this.mouse = mouse;
+    this.viewport = viewport;
+    this.isMoving = false;
     // this.bakedTexture = new TextureLoader().load(MODELS.EMOJI.BAKE);
     // this.bakedTexture.flipY = false;
     // this.bakedMaterial = new MeshBasicMaterial({ map: this.bakedTexture });
@@ -72,7 +84,6 @@ class Emoji {
         this.params.size
       );
     });
-
 
     let rect = store.state.rects.get(RECTS.INTRO.HELLO);
 
@@ -91,7 +102,9 @@ class Emoji {
         x += 0.1;
         y -= rect.height / 4 / window.innerHeight;
 
-        this.group.position.set(x, y, 0);
+        // this.group.position.set(x, y, 0);
+
+        this.group.position.set(0.3, 0, 0);
         this.scene.add(this.group);
         this.start();
       }
@@ -104,9 +117,9 @@ class Emoji {
   };
 
   tweaks = () => {
-    if (!this.pane) return
+    if (!this.pane) return;
 
-    const folder = this.pane.addFolder({ title: 'Emoji', expanded: false })
+    const folder = this.pane.addFolder({ title: "Emoji", expanded: false });
 
     const sizeInput = folder.addInput(this.params, "size", {
       label: "Emoji size",
@@ -120,13 +133,16 @@ class Emoji {
   };
 
   update = (dt: number = 0) => {
-    const mouse = new Vector3(this.mouse.x * this.viewport.width / 2, this.mouse.y * this.viewport.height / 2, 0)
+    const mouse = new Vector3(
+      (this.mouse.x * this.viewport.width) / 2,
+      (this.mouse.y * this.viewport.height) / 2,
+      0
+    );
 
     if (this.group) {
       if (mouse.distanceTo(this.group?.position) < 0.12) {
-        gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 })
+        gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 });
       } else {
-
       }
     }
   };

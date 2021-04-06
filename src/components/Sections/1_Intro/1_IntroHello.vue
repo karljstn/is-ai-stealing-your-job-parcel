@@ -1,13 +1,17 @@
 <template>
   <section>
-    <SaveRect :rectName="helloRect">
-      <p class="hello">Hello there</p>
-    </SaveRect>
-    <autoskip />
+    <div>
+      <SaveRect :rectName="helloRect">
+        <lottie-animation ref="anim" :animationData="lottieURL" :loop="true" />
+      </SaveRect>
+    </div>
+    <!-- <autoskip /> -->
   </section>
 </template>
 
 <script>
+import LottieAnimation from "lottie-web-vue";
+import lottie from "~/assets/Lottie/HELLO_THERE_2.json";
 import Button from "~/components/UI/Button";
 import QuestionForm from "~/components/UI/QuestionForm";
 import SaveRect from "~/components/Common/SaveRect.vue";
@@ -24,6 +28,7 @@ import { Color } from "three";
 export default Vue.extend({
   data() {
     return {
+      lottieURL: lottie,
       helloRect: RECTS.INTRO.HELLO,
       progression: 0,
     };
@@ -33,6 +38,7 @@ export default Vue.extend({
     QuestionForm,
     Button,
     Autoskip,
+    LottieAnimation,
   },
   mounted() {
     store.state.scene.IntroHello.start();
@@ -44,17 +50,22 @@ export default Vue.extend({
       store.state.scene.Loader &&
       store.state.scene.Loader.fullScreenPlane.uniforms;
     uniforms &&
-      gsap.to(uniforms.uMixFactor, { value: 1, ease: ease, duration: 0.5, onComplete: ()=>{
-        // uniforms.uColorFinal.value = PALETTE.BLACK
-        // uniforms.uColorFinal.value = new Color(PALETTE.BLACK)
-      } });
+      gsap.to(uniforms.uMixFactor, {
+        value: 1,
+        ease: ease,
+        duration: 0.5,
+        onComplete: () => {
+          // uniforms.uColorFinal.value = PALETTE.BLACK
+          // uniforms.uColorFinal.value = new Color(PALETTE.BLACK)
+        },
+      });
     store.state.scene.IntroHello.emoji.destroy();
   },
 });
 </script>
 
 <style lang="scss" scoped>
-p {
-  font-size: 4rem;
+div {
+  width: 800px;
 }
 </style>
