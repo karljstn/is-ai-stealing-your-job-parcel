@@ -12,7 +12,7 @@ const store = new Vuex.Store({
             enabled: true,
             benchmark: true,
             loader: true,
-            tweakpane: false,
+            tweakpane: true,
             goToProgression: 0, //9 for radiologist
             forceRadiologist: false, //forces start radiologist in mainscene for hot reloading
         },
@@ -27,6 +27,7 @@ const store = new Vuex.Store({
         scene: null,
         rects: new Map<string, DOMRect>(),
         count: 0,
+        tweakpane: null
     } as StoreState,
     mutations: {
         incrementProgression(state) {
@@ -63,6 +64,9 @@ const store = new Vuex.Store({
         updateCount(state, payload) {
             state.count = payload
         },
+        setPane(state, payload) {
+            state.tweakpane = payload
+        }
     },
     actions: {},
     modules: {},

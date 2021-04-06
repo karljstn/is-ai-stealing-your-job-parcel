@@ -7,6 +7,7 @@
 						Scroll to throw <br />
 						your biases away
 					</p>
+					<SplitText text="ay ay"></SplitText>
 				</save-rect>
 			</div>
 		</div>
@@ -18,9 +19,10 @@ import { RECTS } from '~/constants/RECTS';
 import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
+import Autoskip from '~components/Common/Autoskip.vue';
+import SplitText from '~components/Common/SplitText.vue';
 import Vue from 'vue';
 import store from '~/store';
-import Autoskip from '~components/Common/Autoskip.vue';
 import NormalizeWheel from 'normalize-wheel';
 import gsap from 'gsap';
 
@@ -61,6 +63,7 @@ export default Vue.extend({
 		Button,
 		SaveRect,
 		Autoskip,
+		SplitText,
 	},
 });
 </script>

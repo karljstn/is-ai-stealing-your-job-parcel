@@ -2,11 +2,11 @@ import { clamp, getAverage, round } from "~/util/"
 import { Scene, WebGLRenderer, WebGLRenderTarget } from "three"
 import Tweakpane from "tweakpane"
 import Cube from "./Meshes/Cube"
-import { PARAMS } from "~/types/"
+import { MainSceneParams } from "~/types/"
 
 class Benchmark {
   pane: Tweakpane | null
-  PARAMS: PARAMS
+  PARAMS: MainSceneParams
   count: number
   arrayLength: number
   cubes: Cube[]
@@ -22,7 +22,7 @@ class Benchmark {
     renderer,
   }: {
     pane: Tweakpane | null
-    PARAMS: PARAMS
+    PARAMS: MainSceneParams
     scene: Scene
     renderer: WebGLRenderer
   }) {
@@ -38,7 +38,7 @@ class Benchmark {
 
   start = () => {
     this.addCubes()
-    this.addGUI()
+    this.tweaks()
   }
 
   addCubes = () => {
@@ -56,16 +56,19 @@ class Benchmark {
     }
   }
 
-  addGUI = () => {
+  tweaks = () => {
     //https://cocopon.github.io/tweakpane/quick-tour.html
 
-    if (this.pane)
-      this.pane.addMonitor(this.PARAMS, "averageFPS", {
-        view: "graph",
-        interval: 1000,
-        min: 0,
-        max: 1000,
-      })
+    if (!this.pane) return
+
+    const folder = this.pane.addFolder({ title: 'Performance', expanded: false })
+
+    folder.addMonitor(this.PARAMS, "averageFPS", {
+      view: "graph",
+      interval: 1000,
+      min: 0,
+      max: 1000,
+    })
   }
 
   checkFPS = (deltaTime: number) => {

@@ -51,23 +51,24 @@ class Trashcan {
 	}
 
 	tweaks = () => {
-		if (this.pane) {
-			const speedInput = this.pane.addInput(this.params, 'animSpeed', { label: "Drop speed", min: this.params.animSpeed * 0.33, max: this.params.animSpeed * 3 })
-			const sizeInput = this.pane.addInput(this.params, 'size', { label: "Trashcan size", min: this.size * MODELS.HAND.SCALE * 0.33, max: this.size * MODELS.HAND.SCALE * 3 })
-			const btn = this.pane && this.pane.addButton({ title: "Drop" })
+		if (!this.pane) return
 
-			speedInput && speedInput.on('change', (speed: any) => {
-				if (this.mixer) this.mixer.timeScale = speed.value
-			})
-			sizeInput && sizeInput.on('change', (size: any) => {
-				this.group?.scale.set(size.value, size.value, size.value)
-			})
-			btn && btn.on('click', () => {
-				this.drop()
-			})
-		} else {
-			console.warn("no tweakpane")
-		}
+		const folder = this.pane.addFolder({ title: 'Biases', expanded: false })
+
+		const speedInput = folder.addInput(this.params, 'animSpeed', { label: "Drop speed", min: this.params.animSpeed * 0.33, max: this.params.animSpeed * 3 })
+		const sizeInput = folder.addInput(this.params, 'size', { label: "Trashcan size", min: this.size * MODELS.TRASHCAN.SCALE * 0.33, max: this.size * MODELS.TRASHCAN.SCALE * 3 })
+		const btn = folder.addButton({ title: "Drop" })
+
+		speedInput.on('change', (speed: any) => {
+			if (this.mixer) this.mixer.timeScale = speed.value
+		})
+		sizeInput.on('change', (size: any) => {
+			this.group?.scale.set(size.value, size.value, size.value)
+		})
+		btn.on('click', () => {
+			this.drop()
+		})
+
 	}
 
 	drop = () => {
