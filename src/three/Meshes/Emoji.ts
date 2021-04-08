@@ -18,7 +18,7 @@ import Tweakpane from "tweakpane";
 import raf from "~three/Singletons/RAF";
 import { RAFS } from "~constants/RAFS";
 import { Viewport } from "~types";
-import gsap from 'gsap'
+import gsap from "gsap";
 import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
@@ -43,7 +43,13 @@ class Emoji {
   bakedTexture: Texture;
   originalPos: Vector3
 
-  constructor(size: number, pane: Tweakpane | null, scene: Scene, mouse: Vector2, viewport: Viewport) {
+  constructor(
+    size: number,
+    pane: Tweakpane | null,
+    scene: Scene,
+    mouse: Vector2,
+    viewport: Viewport
+  ) {
     this.params = {
       animSpeed: 0.005,
       size: size * MODELS.EMOJI.SCALE,
@@ -87,7 +93,6 @@ class Emoji {
       );
     });
 
-
     let rect = store.state.rects.get(RECTS.INTRO.HELLO);
 
     const intervalID = setInterval(() => {
@@ -102,12 +107,12 @@ class Emoji {
         y -= (rect.height / 2 / window.innerWidth) * this.viewport.height;
 
         // Small offset
-        x += 0.2;
+        // x += 0.2;
         // y -= rect.height / 4 / window.innerHeight;
 
         this.originalPos.set(x, y, 0)
 
-        this.group.position.set(x, y, 0);
+        this.group.position.set(0.3, 0, 0);
         this.scene.add(this.group);
         this.start();
       }
@@ -120,9 +125,9 @@ class Emoji {
   };
 
   tweaks = () => {
-    if (!this.pane) return
+    if (!this.pane) return;
 
-    const folder = this.pane.addFolder({ title: 'Emoji', expanded: false })
+    const folder = this.pane.addFolder({ title: "Emoji", expanded: false });
 
     const sizeInput = folder.addInput(this.params, "size", {
       label: "Size",
@@ -154,7 +159,6 @@ class Emoji {
       this.group?.traverse((obj) => {
         const mesh = obj as Mesh
 
-        // console.log(mesh)
         if (mesh.material) {
           const mat: ShaderMaterial = mesh.material as ShaderMaterial
           mat.uniforms['uLightIntensity'].value = light.value
@@ -165,11 +169,15 @@ class Emoji {
   };
 
   update = (dt: number = 0) => {
-    const mouse = new Vector3(this.mouse.x * this.viewport.width / 2, this.mouse.y * this.viewport.height / 2, 0)
+    const mouse = new Vector3(
+      (this.mouse.x * this.viewport.width) / 2,
+      (this.mouse.y * this.viewport.height) / 2,
+      0
+    );
 
     if (this.group) {
       if (mouse.distanceTo(this.group?.position) < 0.12) {
-        gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 })
+        gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 });
       } else {
         gsap.to(this.group.position, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.5 })
       }

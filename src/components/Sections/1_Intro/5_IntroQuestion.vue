@@ -23,10 +23,6 @@ import QuestionForm from '~/components/UI/QuestionForm';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
-import store from '~/store'
-import gsap from 'gsap'
-import { Color } from 'three';
-import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	data() {
@@ -40,16 +36,6 @@ export default Vue.extend({
 		QuestionForm,
 		Button,
 	},
-	destroyed(){
-		// const ease = store.state.eases.get('test');
-		// const uniforms =
-		// 	store.state.scene &&
-		// 	store.state.scene.Loader &&
-		// 	store.state.scene.Loader.fullScreenPlane.uniforms;
-		// // uniforms.uColorInitial.value = new Color(PALETTE.PINK)
-		// uniforms && gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
-		
-	}
 });
 </script>
 

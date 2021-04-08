@@ -33,8 +33,3 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
-.anim-container {
-	opacity: 0;
-}
-</style>
