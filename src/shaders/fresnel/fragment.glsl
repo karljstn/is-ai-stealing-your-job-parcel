@@ -13,7 +13,6 @@ vec3 packNormalToRGB( const in vec3 normal ) {
 }
 
 void main(){
-
     vec3 viewDirection = normalize(cameraPosition - vPosition);
     float fresnelTerm = dot(viewDirection, vNormal);
     fresnelTerm = clamp(1. - fresnelTerm, 0., 1.);
@@ -23,7 +22,6 @@ void main(){
 
     // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.); 
     gl_FragColor = vec4(baseColor * fresnelTerm, outline); 
-
 
     //debug normals
     // gl_FragColor = vec4(packNormalToRGB(vNormal),1.);

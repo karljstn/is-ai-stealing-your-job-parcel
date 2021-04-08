@@ -70,26 +70,11 @@ export default Vue.extend({
 	},
 	methods: {
 		enter(el: HTMLElement, done: Function) {
-			// console.log('section enter');
 			done();
 		},
 		leave(el: HTMLElement, done: Function) {
-			// console.log('section leave');
 			done();
-			// gsap.to(el, {
-			// 	duration: TRANSITIONS.DURATION.LEAVE,
-			// 	opacity: 0,
-			// 	onComplete: () => {
-			// 		done();
-			// 	},
-			// });
 		},
 	},
 });
 </script>
-
-<style lang="scss">
-// section {
-// 	opacity: 0;
-// }
-</style>

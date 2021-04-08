@@ -88,6 +88,7 @@ export default Vue.extend({
 	},
 	destroyed() {
 		store.state.scene?.LandingPage.trashcan.destroy();
+		store.state.scene?.LandingPage.trashcanBake.destroy();
 	},
 	components: {
 		QuestionForm,

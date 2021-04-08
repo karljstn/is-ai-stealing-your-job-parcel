@@ -3,7 +3,7 @@
 		<SaveRect :rectName="helloRect">
 			<p class="hello">Hello there</p>
 		</SaveRect>
-		<!-- <autoskip /> -->
+		<autoskip />
 	</section>
 </template>
 
