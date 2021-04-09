@@ -38,6 +38,7 @@ export default Vue.extend({
   },
   mounted() {
     store.state.scene.IntroHello.start();
+    store.state.scene.bringToFront();
   },
   destroyed() {
     const ease = store.state.eases.get("test");
@@ -58,6 +59,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 div {
-  width: 50vw;
+  width: 72vw;
 }
 </style>

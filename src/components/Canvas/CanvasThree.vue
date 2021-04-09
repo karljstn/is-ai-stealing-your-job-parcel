@@ -40,5 +40,6 @@ canvas {
   left: 0;
   outline: none;
   z-index: $canvas;
+  pointer-events: none;
 }
 </style>

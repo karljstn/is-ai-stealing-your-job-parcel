@@ -23,58 +23,53 @@ import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import fragment from "~shaders/bakedFresnel/fragment.glsl"
-import vertex from "~shaders/bakedFresnel/vertex.glsl"
+import fragment from "~shaders/bakedFresnel/fragment.glsl";
+import vertex from "~shaders/bakedFresnel/vertex.glsl";
 
 class Emoji {
   params: any;
   size: number;
-  pane: Tweakpane | null;
   scene: Scene;
   group: THREE.Group | null;
   mixer: THREE.AnimationMixer | null;
   animations: AnimationClip[] | null;
   waveAction: AnimationAction | null;
   loader: GLTFLoader;
-  mouse: Vector2
-  viewport: Viewport
-  isMoving: boolean
+  mouse: Vector2;
+  viewport: Viewport;
+  isMoving: boolean;
   bakedMaterial: ShaderMaterial;
   bakedTexture: Texture;
-  originalPos: Vector3
+  originalPos: Vector3;
+  pane: Tweakpane | null;
 
-  constructor(
-    size: number,
-    pane: Tweakpane | null,
-    scene: Scene,
-    mouse: Vector2,
-    viewport: Viewport
-  ) {
+  constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
     this.params = {
       animSpeed: 0.005,
       size: size * MODELS.EMOJI.SCALE,
       pos: { x: 0, y: 0, z: 0 },
       factor: 0,
-      rotation: new Vector3(),
+      positionOffset: new Vector3(-viewport.width / 3.75, 0, 0),
+      rotation: new Vector3(0, 1, -0.1),
       initialPos: new Vector3(),
-      lightIntensity: 0.2,
-      fresnelColor: { r: 255, g: 255, b: 255 },
-      fresnelFactor: 0.5,
-      minStep: 0,
-      maxStep: 3.37,
-      fakeLight: new Vector3()
+      lightIntensity: 0.22,
+      fresnelColor: { r: 255, g: 136, b: 81 },
+      fresnelFactor: 0.45,
+      minStep: 0.19,
+      maxStep: 3.77,
+      fakeLight: new Vector3(3.77, 1.57, 0.57),
     };
     this.size = size;
-    this.pane = pane;
+    this.pane = store.state.tweakpane;
     this.scene = scene;
     this.group = null;
     this.mixer = null;
     this.animations = null;
     this.waveAction = null;
     this.loader = new GLTFLoader(LoadManager.manager);
-    this.mouse = mouse
-    this.viewport = viewport
-    this.isMoving = false
+    this.mouse = mouse;
+    this.viewport = viewport;
+    this.isMoving = false;
     this.bakedTexture = new TextureLoader().load(MODELS.EMOJI.BAKE);
     this.bakedTexture.flipY = false;
     this.bakedMaterial = new ShaderMaterial({
@@ -91,24 +86,24 @@ class Emoji {
           ),
         },
         uPowerOfFactor: {
-          value: this.params.fresnelFactor
+          value: this.params.fresnelFactor,
         },
         uMinStep: { value: this.params.minStep },
         uMaxStep: { value: this.params.maxStep },
-        uFakeLight: { value: this.params.fakeLight }
-      }
+        uFakeLight: { value: this.params.fakeLight },
+      },
     });
 
-    this.originalPos = new Vector3()
+    this.originalPos = new Vector3();
   }
 
   load = () => {
     this.loader.load(MODELS.EMOJI.URL, (gltf) => {
       this.group = gltf.scene;
       this.group.traverse((object3D) => {
-        const mesh = object3D as Mesh
-        if (mesh.material) mesh.material = this.bakedMaterial
-      })
+        const mesh = object3D as Mesh;
+        if (mesh.material) mesh.material = this.bakedMaterial;
+      });
 
       this.group.scale.set(
         this.params.size,
@@ -128,15 +123,25 @@ class Emoji {
 
         // Bottom right
         x += (rect.width / window.innerWidth) * this.viewport.width;
-        y -= (rect.height / 2 / window.innerWidth) * this.viewport.height;
+        // y -= (rect.height / 2 / window.innerWidth) * this.viewport.height;
 
         // Small offset
-        // x += 0.2;
+        // x -= 0.2;
         // y -= rect.height / 4 / window.innerHeight;
 
-        this.originalPos.set(x, y, 0)
+        // (rect.width / window.innerWidth) * this.viewport.width;
 
-        this.group.position.set(0.3, 0, 0);
+        this.group.position.set(
+          x + this.params.positionOffset.x,
+          this.params.positionOffset.z,
+          0
+        );
+        this.originalPos.copy(this.group.position);
+        this.group.rotation.set(
+          this.params.rotation.x,
+          this.params.rotation.y,
+          this.params.rotation.z
+        );
         this.scene.add(this.group);
         this.start();
       }
@@ -166,7 +171,7 @@ class Emoji {
     });
 
     const lightInput = folder.addInput(this.params, "lightIntensity", {
-      label: "Light",
+      label: "Texture light",
       min: 0,
       max: 1,
     });
@@ -175,16 +180,20 @@ class Emoji {
       label: "Fresnel",
     });
 
-    const fresnelIntensityInput = folder.addInput(this.params, "fresnelFactor", {
-      label: "Fresnel Factor",
-      min: 0,
-      max: 1,
-    });
+    const fresnelIntensityInput = folder.addInput(
+      this.params,
+      "fresnelFactor",
+      {
+        label: "Fresnel Factor",
+        min: 0,
+        max: 10,
+      }
+    );
 
     const fresnelMaxInput = folder.addInput(this.params, "maxStep", {
       label: "Fresnel Max",
       min: 0,
-      max: 1,
+      max: 10,
     });
 
     const fresnelMin = folder.addInput(this.params, "minStep", {
@@ -197,79 +206,90 @@ class Emoji {
       label: "Fake Light",
     });
 
+    const posOffsetInput = folder.addInput(this.params, "positionOffset", {
+      label: "Position Offset",
+    });
+
     sizeInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.scale.set(e.value, e.value, e.value);
     });
     rotateInput.on("change", (e: TpChangeEvent<Vector3>) => {
-      if (!this.group) return
+      if (!this.group) return;
 
-      this.group.rotation.x = e.value.x
-      this.group.rotation.y = e.value.y
-      this.group.rotation.z = e.value.z
+      this.group.rotation.x = e.value.x;
+      this.group.rotation.y = e.value.y;
+      this.group.rotation.z = e.value.z;
     });
+
     lightInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.traverse((obj) => {
-        const mesh = obj as Mesh
+        const mesh = obj as Mesh;
 
         if (mesh.material) {
-          const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uLightIntensity'].value = e.value
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uLightIntensity"].value = e.value;
         }
-      })
-    })
-    fresnelColorInput.on('change', (e: TpChangeEvent<Vector3>) => {
+      });
+    });
+    fresnelColorInput.on("change", (e: TpChangeEvent<Vector3>) => {
       this.group?.traverse((obj) => {
-        const mesh = obj as Mesh
+        const mesh = obj as Mesh;
 
         if (mesh.material) {
-          const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uFresnelColor'].value = new Vector3(
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uFresnelColor"].value = new Vector3(
             this.params.fresnelColor.r / 255,
             this.params.fresnelColor.g / 255,
-            this.params.fresnelColor.b / 255)
+            this.params.fresnelColor.b / 255
+          );
         }
-      })
-    })
-    fresnelIntensityInput.on('change', (e: TpChangeEvent<number>) => {
+      });
+    });
+    fresnelIntensityInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.traverse((obj) => {
-        const mesh = obj as Mesh
+        const mesh = obj as Mesh;
 
         if (mesh.material) {
-          const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uPowerOfFactor'].value = e.value
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uPowerOfFactor"].value = e.value;
         }
-      })
-    })
-    fresnelMaxInput.on('change', (e: TpChangeEvent<number>) => {
+      });
+    });
+    fresnelMaxInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.traverse((obj) => {
-        const mesh = obj as Mesh
+        const mesh = obj as Mesh;
 
         if (mesh.material) {
-          const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uMaxStep'].value = e.value
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uMaxStep"].value = e.value;
         }
-      })
-    })
-    fresnelMin.on('change', (e: TpChangeEvent<number>) => {
+      });
+    });
+    fresnelMin.on("change", (e: TpChangeEvent<number>) => {
       this.group?.traverse((obj) => {
-        const mesh = obj as Mesh
+        const mesh = obj as Mesh;
 
         if (mesh.material) {
-          const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uMinStep'].value = e.value
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uMinStep"].value = e.value;
         }
-      })
-    })
-    fakeLightInput.on('change', (e: TpChangeEvent<Vector3>) => {
+      });
+    });
+    fakeLightInput.on("change", (e: TpChangeEvent<Vector3>) => {
       this.group?.traverse((obj) => {
-        const mesh = obj as Mesh
+        const mesh = obj as Mesh;
 
         if (mesh.material) {
-          const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uFakeLight'].value = e.value
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uFakeLight"].value = e.value;
         }
-      })
-    })
+      });
+    });
+    posOffsetInput.on("change", (e: TpChangeEvent<Vector3>) => {
+      if (!this.group) return;
+
+      this.group.position.set(e.value.x, e.value.y, e.value.z);
+    });
   };
 
   update = (dt: number = 0) => {
@@ -283,7 +303,11 @@ class Emoji {
       if (mouse.distanceTo(this.group?.position) < 0.12) {
         gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 });
       } else {
-        gsap.to(this.group.position, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.5 })
+        gsap.to(this.group.position, {
+          x: this.originalPos.x,
+          y: this.originalPos.y,
+          duration: 0.5,
+        });
       }
     }
   };

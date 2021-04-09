@@ -3,7 +3,7 @@ import raf from "~three/Singletons/RAF";
 import Tweakpane from "tweakpane";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-import {SOUNDS} from '~/constants/SOUNDS'
+import { SOUNDS } from "~/constants/SOUNDS";
 
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
@@ -49,7 +49,7 @@ export default class Scene {
   Loader: Loader | null;
   LandingPage: LandingPage;
   IntroHello: IntroHello;
-  FullScreenPlane: FullScreenPlane | null
+  FullScreenPlane: FullScreenPlane | null;
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -77,17 +77,19 @@ export default class Scene {
       (!store.state.devMode.enabled ||
         (store.state.devMode.enabled && store.state.devMode.tweakpane))
     ) {
-      store.commit('setPane', new Tweakpane());
-      this.pane = store.state.tweakpane
-    }
-
-    else this.pane = null;
+      store.commit("setPane", new Tweakpane());
+      this.pane = store.state.tweakpane;
+    } else this.pane = null;
 
     this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000);
     this.camera.position.z = 1; //z has to be different than 0 for getViewport to work
     this.scene = new THREE.Scene();
 
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+    });
     this.renderer.setSize(this.w, this.h);
     this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2)); //limiter à 2
 
@@ -162,18 +164,21 @@ export default class Scene {
         this.camera,
         this.pane
       );
-      this.FullScreenPlane = null
+      this.FullScreenPlane = null;
     } else {
       this.Loader = null;
-      this.FullScreenPlane = new FullScreenPlane(this.params.viewport, this.camera)
-      this.scene.add(this.FullScreenPlane.object3d)
+      this.FullScreenPlane = new FullScreenPlane(
+        this.params.viewport,
+        this.camera
+      );
+      this.scene.add(this.FullScreenPlane.object3d);
     }
 
     this.IntroHello = new IntroHello(
       this.params.viewport,
       this.scene,
       this.mouse,
-      this.pane
+      this.camera
     );
     this.LandingPage = new LandingPage(
       this.params.viewport,
@@ -186,13 +191,12 @@ export default class Scene {
 
     // console.log(SOUNDS);
     // SOUNDS.background.play()
-    
   }
 
   tweaks() {
-    if (!this.pane) return
+    if (!this.pane) return;
 
-    const folder = this.pane.addFolder({ title: 'Light', expanded: false })
+    const folder = this.pane.addFolder({ title: "Light", expanded: false });
     const lightPosInput = folder.addInput(this.params.light, "pos", {
       label: "Directional light position",
       min: -this.params.viewport.height / 2,
@@ -214,7 +218,6 @@ export default class Scene {
     lightIntensityInput.on("change", (e: TpChangeEvent<number>) => {
       this.light.intensity = e.value;
     });
-
   }
 
   start() {
@@ -238,10 +241,14 @@ export default class Scene {
   }
 
   destroyRadiologist() {
-    this.camera.position.set(0, 0, 1)
+    this.camera.position.set(0, 0, 1);
     this.scene.remove(this.radio.group);
     console.log(this.camera.position);
+  }
 
+  bringToFront() {
+    this.FullScreenPlane?.hide();
+    this.renderer.domElement.style.zIndex = "10000";
   }
 
   setEvents() {

@@ -5,7 +5,7 @@ import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";
 import skull from "~/assets/Models/skull/skull.glb";
 import clipboard from "~/assets/Models/clipboard/clipboard.glb";
 import emoji from "~/assets/Models/emoji-smile/EMOJI2.glb";
-import emojiBake from "~/assets/Models/emoji-smile/BAKEDFINAL.jpg"
+import emojiBake from "~/assets/Models/emoji-smile/BAKEDFINAL.jpg";
 
 export const MODELS = {
   HAND: {
@@ -19,7 +19,7 @@ export const MODELS = {
   BAKED_TRASHCAN: {
     URL: bakedTrashcan,
     SCALE: 0.15,
-    TEXTURE: bakedTrashcanTexture
+    TEXTURE: bakedTrashcanTexture,
   },
   SKULL: {
     URL: skull,
@@ -31,7 +31,7 @@ export const MODELS = {
   },
   EMOJI: {
     URL: emoji,
-    SCALE: 0.1,
+    SCALE: 0.08,
     BAKE: emojiBake,
   },
 };

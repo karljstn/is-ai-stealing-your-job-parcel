@@ -12,7 +12,7 @@ varying vec3 vPosition;
 void main(){
 	// Texel
 	vec4 texelColor = texture2D(uMap, vUv);
-	// vec3 texelLitColor = texelColor.xyz += vec3(1. * uLightIntensity, 1. * uLightIntensity, 1. * uLightIntensity);
+	vec3 texelLitColor = texelColor.xyz += vec3(1. * uLightIntensity, 1. * uLightIntensity, 1. * uLightIntensity);
 
 	//Fresnel
 	vec3 viewDirection = normalize(cameraPosition - vec3(vPosition.x, vPosition.y, vPosition.z));
@@ -23,11 +23,11 @@ void main(){
 	// fresnelFactor = pow(fresnelFactor, uPowerOfFactor);
 	// inverseFresnelFactor = pow(inverseFresnelFactor, uPowerOfFactor);
 	// inverseFresnelFactor = step(uPowerOfFactor, inverseFresnelFactor);
+
 	inverseFresnelFactor = smoothstep(uMinStep, uMaxStep, inverseFresnelFactor);
 	inverseFresnelFactor = pow(inverseFresnelFactor, uPowerOfFactor);
 	
-	
-	gl_FragColor = vec4(texelColor.xyz + uFresnelColor * inverseFresnelFactor, 1.);
+	gl_FragColor = vec4(clamp(texelLitColor + uFresnelColor * inverseFresnelFactor, 0., 1.), 1.);
 	// gl_FragColor =  vec4(texelColor.xyz, 1.);
 }
 
