@@ -6,13 +6,13 @@ class LoadManager {
 		this.manager = new LoadingManager(this.onLoad, this.onProgress, this.onError)
 	}
 	onLoad = () => {
-		console.log("loaded")
+		// console.log("loaded")
 	}
 	onProgress = (url: string, loaded: number, total: number) => {
-		console.log("progression: " + (loaded / total) * 100)
+		// console.log("progression: " + (loaded / total) * 100)
 	}
 	onError = (url: string) => {
-		console.log(url)
+		// console.log(url)
 	}
 }
 

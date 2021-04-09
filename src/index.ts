@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 import { getRecords } from "~/api";
 
-getRecords();
+// getRecords();
 
 new Vue({
   el: "#app",

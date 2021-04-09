@@ -11,7 +11,7 @@ class RAF {
     }
 
     subscribe = (name: string, callback: (dt: number) => void) => {
-        console.log('subscribe : ', name)
+        // console.log('subscribe : ', name)
         this.callbacks.set(
             name,
             callback
@@ -19,7 +19,7 @@ class RAF {
     }
 
     unsubscribe = (name: string) => {
-        console.log('unsubscribe : ', name)
+        // console.log('unsubscribe : ', name)
         this.callbacks.delete(name)
     }
 

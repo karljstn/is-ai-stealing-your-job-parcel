@@ -5,8 +5,8 @@ import { MODELS } from "~/constants/MODELS";
 import {
   AnimationAction,
   AnimationClip,
+  Color,
   Mesh,
-  MeshBasicMaterial,
   Scene,
   ShaderMaterial,
   Texture,
@@ -23,11 +23,11 @@ import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import fragment from "~shaders/baked/fragment.glsl"
-import vertex from "~shaders/blank/vUv.glsl"
+import fragment from "~shaders/bakedFresnel/fragment.glsl"
+import vertex from "~shaders/bakedFresnel/vertex.glsl"
 
 class Emoji {
-  params: { animSpeed: number; size: number, pos: { x: number, y: number, z: number }, factor: number, rotation: Vector3, initialPos: Vector3, lightIntensity: number };
+  params: any;
   size: number;
   pane: Tweakpane | null;
   scene: Scene;
@@ -57,7 +57,12 @@ class Emoji {
       factor: 0,
       rotation: new Vector3(),
       initialPos: new Vector3(),
-      lightIntensity: 0.2
+      lightIntensity: 0.2,
+      fresnelColor: { r: 255, g: 255, b: 255 },
+      fresnelFactor: 0.5,
+      minStep: 0,
+      maxStep: 3.37,
+      fakeLight: new Vector3()
     };
     this.size = size;
     this.pane = pane;
@@ -72,15 +77,34 @@ class Emoji {
     this.isMoving = false
     this.bakedTexture = new TextureLoader().load(MODELS.EMOJI.BAKE);
     this.bakedTexture.flipY = false;
-    this.bakedMaterial = new ShaderMaterial({ vertexShader: vertex, fragmentShader: fragment, uniforms: { uMap: { value: this.bakedTexture }, uLightIntensity: { value: 0.2 } }, });
+    this.bakedMaterial = new ShaderMaterial({
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      uniforms: {
+        uMap: { value: this.bakedTexture },
+        uLightIntensity: { value: 0.2 },
+        uFresnelColor: {
+          value: new Vector3(
+            this.params.fresnelColor.r / 255,
+            this.params.fresnelColor.g / 255,
+            this.params.fresnelColor.b / 255
+          ),
+        },
+        uPowerOfFactor: {
+          value: this.params.fresnelFactor
+        },
+        uMinStep: { value: this.params.minStep },
+        uMaxStep: { value: this.params.maxStep },
+        uFakeLight: { value: this.params.fakeLight }
+      }
+    });
+
     this.originalPos = new Vector3()
   }
 
   load = () => {
     this.loader.load(MODELS.EMOJI.URL, (gltf) => {
       this.group = gltf.scene;
-      // const mesh: Mesh = gltf.scene.children[0] as Mesh
-      // mesh.material = this.bakedMaterial
       this.group.traverse((object3D) => {
         const mesh = object3D as Mesh
         if (mesh.material) mesh.material = this.bakedMaterial
@@ -147,23 +171,103 @@ class Emoji {
       max: 1,
     });
 
-    sizeInput.on("change", (size: TpChangeEvent<number>) => {
-      this.group?.scale.set(size.value, size.value, size.value);
+    const fresnelColorInput = folder.addInput(this.params, "fresnelColor", {
+      label: "Fresnel",
     });
-    rotateInput.on("change", (rotate: TpChangeEvent<Vector3>) => {
-      this.group?.rotateX(rotate.value.x)
-      this.group?.rotateY(rotate.value.y)
-      this.group?.rotateZ(rotate.value.z)
+
+    const fresnelIntensityInput = folder.addInput(this.params, "fresnelFactor", {
+      label: "Fresnel Factor",
+      min: 0,
+      max: 1,
     });
-    lightInput.on("change", (light: TpChangeEvent<number>) => {
+
+    const fresnelMaxInput = folder.addInput(this.params, "maxStep", {
+      label: "Fresnel Max",
+      min: 0,
+      max: 1,
+    });
+
+    const fresnelMin = folder.addInput(this.params, "minStep", {
+      label: "Fresnel Min",
+      min: 0,
+      max: 1,
+    });
+
+    const fakeLightInput = folder.addInput(this.params, "fakeLight", {
+      label: "Fake Light",
+    });
+
+    sizeInput.on("change", (e: TpChangeEvent<number>) => {
+      this.group?.scale.set(e.value, e.value, e.value);
+    });
+    rotateInput.on("change", (e: TpChangeEvent<Vector3>) => {
+      if (!this.group) return
+
+      this.group.rotation.x = e.value.x
+      this.group.rotation.y = e.value.y
+      this.group.rotation.z = e.value.z
+    });
+    lightInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.traverse((obj) => {
         const mesh = obj as Mesh
 
         if (mesh.material) {
           const mat: ShaderMaterial = mesh.material as ShaderMaterial
-          mat.uniforms['uLightIntensity'].value = light.value
+          mat.uniforms['uLightIntensity'].value = e.value
         }
+      })
+    })
+    fresnelColorInput.on('change', (e: TpChangeEvent<Vector3>) => {
+      this.group?.traverse((obj) => {
+        const mesh = obj as Mesh
 
+        if (mesh.material) {
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial
+          mat.uniforms['uFresnelColor'].value = new Vector3(
+            this.params.fresnelColor.r / 255,
+            this.params.fresnelColor.g / 255,
+            this.params.fresnelColor.b / 255)
+        }
+      })
+    })
+    fresnelIntensityInput.on('change', (e: TpChangeEvent<number>) => {
+      this.group?.traverse((obj) => {
+        const mesh = obj as Mesh
+
+        if (mesh.material) {
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial
+          mat.uniforms['uPowerOfFactor'].value = e.value
+        }
+      })
+    })
+    fresnelMaxInput.on('change', (e: TpChangeEvent<number>) => {
+      this.group?.traverse((obj) => {
+        const mesh = obj as Mesh
+
+        if (mesh.material) {
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial
+          mat.uniforms['uMaxStep'].value = e.value
+        }
+      })
+    })
+    fresnelMin.on('change', (e: TpChangeEvent<number>) => {
+      this.group?.traverse((obj) => {
+        const mesh = obj as Mesh
+
+        if (mesh.material) {
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial
+          mat.uniforms['uMinStep'].value = e.value
+        }
+      })
+    })
+    fakeLightInput.on('change', (e: TpChangeEvent<Vector3>) => {
+      this.group?.traverse((obj) => {
+        const mesh = obj as Mesh
+
+        if (mesh.material) {
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial
+          mat.uniforms['uFakeLight'].value = e.value
+        }
       })
     })
   };
