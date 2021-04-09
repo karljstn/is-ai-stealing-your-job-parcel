@@ -356,6 +356,8 @@ export default class Radio implements ThreeGroup {
 
 
             if (intersects.length) {
+                console.log(intersects)
+
                 if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) {
                     this.currentIntersect.object.material.uniforms.outline.value = 0.5
                     this.currentIntersect = intersects[0]

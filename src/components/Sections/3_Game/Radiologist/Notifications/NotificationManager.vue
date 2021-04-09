@@ -7,7 +7,11 @@
         class="notification"
         :style="{ top: 100 * index + 'px' }"
       >
-        a
+        Notification
+        <span
+          class="close-notification"
+          v-on:click="removeNotification(index)"
+        ></span>
       </div>
     </transition-group>
   </div>
@@ -15,7 +19,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Notification from "./Notification.vue";
 
 export default Vue.extend({
   data(): { notifications: Object[]; index: number } {
@@ -30,23 +33,19 @@ export default Vue.extend({
       this.addNotification(2000);
     }, 1000);
   },
-  watch: {
-    notifications() {
-      //   deep: true;
-      //   console.log("allo");
-    },
-  },
-  components: {
-    Notification,
-  },
   methods: {
     addNotification(duration: number) {
       this.notifications.push(this.index);
       this.index++;
 
-      setTimeout(() => {
-        this.notifications.shift();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.notifications.shift();
+      // }, duration);
+    },
+    removeNotification(index: number) {
+      console.log(index);
+
+      this.notifications.splice(index, 1);
     },
   },
 });
@@ -60,13 +59,15 @@ export default Vue.extend({
   right: 0;
   top: 0;
   z-index: 1000;
-  //   .notification {
-  //     padding: 20px;
-  //     background-color: white;
-  //     border-radius: 20px;
-  //     transform: translate(100px, 0);
-  //     opacity: 0;
-  //   }
+}
+
+.close-notification {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background-color: black;
 }
 
 .notification {
@@ -74,10 +75,12 @@ export default Vue.extend({
   padding: 20px;
   background-color: white;
   border-radius: 20px;
+  transition: all 0.5s;
 }
+
 .notification-enter-active,
 .notification-leave-active {
-  transition: all 1s;
+  transition: all 0.5s;
 }
 .notification-enter, .notification-leave-to /* .notification-leave-active below version 2.1.8 */ {
   opacity: 0;

@@ -5,6 +5,8 @@
 
     <NotificationManager></NotificationManager>
 
+    <Toolbar></Toolbar>
+
     <Timer
       :timerCanStart="this.timerCanStart"
       :timerPause="this.timerPause"
@@ -13,6 +15,7 @@
     <ToggleTutorial :showTutorial="this.showTutorial"></ToggleTutorial>
 
     <TutorialManager
+      v-if="!this.HIDE"
       v-bind:tutorialCount="tutorialCount"
       v-bind:setTutorialCount="this.setTutorialCount"
       v-bind:hideTutorial="this.hideTutorial"
@@ -29,6 +32,8 @@ import store from "~/store";
 
 import Side from "./Radiologist/Side.vue";
 import ButtonsRight from "./Radiologist/ButtonsRight.vue";
+
+import Toolbar from "./Radiologist/Toolbar.vue";
 
 import ToggleTutorial from "./Radiologist/Tutorial/ToggleTutorial.vue";
 import NotificationManager from "./Radiologist/Notifications/NotificationManager.vue";
@@ -48,6 +53,7 @@ export default Vue.extend({
     countdown: Boolean;
     timerCanStart: Boolean;
     timerPause: Boolean;
+    HIDE: Boolean;
   } {
     return {
       patientFile: false,
@@ -61,6 +67,8 @@ export default Vue.extend({
       //can the timer starts?
       timerCanStart: false,
       timerPause: false,
+
+      HIDE: true,
     };
   },
 
@@ -109,6 +117,7 @@ export default Vue.extend({
     Countdown,
     ButtonsRight,
     Timer,
+    Toolbar,
   },
 
   methods: {
