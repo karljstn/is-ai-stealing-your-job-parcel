@@ -1,6 +1,6 @@
 import hand from "~/assets/Models/hand/hand_30_03_v2.glb"
 import trashcan from "~/assets/Models/trashcan/v4.glb"
-import skull from "~/assets/Models/radiologist/skull.glb"
+import skeleton from "~/assets/Models/radiologist/skeleton5.glb"
 import clipboard from "~/assets/Models/radiologist/clipboard.glb"
 import radiologistBackground from "~/assets/Models/radiologist/big-cube-bg.glb"
 import emoji from "~/assets/Models/emoji-love/emoji.glb"
@@ -14,9 +14,9 @@ export const MODELS = {
     URL: trashcan,
     SCALE: 0.15,
   },
-  SKULL: {
-    URL: skull,
-    SCALE: 3,
+  SKELETON: {
+    URL: skeleton,
+    SCALE: 1.5,
   },
   CLIPBOARD: {
     URL: clipboard,

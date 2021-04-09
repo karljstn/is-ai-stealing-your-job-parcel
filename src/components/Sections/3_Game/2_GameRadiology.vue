@@ -1,29 +1,25 @@
 <template>
   <section>
-    <!-- <Panel v-bind:case="this.case"></Panel>
     <Side v-bind:case="this.case"></Side>
+    <ButtonsRight></ButtonsRight>
 
-    <button class="tutorial" v-on:click="tutorial = !tutorial">?</button>
-    <ControlsTutorial
-      v-if="tutorial"
-      v-bind:setTutorial="this.setTutorial"
-    ></ControlsTutorial>
+    <NotificationManager></NotificationManager>
 
-    <div class="button-container">
-      <button class="ai-button" v-on:click="this.useAI"></button>
-      <button
-        class="patient-file-button"
-        v-on:click="this.openPatientFile"
-      ></button>
-    </div> -->
+    <Timer
+      :timerCanStart="this.timerCanStart"
+      :timerPause="this.timerPause"
+    ></Timer>
+
+    <ToggleTutorial :showTutorial="this.showTutorial"></ToggleTutorial>
 
     <TutorialManager
       v-bind:tutorialCount="tutorialCount"
       v-bind:setTutorialCount="this.setTutorialCount"
+      v-bind:hideTutorial="this.hideTutorial"
       ref="tutorialManager"
     ></TutorialManager>
 
-    <Countdown v-if="this.tutorialCount >= 2"></Countdown>
+    <Countdown v-if="this.countdown" :hide="this.hideCountdown"></Countdown>
   </section>
 </template>
 
@@ -31,22 +27,40 @@
 import Vue from "vue";
 import store from "~/store";
 
-import ControlsTutorial from "./Radiologist/Tutorial/ControlsTutorial.vue";
 import Side from "./Radiologist/Side.vue";
-import Panel from "./Radiologist/Panel.vue";
+import ButtonsRight from "./Radiologist/ButtonsRight.vue";
+
+import ToggleTutorial from "./Radiologist/Tutorial/ToggleTutorial.vue";
+import NotificationManager from "./Radiologist/Notifications/NotificationManager.vue";
 import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
 import Countdown from "./Radiologist/Tutorial/Countdown.vue";
+
+import Timer from "./Radiologist/Timer.vue";
 
 import gsap from "gsap";
 // import PatientFile from "./Radiologist/PatientFile.vue";
 // import data from "~/assets/Games/Radiologist/data.json";
 
 export default Vue.extend({
-  data(): { tutorial: Boolean; patientFile: Boolean; tutorialCount: number } {
+  data(): {
+    patientFile: Boolean;
+    tutorialCount: number;
+    countdown: Boolean;
+    timerCanStart: Boolean;
+    timerPause: Boolean;
+  } {
     return {
-      tutorial: false,
       patientFile: false,
+
+      //progress of the tutorial
       tutorialCount: 0,
+
+      //display the 3,2,1,go
+      countdown: false,
+
+      //can the timer starts?
+      timerCanStart: false,
+      timerPause: false,
     };
   },
 
@@ -57,9 +71,7 @@ export default Vue.extend({
   },
 
   watch: {
-    tutorialCount(newVal) {
-      console.log("here");
-    },
+    tutorialCount(newVal) {},
   },
 
   mounted() {
@@ -75,7 +87,7 @@ export default Vue.extend({
 
     // console.log(store.state.scene?.scene);
 
-    store.state.scene?.renderer.setClearColor(0x231f38, 1);
+    // store.state.scene?.renderer.setClearColor(0x231f38, 1);
 
     if (!store.state.devMode.forceRadiologist) {
       store.state.scene?.startRadiologist();
@@ -90,39 +102,49 @@ export default Vue.extend({
     }
   },
   components: {
-    Panel,
+    NotificationManager,
     Side,
-    ControlsTutorial,
+    ToggleTutorial,
     TutorialManager,
     Countdown,
+    ButtonsRight,
+    Timer,
   },
 
   methods: {
-    setTutorial(cond: Boolean) {
-      this.tutorial = cond;
-    },
-    useAI() {
-      store.state.scene?.radio.useAI();
-    },
-    openPatientFile() {
-      this.patientFile = !this.patientFile;
-      store.state.scene?.radio.patientFile(this.patientFile);
-    },
     setTutorialCount() {
-      console.log("set tutorial count", this.tutorialCount);
-
-      if (this.tutorialCount === 1) {
-        console.log("tutorialCount", this.tutorialCount);
-
-        console.log(this.$refs.tutorialManager.$el);
-
-        gsap.to(this.$refs.tutorialManager?.$el, {
-          duration: 1,
-          scale: 0,
-        });
+      if (this.tutorialCount === 4) {
+        this.hideTutorial();
+        return;
       }
 
       this.tutorialCount++;
+    },
+    showTutorial() {
+      console.log("show tutorial");
+      this.timerPause = true;
+      this.tutorialCount = 1;
+      gsap.to(this.$refs.tutorialManager.$el, {
+        duration: 0.3,
+        scale: 1,
+      });
+    },
+    hideTutorial() {
+      gsap.to(this.$refs.tutorialManager.$el, {
+        duration: 0.3,
+        scale: 0,
+        onComplete: this.showCountdown,
+      });
+
+      this.tutorialCount = -1;
+    },
+    showCountdown() {
+      if (!this.timerCanStart) this.countdown = true;
+      else this.timerPause = false;
+    },
+    hideCountdown() {
+      this.countdown = false;
+      this.timerCanStart = true;
     },
   },
 });
@@ -135,56 +157,6 @@ section {
   // width: initial;
   height: initial;
   display: initial;
-
-  .button-container {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #302d4c;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    padding: 20px;
-    border-radius: 20px;
-
-    .patient-file-button {
-      background-image: url("~assets/Games/Radiologist/patient_file.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: 70px;
-      height: 70px;
-      border: none;
-      background-color: transparent;
-      outline: none;
-      transition: all 0.2s;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-
-    .ai-button {
-      border: none;
-      background-image: url("~assets/Games/Radiologist/ordi.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: 70px;
-      height: 70px;
-      background-color: transparent;
-      margin-bottom: 20px;
-      outline: none;
-      transition: all 0.2s;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-  }
 
   .tutorial {
     padding: 10px;
