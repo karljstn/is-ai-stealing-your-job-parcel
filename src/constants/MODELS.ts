@@ -31,7 +31,7 @@ export const MODELS = {
   },
   EMOJI: {
     URL: emoji,
-    SCALE: 0.08,
+    SCALE: 0.1,
     BAKE: emojiBake,
   },
 };

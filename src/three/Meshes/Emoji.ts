@@ -26,6 +26,7 @@ import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import fragment from "~shaders/bakedFresnel/fragment.glsl";
 import vertex from "~shaders/bakedFresnel/vertex.glsl";
 
+
 class Emoji {
   params: any;
   size: number;
@@ -42,6 +43,7 @@ class Emoji {
   bakedTexture: Texture;
   originalPos: Vector3;
   pane: Tweakpane | null;
+  timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
 
   constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
     this.params = {
@@ -58,6 +60,10 @@ class Emoji {
       minStep: 0.19,
       maxStep: 3.77,
       fakeLight: new Vector3(3.77, 1.57, 0.57),
+      sinus: {
+        amplitude: 0.1,
+        frequency: 0.00304
+      }
     };
     this.size = size;
     this.pane = store.state.tweakpane;
@@ -95,23 +101,23 @@ class Emoji {
     });
 
     this.originalPos = new Vector3();
+    this.timeline = gsap.timeline({ paused: true })
   }
 
   load = () => {
     this.loader.load(MODELS.EMOJI.URL, (gltf) => {
       this.group = gltf.scene;
+      // Set baked material
       this.group.traverse((object3D) => {
         const mesh = object3D as Mesh;
         if (mesh.material) mesh.material = this.bakedMaterial;
       });
-
-      this.group.scale.set(
-        this.params.size,
-        this.params.size,
-        this.params.size
-      );
     });
 
+    this.setFromRect()
+  };
+
+  setFromRect = () => {
     let rect = store.state.rects.get(RECTS.INTRO.HELLO);
 
     const intervalID = setInterval(() => {
@@ -121,15 +127,8 @@ class Emoji {
         // Upper left
         let { x, y } = rectToThree(this.viewport, rect);
 
-        // Bottom right
+        // Top Right
         x += (rect.width / window.innerWidth) * this.viewport.width;
-        // y -= (rect.height / 2 / window.innerWidth) * this.viewport.height;
-
-        // Small offset
-        // x -= 0.2;
-        // y -= rect.height / 4 / window.innerHeight;
-
-        // (rect.width / window.innerWidth) * this.viewport.width;
 
         this.group.position.set(
           x + this.params.positionOffset.x,
@@ -142,15 +141,19 @@ class Emoji {
           this.params.rotation.y,
           this.params.rotation.z
         );
+        this.group.scale.set(
+          0, 0, 0
+        );
         this.scene.add(this.group);
         this.start();
       }
     }, 50);
-  };
+  }
 
   start = () => {
     this.tweaks();
     raf.subscribe(RAFS.EMOJI, this.update);
+    this.in()
   };
 
   tweaks = () => {
@@ -158,29 +161,30 @@ class Emoji {
 
     const folder = this.pane.addFolder({ title: "Emoji", expanded: false });
 
+    const posOffsetInput = folder.addInput(this.params, "positionOffset", {
+      label: "Position Offset",
+    });
     const sizeInput = folder.addInput(this.params, "size", {
       label: "Size",
       min: this.size * MODELS.EMOJI.SCALE * 0.33,
       max: this.size * MODELS.EMOJI.SCALE * 3,
     });
-
     const rotateInput = folder.addInput(this.params, "rotation", {
       label: "Rotation",
       min: 0,
       max: Math.PI,
     });
-
     const lightInput = folder.addInput(this.params, "lightIntensity", {
       label: "Texture light",
       min: 0,
       max: 1,
     });
 
-    const fresnelColorInput = folder.addInput(this.params, "fresnelColor", {
+    const fresnelFolder = folder.addFolder({ title: "Fresnel", expanded: false })
+    const fresnelColorInput = fresnelFolder.addInput(this.params, "fresnelColor", {
       label: "Fresnel",
     });
-
-    const fresnelIntensityInput = folder.addInput(
+    const fresnelIntensityInput = fresnelFolder.addInput(
       this.params,
       "fresnelFactor",
       {
@@ -189,27 +193,33 @@ class Emoji {
         max: 10,
       }
     );
-
-    const fresnelMaxInput = folder.addInput(this.params, "maxStep", {
+    const fresnelMaxInput = fresnelFolder.addInput(this.params, "maxStep", {
       label: "Fresnel Max",
       min: 0,
       max: 10,
     });
-
-    const fresnelMin = folder.addInput(this.params, "minStep", {
+    const fresnelMin = fresnelFolder.addInput(this.params, "minStep", {
       label: "Fresnel Min",
       min: 0,
       max: 1,
     });
-
-    const fakeLightInput = folder.addInput(this.params, "fakeLight", {
+    const fresnelFakeLightInput = fresnelFolder.addInput(this.params, "fakeLight", {
       label: "Fake Light",
     });
 
-    const posOffsetInput = folder.addInput(this.params, "positionOffset", {
-      label: "Position Offset",
-    });
+    folder.addInput(this.params.sinus, "amplitude", { min: 0, max: 0.4 })
+    folder.addInput(this.params.sinus, "frequency", {
+      min: 0, max: 0.01, format: (v) => v.toFixed(4),
+    })
 
+    const inButton = folder.addButton({ title: "Anim In" })
+    const outButton = folder.addButton({ title: "Anim Out" })
+
+    posOffsetInput.on("change", (e: TpChangeEvent<Vector3>) => {
+      if (!this.group) return;
+
+      this.group.position.set(e.value.x, e.value.y, e.value.z);
+    });
     sizeInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.scale.set(e.value, e.value, e.value);
     });
@@ -220,7 +230,6 @@ class Emoji {
       this.group.rotation.y = e.value.y;
       this.group.rotation.z = e.value.z;
     });
-
     lightInput.on("change", (e: TpChangeEvent<number>) => {
       this.group?.traverse((obj) => {
         const mesh = obj as Mesh;
@@ -231,6 +240,7 @@ class Emoji {
         }
       });
     });
+
     fresnelColorInput.on("change", (e: TpChangeEvent<Vector3>) => {
       this.group?.traverse((obj) => {
         const mesh = obj as Mesh;
@@ -275,7 +285,7 @@ class Emoji {
         }
       });
     });
-    fakeLightInput.on("change", (e: TpChangeEvent<Vector3>) => {
+    fresnelFakeLightInput.on("change", (e: TpChangeEvent<Vector3>) => {
       this.group?.traverse((obj) => {
         const mesh = obj as Mesh;
 
@@ -285,36 +295,55 @@ class Emoji {
         }
       });
     });
-    posOffsetInput.on("change", (e: TpChangeEvent<Vector3>) => {
-      if (!this.group) return;
 
-      this.group.position.set(e.value.x, e.value.y, e.value.z);
-    });
+    inButton.on('click', () => {
+      this.in()
+    })
+    outButton.on('click', () => {
+      this.out()
+    })
   };
 
+  in = () => {
+    if (!this.group) return
+
+    this.timeline.to(this.group.scale, { x: this.params.size, y: this.params.size, z: this.params.size, duration: 0.2 }, 2)
+    this.timeline.fromTo(this.group.position, { x: this.originalPos.x - 0.05, y: this.originalPos.y - 0.05 }, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.2 }, 2)
+    this.timeline.play()
+  }
+
+  out = () => {
+    this.timeline.reverse()
+  }
+
   update = (dt: number = 0) => {
+    if (!this.group) return
+
     const mouse = new Vector3(
       (this.mouse.x * this.viewport.width) / 2,
       (this.mouse.y * this.viewport.height) / 2,
       0
     );
 
-    if (this.group) {
-      if (mouse.distanceTo(this.group?.position) < 0.12) {
-        gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 });
-      } else {
-        gsap.to(this.group.position, {
-          x: this.originalPos.x,
-          y: this.originalPos.y,
-          duration: 0.5,
-        });
-      }
+    if (mouse.distanceTo(this.originalPos) < 0.12) {
+      gsap.to(this.group.position, { x: mouse.x, y: mouse.y, duration: 0.5 });
+    } else {
+      gsap.to(this.group.position, {
+        x: this.originalPos.x,
+        y: this.originalPos.y,
+        duration: 0.5,
+      });
     }
+
+    this.group.rotation.z = Math.sin(performance.now() * this.params.sinus.frequency) * this.params.sinus.amplitude
   };
 
   destroy = () => {
-    this.group && this.scene.remove(this.group);
-    raf.unsubscribe(RAFS.EMOJI);
+    this.out()
+    setTimeout(() => {
+      this.group && this.scene.remove(this.group);
+      raf.unsubscribe(RAFS.EMOJI);
+    }, 2001);
   };
 }
 
