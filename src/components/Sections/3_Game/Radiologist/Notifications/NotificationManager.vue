@@ -2,15 +2,15 @@
   <div class="notification-container">
     <transition-group name="notification">
       <div
-        v-for="(notification, index) in notifications"
-        :key="notification"
+        v-for="notification in notifications"
+        :key="notification.index"
         class="notification"
-        :style="{ top: 100 * index + 'px' }"
       >
+        <!-- :style="{ top: 100 * index + 'px' }" -->
         Notification
         <span
           class="close-notification"
-          v-on:click="removeNotification(index)"
+          v-on:click="removeNotification(notification.index)"
         ></span>
       </div>
     </transition-group>
@@ -28,24 +28,26 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.addNotification(2000);
+    this.addNotification(2000, "bonjour");
     setTimeout(() => {
-      this.addNotification(2000);
+      this.addNotification(2000, "bonsoir");
     }, 1000);
   },
   methods: {
-    addNotification(duration: number) {
-      this.notifications.push(this.index);
-      this.index++;
+    addNotification(duration: number, text: string) {
+      this.notifications.push({
+        text,
+        index: this.index++,
+      });
 
-      // setTimeout(() => {
-      //   this.notifications.shift();
-      // }, duration);
+      setTimeout(() => {
+        const index = this.index;
+        // this.notifications.shift();
+      }, duration);
     },
     removeNotification(index: number) {
-      console.log(index);
-
-      this.notifications.splice(index, 1);
+      const i = this.notifications.findIndex((elem) => elem.index === index);
+      this.notifications.splice(i, 1);
     },
   },
 });
@@ -71,7 +73,7 @@ export default Vue.extend({
 }
 
 .notification {
-  position: absolute;
+  position: relative;
   padding: 20px;
   background-color: white;
   border-radius: 20px;

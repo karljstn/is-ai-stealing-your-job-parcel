@@ -1,11 +1,13 @@
-<template>
+<template >
   <div class="folder">
     <div class="bar-background">
       <div class="bar">
         <div
           class="progress"
-          :style="{ width: (this.progress / this.total) * 100 + '%' }"
-        ></div>
+          :style="{ width: (this.progress / this.duration) * 100 + '%' }"
+        >
+          {{ this.index }}
+        </div>
       </div>
     </div>
   </div>
@@ -15,25 +17,33 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  props: ["duration"],
+  props: ["duration", "index", "removeFolder"],
   data(): {
     progress: number;
-    total: number;
-    countdown: number;
     interval: any;
+    show: Boolean;
   } {
     return {
       progress: 0,
-      total: this.duration,
-      countdown: 30,
       interval: 0,
+      show: false,
     };
   },
   mounted() {
+    if (this.progress === this.duration) {
+      this.removeFolder(this.index);
+      clearInterval(this.interval);
+    }
     this.progress++;
+
     this.interval = setInterval(() => {
+      console.log(this.progress + "/" + this.duration, this.index);
+
+      if (this.progress === this.duration) {
+        this.removeFolder(this.index);
+        clearInterval(this.interval);
+      }
       this.progress++;
-      if (this.progress === this.total) clearInterval(this.interval);
     }, 1000);
   },
 });

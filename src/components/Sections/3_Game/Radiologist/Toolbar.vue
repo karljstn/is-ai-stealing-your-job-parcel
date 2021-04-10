@@ -3,13 +3,13 @@
     <div class="cases-to-come">
       <transition-group name="cases">
         <Folder
-          v-for="index in this.casesPending"
-          :key="index"
-          :duration="30"
+          v-for="casesInfo in casesPending"
+          :key="casesInfo.index"
+          :duration="casesInfo.duration"
+          :index="casesInfo.index"
+          :removeFolder="removeFolder"
         ></Folder>
       </transition-group>
-      <!-- <Folder></Folder>
-      <Folder></Folder> -->
     </div>
     <div class="files-processed">
       <img src="~/assets/Games/Radiologist/files.png" alt="" />
@@ -26,21 +26,39 @@ import Vue from "vue";
 import Folder from "./Folder.vue";
 
 export default Vue.extend({
-  data(): { casesPending: number; case: number } {
+  data(): { casesPending: Object[]; case: number; index: number } {
     return {
-      casesPending: 1,
+      casesPending: [],
       case: 0,
+      index: 0,
     };
   },
   mounted() {
     setTimeout(() => {
-      this.casesPending++;
-    }, 3000);
+      this.addFolder(5);
+    }, 1000);
 
     setTimeout(() => {
-      this.casesPending++;
+      this.addFolder(15);
+    }, 3000);
+  },
+  methods: {
+    addFolder(duration: number) {
+      this.casesPending.push({
+        duration: duration,
+        index: this.index++,
+      });
+    },
+    removeFolder(index: number) {
+      const i = this.casesPending.findIndex((elem) => elem.index === index);
+
       console.log(this.casesPending);
-    }, 5000);
+
+      this.casesPending.splice(i, 1);
+
+      // const arr = this.casesPending.splice(this.casesPending.indexOf(), 1);
+      // console.log(arr);
+    },
   },
   components: {
     Folder,
@@ -65,9 +83,6 @@ export default Vue.extend({
   .cases-to-come {
     width: 60%;
     height: 100%;
-
-    // flex-wrap: nowrap;
-    // background-color: red;
 
     span {
       display: flex;
