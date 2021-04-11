@@ -26,8 +26,11 @@ const store = new Vuex.Store({
         eases: new Map<string, typeof CustomEase>(),
         scene: null,
         rects: new Map<string, DOMRect>(),
-        count: 0,
-        tweakpane: null
+        tweakpane: null,
+        radiologist: {
+            progress: 0,
+            confirm: false
+        }
     } as StoreState,
     mutations: {
         incrementProgression(state) {
@@ -61,8 +64,11 @@ const store = new Vuex.Store({
                 return console.warn("Rect already set")
             state.rects.set(payload.name, payload.rect)
         },
-        updateCount(state, payload) {
-            state.count = payload
+        updateProgress(state, payload) {
+            state.radiologist.progress = payload
+        },
+        setConfirmPopup(state, payload) {
+            state.radiologist.confirm = payload
         },
         setPane(state, payload) {
             state.tweakpane = payload

@@ -14,7 +14,7 @@
     <div class="files-processed">
       <img src="~/assets/Games/Radiologist/files.png" alt="" />
       <div class="wrapper">
-        <span class="cases">{{ this.case }}</span>
+        <span class="cases">{{ this.progress }}</span>
         <span class="processed">files processed</span>
       </div>
     </div>
@@ -25,11 +25,13 @@
 import Vue from "vue";
 import Folder from "./Folder.vue";
 
+import store from "~/store";
+
 export default Vue.extend({
-  data(): { casesPending: Object[]; case: number; index: number } {
+  data(): { casesPending: Object[]; index: number } {
     return {
       casesPending: [],
-      case: 0,
+
       index: 0,
     };
   },
@@ -42,6 +44,11 @@ export default Vue.extend({
       this.addFolder(15);
     }, 3000);
   },
+  computed: {
+    progress() {
+      return store.state.radiologist.progress;
+    },
+  },
   methods: {
     addFolder(duration: number) {
       this.casesPending.push({
@@ -51,13 +58,7 @@ export default Vue.extend({
     },
     removeFolder(index: number) {
       const i = this.casesPending.findIndex((elem) => elem.index === index);
-
-      console.log(this.casesPending);
-
       this.casesPending.splice(i, 1);
-
-      // const arr = this.casesPending.splice(this.casesPending.indexOf(), 1);
-      // console.log(arr);
     },
   },
   components: {
@@ -88,13 +89,16 @@ export default Vue.extend({
       display: flex;
     }
 
-    .cases-enter-active,
-    .cases-leave-active {
-      transition: all 0.5s;
-    }
-    .cases-enter, .cases-leave-to /* .cases-leave-active below version 2.1.8 */ {
+    .cases-enter,
+    .cases-leave-to {
       opacity: 0;
       transform: translateX(100px);
+    }
+    .cases-leave-active {
+      //set transition duration when leaving
+      //position absolute is required i guess
+      position: absolute;
+      transition: all 0.5s;
     }
   }
 

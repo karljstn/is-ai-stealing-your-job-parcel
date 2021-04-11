@@ -276,6 +276,8 @@ export default class Scene {
   }
 
   render = (dt = 0) => {
+    // console.log(this.clock.elapsedTime)
+
     this.Benchmark?.checkFPS(dt)
     this.renderer.render(this.scene, this.camera)
 

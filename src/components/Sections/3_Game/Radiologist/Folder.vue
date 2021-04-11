@@ -37,7 +37,7 @@ export default Vue.extend({
     this.progress++;
 
     this.interval = setInterval(() => {
-      console.log(this.progress + "/" + this.duration, this.index);
+      // console.log(this.progress + "/" + this.duration, this.index);
 
       if (this.progress === this.duration) {
         this.removeFolder(this.index);
@@ -58,7 +58,9 @@ export default Vue.extend({
   background-size: contain;
   position: relative;
   margin-right: 30px;
-  transition: all 0.5s;
+
+  //transition enter
+  transition: all 1s;
 
   .bar-background {
     width: 40px;

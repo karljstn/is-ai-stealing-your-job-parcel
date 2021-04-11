@@ -6,7 +6,7 @@
         :key="notification.index"
         class="notification"
       >
-        <!-- :style="{ top: 100 * index + 'px' }" -->
+        <!-- :style="{ top: 100 * notification.index + 'px' }" -->
         Notification
         <span
           class="close-notification"
@@ -55,7 +55,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .notification-container {
-  background-color: red;
   width: 300px;
   position: absolute;
   right: 0;
@@ -73,6 +72,7 @@ export default Vue.extend({
 }
 
 .notification {
+  // position: absolute;
   position: relative;
   padding: 20px;
   background-color: white;
@@ -80,8 +80,9 @@ export default Vue.extend({
   transition: all 0.5s;
 }
 
-.notification-enter-active,
 .notification-leave-active {
+  position: absolute;
+  width: 100%;
   transition: all 0.5s;
 }
 .notification-enter, .notification-leave-to /* .notification-leave-active below version 2.1.8 */ {

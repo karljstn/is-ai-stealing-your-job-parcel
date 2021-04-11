@@ -58,6 +58,9 @@ export default class Radio implements ThreeGroup {
     errorMesh: null | THREE.Mesh
 
     skeleton: THREE.Group
+    heart: THREE.Mesh | null
+    heartBaseScale: number | null
+
     clipboard: THREE.Group
     background: THREE.Mesh
     foreground: THREE.Mesh
@@ -77,6 +80,9 @@ export default class Radio implements ThreeGroup {
 
         this.skeleton = new THREE.Group()
         this.clipboard = new THREE.Group()
+
+        this.heart = null
+        this.heartBaseScale = null
 
         this.controls = controls
 
@@ -266,55 +272,111 @@ export default class Radio implements ThreeGroup {
     }
 
     nextCase() {
-        for (let i = 0; i < this.skeleton.children.length; i++) {
-            const mesh = this.skeleton.children[i] as THREE.Mesh
+        this.skeleton.traverse(obj => {
 
-            mesh.material = new THREE.ShaderMaterial({
-                vertexShader: vertex,
-                fragmentShader: fragment,
-                transparent: true,
-                uniforms: {
-                    baseColor: { value: new THREE.Vector3(1, 0, 0) },
-                    outline: { value: 0.5 },
-                    isError: { value: 0 }
+            if (obj.type === 'Mesh') {
+                const mesh = obj as THREE.Mesh
+                mesh.material = new THREE.ShaderMaterial({
+                    vertexShader: vertex,
+                    fragmentShader: fragment,
+                    transparent: true,
+                    uniforms: {
+                        baseColor: { value: new THREE.Vector3(1, 0, 0) },
+                        outline: { value: 0.5 },
+                        isError: { value: 0 }
+                    }
+                })
+
+                // if (i === 0) {
+                //    
+                // }
+
+                if (mesh.name === "Sphere006") {
+                    this.heart = mesh
+                    this.heartBaseScale = mesh.scale.x
+                    console.log('HEART DEFAULT SCALE:', mesh.scale)
+
+                    const mat = mesh.material as THREE.ShaderMaterial
+                    mat.uniforms.baseColor.value = new THREE.Vector3(0.3, 1, 0)
+                    mat.uniforms.isError.value = 1
+
+
+
+                    this.errorMesh = mesh
+
                 }
-            })
 
-            if (i === 0) {
-                const mat = mesh.material as THREE.ShaderMaterial
-                mat.uniforms.baseColor.value = new THREE.Vector3(0.3, 1, 0)
-                mat.uniforms.isError.value = 1
-
-                this.errorMesh = mesh
             }
             this.isReady = true
+        })
+        // for (let i = 0; i < this.skeleton.children.length; i++) {
 
-        }
+
+
+        //     mesh.material = new THREE.ShaderMaterial({
+        //         vertexShader: vertex,
+        //         fragmentShader: fragment,
+        //         transparent: true,
+        //         uniforms: {
+        //             baseColor: { value: new THREE.Vector3(1, 0, 0) },
+        //             outline: { value: 0.5 },
+        //             isError: { value: 0 }
+        //         }
+        //     })
+
+        //     if (i === 0) {
+        //         const mat = mesh.material as THREE.ShaderMaterial
+        //         mat.uniforms.baseColor.value = new THREE.Vector3(0.3, 1, 0)
+        //         mat.uniforms.isError.value = 1
+
+        //         mesh.scale.set(1, 1, 1)
+
+        //         this.errorMesh = mesh
+        //     }
+        //     this.isReady = true
+
+        // }
     }
 
     click() {
-        if (this.progress === 3) {
-            this.endGame()
-            return
-        }
+        if (this.currentIntersect) {
+            //clicked on something, show popup
 
-        if (this.currentIntersect && this.currentIntersect.object == this.errorMesh) {
-            this.errorMesh = null
-            this.currentIntersect = null
+            store.commit('setConfirmPopup', true)
 
-            this.progress++
-            store.commit('updateCount', this.progress)
-
-            this.nextCase()
-
-            console.log('RADIOLOGIST GAME : GOOD ANSWER')
-
-
-        } else {
-            console.log('RADIOLOGIST GAME: WRONG ANSWER')
+            // const promise1 = new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve('foo')
+            //     }, 300)
+            // })
+            // this.progress++
+            // store.commit('updateProgress', this.progress)
 
         }
+        // if (this.progress === 3) {
+        //     this.endGame()
+        //     return
+        // }
+
+        //success
+        // if (this.currentIntersect && this.currentIntersect.object == this.errorMesh) {
+        //     this.errorMesh = null
+        //     this.currentIntersect = null
+
+
+        //     this.nextCase()
+
+        //     console.log('RADIOLOGIST GAME : GOOD ANSWER')
+
+        //     //wrong
+        // } else {
+        //     console.log('RADIOLOGIST GAME: WRONG ANSWER')
+        //     // console.log(this.currentIntersect.object)
+
+
+        // }
     }
+
 
     useAI() {
         if (this.errorMesh) {
@@ -331,7 +393,7 @@ export default class Radio implements ThreeGroup {
 
     endGame() {
         this.progress++
-        store.commit('updateCount', this.progress)
+        store.commit('updateProgress', this.progress)
 
         gsap.to(this.group.position, {
             y: -30,
@@ -349,10 +411,22 @@ export default class Radio implements ThreeGroup {
 
     }
 
+    heartbeat() {
+        if (this.heart && this.heartBaseScale) {
+            this.heart.scale.set(
+                this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / 22,
+                this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / 22,
+                this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / 22,
+            )
+        }
+    }
+
     update = () => {
         if (!this.isDragging && this.isReady) {
             this.raycaster.setFromCamera(this.mouse, this.camera)
-            const intersects = this.raycaster.intersectObjects(this.skeleton.children)
+            // console.log(this.skeleton.children)
+
+            const intersects = this.raycaster.intersectObjects(this.skeleton.children, true)
 
 
             if (intersects.length) {
@@ -373,8 +447,11 @@ export default class Radio implements ThreeGroup {
 
                 this.currentIntersect = null
             }
+
+
         }
 
+        this.heartbeat()
 
     }
 }

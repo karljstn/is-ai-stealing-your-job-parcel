@@ -1,11 +1,13 @@
 <template>
   <section>
-    <Side v-bind:case="this.case"></Side>
+    <Side></Side>
     <ButtonsRight></ButtonsRight>
 
     <NotificationManager></NotificationManager>
 
     <Toolbar></Toolbar>
+
+    <Confirm v-if="this.confirm"></Confirm>
 
     <Timer
       :timerCanStart="this.timerCanStart"
@@ -34,7 +36,7 @@ import Side from "./Radiologist/Side.vue";
 import ButtonsRight from "./Radiologist/ButtonsRight.vue";
 
 import Toolbar from "./Radiologist/Toolbar.vue";
-
+import Confirm from "./Radiologist/Confirm.vue";
 import ToggleTutorial from "./Radiologist/Tutorial/ToggleTutorial.vue";
 import NotificationManager from "./Radiologist/Notifications/NotificationManager.vue";
 import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
@@ -73,8 +75,8 @@ export default Vue.extend({
   },
 
   computed: {
-    case() {
-      return store.state.count;
+    confirm() {
+      return store.state.radiologist.confirm;
     },
   },
 
@@ -118,6 +120,7 @@ export default Vue.extend({
     ButtonsRight,
     Timer,
     Toolbar,
+    Confirm,
   },
 
   methods: {
