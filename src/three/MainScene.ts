@@ -88,6 +88,7 @@ export default class Scene {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
     this.renderer.setSize(this.w, this.h)
     this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2)) //limiter à 2
+    // this.renderer.outputEncoding = THREE.sRGBEncoding
 
     // this.composer = new EffectComposer(this.renderer)
     // this.composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))

@@ -5,9 +5,7 @@
         <div
           class="progress"
           :style="{ width: (this.progress / this.duration) * 100 + '%' }"
-        >
-          {{ this.index }}
-        </div>
+        ></div>
       </div>
     </div>
   </div>

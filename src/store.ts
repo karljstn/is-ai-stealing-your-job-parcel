@@ -29,7 +29,8 @@ const store = new Vuex.Store({
         tweakpane: null,
         radiologist: {
             progress: 0,
-            confirm: false
+            confirm: false,
+            confirmCallback: null
         }
     } as StoreState,
     mutations: {
@@ -69,6 +70,9 @@ const store = new Vuex.Store({
         },
         setConfirmPopup(state, payload) {
             state.radiologist.confirm = payload
+        },
+        setConfirmCallback(state, payload) {
+            state.radiologist.confirmCallback = payload
         },
         setPane(state, payload) {
             state.tweakpane = payload

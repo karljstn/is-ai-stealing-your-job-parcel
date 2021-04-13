@@ -10,11 +10,18 @@
 
 <script lang="ts">
 import Vue from "vue";
+import store from "~/store";
 
 export default Vue.extend({
+  computed: {
+    confirmCallback() {
+      return store.state.radiologist.confirmCallback;
+    },
+  },
   methods: {
     onClick(result: boolean) {
-      console.log(result);
+      console.log("on click");
+      if (this.confirmCallback) this.confirmCallback(result);
     },
   },
 });

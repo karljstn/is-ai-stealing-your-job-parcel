@@ -25,6 +25,7 @@ export interface StoreState {
   tweakpane: Tweakpane | null,
   radiologist: {
     progress: number,
-    confirm: boolean
+    confirm: boolean,
+    confirmCallback: Function | null
   }
 }
