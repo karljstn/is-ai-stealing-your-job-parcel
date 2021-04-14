@@ -10,7 +10,7 @@ import store from '~/store'
 import { ThreeGroup } from "~/interfaces/Three"
 
 // import { normalize } from '~/util'
-
+import { SKELETONS } from '~/constants/SKELETONS'
 import { MODELS } from '~/constants/MODELS'
 import LoadManager from '~/three/Singletons/LoadManager'
 // import { Bounce } from 'gsap'
@@ -141,7 +141,7 @@ export default class Radio implements ThreeGroup {
         this.loader = new GLTFLoader(LoadManager.manager)
 
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
-        this.bakedTexture = this.textureLoader.load(MODELS.SKELETON.BAKE)
+        this.bakedTexture = this.textureLoader.load(SKELETONS.SKELETON1.BAKE)
         this.bakedTexture.flipY = false
         // this.bakedTexture.encoding = THREE.sRGBEncoding
 
@@ -152,9 +152,9 @@ export default class Radio implements ThreeGroup {
 
         // this.bakedMaterial = new THREE.MeshBasicMaterial({ map: this.bakedTexture })
 
-        this.loader.load(MODELS.SKELETON.URL, (gltf) => {
+        this.loader.load(SKELETONS.SKELETON1.URL, (gltf) => {
             this.skeleton = gltf.scene
-            this.skeleton.scale.set(MODELS.SKELETON.SCALE, MODELS.SKELETON.SCALE, MODELS.SKELETON.SCALE)
+            this.skeleton.scale.set(SKELETONS.SKELETON1.SCALE, SKELETONS.SKELETON1.SCALE, SKELETONS.SKELETON1.SCALE)
             this.group.add(this.skeleton)
 
 
