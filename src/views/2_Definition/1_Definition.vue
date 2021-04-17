@@ -1,9 +1,9 @@
 <template>
 	<section>
 		<p>
-			Well, let me tell you: you've come to the right place ! First and foremost, do you even know what ai is?
+			Well, let me tell you: you've come to the right place ! First and foremost, do you even know what AI is?
 		</p>
-		
+
 		<div class="form">
 			<QuestionForm>
 				<Button value="yes">Of course!</Button>
@@ -27,7 +27,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.form{
+.form {
 	margin-top: 45px;
 	width: 400px;
 }

@@ -5,20 +5,24 @@ varying vec3 vPosition;
 varying vec3 vPositionW;
 varying vec3 vNormalW;
 
-uniform vec3 fresnelColor;
-
-vec3 packNormalToRGB( const in vec3 normal ) {
-    return normalize( normal ) * 0.5 + 0.5;
-}
+uniform vec3 uFresnelColor;
+uniform float uFresnelWidth;
 
 void main(){
+    // Direction du vertex par rapport a la position de la camera
     vec3 viewDirection = normalize(cameraPosition - vPosition);
+
+    // Angle entre deux vecteurs avec un produit scalaire : 
+    // direction d'en haut et la normal
     float fresnelFactor = dot(viewDirection, vNormal);
+
+    // Inverser l'angle
     float inverseFresnelFactor = clamp(1. - fresnelFactor, 0., 1.);
     
     // Shaping function
-    fresnelFactor = pow(fresnelFactor, 3.);
-    inversefresnelFactor = pow(inverseFresnelFactor, 3.);
+    inverseFresnelFactor = step(uFresnelWidth, inverseFresnelFactor);
 
-    gl_FragColor = vec4(fresnelFactor * baseColor + fresnelColor * inversefresnelFactor, 1.); 
+    vec3 color = mix(vec3(1., 1., 1.), uFresnelColor, inverseFresnelFactor);
+
+    gl_FragColor = vec4(color, 1.); 
 }

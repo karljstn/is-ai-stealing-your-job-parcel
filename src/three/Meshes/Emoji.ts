@@ -5,7 +5,6 @@ import { MODELS } from "~/constants/MODELS";
 import {
   AnimationAction,
   AnimationClip,
-  Color,
   Mesh,
   Scene,
   ShaderMaterial,
@@ -63,7 +62,8 @@ class Emoji {
       sinus: {
         amplitude: 0.1,
         frequency: 0.00304
-      }
+      },
+      fresnelWidth: 0.8
     };
     this.size = size;
     this.pane = store.state.tweakpane;
@@ -94,6 +94,9 @@ class Emoji {
         uPowerOfFactor: {
           value: this.params.fresnelFactor,
         },
+        uFresnelWidth: {
+          value: 0.8
+        },
         uMinStep: { value: this.params.minStep },
         uMaxStep: { value: this.params.maxStep },
         uFakeLight: { value: this.params.fakeLight },
@@ -101,12 +104,13 @@ class Emoji {
     });
 
     this.originalPos = new Vector3();
-    this.timeline = gsap.timeline({ paused: true })
+    this.timeline = gsap.timeline({ paused: true, onReverseComplete: this.destroy })
   }
 
   load = () => {
     this.loader.load(MODELS.EMOJI.URL, (gltf) => {
-      this.group = gltf.scene;
+      this.group = gltf.scene; // Group
+
       // Set baked material
       this.group.traverse((object3D) => {
         const mesh = object3D as Mesh;
@@ -179,6 +183,10 @@ class Emoji {
       min: 0,
       max: 1,
     });
+    folder.addInput(this.params.sinus, "amplitude", { min: 0, max: 0.4, label: "Sinus amplitude" })
+    folder.addInput(this.params.sinus, "frequency", {
+      label: "Sinus frequency", min: 0, max: 0.01, format: (v) => v.toFixed(4),
+    })
 
     const fresnelFolder = folder.addFolder({ title: "Fresnel", expanded: false })
     const fresnelColorInput = fresnelFolder.addInput(this.params, "fresnelColor", {
@@ -207,10 +215,7 @@ class Emoji {
       label: "Fake Light",
     });
 
-    folder.addInput(this.params.sinus, "amplitude", { min: 0, max: 0.4 })
-    folder.addInput(this.params.sinus, "frequency", {
-      min: 0, max: 0.01, format: (v) => v.toFixed(4),
-    })
+    const width = fresnelFolder.addInput(this.params, 'fresnelWidth')
 
     const inButton = folder.addButton({ title: "Anim In" })
     const outButton = folder.addButton({ title: "Anim Out" })
@@ -295,6 +300,16 @@ class Emoji {
         }
       });
     });
+    width.on("change", (e: any) => {
+      this.group?.traverse((obj) => {
+        const mesh = obj as Mesh;
+
+        if (mesh.material) {
+          const mat: ShaderMaterial = mesh.material as ShaderMaterial;
+          mat.uniforms["uFresnelWidth"].value = e.value;
+        }
+      });
+    })
 
     inButton.on('click', () => {
       this.in()
@@ -339,11 +354,8 @@ class Emoji {
   };
 
   destroy = () => {
-    this.out()
-    setTimeout(() => {
-      this.group && this.scene.remove(this.group);
-      raf.unsubscribe(RAFS.EMOJI);
-    }, 2001);
+    this.group && this.scene.remove(this.group);
+    raf.unsubscribe(RAFS.EMOJI);
   };
 }
 

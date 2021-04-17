@@ -1,6 +1,10 @@
 <template>
-	<div>
-		<router-view />
+	<div class="container">
+		<Navigation></Navigation>
+		<CanvasThree></CanvasThree>
+		<MuteButton></MuteButton>
+
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -12,6 +16,11 @@ import Vue from "vue"
 import store from "~/store"
 import CustomEase from "~/lib/CustomEase/esm/CustomEase.js"
 import gsap from "gsap"
+import NormalizeWheel from 'normalize-wheel';
+
+import CanvasThree from '~/components/Canvas/CanvasThree.vue';
+import Navigation from '~/components/UI/Navigation.vue';
+import MuteButton from '~/components/UI/MuteButton.vue';
 
 gsap.registerPlugin(CustomEase)
 
@@ -24,10 +33,28 @@ const testEase = CustomEase.create(
 
 store.commit("setEase", { name: "test", ease: testEase })
 
-if(store.state.devMode.enabled && store.state.devMode.goToProgression) store.commit("setProgression", store.state.devMode.goToProgression)
-
 export default Vue.extend({
     name: "Home",
+		components: {
+			CanvasThree,
+			Navigation,
+			MuteButton,
+		},
+		mounted() {
+			this.$nextTick(() => {
+				store.commit('toggleIsVueReady');
+
+				setTimeout(() => {
+					this.show = true;
+				}, store.state.load.pauseBeforeLoaderDuration);
+
+				setTimeout(() => {
+					store.commit('toggleIsLoaderReady');
+					this.isProgressionReady = true
+				}, store.state.load.minLoaderDuration);
+			});
+
+		},
 })
 </script>
 

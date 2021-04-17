@@ -29,7 +29,7 @@ class FullScreenPlane implements ThreeMesh {
 			uTime: { value: 0 },
 			uAlpha: { value: 1 },
 			uMixFactor: { value: 0 },
-			uColorInitial: { value: new Color(PALETTE.GRAY) },
+			uColorInitial: { value: new Color(PALETTE.WHITE) },
 			uColorFinal: { value: new Color(PALETTE.WHITE) },
 			uMousePos: { value: new Vector2() },
 			uAspectHorizontal: { value: window.innerWidth / window.innerHeight },

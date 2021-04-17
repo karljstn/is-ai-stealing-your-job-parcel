@@ -9,7 +9,6 @@ export interface StoreState {
     benchmark: boolean
     loader: boolean
     tweakpane: boolean
-    goToProgression: number
     forceRadiologist: boolean
   }
   load: {

@@ -1,28 +1,28 @@
 <template>
 	<form @submit="onSubmit">
 		<slot />
-		<!-- example : -->
-		<!-- <button value="test1">testing1</button> -->
-		<!-- <button value="test2">testing2</button> -->
 	</form>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
+import router from '~/router';
 import store from '~/store';
-
-export interface SubmitEvent {
-	submitter: HTMLFormElement;
-}
 
 export default Vue.extend({
 	methods: {
-		onSubmit: (e: Event & SubmitEvent) => {
+		onSubmit: e => {
 			e.preventDefault();
 
 			if (!e.submitter) return;
 
-			store.commit('incrementProgression');
+			const currPathFloat = parseFloat(router.history.current.path.substring(1));
+			console.log(router.history.current.path, currPathFloat);
+
+			if (!currPathFloat) return;
+
+			store.commit('setProgression', currPathFloat + 1);
+			router.push(`/${currPathFloat + 1}`);
 		},
 	},
 });

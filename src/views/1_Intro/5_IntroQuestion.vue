@@ -28,7 +28,6 @@ export default Vue.extend({
 	data() {
 		return {
 			helloRect: RECTS.INTRO.HELLO,
-			progression: 0,
 		};
 	},
 	components: {

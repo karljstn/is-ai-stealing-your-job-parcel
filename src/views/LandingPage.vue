@@ -28,21 +28,38 @@ import Autoskip from '~components/Common/Autoskip.vue';
 import SplitText from '~components/Common/SplitText.vue';
 import Vue from 'vue';
 import store from '~/store';
-import NormalizeWheel from 'normalize-wheel';
 import gsap from 'gsap';
+import NormalizeWheel from 'normalize-wheel';
 
 export default Vue.extend({
 	name: 'landing-page',
 	data() {
 		return {
 			rect: RECTS.LANDING,
-			progression: 0,
 			show: true,
 		};
 	},
 	mounted() {
+		const onWheel = (event: any) => {
+			const normalized = NormalizeWheel(event);
+			const pixelSpeed = normalized.pixelY;
+
+			if (pixelSpeed > 1) {
+				window.removeEventListener('mousewheel', onWheel);
+				window.removeEventListener('wheel', onWheel);
+				store.state.scene?.LandingPage.trashcan.drop();
+				setTimeout(() => {
+					store.commit('incrementProgression');
+					this.$router.push(`/${store.state.progression}`);
+				}, 1200);
+			}
+		};
+
+		window.addEventListener('mousewheel', onWheel);
+		window.addEventListener('wheel', onWheel);
+
 		// Three
-		store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
+		// store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
 		store.state.scene?.LandingPage.start();
 
 		// Text animations
@@ -65,26 +82,8 @@ export default Vue.extend({
 		const button = folder?.addButton({ title: 'Toggle' });
 		button?.on('click', () => {
 			this.show = !this.show;
-			this.show ? timeline.tweenFromTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
+			this.show ? timeline.tweenFrswomTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
 		});
-
-		// Events
-		const onWheel = (event: any) => {
-			const normalized = NormalizeWheel(event);
-			const pixelSpeed = normalized.pixelY;
-			if (pixelSpeed > 1) {
-				window.removeEventListener('mousewheel', onWheel);
-				window.removeEventListener('wheel', onWheel);
-				store.state.scene?.LandingPage.trashcan.drop();
-
-				setTimeout(() => {
-					store.commit('incrementProgression');
-				}, 2000);
-			}
-		};
-
-		window.addEventListener('mousewheel', onWheel);
-		window.addEventListener('wheel', onWheel);
 	},
 	destroyed() {
 		store.state.scene?.LandingPage.trashcan.destroy();

@@ -2,10 +2,10 @@
 	<section>
 		<SaveRect :rectName="helloRect">
 			<p class="hello">
-				Let me guess :
+				you're here because you feel like your job is threatened
 			</p>
 		</SaveRect>
-		<autoskip />
+		<autoskip :time="3000" />
 	</section>
 </template>
 
@@ -16,13 +16,11 @@ import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
-import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	data() {
 		return {
-			helloRect: RECTS.INTRO.GUESS,
-			progression: 0,
+			helloRect: RECTS.INTRO.THREATHENED,
 		};
 	},
 	components: {
@@ -31,23 +29,12 @@ export default Vue.extend({
 		Button,
 		Autoskip,
 	},
-	destroyed(){
-		// const ease = store.state.eases.get("test");
-		// const uniforms =
-		// store.state.scene &&
-		// store.state.scene.Loader &&
-		// store.state.scene.Loader.fullScreenPlane.uniforms;
-		// uniforms &&
-		// gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5, onComplete: ()=>{
-		// 	// uniforms.uColorFinal.value = PALETTE.BLACK
-		// 	// uniforms.uColorFinal.value = PALETTE.PINK
-		// } });
-	}
 });
 </script>
 
 <style lang="scss" scoped>
 p {
 	font-size: 4rem;
+	text-align: center;
 }
 </style>

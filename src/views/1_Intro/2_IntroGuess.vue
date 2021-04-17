@@ -2,10 +2,10 @@
 	<section>
 		<SaveRect :rectName="helloRect">
 			<p class="hello">
-				by <span>Artificial Intelligence</span>
+				Let me guess :
 			</p>
 		</SaveRect>
-		<autoskip />
+		<autoskip :time="3000" />
 	</section>
 </template>
 
@@ -20,8 +20,7 @@ import Autoskip from '~components/Common/Autoskip.vue';
 export default Vue.extend({
 	data() {
 		return {
-			helloRect: RECTS.INTRO.AI,
-			progression: 0,
+			helloRect: RECTS.INTRO.GUESS,
 		};
 	},
 	components: {
@@ -36,8 +35,5 @@ export default Vue.extend({
 <style lang="scss" scoped>
 p {
 	font-size: 4rem;
-	span{
-			font-style: italic;
-	}
 }
 </style>

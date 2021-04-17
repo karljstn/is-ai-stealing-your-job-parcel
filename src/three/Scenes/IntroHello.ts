@@ -40,20 +40,10 @@ class IntroHello {
   }
 
   tweaks() {
-    const pane = store.state.tweakpane;
 
-    const fov = pane?.addInput(this.params, "fov", { min: 1, max: 100 });
-    const pos = pane?.addInput(this.params, "position");
-    fov?.on("change", (e) => {
-      this.camera.fov = e.value;
-      this.camera.updateProjectionMatrix();
-    });
-    pos?.on("change", (e) => {
-      this.camera.position.set(e.value.x, e.value.y, e.value.z);
-    });
   }
 
-  update(dt: number) {}
+  update(dt: number) { }
 }
 
 export default IntroHello;

@@ -196,13 +196,13 @@ export default class Scene {
   tweaks() {
     if (!this.pane) return;
 
-    const folder = this.pane.addFolder({ title: "Light", expanded: false });
-    const lightPosInput = folder.addInput(this.params.light, "pos", {
+    const lightFolder = this.pane.addFolder({ title: "Light", expanded: false });
+    const lightPosInput = lightFolder.addInput(this.params.light, "pos", {
       label: "Directional light position",
       min: -this.params.viewport.height / 2,
       max: this.params.viewport.height / 2,
     });
-    const lightIntensityInput = folder.addInput(
+    const lightIntensityInput = lightFolder.addInput(
       this.params.light,
       "intensity",
       {
@@ -211,13 +211,23 @@ export default class Scene {
         max: this.params.light.intensity * 2,
       }
     );
-
     lightPosInput.on("change", (e: TpChangeEvent<Vector3>) => {
       this.light.position.set(e.value.x, e.value.y, e.value.z);
     });
     lightIntensityInput.on("change", (e: TpChangeEvent<number>) => {
       this.light.intensity = e.value;
     });
+
+    // const cameraFolder = this.pane.addFolder({ title: "Camera", expanded: false })
+    // const fov = cameraFolder.addInput(this.params, "fov", { min: 1, max: 100 });
+    // const pos = cameraFolder.addInput(this.params, "position");
+    // fov.on("change", (e: any) => {
+    //   this.camera.fov = e.value;
+    //   this.camera.updateProjectionMatrix();
+    // });
+    // pos.on("change", (e: any) => {
+    //   this.camera.position.set(e.value.x, e.value.y, e.value.z);
+    // });
   }
 
   start() {
@@ -241,6 +251,7 @@ export default class Scene {
   }
 
   destroyRadiologist() {
+    console.log("destroy radiologist game");
     this.camera.position.set(0, 0, 1);
     this.scene.remove(this.radio.group);
     console.log(this.camera.position);
@@ -303,10 +314,5 @@ export default class Scene {
     this.IntroHello?.update(dt); //TODO: switch based on progress
   };
 }
-
-// module.hot.dispose(() => {
-//   raf.unsubscribe(RAFS.MAIN);
-//   // TODO: dispose Three things - renderer etc
-// });
 
 //TODO: on accept, check if class already instanced
