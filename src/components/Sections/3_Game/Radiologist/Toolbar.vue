@@ -70,12 +70,13 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .toolbar-container {
   width: 40%;
-  height: 100px;
-  background-image: url("~/assets/Games/Radiologist/files-bar.png");
+  height: 5vh;
+  background-color: #a0aadf;
+  // background-image: url("~/assets/Games/Radiologist/files-bar.png");
   background-repeat: no-repeat;
   background-size: contain;
   position: absolute;
-  bottom: 0;
+  bottom: 6%;
   left: 0;
   right: 0;
   margin: auto;

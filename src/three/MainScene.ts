@@ -256,6 +256,8 @@ export default class Scene {
 
     // this.composer.setSize(this.w, this.h)
 
+    this.radio.onResize()
+
     this.params.viewport = getViewport(this.camera)
     if (this.Loader)
       this.Loader.fullScreenPlane.uniforms.uAspectHorizontal.value =

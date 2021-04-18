@@ -43,6 +43,8 @@ export default class Radio implements ThreeGroup {
     // zoomMaterial: THREE.ShaderMaterial
     // zoomMesh: THREE.Mesh
 
+    ratio: number
+
     raycaster: THREE.Raycaster
     mouse: THREE.Vector2
     camera: THREE.PerspectiveCamera
@@ -88,6 +90,8 @@ export default class Radio implements ThreeGroup {
         this.heartBaseScale = null
 
         this.controls = controls
+
+        this.controls.enablePan = false
 
         this.raycaster = raycaster
         this.camera = camera
@@ -136,12 +140,12 @@ export default class Radio implements ThreeGroup {
 
         this.update()
 
-
+        this.ratio = (window.innerWidth * 0.82) / (window.innerHeight * 0.71)
 
         this.loader = new GLTFLoader(LoadManager.manager)
 
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
-        this.bakedTexture = this.textureLoader.load(SKELETONS.SKELETON1.BAKE)
+        this.bakedTexture = this.textureLoader.load(SKELETONS.SKELETON2.BAKE)
         this.bakedTexture.flipY = false
         // this.bakedTexture.encoding = THREE.sRGBEncoding
 
@@ -152,9 +156,9 @@ export default class Radio implements ThreeGroup {
 
         // this.bakedMaterial = new THREE.MeshBasicMaterial({ map: this.bakedTexture })
 
-        this.loader.load(SKELETONS.SKELETON1.URL, (gltf) => {
+        this.loader.load(SKELETONS.SKELETON2.URL, (gltf) => {
             this.skeleton = gltf.scene
-            this.skeleton.scale.set(SKELETONS.SKELETON1.SCALE, SKELETONS.SKELETON1.SCALE, SKELETONS.SKELETON1.SCALE)
+            this.skeleton.scale.set(SKELETONS.SKELETON2.SCALE, SKELETONS.SKELETON2.SCALE, SKELETONS.SKELETON2.SCALE)
             this.group.add(this.skeleton)
 
 
@@ -195,10 +199,14 @@ export default class Radio implements ThreeGroup {
 
         // const test = Math.round(normalize(window.innerWidth * 0.1, window.innerWidth, 0) * 100) / 100
 
-        const geoForeground = new THREE.PlaneBufferGeometry(2, 1.9)
+
+
+        const geoForeground = new THREE.PlaneBufferGeometry(2, 2)
         const matForeground = new THREE.ShaderMaterial({
             uniforms: {
-                size: { value: new THREE.Vector2(0.9, 0.9) }
+                size: { value: new THREE.Vector2(0.82, 0.78) },
+                ratio: { value: this.ratio },
+                pi: { value: Math.PI }
             },
             fragmentShader: fragmentForeground,
             vertexShader: vertexForeground,
@@ -232,6 +240,15 @@ export default class Radio implements ThreeGroup {
 
 
 
+    }
+
+    onResize() {
+        console.log('here')
+
+        this.ratio = (window.innerWidth * 0.82) / (window.innerHeight * 0.71)
+        const mat = this.foreground.material as THREE.ShaderMaterial
+
+        mat.uniforms.ratio.value = this.ratio
     }
 
     tweaks() {
