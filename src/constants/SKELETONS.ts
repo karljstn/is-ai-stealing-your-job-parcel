@@ -1,11 +1,17 @@
 import skeleton1 from "~/assets/Games/Radiologist/Models/skeleton_1.glb"
-import skeletonBaseTex1 from '~/assets/Games/Radiologist/Textures/skeleton_1.jpg'
+import skeletonBaseTex1 from "~/assets/Games/Radiologist/Textures/skeleton_1.jpg"
 
 import skeleton2 from "~/assets/Games/Radiologist/Models/skeleton_2-4.glb"
-import skeletonBaseTex2 from '~/assets/Games/Radiologist/Textures/skeleton_2-4.jpg'
+import skeletonBaseTex2 from "~/assets/Games/Radiologist/Textures/skeleton_2-4.jpg"
 
 import skeleton3 from "~/assets/Games/Radiologist/Models/skeleton_3-2.glb"
 import skeletonBaseTex3 from "~/assets/Games/Radiologist/Textures/skeleton_3-2.jpg"
+
+import skeleton4 from "~/assets/Games/Radiologist/Models/skeleton_4-3.glb"
+import skeletonBaseTex4 from "~/assets/Games/Radiologist/Textures/skeleton_4-3.jpg"
+
+import skeleton5 from "~/assets/Games/Radiologist/Models/skeleton_5-3.glb"
+import skeletonBaseTex5 from "~/assets/Games/Radiologist/Textures/skeleton_5-3.jpg"
 
 export const SKELETONS = {
     SKELETON1: {
@@ -23,4 +29,14 @@ export const SKELETONS = {
         SCALE: 1.5,
         BAKE: skeletonBaseTex3
     },
+    SKELETON4: {
+        URL: skeleton4,
+        SCALE: 1.5,
+        BAKE: skeletonBaseTex4
+    },
+    SKELETON5: {
+        URL: skeleton5,
+        SCALE: 1.5,
+        BAKE: skeletonBaseTex5
+    }
 }
