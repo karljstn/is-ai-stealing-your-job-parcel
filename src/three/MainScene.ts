@@ -15,12 +15,13 @@ import { clamp, getViewport } from "~/util/";
 import { MainSceneParams } from "~/types/";
 import Loader from "./Loader";
 import store from "~/store";
-import IntroHello from "./Scenes/IntroHello";
+import EmojiScene from "./Scenes/EmojiScene";
 import { RAFS } from "~constants/RAFS";
-import LandingPage from "./Scenes/LandingPage";
+import TrashcanScene from "./Scenes/TrashcanScene";
 import { Vector3 } from "three";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import FullScreenPlane from "./Meshes/FullScreenPlane";
+import CrystalBallScene from "./Scenes/CrystalBallScene";
 
 export default class Scene {
   // Data
@@ -47,8 +48,9 @@ export default class Scene {
 
   Benchmark: Benchmark | null;
   Loader: Loader | null;
-  LandingPage: LandingPage;
-  IntroHello: IntroHello;
+  TrashcanScene: TrashcanScene;
+  EmojiScene: EmojiScene;
+  CrystalBallScene: CrystalBallScene
   FullScreenPlane: FullScreenPlane | null;
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
@@ -174,18 +176,19 @@ export default class Scene {
       this.scene.add(this.FullScreenPlane.object3d);
     }
 
-    this.IntroHello = new IntroHello(
+    this.EmojiScene = new EmojiScene(
       this.params.viewport,
       this.scene,
       this.mouse,
       this.camera
     );
-    this.LandingPage = new LandingPage(
+    this.TrashcanScene = new TrashcanScene(
       this.params.viewport,
       this.scene,
       this.mouse,
       this.pane
     );
+    this.CrystalBallScene = new CrystalBallScene(this.params.viewport, this.scene)
 
     this.tweaks();
 
@@ -311,7 +314,7 @@ export default class Scene {
 
     this.controls.update();
 
-    this.IntroHello?.update(dt); //TODO: switch based on progress
+    this.EmojiScene?.update(dt); //TODO: switch based on progress
   };
 }
 

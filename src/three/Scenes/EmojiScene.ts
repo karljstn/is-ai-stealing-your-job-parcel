@@ -3,10 +3,10 @@ import { Viewport } from "~/types";
 import { rectToThree } from "~/util";
 import { PerspectiveCamera, Scene, Vector2, Vector3 } from "three";
 import { RECTS } from "~/constants/RECTS";
-import Emoji from "../Meshes/Emoji";
+import Emoji from "../Meshes/GLTF/Emoji";
 import Tweakpane from "tweakpane";
 
-class IntroHello {
+class EmojiScene {
   camera: PerspectiveCamera;
   emoji: Emoji;
   params: any;
@@ -46,4 +46,4 @@ class IntroHello {
   update(dt: number) { }
 }
 
-export default IntroHello;
+export default EmojiScene;

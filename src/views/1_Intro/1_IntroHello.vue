@@ -37,15 +37,15 @@ export default Vue.extend({
 	},
 	methods: {
 		onAnimationComplete: function() {
-			store.state.scene?.IntroHello.emoji.out();
+			store.state.scene?.EmojiScene.emoji.out();
 		},
 	},
 	mounted() {
-		store.state.scene?.IntroHello.start();
+		store.state.scene?.EmojiScene.start();
 		store.state.scene?.bringToFront();
 	},
 	destroyed() {
-		store.state.scene?.IntroHello.emoji.destroy();
+		store.state.scene?.EmojiScene.emoji.destroy();
 	},
 });
 </script>

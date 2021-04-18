@@ -6,9 +6,10 @@ import { AnimationAction, AnimationClip, PerspectiveCamera, Scene, WebGLRenderer
 import Tweakpane from "tweakpane"
 import raf from "~three/Singletons/RAF"
 import { RAFS } from "~constants/RAFS"
+import { ThreeGLTF } from "~interfaces/Three"
 // import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
-class Hand {
+class Hand implements ThreeGLTF {
 	params: { animSpeed: number, size: number }
 	size: number
 	pane: Tweakpane | null

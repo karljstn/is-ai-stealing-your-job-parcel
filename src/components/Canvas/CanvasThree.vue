@@ -13,22 +13,11 @@ export default Vue.extend({
   name: "CanvasThree",
   mounted() {
     const scene = new Scene(this.$refs.canvasThree, 60);
-    console.log(scene)
     scene.start()
 
     if(store.state.devMode.forceRadiologist) scene.startRadiologist()
     store.commit("setScene", scene)
   },
-  // destroyed(){
-  //   console.log('allo');
-  //   console.log(store);
-  //   store.state.scene.radio.clear()
-    // console.log('destroyeaaaad');
-    // if(store.scene){
-    //   console.log('CLEAR');
-    //   store.scene.radio.clear()
-    // }
-  // }
 });
 </script>
 

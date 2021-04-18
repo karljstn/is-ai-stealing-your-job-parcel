@@ -3,8 +3,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import LoadManager from '~/three/Singletons/LoadManager'
 import { MODELS } from '~/constants/MODELS'
 import { Mesh, MeshBasicMaterial, Scene, TextureLoader } from "three"
+import { ThreeGLTF } from "~interfaces/Three"
 
-class TrashcanBake {
+class TrashcanBake implements ThreeGLTF {
   params: { animSpeed: number, size: number }
   size: number
   scene: Scene
@@ -35,6 +36,10 @@ class TrashcanBake {
       this.group.scale.set(this.params.size, this.params.size, this.params.size)
     })
   }
+
+  start = () => { }
+
+  update = (dt: number) => { }
 
   destroy = () => {
     this.group && this.scene.remove(this.group)

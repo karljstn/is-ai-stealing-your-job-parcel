@@ -3,24 +3,24 @@ import { Viewport } from "~/types";
 import { rectToThree } from "~/util";
 import { PerspectiveCamera, PointLight, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { RECTS } from "~/constants/RECTS"
-import Trashcan from "../Meshes/Trashcan";
+import Biases from "../Meshes/GLTF/Biases";
 import Tweakpane from "tweakpane";
-import TrashcanBake from "~three/Meshes/TrashcanBake";
+import TrashcanBake from "~three/Meshes/GLTF/TrashcanBake";
 
-class LandingPage {
+class TrashcanScene {
 	viewport: Viewport
 	scene: Scene
-	trashcan: Trashcan
+	biases: Biases
 	trashcanBake: TrashcanBake
 	mouse: Vector2
 
 	constructor(viewport: Viewport, scene: Scene, mouse: Vector2, pane: Tweakpane | null) {
 		this.viewport = viewport
 		this.scene = scene
-		this.trashcan = new Trashcan(1, pane, scene)
+		this.biases = new Biases(1, pane, scene)
 		this.trashcanBake = new TrashcanBake(1, scene)
 		this.mouse = mouse;
-		this.trashcan.load()
+		this.biases.load()
 		this.trashcanBake.load()
 	}
 
@@ -29,7 +29,7 @@ class LandingPage {
 
 		const intervalID = setInterval(() => {
 			rect = store.state.rects.get(RECTS.LANDING)
-			if (rect && this.trashcan.group) {
+			if (rect && this.biases.group) {
 				clearInterval(intervalID)
 				// Upper left
 				let { x, y } = rectToThree(this.viewport, rect)
@@ -40,9 +40,9 @@ class LandingPage {
 
 				y -= this.viewport.height * 0.33
 
-				this.trashcan.group.position.set(x, y, 0)
-				this.scene.add(this.trashcan.group)
-				this.trashcan.start()
+				this.biases.group.position.set(x, y, 0)
+				this.scene.add(this.biases.group)
+				this.biases.start()
 
 				if (this.trashcanBake.group) {
 					this.trashcanBake.group.position.set(x, y, 0)
@@ -56,14 +56,14 @@ class LandingPage {
 		// from -1 -> 1 to 0 -> 1
 		// const mouse = { x: this.mouse.x / 2 + 0.5, y: this.mouse.y / 2 + 0.5 }
 
-		if (!this.trashcan.group) return
+		if (!this.biases.group) return
 		// const position = this.trashcan.group.position
 		// const mouse = new Vector3(this.mouse.x * this.viewport.width, this.mouse.y * this.viewport.height, 0)
 		// const rotationFactor = 0.07
 		// const target = this.trashcan.group.rotation.toVector3().clone().subVectors(mouse, position).multiplyScalar(rotationFactor)
 		// this.trashcan.group.rotation.setFromVector3(target)
-		this.trashcan.update(dt)
+		this.biases.update(dt)
 	}
 }
 
-export default LandingPage
+export default TrashcanScene

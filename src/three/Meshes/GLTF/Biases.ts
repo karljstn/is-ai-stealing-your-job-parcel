@@ -6,8 +6,9 @@ import { AnimationAction, AnimationClip, PerspectiveCamera, Scene, WebGLRenderer
 import Tweakpane from "tweakpane"
 import raf from "~three/Singletons/RAF"
 import { RAFS } from "~constants/RAFS"
+import { ThreeGLTF } from "~interfaces/Three"
 
-class Trashcan {
+class Biases implements ThreeGLTF {
 	params: { animSpeed: number, size: number }
 	size: number
 	pane: Tweakpane | null
@@ -43,7 +44,6 @@ class Trashcan {
 			this.group = gltf.scene
 			this.group.scale.set(this.params.size, this.params.size, this.params.size)
 
-			// Animations
 			this.mixer = new THREE.AnimationMixer(this.group)
 			this.mixer.timeScale = this.params.animSpeed
 			this.animations = gltf.animations
@@ -93,5 +93,5 @@ class Trashcan {
 	}
 }
 
-export default Trashcan
+export default Biases
 

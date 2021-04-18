@@ -24,9 +24,10 @@ import { rectToThree } from "~util";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import fragment from "~shaders/bakedFresnel/fragment.glsl";
 import vertex from "~shaders/bakedFresnel/vertex.glsl";
+import { ThreeGLTF } from "~interfaces/Three";
 
 
-class Emoji {
+class Emoji implements ThreeGLTF {
   params: any;
   size: number;
   scene: Scene;

@@ -47,7 +47,7 @@ export default Vue.extend({
 			if (pixelSpeed > 1) {
 				window.removeEventListener('mousewheel', onWheel);
 				window.removeEventListener('wheel', onWheel);
-				store.state.scene?.LandingPage.trashcan.drop();
+				store.state.scene?.TrashcanScene.biases.drop();
 				setTimeout(() => {
 					store.commit('incrementProgression');
 					this.$router.push(`/${store.state.progression}`);
@@ -60,7 +60,7 @@ export default Vue.extend({
 
 		// Three
 		// store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
-		store.state.scene?.LandingPage.start();
+		store.state.scene?.TrashcanScene.start();
 
 		// Text animations
 		const refs: any[] = Object.values(this.$refs);
@@ -86,8 +86,8 @@ export default Vue.extend({
 		});
 	},
 	destroyed() {
-		store.state.scene?.LandingPage.trashcan.destroy();
-		store.state.scene?.LandingPage.trashcanBake.destroy();
+		store.state.scene?.TrashcanScene.biases.destroy();
+		store.state.scene?.TrashcanScene.trashcanBake.destroy();
 	},
 	components: {
 		QuestionForm,

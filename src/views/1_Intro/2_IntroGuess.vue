@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<SaveRect :rectName="helloRect">
+		<SaveRect :rectName="rect">
 			<p class="hello">
 				Let me guess :
 			</p>
@@ -16,11 +16,12 @@ import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
+import store from '~store';
 
 export default Vue.extend({
 	data() {
 		return {
-			helloRect: RECTS.INTRO.GUESS,
+			rect: RECTS.INTRO.GUESS,
 		};
 	},
 	components: {
@@ -28,6 +29,9 @@ export default Vue.extend({
 		QuestionForm,
 		Button,
 		Autoskip,
+	},
+	mounted() {
+		store.state.scene.CrystalBallScene.start();
 	},
 });
 </script>
