@@ -23,23 +23,27 @@
 import Button from '~/components/UI/Button';
 import QuestionForm from '~/components/UI/QuestionForm';
 import Vue from 'vue';
+import { fadeBackground } from '~util';
 
 export default Vue.extend({
 	components: {
 		QuestionForm,
 		Button,
 	},
+	mounted() {
+		fadeBackground({ routeName: 'DefinitionTwo' });
+	},
 });
 </script>
 
 <style lang="scss" scoped>
-	section{
-		align-items: flex-start;
-		p{
-			margin: 1rem 0;
-		}
+section {
+	align-items: flex-start;
+	p {
+		margin: 1rem 0;
 	}
-	.form{
+}
+.form {
 	margin-top: 45px;
 	width: 600px;
 }

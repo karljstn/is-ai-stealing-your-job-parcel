@@ -11,9 +11,13 @@
 
 <script>
 import Vue from 'vue';
+import { fadeBackground } from '~util';
 
 export default Vue.extend({
 	components: {},
+	mounted() {
+		fadeBackground({ routeName: 'EndOne' });
+	},
 });
 </script>
 

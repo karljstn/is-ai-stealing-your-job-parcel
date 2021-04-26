@@ -18,6 +18,7 @@ import Button from '~/components/UI/Button';
 import QuestionForm from '~/components/UI/QuestionForm';
 import Vue from 'vue';
 import store from '~store';
+import { fadeBackground } from '~util';
 
 export default Vue.extend({
 	components: {
@@ -25,6 +26,7 @@ export default Vue.extend({
 		Button,
 	},
 	mounted() {
+		fadeBackground({ routeName: 'DefinitionOne' });
 		store.state.scene.PencilScene.start();
 	},
 	destroyed() {
