@@ -1,4 +1,7 @@
 import { PerspectiveCamera } from "three"
+import { Component } from "vue"
+import { RouteConfig } from "vue-router"
+import router from "~router"
 
 /**
  * @returns Average of an array
@@ -55,3 +58,12 @@ export function round(value: number, significantNumbers: number) {
   return Number.parseFloat(value.toFixed(significantNumbers))
 }
 
+export function fadeBackground({ color, routeName }: { color?: string, routeName?: string }) {
+  document.body.classList.remove(...document.body.classList);
+  if (color) {
+    document.body.style.backgroundColor = color
+  } else {
+    const route: any = router.options.routes?.find((route) => route.name === routeName)
+    document.body.style.backgroundColor = route.color
+  }
+}

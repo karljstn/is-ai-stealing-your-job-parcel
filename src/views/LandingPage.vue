@@ -30,6 +30,8 @@ import Vue from 'vue';
 import store from '~/store';
 import gsap from 'gsap';
 import NormalizeWheel from 'normalize-wheel';
+import { fadeBackground } from '~util';
+import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	name: 'landing-page',
@@ -48,6 +50,8 @@ export default Vue.extend({
 				window.removeEventListener('mousewheel', onWheel);
 				window.removeEventListener('wheel', onWheel);
 				store.state.scene?.TrashcanScene.biases.drop();
+				fadeBackground({ color: PALETTE.YELLOW });
+
 				setTimeout(() => {
 					store.commit('incrementProgression');
 					this.$router.push(`/${store.state.progression}`);
@@ -59,7 +63,6 @@ export default Vue.extend({
 		window.addEventListener('wheel', onWheel);
 
 		// Three
-		// store.state.scene?.Loader?.fullScreenPlane.toggleTransitions();
 		store.state.scene?.TrashcanScene.start();
 
 		// Text animations
@@ -78,7 +81,7 @@ export default Vue.extend({
 		}, 500);
 
 		// Tweaks
-		const folder = store.state.tweakpane?.addFolder({ title: 'Text' });
+		const folder = store.state.tweakpane?.addFolder({ title: 'Text', expanded: false });
 		const button = folder?.addButton({ title: 'Toggle' });
 		button?.on('click', () => {
 			this.show = !this.show;

@@ -13,6 +13,7 @@ import './styles/_global.scss'
 
 import Vue from "vue"
 
+import router from "~/router"
 import store from "~/store"
 import CustomEase from "~/lib/CustomEase/esm/CustomEase.js"
 import gsap from "gsap"

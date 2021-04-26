@@ -22,6 +22,10 @@ class CrystalBallScene implements ThreeScene {
 	update = () => {
 
 	}
+
+	destroy = () => {
+		this.CrystalBall.destroy()
+	}
 }
 
 export default CrystalBallScene

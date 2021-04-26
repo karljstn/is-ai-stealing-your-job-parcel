@@ -20,8 +20,9 @@ import { RAFS } from "~constants/RAFS";
 import TrashcanScene from "./Scenes/TrashcanScene";
 import { Vector3 } from "three";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import FullScreenPlane from "./Meshes/FullScreenPlane";
 import CrystalBallScene from "./Scenes/CrystalBallScene";
+import PencilScene from "./Scenes/PencilScene";
+import Background from "./Meshes/Background";
 
 export default class Scene {
   // Data
@@ -51,7 +52,8 @@ export default class Scene {
   TrashcanScene: TrashcanScene;
   EmojiScene: EmojiScene;
   CrystalBallScene: CrystalBallScene
-  FullScreenPlane: FullScreenPlane | null;
+  // Background: Background | null;
+  PencilScene: PencilScene
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -66,10 +68,15 @@ export default class Scene {
       },
       light: {
         pos: new Vector3(4.1, 0.86, 5.2),
-        intensity: 0.91,
+        intensity: 0.51,
         target: new Vector3(),
       },
+      camera: {
+        fov: 45,
+        position: new Vector3(0, 0, 2)
+      }
     };
+
     this.w = window.innerWidth;
     this.h = window.innerHeight;
     const paneEl = document.querySelector(".tp-dfwv");
@@ -84,7 +91,9 @@ export default class Scene {
     } else this.pane = null;
 
     this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000);
-    this.camera.position.z = 1; //z has to be different than 0 for getViewport to work
+    this.camera.fov = this.params.camera.fov
+    this.camera.position.copy(this.params.camera.position); //z has to be different than 0 for getViewport to work
+
     this.scene = new THREE.Scene();
 
     this.renderer = new THREE.WebGLRenderer({
@@ -166,14 +175,13 @@ export default class Scene {
         this.camera,
         this.pane
       );
-      this.FullScreenPlane = null;
+      // this.Background = null;
     } else {
       this.Loader = null;
-      this.FullScreenPlane = new FullScreenPlane(
-        this.params.viewport,
-        this.camera
-      );
-      this.scene.add(this.FullScreenPlane.object3d);
+      // this.Background = new Background(
+      //   this.camera
+      // );
+      // this.scene.add(this.Background.object3d);
     }
 
     this.EmojiScene = new EmojiScene(
@@ -189,6 +197,7 @@ export default class Scene {
       this.pane
     );
     this.CrystalBallScene = new CrystalBallScene(this.params.viewport, this.scene)
+    this.PencilScene = new PencilScene(this.params.viewport, this.scene, this.mouse)
 
     this.tweaks();
 
@@ -221,16 +230,16 @@ export default class Scene {
       this.light.intensity = e.value;
     });
 
-    // const cameraFolder = this.pane.addFolder({ title: "Camera", expanded: false })
-    // const fov = cameraFolder.addInput(this.params, "fov", { min: 1, max: 100 });
-    // const pos = cameraFolder.addInput(this.params, "position");
-    // fov.on("change", (e: any) => {
-    //   this.camera.fov = e.value;
-    //   this.camera.updateProjectionMatrix();
-    // });
-    // pos.on("change", (e: any) => {
-    //   this.camera.position.set(e.value.x, e.value.y, e.value.z);
-    // });
+    const cameraFolder = this.pane.addFolder({ title: "Camera", expanded: false })
+    const fov = cameraFolder.addInput(this.params.camera, "fov", { min: 1, max: 100 });
+    const pos = cameraFolder.addInput(this.params.camera, "position");
+    fov.on("change", (e: any) => {
+      this.camera.fov = e.value;
+      this.camera.updateProjectionMatrix();
+    });
+    pos.on("change", (e: any) => {
+      this.camera.position.copy(e.value);
+    });
   }
 
   start() {
@@ -261,8 +270,12 @@ export default class Scene {
   }
 
   bringToFront() {
-    this.FullScreenPlane?.hide();
-    this.renderer.domElement.style.zIndex = "10000";
+    // this.Background?.hide();
+    // this.renderer.domElement.style.zIndex = "10000";
+  }
+
+  sendToBack() {
+    // this.Background?.show();
   }
 
   setEvents() {
@@ -315,6 +328,7 @@ export default class Scene {
     this.controls.update();
 
     this.EmojiScene?.update(dt); //TODO: switch based on progress
+    this.PencilScene.update(dt)
   };
 }
 

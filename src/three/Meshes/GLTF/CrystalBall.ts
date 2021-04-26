@@ -1,15 +1,18 @@
-import { Group, Mesh, Scene, ShaderMaterial, Vector3 } from "three";
+import { Color, Group, Mesh, Scene, ShaderMaterial, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import LoadManager from '~/three/Singletons/LoadManager'
 import { ThreeGLTF } from "~interfaces/Three";
-import vertex from '~shaders/refraction/vertex.glsl'
-import fragment from '~shaders/refraction/fragment.glsl'
+// import vertex from '~shaders/refraction/vertex.glsl'
+// import fragment from '~shaders/refraction/fragment.glsl'
+import vertex from '~shaders/fresnel/vertex.glsl'
+import fragment from '~shaders/fresnel/fragment.glsl'
 import { MODELS } from "~constants/MODELS";
 import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 import { Viewport } from "~types";
 import gsap from 'gsap'
+import { PALETTE } from "~constants/PALETTE";
 
 class CrystalBall implements ThreeGLTF {
 	scene: Scene
@@ -35,6 +38,8 @@ class CrystalBall implements ThreeGLTF {
 			fragmentShader: fragment,
 			uniforms: {
 				// uMap: { value: this.texture },
+				uFresnelColor: { value: new Color("#000") },
+				uBaseColor: { value: new Color(PALETTE.LIGHTPINK) }
 			},
 		});
 		this.originalPos = new Vector3()
@@ -88,7 +93,7 @@ class CrystalBall implements ThreeGLTF {
 	}
 
 	destroy = () => {
-
+		this.group && this.scene.remove(this.group)
 	}
 }
 

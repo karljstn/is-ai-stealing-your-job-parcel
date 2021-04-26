@@ -8,7 +8,7 @@ import Tweakpane from "tweakpane";
 
 class EmojiScene {
   camera: PerspectiveCamera;
-  emoji: Emoji;
+  Emoji: Emoji;
   params: any;
 
   constructor(
@@ -18,7 +18,10 @@ class EmojiScene {
     camera: PerspectiveCamera
   ) {
     this.camera = camera;
+    this.Emoji = new Emoji(1, scene, mouse, viewport);
+  }
 
+  start() {
     this.params = {
       fov: 20,
       position: new Vector3().copy(this.camera.position).setZ(4),
@@ -31,11 +34,7 @@ class EmojiScene {
     );
     this.camera.updateProjectionMatrix();
 
-    this.emoji = new Emoji(1, scene, mouse, viewport);
-  }
-
-  start() {
-    this.emoji.load();
+    this.Emoji.load();
     this.tweaks();
   }
 
@@ -44,6 +43,10 @@ class EmojiScene {
   }
 
   update(dt: number) { }
+
+  destroy() {
+    this.Emoji.destroy()
+  }
 }
 
 export default EmojiScene;

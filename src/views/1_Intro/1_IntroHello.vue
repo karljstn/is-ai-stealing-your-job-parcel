@@ -18,10 +18,15 @@ import SaveRect from '~/components/Common/SaveRect.vue';
 import Autoskip from '~/components/Common/Autoskip.vue';
 import { RECTS } from '~/constants/RECTS';
 import gsap from 'gsap';
-import Vue from 'vue';
+import Vue, { Component } from 'vue';
 import store from '~store';
+import { fadeBackground } from '~util';
+import router from '~router';
+import { RouteConfig, RouteConfigMultipleViews } from 'vue-router/types/router';
+import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
+	name: 'IntroHello',
 	data() {
 		return {
 			lottieURL: lottie,
@@ -37,15 +42,17 @@ export default Vue.extend({
 	},
 	methods: {
 		onAnimationComplete: function() {
-			store.state.scene?.EmojiScene.emoji.out();
+			store.state.scene?.EmojiScene.Emoji.out();
+			fadeBackground({ color: PALETTE.LIGHTPINK });
 		},
 	},
 	mounted() {
+		// const component = router.getMatchedComponents()[0];
+		fadeBackground({ routeName: 'IntroHello' });
 		store.state.scene?.EmojiScene.start();
-		store.state.scene?.bringToFront();
 	},
 	destroyed() {
-		store.state.scene?.EmojiScene.emoji.destroy();
+		store.state.scene?.EmojiScene.destroy();
 	},
 });
 </script>

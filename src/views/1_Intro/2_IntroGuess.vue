@@ -17,6 +17,8 @@ import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
 import store from '~store';
+import { fadeBackground } from '~util';
+import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	data() {
@@ -31,7 +33,11 @@ export default Vue.extend({
 		Autoskip,
 	},
 	mounted() {
+		fadeBackground({ color: PALETTE.LIGHTPINK });
 		store.state.scene.CrystalBallScene.start();
+	},
+	destroyed() {
+		store.state.scene.CrystalBallScene.destroy();
 	},
 });
 </script>

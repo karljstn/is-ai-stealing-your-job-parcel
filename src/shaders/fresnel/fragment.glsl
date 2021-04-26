@@ -5,6 +5,7 @@ varying vec3 vPosition;
 varying vec3 vPositionW;
 varying vec3 vNormalW;
 
+uniform vec3 uBaseColor;
 uniform vec3 uFresnelColor;
 uniform float uFresnelWidth;
 
@@ -20,9 +21,10 @@ void main(){
     float inverseFresnelFactor = clamp(1. - fresnelFactor, 0., 1.);
     
     // Shaping function
-    inverseFresnelFactor = step(uFresnelWidth, inverseFresnelFactor);
+    // inverseFresnelFactor = step(uFresnelWidth, inverseFresnelFactor);
+    inverseFresnelFactor = pow(inverseFresnelFactor, 3.);
 
-    vec3 color = mix(vec3(1., 1., 1.), uFresnelColor, inverseFresnelFactor);
+    vec3 color = mix(uBaseColor, uFresnelColor, inverseFresnelFactor);
 
     gl_FragColor = vec4(color, 1.); 
 }

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { PALETTE } from '~constants/PALETTE'
 
 import LandingPage from '~views/LandingPage.vue'
 import IntroOne from '~/views/1_Intro/1_IntroHello.vue';
@@ -19,8 +20,8 @@ import Epilogue from '~/views/5_Epilogue/1_Epilogue.vue';
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: LandingPage, name: "Landing" },
-  { path: '/1', component: IntroOne, name: "IntroOne" },
+  { path: '/', component: LandingPage, name: "Landing", color: PALETTE.WHITE },
+  { path: '/1', component: IntroOne, name: "IntroHello", color: PALETTE.YELLOW },
   { path: '/2', component: IntroTwo, name: "IntroTwo" },
   { path: '/3', component: IntroThree, name: "IntroThree" },
   { path: '/4', component: IntroFour, name: "IntroFour" },

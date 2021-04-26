@@ -17,11 +17,21 @@
 import Button from '~/components/UI/Button';
 import QuestionForm from '~/components/UI/QuestionForm';
 import Vue from 'vue';
+import store from '~store';
 
 export default Vue.extend({
 	components: {
 		QuestionForm,
 		Button,
+	},
+	mounted() {
+		// console.log(store.state.scene.PencilScene);
+		this.$nextTick(() => {
+			store.state.scene.PencilScene.start();
+		});
+	},
+	destroyed() {
+		store.state.scene.PencilScene.destroy();
 	},
 });
 </script>

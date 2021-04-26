@@ -7,6 +7,7 @@ import clipboard from "~/assets/Models/clipboard/clipboard.glb";
 import emoji from "~/assets/Models/emoji-smile/EMOJI2.glb";
 import emojiBake from "~/assets/Models/emoji-smile/BAKEDFINAL.jpg";
 import crystal from "~/assets/Models/crystalball/BOULE_VOYANTE.glb";
+import pencil from "~/assets/Models/pencil/Stylo_export.glb";
 
 export const MODELS = {
   HAND: {
@@ -37,6 +38,10 @@ export const MODELS = {
   },
   CRYSTAL_BALL: {
     URL: crystal,
-    SCALE: 0.1
+    SCALE: 0.075
+  },
+  PENCIL: {
+    URL: pencil,
+    SCALE: 0.04
   }
 };
