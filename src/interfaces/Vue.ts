@@ -21,6 +21,10 @@ export interface StoreState {
   eases: Map<string, typeof CustomEase>
   scene: MainScene | null
   rects: Map<string, DOMRect>
-  count: number,
-  tweakpane: Tweakpane | null
+  tweakpane: Tweakpane | null,
+  radiologist: {
+    progress: number,
+    confirm: boolean,
+    confirmCallback: Function | null
+  }
 }

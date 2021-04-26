@@ -27,45 +27,56 @@ const store = new Vuex.Store({
     rects: new Map<string, DOMRect>(),
     count: 0,
     tweakpane: null,
+    radiologist: {
+      progress: 0,
+      confirm: false,
+      confirmCallback: null
+    }
   } as StoreState,
   mutations: {
     incrementProgression(state) {
-      ++state.progression;
-      console.log(state.progression);
+      ++state.progression
+      console.log(state.progression)
     },
     decrementProgression(state) {
-      --state.progression;
+      --state.progression
     },
     toggleIsVueReady(state) {
-      state.load.isVueReady = !state.load.isVueReady;
+      state.load.isVueReady = !state.load.isVueReady
     },
     toggleIsThreeReady(state) {
-      state.load.isThreeReady = !state.load.isThreeReady;
+      state.load.isThreeReady = !state.load.isThreeReady
     },
     toggleIsLoaderReady(state) {
-      state.load.isLoaderReady = !state.load.isLoaderReady;
+      state.load.isLoaderReady = !state.load.isLoaderReady
     },
     setProgression(state, payload: number) {
-      state.progression = payload;
+      state.progression = payload
     },
     setScene(state, payload) {
-      state.scene = payload;
+      state.scene = payload
     },
     setEase(state, payload) {
-      if (state.eases.get(payload.name)) console.warn("Name already taken");
-      state.eases.set(payload.name, payload.ease);
+      if (state.eases.get(payload.name)) console.warn("Name already taken")
+      state.eases.set(payload.name, payload.ease)
     },
     setRect(state, payload) {
       if (state.rects.get(payload.name))
-        return console.warn("Rect already set");
-      state.rects.set(payload.name, payload.rect);
+        return console.warn("Rect already set")
+      state.rects.set(payload.name, payload.rect)
     },
-    updateCount(state, payload) {
-      state.count = payload;
+    updateProgress(state, payload) {
+      state.radiologist.progress = payload
+    },
+    setConfirmPopup(state, payload) {
+      state.radiologist.confirm = payload
+    },
+    setConfirmCallback(state, payload) {
+      state.radiologist.confirmCallback = payload
     },
     setPane(state, payload) {
-      state.tweakpane = payload;
-    },
+      state.tweakpane = payload
+    }
   },
   actions: {},
   modules: {},

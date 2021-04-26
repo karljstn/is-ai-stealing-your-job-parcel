@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+import { Howler } from 'howler';
 export default {
 	data(): { isMute: Boolean; volume: number } {
 		return {
@@ -16,11 +17,14 @@ export default {
 	},
 	methods: {
 		mute() {
+			console.log('mute');
+
 			this.isMute = !this.isMute;
-			//   gsap.ticker.add(this.fadeGlobalVolume);
-		},
-		fadeGlobalVolume() {
-			//   Howler.volume(this.volume);
+
+			if (this.isMute) this.volume = 0;
+			else this.volume = 1;
+
+			Howler.volume(this.volume);
 		},
 	},
 };

@@ -67,3 +67,10 @@ export function fadeBackground({ color, routeName }: { color?: string, routeName
     document.body.style.backgroundColor = route.color
   }
 }
+/**
+ * @returns Normalized value
+ * @type {Number}
+ */
+export function normalize(val: number, max: number, min: number) {
+  return (val - min) / (max - min)
+}

@@ -1,162 +1,189 @@
 <template>
-  <section>
-    <Panel v-bind:case="this.case"></Panel>
-    <Side v-bind:case="this.case"></Side>
+	<section>
+		<Side></Side>
+		<ButtonsRight></ButtonsRight>
 
-    <button class="tutorial" v-on:click="tutorial = !tutorial">?</button>
-    <Tutorial v-if="tutorial" v-bind:setTutorial="this.setTutorial"></Tutorial>
+		<NotificationManager></NotificationManager>
 
-    <div class="button-container">
-      <button class="ai-button" v-on:click="this.useAI"></button>
-      <button
-        class="patient-file-button"
-        v-on:click="this.openPatientFile"
-      ></button>
-    </div>
-  </section>
+		<Toolbar></Toolbar>
+
+		<Confirm v-if="this.confirm"></Confirm>
+
+		<Timer :timerCanStart="this.timerCanStart" :timerPause="this.timerPause"></Timer>
+
+		<ToggleTutorial :showTutorial="this.showTutorial"></ToggleTutorial>
+
+		<TutorialManager
+			v-if="!this.HIDE"
+			v-bind:tutorialCount="tutorialCount"
+			v-bind:setTutorialCount="this.setTutorialCount"
+			v-bind:hideTutorial="this.hideTutorial"
+			ref="tutorialManager"
+		></TutorialManager>
+
+		<Countdown v-if="this.countdown" :hide="this.hideCountdown"></Countdown>
+	</section>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import store from "~/store";
+import Vue from 'vue';
+import store from '~/store';
 
-import Tutorial from "./Radiologist/Tutorial.vue";
-import Side from "./Radiologist/Side.vue";
-import Panel from "./Radiologist/Panel.vue";
+import Side from './Radiologist/Side.vue';
+import ButtonsRight from './Radiologist/ButtonsRight.vue';
 
-import gsap from "gsap";
+import Toolbar from './Radiologist/Toolbar.vue';
+import Confirm from './Radiologist/Confirm.vue';
+import ToggleTutorial from './Radiologist/Tutorial/ToggleTutorial.vue';
+import NotificationManager from './Radiologist/Notifications/NotificationManager.vue';
+import TutorialManager from './Radiologist/Tutorial/TutorialManager.vue';
+import Countdown from './Radiologist/Tutorial/Countdown.vue';
+
+import Timer from './Radiologist/Timer.vue';
+
+import gsap from 'gsap';
 // import PatientFile from "./Radiologist/PatientFile.vue";
 // import data from "~/assets/Games/Radiologist/data.json";
 
 export default Vue.extend({
-  data(): { tutorial: Boolean; patientFile: Boolean } {
-    return {
-      tutorial: false,
-      patientFile: false,
-    };
-  },
-  computed: {
-    case() {
-      return store.state.count;
-    },
-  },
-  mounted() {
-    // const ease = store.state.eases.get("test");
-    // const uniforms =
-    //   store.state.scene &&
-    //   store.state.scene.Loader &&
-    //   store.state.scene.Loader.fullScreenPlane.uniforms;
-    // uniforms &&
-    //   gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
+	data(): {
+		patientFile: Boolean;
+		tutorialCount: number;
+		countdown: Boolean;
+		timerCanStart: Boolean;
+		timerPause: Boolean;
+		HIDE: Boolean;
+	} {
+		return {
+			patientFile: false,
 
-    // console.log(uniforms?.uMixFactor);
+			//progress of the tutorial
+			tutorialCount: 0,
 
-    // console.log(store.state.scene?.scene);
+			//display the 3,2,1,go
+			countdown: false,
 
-    store.state.scene?.renderer.setClearColor(0x231f38, 1);
+			//can the timer starts?
+			timerCanStart: false,
+			timerPause: false,
 
-    if (!store.state.devMode.forceRadiologist) {
-      store.state.scene?.startRadiologist();
-      store.state.scene?.Loader?.fullScreenPlane.hide();
-    }
-  },
-  destroyed() {
-    store.state.scene?.renderer.setClearColor(0x000000, 1);
-    if (!store.state.devMode.forceRadiologist) {
-      store.state.scene?.destroyRadiologist();
-      store.state.scene?.Loader?.fullScreenPlane.show();
-    }
-  },
-  components: {
-    Panel,
-    Side,
-    Tutorial,
-  },
+			HIDE: true,
+		};
+	},
 
-  methods: {
-    setTutorial(cond: Boolean) {
-      this.tutorial = cond;
-    },
-    useAI() {
-      store.state.scene?.radio.useAI();
-    },
-    openPatientFile() {
-      this.patientFile = !this.patientFile;
-      store.state.scene?.radio.patientFile(this.patientFile);
-    },
-  },
+	computed: {
+		confirm() {
+			return store.state.radiologist.confirm;
+		},
+	},
+
+	watch: {
+		tutorialCount(newVal) {},
+	},
+
+	mounted() {
+		// const ease = store.state.eases.get("test");
+		// const uniforms =
+		//   store.state.scene &&
+		//   store.state.scene.Loader &&
+		//   store.state.scene.Loader.fullScreenPlane.uniforms;
+		// uniforms &&
+		//   gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
+
+		// console.log(uniforms?.uMixFactor);
+
+		// console.log(store.state.scene?.scene);
+
+		// store.state.scene?.renderer.setClearColor(0x231f38, 1);
+
+		const canvas = document.querySelector('canvas');
+		if (canvas) canvas.style.zIndex = '-1';
+
+		if (!store.state.devMode.forceRadiologist) {
+			store.state.scene?.startRadiologist();
+			// store.state.scene?.Loader?.fullScreenPlane.hide();
+		}
+	},
+	destroyed() {
+		store.state.scene?.renderer.setClearColor(0x000000, 1);
+		if (!store.state.devMode.forceRadiologist) {
+			store.state.scene?.destroyRadiologist();
+			store.state.scene?.Loader?.fullScreenPlane.show();
+		}
+		const canvas = document.querySelector('canvas');
+		if (canvas) canvas.style.zIndex = '1';
+	},
+	components: {
+		NotificationManager,
+		Side,
+		ToggleTutorial,
+		TutorialManager,
+		Countdown,
+		ButtonsRight,
+		Timer,
+		Toolbar,
+		Confirm,
+	},
+
+	methods: {
+		setTutorialCount() {
+			if (this.tutorialCount === 4) {
+				this.hideTutorial();
+				return;
+			}
+
+			this.tutorialCount++;
+		},
+		showTutorial() {
+			console.log('show tutorial');
+			this.timerPause = true;
+			this.tutorialCount = 1;
+			gsap.to(this.$refs.tutorialManager.$el, {
+				duration: 0.3,
+				scale: 1,
+			});
+		},
+		hideTutorial() {
+			gsap.to(this.$refs.tutorialManager.$el, {
+				duration: 0.3,
+				scale: 0,
+				onComplete: this.showCountdown,
+			});
+
+			this.tutorialCount = -1;
+		},
+		showCountdown() {
+			if (!this.timerCanStart) this.countdown = true;
+			else this.timerPause = false;
+		},
+		hideCountdown() {
+			this.countdown = false;
+			this.timerCanStart = true;
+		},
+	},
 });
 </script>
 
 <style lang="scss" scoped>
-@import "~/styles/_variables.scss";
+@import '~/styles/_variables.scss';
 
 section {
-  // width: initial;
-  height: initial;
-  display: initial;
+	// width: initial;
+	height: initial;
+	display: initial;
 
-  .button-container {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #302d4c;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    padding: 20px;
-    border-radius: 20px;
-
-    .patient-file-button {
-      background-image: url("~assets/Games/Radiologist/patient_file.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: 70px;
-      height: 70px;
-      border: none;
-      background-color: transparent;
-      outline: none;
-      transition: all 0.2s;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-
-    .ai-button {
-      border: none;
-      background-image: url("~assets/Games/Radiologist/ordi.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: 70px;
-      height: 70px;
-      background-color: transparent;
-      margin-bottom: 20px;
-      outline: none;
-      transition: all 0.2s;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-  }
-
-  .tutorial {
-    padding: 10px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: transparent;
-    outline: initial;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 2em;
-  }
+	.tutorial {
+		padding: 10px;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		background-color: transparent;
+		outline: initial;
+		border: none;
+		color: white;
+		cursor: pointer;
+		font-size: 2em;
+		z-index: 10;
+	}
 }
 </style>
