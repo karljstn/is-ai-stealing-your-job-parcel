@@ -23,7 +23,6 @@ void main(){
 	// Shaping function
 	inverseFresnelFactor = smoothstep(uFresnelWidth, uFresnelWidth + 0.01, inverseFresnelFactor);
     
-
 	vec3 color = mix(texelColor.rgb, uFresnelColor, inverseFresnelFactor);
 
 	gl_FragColor = vec4(color, 1.); 
