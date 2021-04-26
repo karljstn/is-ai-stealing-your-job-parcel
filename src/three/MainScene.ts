@@ -10,18 +10,18 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 import Radio from "./Games/Radiologist/Radio"
 
-import Benchmark from "./Benchmark";
-import { clamp, getViewport } from "~/util/";
-import { MainSceneParams } from "~/types/";
-import Loader from "./Loader";
-import store from "~/store";
-import EmojiScene from "./Scenes/EmojiScene";
-import { RAFS } from "~constants/RAFS";
-import TrashcanScene from "./Scenes/TrashcanScene";
-import { Vector3 } from "three";
-import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import CrystalBallScene from "./Scenes/CrystalBallScene";
-import PencilScene from "./Scenes/PencilScene";
+import Benchmark from "./Benchmark"
+import { clamp, getViewport } from "~/util/"
+import { MainSceneParams } from "~/types/"
+import Loader from "./Loader"
+import store from "~/store"
+import EmojiScene from "./Scenes/EmojiScene"
+import { RAFS } from "~constants/RAFS"
+import TrashcanScene from "./Scenes/TrashcanScene"
+import { Vector3 } from "three"
+import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event"
+import CrystalBallScene from "./Scenes/CrystalBallScene"
+import PencilScene from "./Scenes/PencilScene"
 // import Background from "./Meshes/Background";
 
 export default class Scene {
@@ -47,10 +47,10 @@ export default class Scene {
   meshes: THREE.Mesh[]
   radio: Radio
 
-  Benchmark: Benchmark | null;
-  Loader: Loader | null;
-  TrashcanScene: TrashcanScene;
-  EmojiScene: EmojiScene;
+  Benchmark: Benchmark | null
+  Loader: Loader | null
+  TrashcanScene: TrashcanScene
+  EmojiScene: EmojiScene
   CrystalBallScene: CrystalBallScene
   // Background: Background | null;
   PencilScene: PencilScene
@@ -75,34 +75,34 @@ export default class Scene {
         fov: 45,
         position: new Vector3(0, 0, 2)
       }
-    };
+    }
 
-    this.w = window.innerWidth;
-    this.h = window.innerHeight;
-    const paneEl = document.querySelector(".tp-dfwv");
+    this.w = window.innerWidth
+    this.h = window.innerHeight
+    const paneEl = document.querySelector(".tp-dfwv")
 
     if (
       !paneEl &&
       (!store.state.devMode.enabled ||
         (store.state.devMode.enabled && store.state.devMode.tweakpane))
     ) {
-      store.commit("setPane", new Tweakpane());
-      this.pane = store.state.tweakpane;
-    } else this.pane = null;
+      store.commit("setPane", new Tweakpane())
+      this.pane = store.state.tweakpane
+    } else this.pane = null
 
-    this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000);
+    this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000)
     this.camera.fov = this.params.camera.fov
-    this.camera.position.copy(this.params.camera.position); //z has to be different than 0 for getViewport to work
+    this.camera.position.copy(this.params.camera.position) //z has to be different than 0 for getViewport to work
 
-    this.scene = new THREE.Scene();
+    this.scene = new THREE.Scene()
 
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
       alpha: true,
-    });
-    this.renderer.setSize(this.w, this.h);
-    this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2)); //limiter à 2
+    })
+    this.renderer.setSize(this.w, this.h)
+    this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2)) //limiter à 2
 
     // this.composer = new EffectComposer(this.renderer)
     // this.composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -146,7 +146,8 @@ export default class Scene {
       this.raycaster,
       this.mouse,
       this.controls,
-      this.pane
+      this.pane,
+      this.renderer
     )
 
     this.resize() //has to be done before Benchmark
@@ -174,10 +175,10 @@ export default class Scene {
         this.scene,
         this.camera,
         this.pane
-      );
+      )
       // this.Background = null;
     } else {
-      this.Loader = null;
+      this.Loader = null
       // this.Background = new Background(
       //   this.camera
       // );
@@ -189,13 +190,13 @@ export default class Scene {
       this.scene,
       this.mouse,
       this.camera
-    );
+    )
     this.TrashcanScene = new TrashcanScene(
       this.params.viewport,
       this.scene,
       this.mouse,
       this.pane
-    );
+    )
     this.CrystalBallScene = new CrystalBallScene(this.params.viewport, this.scene)
     this.PencilScene = new PencilScene(this.params.viewport, this.scene, this.mouse)
 
@@ -206,14 +207,14 @@ export default class Scene {
   }
 
   tweaks() {
-    if (!this.pane) return;
+    if (!this.pane) return
 
-    const lightFolder = this.pane.addFolder({ title: "Light", expanded: false });
+    const lightFolder = this.pane.addFolder({ title: "Light", expanded: false })
     const lightPosInput = lightFolder.addInput(this.params.light, "pos", {
       label: "Directional light position",
       min: -this.params.viewport.height / 2,
       max: this.params.viewport.height / 2,
-    });
+    })
     const lightIntensityInput = lightFolder.addInput(
       this.params.light,
       "intensity",
@@ -232,15 +233,15 @@ export default class Scene {
     })
 
     const cameraFolder = this.pane.addFolder({ title: "Camera", expanded: false })
-    const fov = cameraFolder.addInput(this.params.camera, "fov", { min: 1, max: 100 });
-    const pos = cameraFolder.addInput(this.params.camera, "position");
+    const fov = cameraFolder.addInput(this.params.camera, "fov", { min: 1, max: 100 })
+    const pos = cameraFolder.addInput(this.params.camera, "position")
     fov.on("change", (e: any) => {
-      this.camera.fov = e.value;
-      this.camera.updateProjectionMatrix();
-    });
+      this.camera.fov = e.value
+      this.camera.updateProjectionMatrix()
+    })
     pos.on("change", (e: any) => {
-      this.camera.position.copy(e.value);
-    });
+      this.camera.position.copy(e.value)
+    })
   }
 
   start() {
@@ -330,7 +331,7 @@ export default class Scene {
 
     this.controls.update()
 
-    this.EmojiScene?.update(dt); //TODO: switch based on progress
+    this.EmojiScene?.update(dt) //TODO: switch based on progress
     this.PencilScene.update(dt)
   };
 }

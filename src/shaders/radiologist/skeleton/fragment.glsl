@@ -1,39 +1,29 @@
+uniform sampler2D uMap;
+uniform vec3 uFresnelColor;
+uniform float uFresnelWidth;
+
 varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vPosition;
 
-varying vec3 vPositionW;
-varying vec3 vNormalW;
-
-uniform vec3 baseColor;
-uniform float outline;
-uniform sampler2D baseTex;
-
-vec3 packNormalToRGB( const in vec3 normal ) {
-    return normalize( normal ) * 0.5 + 0.5;
-}
-
 void main(){
-    vec4 texelColor = texture2D(baseTex, vUv);
-	// vec3 texelLitColor = texelColor.xyz += vec3(0.1, 0.1, 0.1);
+    // Texel
+    vec4 texelColor = texture2D(uMap, vUv);
 
+    // Direction du vertex par rapport a la position de la camera
     vec3 viewDirection = normalize(cameraPosition - vPosition);
-    float fresnelTerm = dot(viewDirection, vNormal);
 
-    fresnelTerm = clamp(1. - fresnelTerm, 0., 1.);
-    fresnelTerm = pow(fresnelTerm, 3.);
-    // fresnelTerm = smoothstep(0., 0.9, fresnelTerm);
+    // Angle entre deux vecteurs avec un produit scalaire : 
+    // direction d'en haut et la normal
+    float fresnelFactor = dot(viewDirection, vNormal);
 
-    // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.); 
-    // gl_FragColor = vec4(texelColor * fresnelTerm * outline); 
+    // Inverser l'angle
+    float inverseFresnelFactor = clamp(1. - fresnelFactor, 0., 1.);
     
-    gl_FragColor = texelColor;
-    // gl_FragColor = vec4(vec3(vUv.x, vUv.y, 0.0), 1.0);
+    // Shaping function
+    inverseFresnelFactor = smoothstep(uFresnelWidth, uFresnelWidth + 0.01, inverseFresnelFactor);
+    
+    vec3 color = mix(texelColor.rgb, uFresnelColor, inverseFresnelFactor);
 
-    // gl_FragColor = vec4(clamp(texelLitColor + uFresnelColor * inverseFresnelFactor, 0., 1.), 1.);
-
-
-
-    //debug normals
-    // gl_FragColor = vec4(packNormalToRGB(vNormal),1.);
+    gl_FragColor = vec4(color, 1.); 
 }

@@ -1,7 +1,9 @@
 import * as THREE from "three"
 import Tweakpane from "tweakpane"
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import Skeleton from './Skeleton'
+import Clipboard from './Clipboard'
+
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 import raf from "~three/Singletons/RAF"
@@ -14,25 +16,18 @@ import { RADIOLOGIST } from "~constants/RADIOLOGIST"
 import LoadManager from "~/three/Singletons/LoadManager"
 // import { Bounce } from 'gsap'
 
-// import { Text } from 'troika-three-text'
-
-import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
-import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
-
 import fragmentForeground from "~/shaders/radiologist/foreground/fragment.glsl"
 import vertexForeground from "~/shaders/radiologist/foreground/vertex.glsl"
 
 import fragmentBackground from "~/shaders/radiologist/background/fragment.glsl"
 import vertexBackground from "~/shaders/radiologist/background/vertex.glsl"
 
-import fragmentClipboard from "~/shaders/radiologist/clipboard/fragment.glsl"
-import vertexClipboard from "~/shaders/radiologist/clipboard/vertex.glsl"
+
 import gsap from "gsap"
 
 export default class Radio implements ThreeGroup {
     group: THREE.Group
 
-    // params: {widthForeground: number, }
 
     meshesGroup: THREE.Group
     // radioGeometry: THREE.PlaneBufferGeometry
@@ -52,13 +47,7 @@ export default class Radio implements ThreeGroup {
     selectedObjects: THREE.Object3D[]
     mouseCoords: THREE.Vector2
 
-    loader: GLTFLoader
-    textureLoader: THREE.TextureLoader
-    bakedTexture: THREE.Texture
-
-    bakedMaterial: THREE.MeshBasicMaterial
-
-    // text: Text
+    renderTarget: THREE.WebGLRenderTarget
 
     selectedMesh: null | THREE.Mesh
     errorMesh: null | THREE.Mesh
@@ -74,8 +63,9 @@ export default class Radio implements ThreeGroup {
     currentIntersect: any
     mouseDown: boolean
     isDragging: boolean
-    isReady: boolean
 
+    skeletonScene: THREE.Scene
+    renderer: any
     progress: number
 
     constructor(
@@ -83,7 +73,8 @@ export default class Radio implements ThreeGroup {
         raycaster: THREE.Raycaster,
         mouse: THREE.Vector2,
         controls: OrbitControls,
-        pane: Tweakpane | null
+        pane: Tweakpane | null,
+        renderer: THREE.Renderer
     ) {
         this.group = new THREE.Group()
         this.meshesGroup = new THREE.Group()
@@ -96,11 +87,17 @@ export default class Radio implements ThreeGroup {
 
         this.controls = controls
 
-        this.controls.enablePan = false
+        this.renderer = renderer
+        this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
+
+        // this.controls.enablePan = false
 
         this.raycaster = raycaster
         this.camera = camera
         this.mouse = mouse
+
+        this.skeletonScene = new THREE.Scene()
+
 
         this.selectedObjects = []
         this.currentIntersect = null
@@ -110,10 +107,13 @@ export default class Radio implements ThreeGroup {
         this.selectedMesh = null
 
         this.progress = 0
-        this.isReady = false
 
         this.mouseDown = false
         this.isDragging = false
+
+        setTimeout(() => {
+            this.camera.position.z = 25
+        }, 100)
 
         this.controls.addEventListener("start", () => {
             this.mouseDown = true
@@ -124,7 +124,7 @@ export default class Radio implements ThreeGroup {
                 this.isDragging = true
 
                 if (this.currentIntersect) {
-                    this.currentIntersect.object.material.uniforms.outline.value = 0.5
+                    this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
                 }
             }
         })
@@ -142,80 +142,29 @@ export default class Radio implements ThreeGroup {
 
         raf.subscribe("radioUpdate", this.update)
 
-        this.update()
-
         this.ratio = (window.innerWidth * 0.82) / (window.innerHeight * 0.71)
 
-        this.loader = new GLTFLoader(LoadManager.manager)
 
-        this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
-        this.bakedTexture = this.textureLoader.load(RADIOLOGIST.SKELETON5.BAKE)
-        this.bakedTexture.flipY = false
-        // this.bakedTexture.encoding = THREE.sRGBEncoding
 
-        // console.log(this.bakedTexture)
 
-        // this.bakedMaterial = new THREE.MeshBasicMaterial({ map: this.bakedTexture })
 
-        this.loader.load(RADIOLOGIST.SKELETON5.URL, gltf => {
-            this.skeleton = gltf.scene
-            this.skeleton.scale.set(
-                RADIOLOGIST.SKELETON5.SCALE,
-                RADIOLOGIST.SKELETON5.SCALE,
-                RADIOLOGIST.SKELETON5.SCALE
-            )
-            this.group.add(this.skeleton)
-
-            console.log("SKELETON LOADED")
-            console.log(this.skeleton)
-            this.nextCase()
-        })
-
-        this.loader.load(RADIOLOGIST.CLIPBOARD.URL, gltf => {
-            this.clipboard = gltf.scene
-            console.log('CLIPBOARD LOADED')
-            console.log(gltf.scene)
-
-            // this.clipboard.scale.set(MODELS.CLIPBOARD.SCALE, MODELS.CLIPBOARD.SCALE, MODELS.CLIPBOARD.SCALE)
-            // this.clipboard.rotation.x = Math.PI / 2
-            // this.clipboard.position.x = 50
-
-            // console.log('CLIPBOARD LOADED')
-
-            //BILLBOARD
-
-            // this.clipboard.traverse((object3d) => {
-            //     const mesh = object3d as THREE.Mesh
-            //     if (!mesh.material) return
-            //     // const mat = mesh.material as THREE.ShaderMaterial
-
-            //     // mesh.geometry.rotateX(Math.PI/2)
-            //     mesh.rotation.x = Math.PI / 2
-            //     mesh.updateMatrixWorld()
-            //     mesh.geometry.applyMatrix4(mesh.matrix)
-
-            //     mesh.material = new THREE.ShaderMaterial({
-            //         fragmentShader: fragmentClipboard,
-            //         vertexShader: vertexClipboard,
-            //     })
-            // })
-
-            this.group.add(gltf.scene)
-        })
-
-        // const test = Math.round(normalize(window.innerWidth * 0.1, window.innerWidth, 0) * 100) / 100
 
         const geoForeground = new THREE.PlaneBufferGeometry(2, 2)
+
+
         const matForeground = new THREE.ShaderMaterial({
             uniforms: {
                 size: { value: new THREE.Vector2(0.82, 0.78) },
                 ratio: { value: this.ratio },
-                pi: { value: Math.PI }
+                resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                pi: { value: Math.PI },
+                renderTarget: { value: this.renderTarget.texture }
             },
             fragmentShader: fragmentForeground,
             vertexShader: vertexForeground,
             // transparent: true,
-            depthTest: false
+            depthTest: false,
+
             // depthWrite: false
         })
 
@@ -233,20 +182,35 @@ export default class Radio implements ThreeGroup {
 
         this.background = new THREE.Mesh(geoBackground, matBackground)
         this.background.renderOrder = -2
+        this.background.frustumCulled = false
+
         this.foreground = new THREE.Mesh(geoForeground, matForeground)
         this.foreground.renderOrder = -1
+        this.foreground.frustumCulled = false
 
         this.group.add(this.foreground)
         this.group.add(this.background)
 
         // this.tweaks()
+
+
+        this.nextCase()
+    }
+
+    nextCase() {
+        Skeleton.load(this.skeletonScene, this.progress)
+        // Clipboard.load(this.group, this.progress)
     }
 
     onResize() {
+
+        this.renderTarget.setSize(window.innerWidth, window.innerHeight)
+
         this.ratio = (window.innerWidth * 0.82) / (window.innerHeight * 0.71)
         const mat = this.foreground.material as THREE.ShaderMaterial
 
         mat.uniforms.ratio.value = this.ratio
+        mat.uniforms.resolution.value.set(window.innerWidth, window.innerHeight)
     }
 
     tweaks() {
@@ -262,75 +226,40 @@ export default class Radio implements ThreeGroup {
     }
 
     patientFile(cond: Boolean) {
-        if (cond) {
-            gsap.to(this.skeleton.position, {
-                duration: 0.5,
-                x: -10,
-                z: -10
-            })
-            gsap.to(this.meshesGroup.position, {
-                duration: 0.5,
-                x: -10,
-                z: -10
-            })
-            gsap.to(this.clipboard.position, {
-                duration: 0.5,
-                x: 2.5
-            })
-        } else {
-            gsap.to(this.skeleton.position, {
-                duration: 0.5,
-                x: 0,
-                z: 0
-            })
-            gsap.to(this.meshesGroup.position, {
-                duration: 0.5,
-                x: 0,
-                z: 0
-            })
-            gsap.to(this.clipboard.position, {
-                duration: 0.5,
-                x: 50
-            })
-        }
+        // if (cond) {
+        //     gsap.to(this.skeleton.position, {
+        //         duration: 0.5,
+        //         x: -10,
+        //         z: -10
+        //     })
+        //     gsap.to(this.meshesGroup.position, {
+        //         duration: 0.5,
+        //         x: -10,
+        //         z: -10
+        //     })
+        //     gsap.to(this.clipboard.position, {
+        //         duration: 0.5,
+        //         x: 2.5
+        //     })
+        // } else {
+        //     gsap.to(this.skeleton.position, {
+        //         duration: 0.5,
+        //         x: 0,
+        //         z: 0
+        //     })
+        //     gsap.to(this.meshesGroup.position, {
+        //         duration: 0.5,
+        //         x: 0,
+        //         z: 0
+        //     })
+        //     gsap.to(this.clipboard.position, {
+        //         duration: 0.5,
+        //         x: 50
+        //     })
+        // }
     }
 
-    nextCase() {
-        console.log("next case")
 
-        this.skeleton.traverse(obj => {
-            if (obj.type === "Mesh") {
-                const mesh = obj as THREE.Mesh
-                // mesh.material = this.bakedMaterial
-                mesh.material = new THREE.ShaderMaterial({
-                    vertexShader: vertex,
-                    fragmentShader: fragment,
-                    transparent: true,
-
-                    uniforms: {
-                        baseColor: { value: new THREE.Vector3(1, 0, 0) },
-                        outline: { value: 0.5 },
-                        isError: { value: 0 },
-                        baseTex: { value: this.bakedTexture }
-                    }
-                })
-
-                if (mesh.name === "<3") {
-                    this.heart = mesh
-                    this.heartBaseScale = mesh.scale.x
-
-                    // const mat = mesh.material as THREE.ShaderMaterial
-
-                    // mat.uniforms.baseColor.value = new THREE.Vector3(0.3, 0, 1)
-                    // mat.uniforms.isError.value = 1
-
-                    this.errorMesh = mesh
-                    console.log("ERROR MESH SET")
-                }
-            }
-            this.isReady = true
-        })
-    }
 
     confirm = (res: boolean) => {
         console.log("confirm?", res)
@@ -340,6 +269,17 @@ export default class Radio implements ThreeGroup {
 
         //confirm the mesh
         if (res) {
+            this.progress++
+            store.commit("updateProgress", this.progress)
+
+            if (this.progress === 5) {
+                store.commit("setConfirmPopup", false)
+                this.endGame()
+                return
+            }
+
+            console.log('this progress', this.progress)
+
             if (this.selectedMesh === this.errorMesh) {
                 this.errorMesh = null
                 this.selectedMesh = null
@@ -349,32 +289,27 @@ export default class Radio implements ThreeGroup {
 
                 console.log("RADIOLOGIST GAME : GOOD ANSWER")
             } else {
-                //wrong
                 console.log("RADIOLOGIST GAME: WRONG ANSWER")
+
+                this.nextCase()
                 // console.log(this.currentIntersect.object)
             }
-
-            if (this.progress === 3) {
-                this.endGame()
-                return
-            }
-
-            this.progress++
-            store.commit("updateProgress", this.progress)
-        } else {
-            //get back to the selection
         }
+
 
         store.commit("setConfirmPopup", false)
     }
 
     click() {
         if (this.currentIntersect && !store.state.radiologist.confirm) {
+
+
             //clicked on something, show popup
             store.commit("setConfirmPopup", true)
             store.commit("setConfirmCallback", this.confirm)
 
             this.selectedMesh = this.currentIntersect.object
+            // console.log(this.selectedMesh.name)
         }
 
         //success
@@ -393,58 +328,70 @@ export default class Radio implements ThreeGroup {
     }
 
     endGame() {
-        this.progress++
-        store.commit("updateProgress", this.progress)
 
-        gsap.to(this.group.position, {
+        gsap.to(Skeleton.mesh.position, {
             y: -30,
             duration: 1,
             onComplete: () => {
                 store.commit("incrementProgression")
-                this.meshesGroup.clear()
+                // this.meshesGroup.clear()
 
-                this.group.remove(this.skeleton)
-                this.group.remove(this.clipboard)
+                // this.group.remove(this.skeleton)
+                // this.group.remove(this.clipboard)
 
                 this.camera.position.z = 1
             }
         })
     }
 
-    heartbeat() {
-        if (this.heart && this.heartBaseScale) {
-            this.heart.scale.set(
-                this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / 22,
-                this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / 22,
-                this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / 22
-            )
-        }
-    }
 
     update = () => {
-        if (!this.isDragging && this.isReady) {
+
+        this.renderer.setRenderTarget(this.renderTarget)
+        this.renderer.render(this.skeletonScene, this.camera)
+
+        this.renderer.setRenderTarget(null)
+
+        if (!this.isDragging) {
             this.raycaster.setFromCamera(this.mouse, this.camera)
 
-            const intersects = this.raycaster.intersectObjects(this.skeleton.children, true)
+            const intersects = this.raycaster.intersectObjects(Skeleton.mesh.children, true)
 
             if (intersects.length) {
+
+                // console.log(intersects)
+
+
                 if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) {
-                    // this.currentIntersect.object.material.uniforms.outline.value = 0.5
-                    // this.currentIntersect = intersects[0]
-                    // this.currentIntersect.object.material.uniforms.outline.value = 1
+
+                    const tween = Skeleton.tweenMap.get(this.currentIntersect.object)
+
+                    if (!tween) {
+                        const newTween = gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
+                            duration: 1,
+                            value: 1
+                        })
+
+                        Skeleton.tweenMap.set(this.currentIntersect.object, newTween)
+                    } else {
+                        // tween.reverse
+                    }
+
+                    // this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1
                 }
 
                 this.currentIntersect = intersects[0]
-                // this.currentIntersect.object.material.uniforms.outline.value = 1
+                this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
+
             } else {
+
+
                 if (this.currentIntersect) {
-                    // this.currentIntersect.object.material.uniforms.outline.value = 0.5
+                    this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1
                 }
 
                 this.currentIntersect = null
             }
         }
-
-        this.heartbeat()
     }
 }
