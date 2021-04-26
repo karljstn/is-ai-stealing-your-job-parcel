@@ -7,11 +7,11 @@
 
 			<div class="form">
 				<QuestionForm>
-					<Button size="2.1" value="yes">😧</Button>
+					<SaveRect :rectName="sadEmoji">
+						<Button size="2.1" value="yes">😧</Button>
+					</SaveRect>
 					<SaveRect :rectName="glassesEmoji">
-						<div style="visibility: hidden;">
-							<Button size="2.1" value="no">🤓</Button>
-						</div>
+						<Button size="2.1" value="no">🤓</Button>
 					</SaveRect>
 				</QuestionForm>
 			</div>
@@ -31,7 +31,8 @@ import store from '~store';
 export default Vue.extend({
 	data() {
 		return {
-			glassesEmoji: RECTS.INTRO.AMIRITE,
+			glassesEmoji: RECTS.INTRO.AMIRITE.RIGHT,
+			sadEmoji: RECTS.INTRO.AMIRITE.LEFT
 		};
 	},
 	components: {
@@ -60,8 +61,9 @@ export default Vue.extend({
 	justify-content: center;
 	align-items: center;
 	.form{
-		width: 50%;
+		width: 75%;
 		margin-top: 4rem;
+		visibility: hidden;
 	}
 }
 </style>

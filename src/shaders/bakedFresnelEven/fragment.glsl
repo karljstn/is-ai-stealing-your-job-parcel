@@ -22,8 +22,8 @@ void main(){
 	float inverseFresnelFactor = clamp(1. - fresnelFactor, 0., 1.);
 	
 	// Shaping function
-	// inverseFresnelFactor = step(uFresnelWidth, inverseFresnelFactor);
 	inverseFresnelFactor = pow(inverseFresnelFactor, 3.);
+	inverseFresnelFactor *= uFresnelWidth;
 
 	vec3 color = mix(texelColor.rgb, uFresnelColor, inverseFresnelFactor);
 

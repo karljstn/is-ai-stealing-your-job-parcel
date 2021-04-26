@@ -22,8 +22,8 @@ import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import fragment from "~shaders/bakedFresnel/fragment.glsl";
-import vertex from "~shaders/bakedFresnel/vertex.glsl";
+import fragment from "~shaders/bakedFresnelDirectional/fragment.glsl";
+import vertex from "~shaders/bakedFresnelDirectional/vertex.glsl";
 import { ThreeGLTF } from "~interfaces/Three";
 
 

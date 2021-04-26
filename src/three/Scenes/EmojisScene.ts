@@ -5,10 +5,12 @@ import { PerspectiveCamera, Scene, Vector2, Vector3 } from "three";
 import { RECTS } from "~/constants/RECTS";
 import EmojiGlasses from "../Meshes/GLTF/EmojiGlasses";
 import Tweakpane from "tweakpane";
+import EmojiSad from "~three/Meshes/GLTF/EmojiSad";
 
 class EmojisScene {
   camera: PerspectiveCamera;
   EmojiGlasses: EmojiGlasses;
+  EmojiSad: EmojiSad;
   params: any;
 
   constructor(
@@ -19,6 +21,7 @@ class EmojisScene {
   ) {
     this.camera = camera;
     this.EmojiGlasses = new EmojiGlasses(1, scene, mouse, viewport);
+    this.EmojiSad = new EmojiSad(1, scene, mouse, viewport)
   }
 
   start() {
@@ -35,17 +38,16 @@ class EmojisScene {
     this.camera.updateProjectionMatrix();
 
     this.EmojiGlasses.load();
-    this.tweaks();
+    this.EmojiSad.load();
   }
 
-  tweaks() {
-
-  }
+  tweaks() { }
 
   update(dt: number) { }
 
   destroy() {
     this.EmojiGlasses.destroy()
+    this.EmojiSad.destroy()
   }
 }
 
