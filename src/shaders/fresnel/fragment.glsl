@@ -19,7 +19,7 @@ void main(){
 
     // Inverser l'angle
     float inverseFresnelFactor = clamp(1. - fresnelFactor, 0., 1.);
-    
+
     // Shaping function
     // inverseFresnelFactor = step(uFresnelWidth, inverseFresnelFactor);
     inverseFresnelFactor = pow(inverseFresnelFactor, 3.);

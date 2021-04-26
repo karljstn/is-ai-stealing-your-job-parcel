@@ -27,6 +27,13 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import '~/styles/_variables.scss';
 
+.white-nav nav {
+	h3,
+	span,
+	button {
+		color: $white;
+	}
+}
 nav {
 	position: absolute;
 	top: 0;
@@ -35,6 +42,11 @@ nav {
 	padding: $menu-padding;
 	display: flex;
 	justify-content: space-between;
+	h3,
+	span,
+	button {
+		transition: color 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+	}
 	h3 {
 		width: 150px;
 		transform: rotate(-15deg);

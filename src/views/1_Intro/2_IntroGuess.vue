@@ -33,7 +33,7 @@ export default Vue.extend({
 		Autoskip,
 	},
 	mounted() {
-		fadeBackground({ color: PALETTE.LIGHTPINK });
+		fadeBackground({ routeName: 'IntroGuess' });
 		store.state.scene.CrystalBallScene.start();
 	},
 	destroyed() {

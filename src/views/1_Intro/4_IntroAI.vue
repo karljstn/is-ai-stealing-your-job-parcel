@@ -14,6 +14,7 @@ import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
+import { fadeBackground } from '~util';
 
 export default Vue.extend({
 	data() {
@@ -26,6 +27,9 @@ export default Vue.extend({
 		QuestionForm,
 		Button,
 		Autoskip,
+	},
+	mounted() {
+		fadeBackground({ routeName: 'IntroAI' });
 	},
 });
 </script>

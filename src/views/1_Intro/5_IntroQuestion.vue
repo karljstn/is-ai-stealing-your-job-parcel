@@ -1,16 +1,18 @@
 <template>
 	<section>
 		<div class="container">
-			<SaveRect :rectName="helloRect">
-				<p class="hello">
-					Am I right ?
-				</p>
-			</SaveRect>
+			<p class="hello">
+				Am I right ?
+			</p>
 
 			<div class="form">
 				<QuestionForm>
 					<Button size="2.1" value="yes">😧</Button>
-					<Button size="2.1" value="no">🤓</Button>
+					<SaveRect :rectName="glassesEmoji">
+						<div style="visibility: hidden;">
+							<Button size="2.1" value="no">🤓</Button>
+						</div>
+					</SaveRect>
 				</QuestionForm>
 			</div>
 		<div>
@@ -23,17 +25,26 @@ import QuestionForm from '~/components/UI/QuestionForm';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
+import { fadeBackground } from '~util';
+import store from '~store';
 
 export default Vue.extend({
 	data() {
 		return {
-			helloRect: RECTS.INTRO.HELLO,
+			glassesEmoji: RECTS.INTRO.AMIRITE,
 		};
 	},
 	components: {
 		SaveRect,
 		QuestionForm,
 		Button,
+	},
+	mounted(){
+		fadeBackground({ routeName: "IntroQuestion" });
+		store.state.scene?.EmojisScene.start();
+	},
+	destroyed() {
+		store.state.scene?.EmojisScene.destroy();
 	},
 });
 </script>

@@ -3,12 +3,12 @@ import { Viewport } from "~/types";
 import { rectToThree } from "~/util";
 import { PerspectiveCamera, Scene, Vector2, Vector3 } from "three";
 import { RECTS } from "~/constants/RECTS";
-import Emoji from "../Meshes/GLTF/Emoji";
+import EmojiGlasses from "../Meshes/GLTF/EmojiGlasses";
 import Tweakpane from "tweakpane";
 
-class EmojiScene {
+class EmojisScene {
   camera: PerspectiveCamera;
-  Emoji: Emoji;
+  EmojiGlasses: EmojiGlasses;
   params: any;
 
   constructor(
@@ -18,7 +18,7 @@ class EmojiScene {
     camera: PerspectiveCamera
   ) {
     this.camera = camera;
-    this.Emoji = new Emoji(1, scene, mouse, viewport);
+    this.EmojiGlasses = new EmojiGlasses(1, scene, mouse, viewport);
   }
 
   start() {
@@ -34,7 +34,7 @@ class EmojiScene {
     );
     this.camera.updateProjectionMatrix();
 
-    this.Emoji.load();
+    this.EmojiGlasses.load();
     this.tweaks();
   }
 
@@ -45,8 +45,8 @@ class EmojiScene {
   update(dt: number) { }
 
   destroy() {
-    this.Emoji.destroy()
+    this.EmojiGlasses.destroy()
   }
 }
 
-export default EmojiScene;
+export default EmojisScene;

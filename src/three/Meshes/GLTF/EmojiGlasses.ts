@@ -5,6 +5,7 @@ import { MODELS } from "~/constants/MODELS";
 import {
   AnimationAction,
   AnimationClip,
+  Color,
   Mesh,
   Scene,
   ShaderMaterial,
@@ -22,12 +23,12 @@ import store from "~store";
 import { RECTS } from "~constants/RECTS";
 import { rectToThree } from "~util";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import fragment from "~shaders/bakedFresnel/fragment.glsl";
-import vertex from "~shaders/bakedFresnel/vertex.glsl";
+import fragment from "~shaders/bakedFresnelStep/fragment.glsl";
+import vertex from "~shaders/bakedFresnelStep/vertex.glsl";
 import { ThreeGLTF } from "~interfaces/Three";
 
 
-class Emoji implements ThreeGLTF {
+class EmojiGlasses implements ThreeGLTF {
   params: any;
   size: number;
   scene: Scene;
@@ -48,15 +49,15 @@ class Emoji implements ThreeGLTF {
   constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
     this.params = {
       animSpeed: 0.005,
-      size: size * MODELS.EMOJI.SCALE,
+      size: size * MODELS.EMOJI_GLASSES.SCALE,
       pos: { x: 0, y: 0, z: 0 },
       factor: 0,
       positionOffset: new Vector3(-viewport.width / 3.75, 0, 0),
-      rotation: new Vector3(0, 1, -0.1),
+      rotation: new Vector3(0, 0, 0),
       initialPos: new Vector3(),
       lightIntensity: 0.22,
-      fresnelColor: { r: 255, g: 136, b: 81 },
-      fresnelFactor: 0.45,
+      fresnelColor: new Color("fff"),
+      fresnelFactor: 3.,
       minStep: 0.19,
       maxStep: 3.77,
       fakeLight: new Vector3(3.77, 1.57, 0.57),
@@ -64,7 +65,7 @@ class Emoji implements ThreeGLTF {
         amplitude: 0.1,
         frequency: 0.00304
       },
-      fresnelWidth: 0.8
+      fresnelWidth: 0.4
     };
     this.size = size;
     this.pane = store.state.tweakpane;
@@ -77,30 +78,22 @@ class Emoji implements ThreeGLTF {
     this.mouse = mouse;
     this.viewport = viewport;
     this.isMoving = false;
-    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI.BAKE);
+    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_GLASSES.BAKE);
     this.bakedTexture.flipY = false;
     this.bakedMaterial = new ShaderMaterial({
       vertexShader: vertex,
       fragmentShader: fragment,
       uniforms: {
         uMap: { value: this.bakedTexture },
-        uLightIntensity: { value: 0.2 },
         uFresnelColor: {
-          value: new Vector3(
-            this.params.fresnelColor.r / 255,
-            this.params.fresnelColor.g / 255,
-            this.params.fresnelColor.b / 255
-          ),
+          value: new Color("#fff"),
         },
         uPowerOfFactor: {
-          value: this.params.fresnelFactor,
+          value: 1,
         },
         uFresnelWidth: {
-          value: 0.8
-        },
-        uMinStep: { value: this.params.minStep },
-        uMaxStep: { value: this.params.maxStep },
-        uFakeLight: { value: this.params.fakeLight },
+          value: 1 - this.params.fresnelWidth
+        }
       },
     });
 
@@ -109,7 +102,7 @@ class Emoji implements ThreeGLTF {
   }
 
   load = () => {
-    this.loader.load(MODELS.EMOJI.URL, (gltf) => {
+    this.loader.load(MODELS.EMOJI_GLASSES.URL, (gltf) => {
       this.group = gltf.scene; // Group
 
       // Set baked material
@@ -123,21 +116,22 @@ class Emoji implements ThreeGLTF {
   };
 
   setFromRect = () => {
-    let rect = store.state.rects.get(RECTS.INTRO.HELLO);
+    let rect = store.state.rects.get(RECTS.INTRO.AMIRITE);
 
     const intervalID = setInterval(() => {
-      rect = store.state.rects.get(RECTS.INTRO.HELLO);
+      rect = store.state.rects.get(RECTS.INTRO.AMIRITE);
       if (rect && this.group) {
         clearInterval(intervalID);
         // Upper left
-        let { x, y } = rectToThree(this.viewport, rect);
+        let { x, y, w, h } = rectToThree(this.viewport, rect);
 
-        // Top Right
-        x += (rect.width / window.innerWidth) * this.viewport.width;
+        // Center
+        x += w / 2
+        y -= h / 2
 
         this.group.position.set(
-          x + this.params.positionOffset.x,
-          this.params.positionOffset.z,
+          x,
+          y,
           0
         );
         this.originalPos.copy(this.group.position);
@@ -157,7 +151,7 @@ class Emoji implements ThreeGLTF {
 
   start = () => {
     this.tweaks();
-    raf.subscribe(RAFS.EMOJI, this.update);
+    raf.subscribe(RAFS.EMOJISMILE, this.update);
     this.in()
   };
 
@@ -171,8 +165,8 @@ class Emoji implements ThreeGLTF {
     });
     const sizeInput = folder.addInput(this.params, "size", {
       label: "Size",
-      min: this.size * MODELS.EMOJI.SCALE * 0.33,
-      max: this.size * MODELS.EMOJI.SCALE * 3,
+      min: this.size * MODELS.EMOJI_GLASSES.SCALE * 0.33,
+      max: this.size * MODELS.EMOJI_GLASSES.SCALE * 3,
     });
     const rotateInput = folder.addInput(this.params, "rotation", {
       label: "Rotation",
@@ -215,6 +209,7 @@ class Emoji implements ThreeGLTF {
     const fresnelFakeLightInput = fresnelFolder.addInput(this.params, "fakeLight", {
       label: "Fake Light",
     });
+
 
     const width = fresnelFolder.addInput(this.params, 'fresnelWidth')
 
@@ -356,8 +351,8 @@ class Emoji implements ThreeGLTF {
 
   destroy = () => {
     this.group && this.scene.remove(this.group);
-    raf.unsubscribe(RAFS.EMOJI);
+    raf.unsubscribe(RAFS.EMOJISMILE);
   };
 }
 
-export default Emoji;
+export default EmojiGlasses;

@@ -4,7 +4,7 @@ export const RAFS = {
   TYPER: "typerUpdate",
   HAND: "handUpdate",
   TRASHCAN: "trashcanUpdate",
-  EMOJI: "emojiUpdate",
+  EMOJISMILE: "emojiUpdate",
 };
 
 //TODO: enums ? research typescript

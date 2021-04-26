@@ -43,11 +43,10 @@ export default Vue.extend({
 	methods: {
 		onAnimationComplete: function() {
 			store.state.scene?.EmojiScene.Emoji.out();
-			fadeBackground({ color: PALETTE.LIGHTPINK });
+			fadeBackground({ routeName: 'IntroGuess' });
 		},
 	},
 	mounted() {
-		// const component = router.getMatchedComponents()[0];
 		fadeBackground({ routeName: 'IntroHello' });
 		store.state.scene?.EmojiScene.start();
 	},

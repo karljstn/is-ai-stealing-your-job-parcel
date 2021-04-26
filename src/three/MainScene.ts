@@ -15,13 +15,14 @@ import { clamp, getViewport } from "~/util/";
 import { MainSceneParams } from "~/types/";
 import Loader from "./Loader";
 import store from "~/store";
-import EmojiScene from "./Scenes/EmojiScene";
+import EmojiScene from "./Scenes/EmojiSmileScene";
 import { RAFS } from "~constants/RAFS";
 import TrashcanScene from "./Scenes/TrashcanScene";
 import { Vector3 } from "three";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import CrystalBallScene from "./Scenes/CrystalBallScene";
 import PencilScene from "./Scenes/PencilScene";
+import EmojisScene from "./Scenes/EmojisScene"
 // import Background from "./Meshes/Background";
 
 export default class Scene {
@@ -54,6 +55,7 @@ export default class Scene {
   CrystalBallScene: CrystalBallScene
   // Background: Background | null;
   PencilScene: PencilScene
+  EmojisScene: EmojisScene
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -198,7 +200,12 @@ export default class Scene {
     );
     this.CrystalBallScene = new CrystalBallScene(this.params.viewport, this.scene)
     this.PencilScene = new PencilScene(this.params.viewport, this.scene, this.mouse)
-
+    this.EmojisScene = new EmojisScene(
+      this.params.viewport,
+      this.scene,
+      this.mouse,
+      this.camera
+    );
     this.tweaks()
 
     // SOUNDS.background.play()

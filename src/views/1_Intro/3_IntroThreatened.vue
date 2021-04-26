@@ -16,6 +16,7 @@ import SaveRect from '~/components/Common/SaveRect.vue';
 import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
+import { fadeBackground } from '~util';
 
 export default Vue.extend({
 	data() {
@@ -29,6 +30,13 @@ export default Vue.extend({
 		Button,
 		Autoskip,
 	},
+	mounted() {
+		fadeBackground({ routeName: 'IntroThreatened' });
+		document.body.classList.add('white-nav');
+	},
+	destroyed() {
+		document.body.classList.remove('white-nav');
+	},
 });
 </script>
 
@@ -36,5 +44,6 @@ export default Vue.extend({
 p {
 	font-size: 4rem;
 	text-align: center;
+	color: white;
 }
 </style>

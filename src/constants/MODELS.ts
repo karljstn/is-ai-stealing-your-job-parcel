@@ -3,8 +3,10 @@ import trashcan from "~/assets/Models/trashcan/v5.glb";
 import bakedTrashcan from "~/assets/Models/trashcan/bakedTrashcanV2.glb";
 import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";
 import clipboard from "~/assets/Games/Radiologist/Models/clipboard_1.glb";
-import emoji from "~/assets/Models/emoji-smile/EMOJI2.glb";
-import emojiBake from "~/assets/Models/emoji-smile/BAKEDFINAL.jpg";
+import emojiSmile from "~/assets/Models/emoji-smile/EMOJI2.glb";
+import emojiSmileBake from "~/assets/Models/emoji-smile/BAKEDFINAL.jpg";
+import emojiGlasses from "~/assets/Models/emoji-glasses/EMOJI.glb";
+import emojiGlassesBake from "~/assets/Models/emoji-glasses/bake.jpg";
 import crystal from "~/assets/Models/crystalball/BOULE_VOYANTE.glb";
 import pencil from "~/assets/Models/pencil/Stylo_export.glb";
 import radiologistBackground from "~/assets/Models/radiologist/big-cube-bg.glb"
@@ -27,10 +29,15 @@ export const MODELS = {
     URL: clipboard,
     SCALE: 0.1,
   },
-  EMOJI: {
-    URL: emoji,
+  EMOJI_SMILE: {
+    URL: emojiSmile,
     SCALE: 0.1,
-    BAKE: emojiBake,
+    BAKE: emojiSmileBake,
+  },
+  EMOJI_GLASSES: {
+    URL: emojiGlasses,
+    SCALE: 0.1,
+    BAKE: emojiGlassesBake,
   },
   CRYSTAL_BALL: {
     URL: crystal,
