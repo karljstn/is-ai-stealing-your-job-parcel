@@ -145,7 +145,7 @@ class EmojiSad implements ThreeGLTF {
 
 	start = () => {
 		this.tweaks();
-		raf.subscribe(RAFS.EMOJISMILE, this.update);
+		raf.subscribe(RAFS.EMOJISAD, this.update);
 		this.in()
 	};
 
@@ -286,7 +286,7 @@ class EmojiSad implements ThreeGLTF {
 
 	destroy = () => {
 		this.group && this.scene.remove(this.group);
-		raf.unsubscribe(RAFS.EMOJISMILE);
+		raf.unsubscribe(RAFS.EMOJISAD);
 	};
 }
 

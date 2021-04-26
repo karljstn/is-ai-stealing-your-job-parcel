@@ -1,4 +1,4 @@
-import { Group, Scene, Vector2, Vector3 } from "three";
+import { Group, Object3D, Scene, Vector2, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import LoadManager from '~/three/Singletons/LoadManager'
 import { ThreeGLTF } from "~interfaces/Three";
@@ -51,8 +51,7 @@ class Pencil implements ThreeGLTF {
 		);
 
 		this.group.position.lerp(mouse, 0.8)
-		this.group.position.x += this.params.size * 1.2
-		this.group.position.y += this.params.size * 2.2
+
 	}
 
 	checkBox = () => {

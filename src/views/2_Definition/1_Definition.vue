@@ -6,8 +6,8 @@
 
 		<div class="form">
 			<QuestionForm>
-				<Button value="yes">Of course!</Button>
-				<Button value="no">Not sure...</Button>
+				<Button classes="nocursor" value="yes"></Button>Of course!
+				<Button classes="nocursor" value="no"></Button>Not sure...
 			</QuestionForm>
 		</div>
 	</section>
@@ -25,10 +25,7 @@ export default Vue.extend({
 		Button,
 	},
 	mounted() {
-		// console.log(store.state.scene.PencilScene);
-		this.$nextTick(() => {
-			store.state.scene.PencilScene.start();
-		});
+		store.state.scene.PencilScene.start();
 	},
 	destroyed() {
 		store.state.scene.PencilScene.destroy();
@@ -40,5 +37,8 @@ export default Vue.extend({
 .form {
 	margin-top: 45px;
 	width: 400px;
+}
+section {
+	cursor: none;
 }
 </style>

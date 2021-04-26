@@ -10,7 +10,7 @@ import emojiGlassesBake from "~/assets/Models/emoji-glasses/EMOJI1_bake_light.jp
 import emojiSad from "~/assets/Models/emoji-sad/EMOJI_2.glb";
 import emojiSadBake from "~/assets/Models/emoji-sad/EMOJI2_bake2.jpg";
 import crystal from "~/assets/Models/crystalball/BOULE_VOYANTE.glb";
-import pencil from "~/assets/Models/pencil/Stylo_export.glb";
+import pencil from "~/assets/Models/pencil/pencil.glb";
 import radiologistBackground from "~/assets/Models/radiologist/big-cube-bg.glb"
 
 export const MODELS = {

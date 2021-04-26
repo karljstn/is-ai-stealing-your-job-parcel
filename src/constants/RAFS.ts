@@ -5,6 +5,8 @@ export const RAFS = {
   HAND: "handUpdate",
   TRASHCAN: "trashcanUpdate",
   EMOJISMILE: "emojiUpdate",
+  EMOJIGLASSES: "emojiGlassesUpdate",
+  EMOJISAD: "emojiSadUpdate",
 };
 
 //TODO: enums ? research typescript
