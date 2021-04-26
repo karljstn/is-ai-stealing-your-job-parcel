@@ -90,6 +90,7 @@ export default class Scene {
     ) {
       store.commit("setPane", new Tweakpane())
       this.pane = store.state.tweakpane
+      if (store.state.tweakpane) store.state.tweakpane.hidden = true
     } else this.pane = null
 
     this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000)
@@ -272,9 +273,8 @@ export default class Scene {
   }
 
   destroyRadiologist() {
-    this.camera.position.set(0, 0, 1)
+    this.camera.position.copy(this.params.camera.position)
     this.scene.remove(this.radio.group)
-    console.log(this.camera.position)
   }
   bringToFront() {
     // this.Background?.hide();

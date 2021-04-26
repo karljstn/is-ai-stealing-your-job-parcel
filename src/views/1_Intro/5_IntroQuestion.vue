@@ -8,10 +8,10 @@
 			<div class="form">
 				<QuestionForm>
 					<SaveRect :rectName="sadEmoji">
-						<Button size="2.1" value="yes">😧</Button>
+						<Button size="20.1" value="yes">😧</Button>
 					</SaveRect>
 					<SaveRect :rectName="glassesEmoji">
-						<Button size="2.1" value="no">🤓</Button>
+						<Button size="20.1" value="no">🤓</Button>
 					</SaveRect>
 				</QuestionForm>
 			</div>
@@ -61,9 +61,9 @@ export default Vue.extend({
 	justify-content: center;
 	align-items: center;
 	.form{
-		width: 75%;
+		width: 100%;
 		margin-top: 4rem;
-		visibility: hidden;
+		opacity: 0;
 	}
 }
 </style>

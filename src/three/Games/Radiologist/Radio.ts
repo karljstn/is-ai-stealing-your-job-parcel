@@ -24,6 +24,7 @@ import vertexBackground from "~/shaders/radiologist/background/vertex.glsl"
 
 
 import gsap from "gsap"
+import router from "~router"
 
 export default class Radio implements ThreeGroup {
     group: THREE.Group
@@ -111,9 +112,9 @@ export default class Radio implements ThreeGroup {
         this.mouseDown = false
         this.isDragging = false
 
-        setTimeout(() => {
-            this.camera.position.z = 25
-        }, 100)
+        // setTimeout(() => {
+        //     this.camera.position.z = 25
+        // }, 100)
 
         this.controls.addEventListener("start", () => {
             this.mouseDown = true
@@ -333,13 +334,14 @@ export default class Radio implements ThreeGroup {
             y: -30,
             duration: 1,
             onComplete: () => {
-                store.commit("incrementProgression")
-                // this.meshesGroup.clear()
+                // store.commit("incrementProgression")
+                router.push("/10")
+                this.meshesGroup.clear()
 
-                // this.group.remove(this.skeleton)
-                // this.group.remove(this.clipboard)
+                this.group.remove(this.skeleton)
+                this.group.remove(this.clipboard)
 
-                this.camera.position.z = 1
+                // this.camera.position.z = 1
             }
         })
     }

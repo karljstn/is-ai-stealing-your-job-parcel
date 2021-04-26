@@ -108,10 +108,9 @@ export default Vue.extend({
 		}
 	},
 	destroyed() {
-		store.state.scene?.renderer.setClearColor(0x000000, 1);
+		// store.state.scene?.renderer.setClearColor(0x000000, 1);
 		if (!store.state.devMode.forceRadiologist) {
 			store.state.scene?.destroyRadiologist();
-			store.state.scene?.Loader?.fullScreenPlane.show();
 		}
 		const canvas = document.querySelector('canvas');
 		if (canvas) {

@@ -35,7 +35,7 @@
     <QuestionForm>
       <Button value="yes">Next</Button>
     </QuestionForm> -->
-			<router-link to="/epilogue"><Button>End</Button></router-link>
+			<router-link to="/outro"><Button>End</Button></router-link>
 		</div>
 	</section>
 </template>
