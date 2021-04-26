@@ -1,5 +1,10 @@
 <template>
   <div class="timer-container">
+    <img
+      src="~/assets/Games/Radiologist/Icons/Clock/02-clock.png"
+      class="clock"
+      alt=""
+    />
     <div class="timer">
       <span>{{ this.min }}:{{ this.sec }}</span>
     </div>
@@ -76,25 +81,37 @@ export default Vue.extend({
 <style lang="scss">
 .timer-container {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  bottom: 5%;
+  right: 10.3%;
+
+  width: 13%;
+  height: 8vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-image: url("~/assets/Games/Radiologist/timer.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 130px;
-  height: 50px;
-}
-.timer {
-  // position: absolute;
-  // left: 50%;
-  // top: 50%;
-  // transform: translate(-50%, -50%);
-  position: relative;
-  top: 5px;
-  font-size: 1.6em;
-  color: white;
+  // justify-content: space-around;
+  background-color: #dedcdc;
+  border-radius: 10px;
+
+  .clock {
+    width: 130px;
+    // height: 180px;
+    // z-index: 2;
+    // background-image: url("~/assets/Games/Radiologist/Icons/Clock/02-clock.png");
+    // background-size: contain;
+    // background-repeat: no-repeat;
+    position: relative;
+    right: 15%;
+    bottom: 20%;
+  }
+
+  .timer {
+    position: relative;
+    right: 7%;
+    // left: 50%;
+    // top: 50%;
+    // transform: translate(-50%, -50%);
+
+    font-size: 3em;
+  }
 }
 </style>

@@ -10,18 +10,18 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 import Radio from "./Games/Radiologist/Radio"
 
-import Benchmark from "./Benchmark";
-import { clamp, getViewport } from "~/util/";
-import { MainSceneParams } from "~/types/";
-import Loader from "./Loader";
-import store from "~/store";
-import EmojiScene from "./Scenes/EmojiSmileScene";
-import { RAFS } from "~constants/RAFS";
-import TrashcanScene from "./Scenes/TrashcanScene";
-import { Vector3 } from "three";
-import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import CrystalBallScene from "./Scenes/CrystalBallScene";
-import PencilScene from "./Scenes/PencilScene";
+import Benchmark from "./Benchmark"
+import { clamp, getViewport } from "~/util/"
+import { MainSceneParams } from "~/types/"
+import Loader from "./Loader"
+import store from "~/store"
+import EmojiScene from "./Scenes/EmojiSmileScene"
+import { RAFS } from "~constants/RAFS"
+import TrashcanScene from "./Scenes/TrashcanScene"
+import { Vector3 } from "three"
+import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event"
+import CrystalBallScene from "./Scenes/CrystalBallScene"
+import PencilScene from "./Scenes/PencilScene"
 import EmojisScene from "./Scenes/EmojisScene"
 // import Background from "./Meshes/Background";
 
@@ -150,7 +150,8 @@ export default class Scene {
       this.mouse,
       this.controls,
       this.pane,
-      this.renderer
+      this.renderer,
+      this.clock
     )
 
     this.resize() //has to be done before Benchmark
@@ -207,7 +208,7 @@ export default class Scene {
       this.scene,
       this.mouse,
       this.camera
-    );
+    )
     this.tweaks()
 
     // SOUNDS.background.play()
@@ -268,7 +269,7 @@ export default class Scene {
 
   startRadiologist() {
     console.log("start radiologist game")
-    this.camera.position.z = 15
+    // this.camera.position.z = 15
     this.scene.add(this.radio.group)
   }
 

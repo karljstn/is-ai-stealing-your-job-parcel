@@ -40,8 +40,8 @@ export default Vue.extend({
 .button-container {
   position: absolute;
   top: 50%;
-  right: 10px;
-  transform: translate(-50%, -50%);
+  right: 9%;
+  transform: translate(0%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
