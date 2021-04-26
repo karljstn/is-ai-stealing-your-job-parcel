@@ -97,7 +97,10 @@ export default Vue.extend({
 		// store.state.scene?.renderer.setClearColor(0x231f38, 1);
 
 		const canvas = document.querySelector('canvas');
-		if (canvas) canvas.style.zIndex = '-1';
+		if (canvas) {
+			canvas.style.zIndex = '-1';
+			canvas.style.pointerEvents = 'all';
+		}
 
 		if (!store.state.devMode.forceRadiologist) {
 			store.state.scene?.startRadiologist();
@@ -111,7 +114,10 @@ export default Vue.extend({
 			store.state.scene?.Loader?.fullScreenPlane.show();
 		}
 		const canvas = document.querySelector('canvas');
-		if (canvas) canvas.style.zIndex = '1';
+		if (canvas) {
+			canvas.style.zIndex = '1';
+			canvas.style.pointerEvents = 'none';
+		}
 	},
 	components: {
 		NotificationManager,
@@ -138,13 +144,15 @@ export default Vue.extend({
 			console.log('show tutorial');
 			this.timerPause = true;
 			this.tutorialCount = 1;
-			gsap.to(this.$refs.tutorialManager.$el, {
+			const manager: any = this.$refs.tutorialManager;
+			gsap.to(manager.$el, {
 				duration: 0.3,
 				scale: 1,
 			});
 		},
 		hideTutorial() {
-			gsap.to(this.$refs.tutorialManager.$el, {
+			const manager: any = this.$refs.tutorialManager;
+			gsap.to(manager.$el, {
 				duration: 0.3,
 				scale: 0,
 				onComplete: this.showCountdown,
