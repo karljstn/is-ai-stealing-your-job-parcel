@@ -1,5 +1,8 @@
 uniform vec2 size;
 
+varying vec2 vUv;
+
 void main(){
+    vUv = uv;
     gl_Position = vec4(position.xyz, 1.0);
 }

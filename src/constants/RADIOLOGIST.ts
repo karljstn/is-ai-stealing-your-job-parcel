@@ -20,27 +20,32 @@ export const RADIOLOGIST = {
     SKELETON1: {
         URL: skeleton1,
         SCALE: 1.5,
-        BAKE: skeletonBaseTex1
+        BAKE: skeletonBaseTex1,
+        HEART_SCALE: 22
     },
     SKELETON2: {
         URL: skeleton2,
         SCALE: 1.5,
-        BAKE: skeletonBaseTex2
+        BAKE: skeletonBaseTex2,
+        HEART_SCALE: 100
     },
     SKELETON3: {
         URL: skeleton3,
         SCALE: 1.5,
-        BAKE: skeletonBaseTex3
+        BAKE: skeletonBaseTex3,
+        HEART_SCALE: 100
     },
     SKELETON4: {
         URL: skeleton4,
         SCALE: 1.5,
-        BAKE: skeletonBaseTex4
+        BAKE: skeletonBaseTex4,
+        HEART_SCALE: 100
     },
     SKELETON5: {
         URL: skeleton5,
         SCALE: 1.5,
-        BAKE: skeletonBaseTex5
+        BAKE: skeletonBaseTex5,
+        HEART_SCALE: 100
     },
     CLIPBOARD: {
         URL: clipboard,
