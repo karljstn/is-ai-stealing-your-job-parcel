@@ -10,8 +10,7 @@ import store from "~/store"
 import { ThreeGroup } from "~/interfaces/Three"
 
 // import { normalize } from '~/util'
-import { SKELETONS } from "~/constants/SKELETONS"
-import { MODELS } from "~/constants/MODELS"
+import { RADIOLOGIST } from "~constants/RADIOLOGIST"
 import LoadManager from "~/three/Singletons/LoadManager"
 // import { Bounce } from 'gsap'
 
@@ -150,7 +149,7 @@ export default class Radio implements ThreeGroup {
         this.loader = new GLTFLoader(LoadManager.manager)
 
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
-        this.bakedTexture = this.textureLoader.load(SKELETONS.SKELETON5.BAKE)
+        this.bakedTexture = this.textureLoader.load(RADIOLOGIST.SKELETON5.BAKE)
         this.bakedTexture.flipY = false
         // this.bakedTexture.encoding = THREE.sRGBEncoding
 
@@ -158,12 +157,12 @@ export default class Radio implements ThreeGroup {
 
         // this.bakedMaterial = new THREE.MeshBasicMaterial({ map: this.bakedTexture })
 
-        this.loader.load(SKELETONS.SKELETON5.URL, gltf => {
+        this.loader.load(RADIOLOGIST.SKELETON5.URL, gltf => {
             this.skeleton = gltf.scene
             this.skeleton.scale.set(
-                SKELETONS.SKELETON5.SCALE,
-                SKELETONS.SKELETON5.SCALE,
-                SKELETONS.SKELETON5.SCALE
+                RADIOLOGIST.SKELETON5.SCALE,
+                RADIOLOGIST.SKELETON5.SCALE,
+                RADIOLOGIST.SKELETON5.SCALE
             )
             this.group.add(this.skeleton)
 
@@ -172,8 +171,11 @@ export default class Radio implements ThreeGroup {
             this.nextCase()
         })
 
-        this.loader.load(MODELS.CLIPBOARD.URL, gltf => {
+        this.loader.load(RADIOLOGIST.CLIPBOARD.URL, gltf => {
             this.clipboard = gltf.scene
+            console.log('CLIPBOARD LOADED')
+            console.log(gltf.scene)
+
             // this.clipboard.scale.set(MODELS.CLIPBOARD.SCALE, MODELS.CLIPBOARD.SCALE, MODELS.CLIPBOARD.SCALE)
             // this.clipboard.rotation.x = Math.PI / 2
             // this.clipboard.position.x = 50
@@ -198,7 +200,7 @@ export default class Radio implements ThreeGroup {
             //     })
             // })
 
-            // this.group.add(gltf.scene)
+            this.group.add(gltf.scene)
         })
 
         // const test = Math.round(normalize(window.innerWidth * 0.1, window.innerWidth, 0) * 100) / 100

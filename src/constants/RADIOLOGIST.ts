@@ -13,7 +13,10 @@ import skeletonBaseTex4 from "~/assets/Games/Radiologist/Textures/skeleton_4-3.j
 import skeleton5 from "~/assets/Games/Radiologist/Models/skeleton_5-3.glb"
 import skeletonBaseTex5 from "~/assets/Games/Radiologist/Textures/skeleton_5-3.jpg"
 
-export const SKELETONS = {
+import clipboard from '~/assets/Games/Radiologist/Models/clipboard_1.glb'
+import clipboardTex from "~/assets/Games/Radiologist/Textures/clipboard_1.jpg"
+
+export const RADIOLOGIST = {
     SKELETON1: {
         URL: skeleton1,
         SCALE: 1.5,
@@ -38,5 +41,10 @@ export const SKELETONS = {
         URL: skeleton5,
         SCALE: 1.5,
         BAKE: skeletonBaseTex5
+    },
+    CLIPBOARD: {
+        URL: clipboard,
+        SCALE: 1,
+        BAKE: clipboardTex,
     }
 }
