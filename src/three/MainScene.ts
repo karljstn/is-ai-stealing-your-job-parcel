@@ -269,7 +269,7 @@ export default class Scene {
 
   startRadiologist() {
     console.log("start radiologist game")
-    // this.camera.position.z = 15
+    this.camera.position.z = 100
     this.scene.add(this.radio.group)
   }
 

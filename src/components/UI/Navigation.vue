@@ -5,9 +5,23 @@
 				<h3>is ai stealing your job.com</h3>
 			</router-link>
 		</div>
+		<div ref="middle" class="middle">
+			<router-link to="/credits">
+				credits
+			</router-link>
+			<router-link to="/outro/ressources">
+				learn more
+			</router-link>
+			<router-link to="/outro/takeaction">
+				take action
+			</router-link>
+			<router-link to="/outro/share">
+				share
+			</router-link>
+		</div>
 		<div class="right">
-			<button v-on:click="togglePane">debug</button>
-			<span>menu</span>
+			<!-- <button v-on:click="togglePane">debug</button> -->
+			<button v-on:click="toggleMenu"><span>menu</span></button>
 		</div>
 	</nav>
 </template>
@@ -15,12 +29,23 @@
 <script lang="ts">
 import Vue from 'vue';
 import store from '~store';
+import gsap from 'gsap';
 
 export default Vue.extend({
+	data() {
+		return {
+			isMenu: false,
+		};
+	},
 	methods: {
 		togglePane: function(event: MouseEvent) {
 			if (!store.state.tweakpane) return;
 			store.state.tweakpane.hidden = !store.state.tweakpane.hidden;
+		},
+		toggleMenu: function() {
+			this.isMenu = !this.isMenu;
+			if (this.isMenu) gsap.to(this.$refs.middle, { opacity: 1, duration: 0.4 });
+			else gsap.to(this.$refs.middle, { opacity: 0, duration: 0.4 });
 		},
 	},
 });
@@ -31,7 +56,8 @@ export default Vue.extend({
 .white-nav nav {
 	h3,
 	span,
-	button {
+	button,
+	a {
 		color: $white;
 	}
 }
@@ -43,6 +69,21 @@ nav {
 	padding: $menu-padding;
 	display: flex;
 	justify-content: space-between;
+	.middle {
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%, 0);
+		opacity: 0;
+
+		a {
+			transition: color 0.5s ease-in-out;
+			font-weight: 300;
+			margin: 0 15px;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
 	h3,
 	span,
 	button {
@@ -62,6 +103,10 @@ nav {
 		background: none;
 		cursor: pointer;
 		outline: none;
+		font-size: 1rem;
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 }
 </style>

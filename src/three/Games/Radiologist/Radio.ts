@@ -147,7 +147,7 @@ export default class Radio implements ThreeGroup {
     }
 
     init() {
-        this.camera.position.set(0, 0, 100)
+        // this.camera.position.set(0, 0, 100)
         this.group.add(Background.mesh)
         Foreground.init(this.renderTarget)
         this.group.add(Foreground.mesh)

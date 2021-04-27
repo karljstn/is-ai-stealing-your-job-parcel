@@ -1,10 +1,12 @@
 <template>
 	<section>
-		<a href="#">Link here</a>
-		<a href="#">Link here</a>
-		<a href="#">Link here</a>
-		<a href="#">Link here</a>
-		<a href="#">Link here</a>
+		<p>Made by :</p>
+		<ul>
+			<li>Michael de Laborde</li>
+			<li>Karl Justiniano</li>
+			<li>Daria Duvernois</li>
+			<li>Sarah Manzaro</li>
+		</ul>
 		<a @click="$router.go(-1)"><Button>x</Button></a>
 	</section>
 </template>

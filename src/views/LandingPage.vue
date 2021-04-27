@@ -87,6 +87,8 @@ export default Vue.extend({
 			this.show = !this.show;
 			this.show ? timeline.tweenFrswomTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
 		});
+
+		fadeBackground({ routeName: 'LandingPage' });
 	},
 	destroyed() {
 		store.state.scene?.TrashcanScene.biases.destroy();

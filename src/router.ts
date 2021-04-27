@@ -19,12 +19,12 @@ import Outro from '~views/5_Epilogue/1_EpilogueMenu.vue';
 import OutroRessources from '~views/5_Epilogue/2_EpilogueRessources.vue';
 import OutroShare from '~views/5_Epilogue/3_EpilogueShare.vue';
 import OutroTakeAction from '~views/5_Epilogue/4_EpilogueTakeAction.vue';
-
+import Credits from '~views/5_Epilogue/5_EpilogueCredits.vue';
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: LandingPage, name: "Landing", color: PALETTE.WHITE },
+  { path: '/', component: LandingPage, name: "LandingPage", color: PALETTE.WHITE },
   { path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.YELLOW },
   { path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK },
   { path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.BLACK },
@@ -41,6 +41,7 @@ const routes = [
   { path: '/outro/ressources', component: OutroRessources, name: "OutroRessources" },
   { path: '/outro/share', component: OutroShare, name: "OutroShare" },
   { path: '/outro/takeaction', component: OutroTakeAction, name: "OutroTakeAction" },
+  { path: '/credits', component: Credits, name: "Credits" },
 ]
 
 const router = new VueRouter({

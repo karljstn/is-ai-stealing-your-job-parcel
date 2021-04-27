@@ -1,7 +1,11 @@
 <template>
 	<section>
-		<p>share ici</p>
-		<router-link to="/outro"><Button>x</Button></router-link>
+		<a href="#">Facebook</a>
+		<a href="#">Twitter</a>
+		<a href="#">Instagram</a>
+		<a href="#">LinkedIn</a>
+		<a href="#">Reddit</a>
+		<a @click="$router.go(-1)"><Button>x</Button></a>
 	</section>
 </template>
 
@@ -14,4 +18,10 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+a {
+	&:hover {
+		text-decoration: underline;
+	}
+}
+</style>
