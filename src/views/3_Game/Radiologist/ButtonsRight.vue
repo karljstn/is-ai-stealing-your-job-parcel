@@ -40,39 +40,32 @@ export default Vue.extend({
 .button-container {
   position: absolute;
   top: 50%;
-  right: 9%;
-  transform: translate(0%, -50%);
+  right: 8%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-radius: 20px;
 
-  .ai-button-container {
-    background-image: url("~assets/Games/Radiologist/cube-ai.png");
+  div {
+    width: 73px;
+    height: 74px;
     background-size: contain;
     background-repeat: no-repeat;
-    width: 80px;
     cursor: pointer;
-    margin: 10px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
-    .ai-button {
+    button {
       border: none;
-      background-image: url("~assets/Games/Radiologist/ordi.png");
       background-size: contain;
       background-repeat: no-repeat;
-      width: 70px;
-      height: 70px;
-      background-color: transparent;
-      margin-bottom: 20px;
+      width: 80%;
+      height: 80%;
       cursor: pointer;
       outline: none;
       transition: all 0.2s;
-      // transform: rotateY(180deg) rotateZ(-10deg);
 
       &:hover {
         transform: scale(1.2);
@@ -80,32 +73,24 @@ export default Vue.extend({
     }
   }
 
+  .ai-button-container {
+    background-image: url("~assets/Games/Radiologist/Icons/square-interface.png");
+    margin-bottom: 30px;
+
+    .ai-button {
+      background-image: url("~assets/Games/Radiologist/Icons/ai.png");
+      position: relative;
+      top: 5px;
+    }
+  }
+
   .patient-file-container {
-    background-image: url("~assets/Games/Radiologist/cube-patient-file.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 80px;
-    cursor: pointer;
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-image: url("~assets/Games/Radiologist/Icons/square-interface.png");
 
     .patient-file-button {
-      background-image: url("~assets/Games/Radiologist/patient_file.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: 70px;
-      height: 70px;
-      border: none;
-      background-color: transparent;
-      outline: none;
-      transition: all 0.2s;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-      }
+      background-image: url("~assets/Games/Radiologist/Icons/clipboard.png");
+      position: relative;
+      left: 5px;
     }
   }
 }

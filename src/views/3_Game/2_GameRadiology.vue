@@ -70,7 +70,7 @@ export default Vue.extend({
       timerCanStart: false,
       timerPause: false,
 
-      HIDE: false,
+      HIDE: true,
     };
   },
 
@@ -145,7 +145,6 @@ export default Vue.extend({
       this.tutorialCount++;
     },
     showTutorial() {
-      console.log("show tutorial");
       this.timerPause = true;
       this.tutorialCount = 1;
       const manager: any = this.$refs.tutorialManager;
@@ -155,7 +154,6 @@ export default Vue.extend({
       });
     },
     hideTutorial() {
-      console.log("hide tutorial");
       const manager: any = this.$refs.tutorialManager;
       gsap.to(manager.$el, {
         duration: 0.3,
@@ -166,14 +164,10 @@ export default Vue.extend({
       this.tutorialCount = -1;
     },
     showCountdown() {
-      console.log("show countdown");
-
       if (!this.timerCanStart) this.countdown = true;
       else this.timerPause = false;
     },
     hideCountdown() {
-      console.log("hide countdown");
-
       this.countdown = false;
       this.timerCanStart = true;
     },

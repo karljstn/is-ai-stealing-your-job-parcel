@@ -87,8 +87,9 @@ export default Vue.extend({
   bottom: 5%;
   right: 10.3%;
 
-  width: 13%;
-  height: 8vh;
+  width: 194px;
+  height: 72px;
+
   display: flex;
   align-items: center;
   // justify-content: space-around;
@@ -97,25 +98,20 @@ export default Vue.extend({
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
 
   .clock {
-    width: 130px;
-    // height: 180px;
-    // z-index: 2;
-    // background-image: url("~/assets/Games/Radiologist/Icons/Clock/02-clock.png");
-    // background-size: contain;
-    // background-repeat: no-repeat;
+    width: 117px;
+    height: 126px;
+    -webkit-filter: drop-shadow(1px 1px 1px #000);
+    filter: drop-shadow(1px 1px 1px #000);
+
     position: relative;
-    right: 15%;
-    bottom: 20%;
+    right: 35px;
+    bottom: 35%;
   }
 
   .timer {
     position: relative;
-    right: 7%;
-    // left: 50%;
-    // top: 50%;
-    // transform: translate(-50%, -50%);
-
-    font-size: 3em;
+    right: 20px;
+    font-size: 2em;
   }
 }
 </style>

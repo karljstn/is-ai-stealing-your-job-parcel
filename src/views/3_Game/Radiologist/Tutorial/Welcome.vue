@@ -35,7 +35,7 @@ export default Vue.extend({});
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.5em;
+    font-size: 1.2em;
     text-align: center;
   }
 }

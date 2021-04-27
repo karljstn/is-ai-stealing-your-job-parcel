@@ -11,11 +11,15 @@
         ></Folder>
       </transition-group>
     </div>
+    <img src="~/assets/Games/Radiologist/Icons/loop.png" class="loop" alt="" />
     <div class="files-processed">
       <img src="~/assets/Games/Radiologist/Icons/Box/05-box.png" alt="" />
       <div class="wrapper">
         <span class="cases">{{ this.progress }}</span>
-        <span class="processed">files processed</span>
+        <span class="processed"
+          >files <br />
+          processed</span
+        >
       </div>
     </div>
   </div>
@@ -37,11 +41,11 @@ export default Vue.extend({
   },
   mounted() {
     setTimeout(() => {
-      this.addFolder(5);
+      this.addFolder(500);
     }, 1000);
 
     setTimeout(() => {
-      this.addFolder(15);
+      this.addFolder(500);
     }, 3000);
   },
   computed: {
@@ -69,23 +73,32 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .toolbar-container {
-  width: 40%;
-  height: 5vh;
+  width: 580px;
+  height: 50px;
+  // width: 40%;
+  // height: 5vh;
   background-color: #dedcdc;
   // background-image: url("~/assets/Games/Radiologist/files-bar.png");
-  background-repeat: no-repeat;
-  background-size: contain;
+  // background-repeat: no-repeat;
+  // background-size: contain;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
   position: absolute;
-  bottom: 6%;
+  bottom: 5%;
   left: 0;
   right: 0;
   margin: auto;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .loop {
+    width: 30px;
+    height: 30px;
+  }
 
   .cases-to-come {
-    width: 60%;
+    width: 50%;
     height: 100%;
 
     span {
@@ -107,44 +120,29 @@ export default Vue.extend({
 
   .files-processed {
     width: 40%;
-    height: 100%;
-    position: relative;
-    // background-color: aqua;
-
-    &:after {
-      content: "";
-      width: 1px;
-      height: 40%;
-      background-color: white;
-      position: absolute;
-      top: 0;
-      bottom: 20px;
-      left: -25px;
-      margin: auto;
-    }
+    display: flex;
 
     img {
       width: 70px;
+      -webkit-filter: drop-shadow(1px 1px 1px #000);
+      filter: drop-shadow(1px 1px 1px #000);
     }
 
     .wrapper {
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      color: white;
       position: relative;
-      bottom: 10px;
-      left: 10px;
+      left: 5px;
 
       .cases {
         font-size: 2em;
-        margin-right: 10px;
+        margin-right: 7.5px;
       }
 
       .processed {
-        width: 30px;
-        word-break: normal;
         line-height: 15px;
+        font-weight: lighter;
       }
     }
   }

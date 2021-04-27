@@ -45,12 +45,11 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .side-container {
-  width: initial;
   position: absolute;
-  top: 50%;
-  left: 11%;
-  transform: translate(0%, -50%);
-  font-size: 0.8em;
+  top: 53%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  font-size: 0.6em;
   opacity: 0.6;
 }
 
