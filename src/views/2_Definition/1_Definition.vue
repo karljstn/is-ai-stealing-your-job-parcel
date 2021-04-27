@@ -6,8 +6,8 @@
 
 		<div class="form">
 			<QuestionForm>
-				<Button classes="nocursor" value="yes"></Button>Of course!
-				<Button classes="nocursor" value="no"></Button>Not sure...
+				<div class="btn"><Button classes="nocursor pad" value="yes"></Button><span>Of course!</span></div>
+				<div class="btn"><Button classes="nocursor pad" value="no"></Button><span>Not sure...</span></div>
 			</QuestionForm>
 		</div>
 	</section>
@@ -42,5 +42,13 @@ export default Vue.extend({
 }
 section {
 	cursor: none;
+}
+.btn {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	span {
+		margin-left: 20px;
+	}
 }
 </style>

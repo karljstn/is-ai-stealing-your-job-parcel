@@ -1,7 +1,9 @@
 <template>
 	<nav>
 		<div class="left">
-			<h3>is ai stealing your job.com</h3>
+			<router-link to="/">
+				<h3>is ai stealing your job.com</h3>
+			</router-link>
 		</div>
 		<div class="right">
 			<button v-on:click="togglePane">debug</button>
@@ -26,7 +28,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~/styles/_variables.scss';
-
 .white-nav nav {
 	h3,
 	span,
