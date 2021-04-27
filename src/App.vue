@@ -18,10 +18,13 @@ import store from "~/store"
 import CustomEase from "~/lib/CustomEase/esm/CustomEase.js"
 import gsap from "gsap"
 import NormalizeWheel from 'normalize-wheel';
+import {SOUNDS} from "~/constants/SOUNDS.ts"
 
 import CanvasThree from '~/components/Canvas/CanvasThree.vue';
 import Navigation from '~/components/UI/Navigation.vue';
 import MuteButton from '~/components/UI/MuteButton.vue';
+
+import {Howler} from "howler"
 
 gsap.registerPlugin(CustomEase)
 
@@ -53,9 +56,14 @@ export default Vue.extend({
 					store.commit('toggleIsLoaderReady');
 					this.isProgressionReady = true
 				}, store.state.load.minLoaderDuration);
-			});
 
+				Howler.volume(0.3)
+				SOUNDS.background.play()
+			});
 		},
+		destroyed() {
+			SOUNDS.background.stop()
+		}
 })
 </script>
 
