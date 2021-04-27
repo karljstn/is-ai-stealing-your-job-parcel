@@ -121,9 +121,8 @@ export default class Radio implements ThreeGroup {
     init() {
         // this.camera.position.set(0, 0, 20)
         this.group.add(Background.mesh)
-        console.log(this.renderer.getPixelRatio())
 
-        Foreground.init(this.renderTarget)
+        Foreground.init(this.renderTarget, this.renderer.getPixelRatio())
         this.group.add(Foreground.mesh)
         Skeleton.load(this.skeletonScene, this.progress)
         // Clipboard.load(this.group, this.progress)
@@ -131,17 +130,13 @@ export default class Radio implements ThreeGroup {
 
     nextCase() {
         // this.camera.position.set(0, 0, 20)
-        console.log(this.camera.position)
-
         Skeleton.load(this.skeletonScene, this.progress)
         // Clipboard.load(this.group, this.progress)
     }
 
     onResize() {
-
-        Foreground.onResize()
+        Foreground.onResize(this.renderer.getPixelRatio())
         this.renderTarget.setSize(window.innerWidth, window.innerHeight)
-
     }
 
 

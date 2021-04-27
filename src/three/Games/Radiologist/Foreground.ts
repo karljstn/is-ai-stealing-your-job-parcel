@@ -25,8 +25,9 @@ class Foreground {
             uniforms: {
                 size: { value: new THREE.Vector2(params.width, params.height) },
                 ratio: { value: this.ratio },
-                resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                resolution: { value: new THREE.Vector2(window.innerWidth * params.width, window.innerHeight * params.height) },
                 pi: { value: Math.PI },
+                uPixelRatio: { value: 1 },
                 uRenderTarget: { value: null },
                 uLines: { value: 150 },
                 uThickness: { value: 0.004 },
@@ -43,15 +44,17 @@ class Foreground {
         this.mesh.frustumCulled = false
     }
 
-    init(renderTarget: THREE.WebGLRenderTarget) {
+    init(renderTarget: THREE.WebGLRenderTarget, pixelRatio: number) {
         this.material.uniforms.uRenderTarget.value = renderTarget.texture
+        this.material.uniforms.uPixelRatio.value = pixelRatio
     }
 
-    onResize() {
+    onResize(pixelRatio: number) {
         this.ratio = (window.innerWidth * params.width) / (window.innerHeight * params.height)
 
         this.material.uniforms.ratio.value = this.ratio
-        this.material.uniforms.resolution.value.set(window.innerWidth, window.innerHeight)
+        this.material.uniforms.resolution.value.set(window.innerWidth * params.width, window.innerHeight * params.height)
+        this.material.uniforms.uPixelRatio.value = pixelRatio
     }
 
 
