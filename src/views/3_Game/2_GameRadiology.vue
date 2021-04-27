@@ -3,7 +3,7 @@
     <Side></Side>
     <ButtonsRight></ButtonsRight>
 
-    <NotificationManager></NotificationManager>
+    <!-- <NotificationManager></NotificationManager> -->
 
     <Toolbar></Toolbar>
 
@@ -70,7 +70,7 @@ export default Vue.extend({
       timerCanStart: false,
       timerPause: false,
 
-      HIDE: true,
+      HIDE: false,
     };
   },
 
@@ -137,7 +137,7 @@ export default Vue.extend({
 
   methods: {
     setTutorialCount() {
-      if (this.tutorialCount === 4) {
+      if (this.tutorialCount === 3) {
         this.hideTutorial();
         return;
       }
@@ -155,6 +155,7 @@ export default Vue.extend({
       });
     },
     hideTutorial() {
+      console.log("hide tutorial");
       const manager: any = this.$refs.tutorialManager;
       gsap.to(manager.$el, {
         duration: 0.3,
@@ -165,10 +166,14 @@ export default Vue.extend({
       this.tutorialCount = -1;
     },
     showCountdown() {
+      console.log("show countdown");
+
       if (!this.timerCanStart) this.countdown = true;
       else this.timerPause = false;
     },
     hideCountdown() {
+      console.log("hide countdown");
+
       this.countdown = false;
       this.timerCanStart = true;
     },

@@ -2,13 +2,8 @@
   <div class="welcome-container">
     <h1>Radiologist game</h1>
     <p>
-      You've got one job: Find the lesion in the X-Ray and process as many files
-      as possible!
-
-      <br />
-      <br />
-
-      Good luck...
+      Your job is to detect the anomaly in each patient's 3D scan. You've got a
+      lot of patient files, so don't fall behind!
     </p>
   </div>
 </template>
@@ -40,7 +35,7 @@ export default Vue.extend({});
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.2em;
+    font-size: 1.5em;
     text-align: center;
   }
 }

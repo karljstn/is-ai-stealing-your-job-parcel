@@ -27,7 +27,7 @@ class Foreground {
                 ratio: { value: this.ratio },
                 resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
                 pi: { value: Math.PI },
-                renderTarget: { value: null },
+                uRenderTarget: { value: null },
                 uLines: { value: 150 },
                 uThickness: { value: 0.004 },
             },
@@ -44,7 +44,7 @@ class Foreground {
     }
 
     init(renderTarget: THREE.WebGLRenderTarget) {
-        this.material.uniforms.renderTarget.value = renderTarget.texture
+        this.material.uniforms.uRenderTarget.value = renderTarget.texture
     }
 
     onResize() {

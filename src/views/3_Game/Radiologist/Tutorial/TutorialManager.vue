@@ -5,35 +5,34 @@
 
       <Explanation
         v-if="this.tutorialCount === 1"
-        v-bind:text="`Process your files within the time limit. Each file not processed gives
-      you a time penalty on the general timer.`"
+        v-bind:text="`Each file has to be processed within a 20 second time limit. Failure to do so will incur penalties in your overall timer.`"
         v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
       ></Explanation>
 
       <Explanation
         v-if="this.tutorialCount === 2"
-        v-bind:text="`The patient file can help you analyze the X-ray. You can also ask AI to assist you.`"
+        v-bind:text="`In trouble? Click on the AI cursor icon to ask the AI for assistance. Read each patient file for clues.`"
         v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
       ></Explanation>
 
       <Explanation
         v-if="this.tutorialCount === 3"
-        v-bind:text="`Hold left click to manipulate the central object and find the problem. Use the mouse scroll wheel to zoom.`"
+        v-bind:text="`Drag to rotate. Scroll to zoom. Click to select anomalies.`"
         v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
       ></Explanation>
 
-      <Explanation
+      <!-- <Explanation
         v-if="this.tutorialCount === 4"
         v-bind:text="`Click to select the area on the x-ray where there is a lesion.`"
         v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
-      ></Explanation>
+      ></Explanation> -->
     </div>
     <span
       v-show="this.showUI"
       ref="explanationCounter"
       class="explanation-counter"
       ><span>{{ this.tutorialCount }}</span
-      >/4</span
+      >/3</span
     >
     <span
       v-show="this.showUI"
@@ -83,7 +82,7 @@ export default Vue.extend({
         });
       }
 
-      if (newValue < 5) this.fadeIn();
+      if (newValue < 4) this.fadeIn();
     },
   },
   components: {
@@ -132,10 +131,9 @@ export default Vue.extend({
         this.showUI = true;
       }
 
-      if (this.tutorialCount === 4) {
+      if (this.tutorialCount === 3) {
         this.hideTutorial();
         this.showUI = false;
-        console.log("SHOW UI = FALSE");
       }
 
       gsap.to(this.$refs.tutorialContainer, {

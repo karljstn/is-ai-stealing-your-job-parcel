@@ -29,7 +29,7 @@ export default Vue.extend({
     display: string;
   } {
     return {
-      countdown: 5,
+      countdown: 45,
       interval: 0,
       min: 0,
       sec: 0,
@@ -38,9 +38,12 @@ export default Vue.extend({
   },
   watch: {
     timerCanStart(newVal) {
+      console.log("newVal", newVal);
+
       if (newVal) this.startCountdown();
     },
     timerPause(newVal) {
+      console.log("newVal", newVal);
       if (newVal) this.stopCountdown();
       else this.startCountdown();
     },
@@ -91,6 +94,7 @@ export default Vue.extend({
   // justify-content: space-around;
   background-color: #dedcdc;
   border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
 
   .clock {
     width: 130px;

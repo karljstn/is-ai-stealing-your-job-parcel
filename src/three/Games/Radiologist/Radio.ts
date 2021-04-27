@@ -12,18 +12,6 @@ import raf from "~three/Singletons/RAF"
 import store from "~/store"
 
 import { ThreeGroup } from "~/interfaces/Three"
-
-// import { normalize } from '~/util'
-import { RADIOLOGIST } from "~constants/RADIOLOGIST"
-import LoadManager from "~/three/Singletons/LoadManager"
-// import { Bounce } from 'gsap'
-
-
-
-import fragmentBackground from "~/shaders/radiologist/background/fragment.glsl"
-import vertexBackground from "~/shaders/radiologist/background/vertex.glsl"
-
-
 import gsap from "gsap"
 
 let coef = 0
@@ -38,16 +26,6 @@ const params = {
 export default class Radio implements ThreeGroup {
     group: THREE.Group
 
-
-    meshesGroup: THREE.Group
-    // radioGeometry: THREE.PlaneBufferGeometry
-    // radioMaterial: THREE.MeshBasicMaterial
-    // radioMesh: THREE.Mesh
-    // zoomGeometry: THREE.PlaneBufferGeometry
-    // zoomMaterial: THREE.ShaderMaterial
-    // zoomMesh: THREE.Mesh
-
-
     raycaster: THREE.Raycaster
     mouse: THREE.Vector2
     camera: THREE.PerspectiveCamera
@@ -58,9 +36,6 @@ export default class Radio implements ThreeGroup {
     renderTarget: THREE.WebGLRenderTarget
 
     selectedMesh: null | THREE.Mesh
-
-
-    clipboard: THREE.Group
 
     currentIntersect: any
     mouseDown: boolean
@@ -82,9 +57,6 @@ export default class Radio implements ThreeGroup {
         clock: THREE.Clock
     ) {
         this.group = new THREE.Group()
-        this.meshesGroup = new THREE.Group()
-
-        this.clipboard = new THREE.Group()
 
         this.controls = controls
 
@@ -147,8 +119,10 @@ export default class Radio implements ThreeGroup {
     }
 
     init() {
-        this.camera.position.set(0, 0, 100)
+        // this.camera.position.set(0, 0, 20)
         this.group.add(Background.mesh)
+        console.log(this.renderer.getPixelRatio())
+
         Foreground.init(this.renderTarget)
         this.group.add(Foreground.mesh)
         Skeleton.load(this.skeletonScene, this.progress)
@@ -156,7 +130,7 @@ export default class Radio implements ThreeGroup {
     }
 
     nextCase() {
-        this.camera.position.set(0, 0, 100)
+        // this.camera.position.set(0, 0, 20)
         console.log(this.camera.position)
 
         Skeleton.load(this.skeletonScene, this.progress)
@@ -256,11 +230,13 @@ export default class Radio implements ThreeGroup {
     useAI() {
         if (Skeleton.errorMesh) {
             const mat = Skeleton.errorMesh.material as THREE.ShaderMaterial
+            mat.uniforms.uFresnelColor.value = new THREE.Color("#FF0000")
 
             gsap.to(mat.uniforms.uFresnelWidth, {
                 value: params.fresnelIntensity,
                 duration: 0.25
             })
+
         }
     }
 

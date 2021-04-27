@@ -51,7 +51,7 @@ export default Vue.extend({
 .folder {
   width: 70px;
   height: 100px;
-  background-image: url("~/assets/Games/Radiologist/files.png");
+  background-image: url("~/assets/Games/Radiologist/Icons/File/01-files.png");
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
