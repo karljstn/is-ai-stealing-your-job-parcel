@@ -3,6 +3,7 @@ export const RAFS = {
   MAIN: "mainUpdate",
   TYPER: "typerUpdate",
   HAND: "handUpdate",
+  CRYSTALBALL: "crystalBallUpdate",
   TRASHCAN: "trashcanUpdate",
   EMOJISMILE: "emojiUpdate",
   EMOJIGLASSES: "emojiGlassesUpdate",

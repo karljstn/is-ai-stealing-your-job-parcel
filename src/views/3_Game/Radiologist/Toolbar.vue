@@ -12,7 +12,7 @@
       </transition-group>
     </div>
     <div class="files-processed">
-      <img src="~/assets/Games/Radiologist/files.png" alt="" />
+      <img src="~/assets/Games/Radiologist/Icons/Box/05-box.png" alt="" />
       <div class="wrapper">
         <span class="cases">{{ this.progress }}</span>
         <span class="processed">files processed</span>
@@ -71,10 +71,12 @@ export default Vue.extend({
 .toolbar-container {
   width: 40%;
   height: 5vh;
-  background-color: #a0aadf;
+  background-color: #dedcdc;
   // background-image: url("~/assets/Games/Radiologist/files-bar.png");
   background-repeat: no-repeat;
   background-size: contain;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
   position: absolute;
   bottom: 6%;
   left: 0;

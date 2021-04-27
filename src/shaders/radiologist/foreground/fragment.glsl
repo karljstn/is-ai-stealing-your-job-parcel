@@ -2,9 +2,11 @@ varying vec2 vUv;
 
 uniform float ratio;
 uniform float pi;
-uniform sampler2D renderTarget;
+uniform sampler2D uRenderTarget;
 uniform vec2 resolution;
 
+uniform vec2 size;
+uniform float uPixelRatio;
 uniform float uLines;
 uniform float uThickness;
 
@@ -14,7 +16,8 @@ vec4 layer(vec4 foreground, vec4 background) {
 
 
 void main(){
-    vec2 screenUv = gl_FragCoord.xy / resolution.xy;
+    vec2 screenUv = (gl_FragCoord.xy / uPixelRatio) / resolution.xy;
+    // vec2 screenUv = gl_FragCoord.xy * 1./ratio / (resolution.xy);
 
     // float lineColor = vec3(0.117, 0.172, 0.282);
 
@@ -31,5 +34,5 @@ void main(){
     vec3 col = bgColor + lines;
 
     gl_FragColor = vec4(col, 1.);
-    gl_FragColor = layer(texture2D(renderTarget, screenUv), gl_FragColor);
+    gl_FragColor = layer(texture2D(uRenderTarget, screenUv*size), gl_FragColor);
 }

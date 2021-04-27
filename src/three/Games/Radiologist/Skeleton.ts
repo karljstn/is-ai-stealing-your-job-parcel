@@ -4,8 +4,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import LoadManager from "~/three/Singletons/LoadManager"
 import raf from "~three/Singletons/RAF"
 
-import { Color } from 'three'
-
 import { ThreeGroup } from "~/interfaces/Three"
 
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
@@ -66,7 +64,7 @@ class Skeleton {
 
         this.material = new THREE.ShaderMaterial({
             uniforms: {
-                uFresnelColor: { value: new Color("#fff"), },
+                uFresnelColor: { value: new THREE.Color("#FFFFFF") },
                 uFresnelWidth: { value: 1 },
                 uMap: { value: null },
             },
@@ -110,7 +108,7 @@ class Skeleton {
 
                 const material = mesh.material as THREE.ShaderMaterial
                 material.uniforms = {
-                    uFresnelColor: { value: new Color("#fff"), },
+                    uFresnelColor: { value: new THREE.Color("#fff"), },
                     uFresnelWidth: { value: 1 },
                     uMap: { value: texture },
                 }

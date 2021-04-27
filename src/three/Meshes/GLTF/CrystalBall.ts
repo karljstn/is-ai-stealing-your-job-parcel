@@ -13,6 +13,8 @@ import { rectToThree } from "~util";
 import { Viewport } from "~types";
 import gsap from 'gsap'
 import { PALETTE } from "~constants/PALETTE";
+import { RAFS } from "~constants/RAFS";
+import raf from "~three/Singletons/RAF";
 
 class CrystalBall implements ThreeGLTF {
 	scene: Scene
@@ -86,10 +88,14 @@ class CrystalBall implements ThreeGLTF {
 
 	start = () => {
 		this.group && this.scene.add(this.group)
+		raf.subscribe(RAFS.CRYSTALBALL, this.update);
 	}
 
 	update = () => {
-
+		if (this.group) {
+			this.group.rotation.z += 0.0020
+			this.group.rotation.y += 0.035
+		}
 	}
 
 	destroy = () => {
