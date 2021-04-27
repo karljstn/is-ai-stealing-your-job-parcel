@@ -27,7 +27,7 @@ class Skeleton {
     skeletons: any
     currentSkeleton: any
 
-    tweenMap: WeakMap<THREE.Mesh, ReturnType<typeof gsap.to>>
+    // tweenMap: WeakMap<THREE.Mesh, ReturnType<typeof gsap.to>>
 
     errorMesh: THREE.Mesh | null
     heart: THREE.Mesh
@@ -49,13 +49,13 @@ class Skeleton {
 
         this.errorsNames = [
             'Simple_Pen_Cylinder007',
-            '',
+            'intestins',
             'CISEAUX',
             'vertèbre 2',
             'Rib_L_3'
         ]
 
-        this.tweenMap = new WeakMap()
+        // this.tweenMap = new WeakMap()
 
         this.errorMesh = null
         this.heart = new THREE.Mesh()
@@ -78,6 +78,7 @@ class Skeleton {
 
 
     load(skeletonScene: THREE.Scene, progress: number) {
+        raf.unsubscribe("heartbeat")
         skeletonScene.remove(this.mesh)
         this.errorMesh = null
 

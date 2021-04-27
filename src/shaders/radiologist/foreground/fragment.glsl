@@ -5,6 +5,9 @@ uniform float pi;
 uniform sampler2D renderTarget;
 uniform vec2 resolution;
 
+uniform float uLines;
+uniform float uThickness;
+
 vec4 layer(vec4 foreground, vec4 background) {
     return foreground * foreground.a + background * (1.0 - foreground.a);
 }
@@ -13,15 +16,13 @@ vec4 layer(vec4 foreground, vec4 background) {
 void main(){
     vec2 screenUv = gl_FragCoord.xy / resolution.xy;
 
-    float nbLines = 100.0;
-    float thickness = 0.002;
     // float lineColor = vec3(0.117, 0.172, 0.282);
 
-    float wx = (sin(vUv.x*nbLines*ratio*(pi/2.0)) + 1.0) * 0.5;
-    wx = step(wx, thickness);
+    float wx = (sin(vUv.x*uLines*ratio*(pi/2.0)) + 1.0) * 0.5;
+    wx = step(wx, uThickness);
 
-    float wy = (sin(vUv.y*nbLines*(pi/2.0)) + 1.0) * 0.5;
-    wy = step(wy, thickness);
+    float wy = (sin(vUv.y*uLines*(pi/2.0)) + 1.0) * 0.5;
+    wy = step(wy, uThickness);
 
     float lines = wx + wy;
     lines *= 0.1; 
