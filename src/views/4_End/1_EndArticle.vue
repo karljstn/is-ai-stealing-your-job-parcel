@@ -5,10 +5,10 @@
 		</p>
 		<p>Here's an article on this exact topic.</p>
 		<a href="#"
-			><div class="article"><img src="~/assets/Misc/article.jpg" alt="article" /></div
+			><div class="article"><img src="~/assets/Images/article.jpg" alt="article" /></div
 		></a>
 		<a href="#"
-			><div class="article"><img src="~/assets/Misc/text.jpg" alt="article" /></div
+			><div class="article"><img src="~/assets/Images/text.jpg" alt="article" /></div
 		></a>
 		<div class="form">
 			<QuestionForm>

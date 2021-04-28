@@ -12,8 +12,11 @@ import emojiSadBake from "~/assets/Models/emoji-sad/EMOJI2_bake2.jpg";
 import crystal from "~/assets/Models/crystalball/BOULE_VOYANTE.glb";
 import pencil from "~/assets/Models/pencil/pencil.glb";
 import radiologistBackground from "~/assets/Models/radiologist/big-cube-bg.glb"
+import arrow from "~/assets/Images/fleche.svg"
 
-export const MODELS = {
+type MODELS = { [name: string]: { URL: string, SCALE: number, TEXTURE?: string } }
+
+export const MODELS: MODELS = {
   HAND: {
     URL: hand,
     SCALE: 0.02,
@@ -34,17 +37,17 @@ export const MODELS = {
   EMOJI_SMILE: {
     URL: emojiSmile,
     SCALE: 0.1,
-    BAKE: emojiSmileBake,
+    TEXTURE: emojiSmileBake,
   },
   EMOJI_GLASSES: {
     URL: emojiGlasses,
     SCALE: 0.1,
-    BAKE: emojiGlassesBake,
+    TEXTURE: emojiGlassesBake,
   },
   EMOJI_SAD: {
     URL: emojiSad,
     SCALE: 0.1,
-    BAKE: emojiSadBake,
+    TEXTURE: emojiSadBake,
   },
   CRYSTAL_BALL: {
     URL: crystal,
@@ -56,6 +59,10 @@ export const MODELS = {
   },
   RADIOLOGIST_BACKGROUND: {
     URL: radiologistBackground,
+    SCALE: 1
+  },
+  ARROW: {
+    URL: arrow,
     SCALE: 1
   }
 }

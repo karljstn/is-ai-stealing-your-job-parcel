@@ -48,7 +48,7 @@ class EmojiSmile implements ThreeGLTF {
   constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
     this.params = {
       animSpeed: 0.005,
-      size: size * MODELS.EMOJI_SMILE.SCALE,
+      size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,
       pos: { x: 0, y: 0, z: 0 },
       factor: 0,
       positionOffset: new Vector3(-viewport.width / 3.75, 0, 0),
@@ -77,7 +77,7 @@ class EmojiSmile implements ThreeGLTF {
     this.mouse = mouse;
     this.viewport = viewport;
     this.isMoving = false;
-    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_SMILE.BAKE);
+    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_SMILE.TEXTURE ? MODELS.EMOJI_SMILE.TEXTURE : "");
     this.bakedTexture.flipY = false;
     this.bakedMaterial = new ShaderMaterial({
       vertexShader: vertex,

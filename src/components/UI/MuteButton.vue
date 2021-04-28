@@ -17,12 +17,10 @@ export default {
 	},
 	methods: {
 		mute() {
-			console.log('mute');
-
 			this.isMute = !this.isMute;
 
 			if (this.isMute) this.volume = 0;
-			else this.volume = 1;
+			else this.volume = 0.3;
 
 			Howler.volume(this.volume);
 		},
@@ -39,6 +37,7 @@ export default {
 	position: fixed;
 	bottom: 0;
 	padding: $menu-padding;
+	z-index: $menus;
 
 	span {
 		transition: color 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19);

@@ -27,4 +27,5 @@ export interface StoreState {
     confirm: boolean,
     confirmCallback: Function | null
   }
+  hideScrollDownArrow: boolean
 }

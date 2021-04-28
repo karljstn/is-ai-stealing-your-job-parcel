@@ -3,7 +3,7 @@
 		<Navigation></Navigation>
 		<CanvasThree></CanvasThree>
 		<MuteButton></MuteButton>
-
+		<ScrollDownArrow></ScrollDownArrow>
 		<router-view></router-view>
 	</div>
 </template>
@@ -23,6 +23,7 @@ import {SOUNDS} from "~/constants/SOUNDS.ts"
 import CanvasThree from '~/components/Canvas/CanvasThree.vue';
 import Navigation from '~/components/UI/Navigation.vue';
 import MuteButton from '~/components/UI/MuteButton.vue';
+import ScrollDownArrow from "~/components/UI/ScrollDownArrow.vue"
 
 import {Howler} from "howler"
 
@@ -43,6 +44,7 @@ export default Vue.extend({
 			CanvasThree,
 			Navigation,
 			MuteButton,
+			ScrollDownArrow
 		},
 		mounted() {
 			this.$nextTick(() => {
@@ -58,7 +60,7 @@ export default Vue.extend({
 				}, store.state.load.minLoaderDuration);
 
 				Howler.volume(0.3)
-				SOUNDS.background.play()
+				// SOUNDS.background.play()
 			});
 		},
 		destroyed() {

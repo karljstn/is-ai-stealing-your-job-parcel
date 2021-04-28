@@ -28,7 +28,7 @@ class TrashcanBake implements ThreeGLTF {
       this.group = gltf.scene
       this.group.traverse((obj) => {
         const mesh = obj as Mesh;
-        const texture = new TextureLoader().load(MODELS.BAKED_TRASHCAN.TEXTURE)
+        const texture = new TextureLoader().load(MODELS.BAKED_TRASHCAN.TEXTURE ? MODELS.BAKED_TRASHCAN.TEXTURE : "")
         texture.flipY = false
         mesh.material = new MeshBasicMaterial({ map: texture })
 

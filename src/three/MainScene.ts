@@ -3,8 +3,6 @@ import raf from "~three/Singletons/RAF"
 import Tweakpane from "tweakpane"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
-// import { SOUNDS } from '~/constants/SOUNDS'
-
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 
@@ -23,7 +21,6 @@ import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event"
 import CrystalBallScene from "./Scenes/CrystalBallScene"
 import PencilScene from "./Scenes/PencilScene"
 import EmojisScene from "./Scenes/EmojisScene"
-// import Background from "./Meshes/Background";
 
 export default class Scene {
   // Data
@@ -53,7 +50,6 @@ export default class Scene {
   TrashcanScene: TrashcanScene
   EmojiScene: EmojiScene
   CrystalBallScene: CrystalBallScene
-  // Background: Background | null;
   PencilScene: PencilScene
   EmojisScene: EmojisScene
 
@@ -143,7 +139,6 @@ export default class Scene {
     this.clock = new THREE.Clock(true)
     this.meshes = []
 
-    // this.morphingMesh = new MorphingMesh()
     this.radio = new Radio(
       this.camera,
       this.raycaster,
@@ -180,13 +175,8 @@ export default class Scene {
         this.camera,
         this.pane
       )
-      // this.Background = null;
     } else {
       this.Loader = null
-      // this.Background = new Background(
-      //   this.camera
-      // );
-      // this.scene.add(this.Background.object3d);
     }
 
     this.EmojiScene = new EmojiScene(

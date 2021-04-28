@@ -50,7 +50,7 @@ class EmojiGlasses implements ThreeGLTF {
   constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
     this.params = {
       animSpeed: 0.005,
-      size: size * MODELS.EMOJI_GLASSES.SCALE,
+      size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,
       pos: { x: 0, y: 0, z: 0 },
       factor: 0,
       rotation: new Vector3(0, 0, 0),
@@ -74,7 +74,7 @@ class EmojiGlasses implements ThreeGLTF {
     this.mouse = mouse;
     this.viewport = viewport;
     this.isMoving = false;
-    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_GLASSES.BAKE);
+    this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_GLASSES.TEXTURE ? MODELS.EMOJI_GLASSES.TEXTURE : "");
     this.bakedTexture.flipY = false;
     this.bakedMaterial = new ShaderMaterial({
       vertexShader: vertex,

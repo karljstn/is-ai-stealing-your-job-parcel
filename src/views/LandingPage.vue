@@ -1,6 +1,10 @@
 <template>
+<div>
 	<section>
 		<div class="container">
+			<div class="begin">
+					<p>Let's begin !</p>
+			</div>
 			<div class="landing-paragraphs">
 				<save-rect :rectName="rect">
 					<SplitText ref="scroll" text="Scroll"></SplitText>
@@ -15,8 +19,8 @@
 					<SplitText ref="away" text="away"></SplitText>
 				</save-rect>
 			</div>
-		</div>
 	</section>
+</div>
 </template>
 
 <script lang="ts">
@@ -49,8 +53,10 @@ export default Vue.extend({
 			if (pixelSpeed > 1) {
 				window.removeEventListener('mousewheel', onWheel);
 				window.removeEventListener('wheel', onWheel);
+
 				store.state.scene?.TrashcanScene.biases.drop();
 				fadeBackground({ color: PALETTE.YELLOW });
+				store.commit("toggleHideScrollDownArrow")
 
 				setTimeout(() => {
 					store.commit('incrementProgression');
@@ -107,6 +113,17 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .container {
 	position: relative;
+	.begin{
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%, 0);
+		top: -17%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-weight: 100;
+		font-style: italic;
+	}
 	.landing-paragraphs {
 		display: flex;
 		flex-direction: column;

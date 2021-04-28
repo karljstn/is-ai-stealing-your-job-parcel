@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<img :src="ressourcesURL" alt="Ressources" />
+		<img src="~/assets/Images/ressources.jpeg" alt="Ressources" />
 		<a @click="$router.go(-1)"><Button>x</Button></a>
 	</section>
 </template>
@@ -8,14 +8,8 @@
 <script>
 import Vue from 'vue';
 import Button from '~/components/UI/Button';
-import ressourcesImg from '~/assets/Misc/ressources.jpeg';
 import { fadeBackground } from '~util';
 export default Vue.extend({
-	data() {
-		return {
-			ressourcesURL: ressourcesImg,
-		};
-	},
 	components: { Button },
 	mounted() {
 		fadeBackground({ routeName: 'EndThree' });

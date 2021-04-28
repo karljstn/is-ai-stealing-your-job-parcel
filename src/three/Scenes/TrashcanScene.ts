@@ -1,27 +1,35 @@
 import store from "~/store";
 import { Viewport } from "~/types";
 import { rectToThree } from "~/util";
-import { PerspectiveCamera, PointLight, Scene, Vector2, Vector3, WebGLRenderer } from "three";
+import { Scene, Vector2, } from "three";
 import { RECTS } from "~/constants/RECTS"
 import Biases from "../Meshes/GLTF/Biases";
 import Tweakpane from "tweakpane";
 import TrashcanBake from "~three/Meshes/GLTF/TrashcanBake";
+import SVG from "~three/Meshes/SVG";
+import { MODELS } from "~constants/MODELS"
 
 class TrashcanScene {
 	viewport: Viewport
 	scene: Scene
+	mouse: Vector2
+
 	biases: Biases
 	trashcanBake: TrashcanBake
-	mouse: Vector2
+	// arrow: SVG
 
 	constructor(viewport: Viewport, scene: Scene, mouse: Vector2, pane: Tweakpane | null) {
 		this.viewport = viewport
 		this.scene = scene
+		this.mouse = mouse;
+
 		this.biases = new Biases(1, pane, scene)
 		this.trashcanBake = new TrashcanBake(1, scene)
-		this.mouse = mouse;
+		// this.arrow = new SVG()
+
 		this.biases.load()
 		this.trashcanBake.load()
+		// this.arrow.load(MODELS.ARROW)
 	}
 
 	start() {
@@ -45,8 +53,10 @@ class TrashcanScene {
 				this.biases.start()
 
 				if (this.trashcanBake.group) {
-					this.trashcanBake.group.position.set(x, y, 0)
+					this.trashcanBake.group.position.set(x, -this.viewport.height / 2 + (this.viewport.height / 2 * 0.32), 0)
+					// this.arrow.group.position.set(x, y, 2)
 					this.scene.add(this.trashcanBake.group)
+					// this.scene.add(this.arrow.group)
 				}
 			}
 		}, 100);

@@ -69,6 +69,8 @@ nav {
 	padding: $menu-padding;
 	display: flex;
 	justify-content: space-between;
+	z-index: $menus;
+
 	.middle {
 		position: absolute;
 		left: 50%;

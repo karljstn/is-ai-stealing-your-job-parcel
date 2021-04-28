@@ -8,6 +8,11 @@
 	font-family: 'BTP', sans-serif;
 }
 
+html,
+body {
+	overscroll-behavior-x: none;
+}
+
 body {
 	transition: background-color 0.5s ease-in-out;
 }

@@ -31,7 +31,8 @@ const store = new Vuex.Store({
       progress: 0,
       confirm: false,
       confirmCallback: null
-    }
+    },
+    hideScrollDownArrow: false
   } as StoreState,
   mutations: {
     incrementProgression(state) {
@@ -76,6 +77,9 @@ const store = new Vuex.Store({
     },
     setPane(state, payload) {
       state.tweakpane = payload
+    },
+    toggleHideScrollDownArrow(state) {
+      state.hideScrollDownArrow = !state.hideScrollDownArrow
     }
   },
   actions: {},

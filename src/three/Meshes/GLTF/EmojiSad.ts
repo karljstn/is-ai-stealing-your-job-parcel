@@ -50,7 +50,7 @@ class EmojiSad implements ThreeGLTF {
 	constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
 		this.params = {
 			animSpeed: 0.005,
-			size: size * MODELS.EMOJI_SAD.SCALE,
+			size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,
 			pos: { x: 0, y: 0, z: 0 },
 			factor: 0,
 			rotation: new Vector3(0, 0, 0),
@@ -74,7 +74,7 @@ class EmojiSad implements ThreeGLTF {
 		this.mouse = mouse;
 		this.viewport = viewport;
 		this.isMoving = false;
-		this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_SAD.BAKE);
+		this.bakedTexture = new TextureLoader().load(MODELS.EMOJI_SAD.TEXTURE ? MODELS.EMOJI_SAD.TEXTURE : "");
 		this.bakedTexture.flipY = false;
 		this.bakedMaterial = new ShaderMaterial({
 			vertexShader: vertex,
@@ -155,8 +155,8 @@ class EmojiSad implements ThreeGLTF {
 		const mainFolder = this.pane.addFolder({ title: "Emoji", expanded: false });
 		const sizeInput = mainFolder.addInput(this.params, "size", {
 			label: "Size",
-			min: this.size * MODELS.EMOJI_SAD.SCALE * 0.33,
-			max: this.size * MODELS.EMOJI_SAD.SCALE * 3,
+			min: MODELS.EMOJI_SAD.SCALE ? this.size * MODELS.EMOJI_SAD.SCALE * 0.33 : this.size * 0.33,
+			max: MODELS.EMOJI_SAD.SCALE ? this.size * MODELS.EMOJI_SAD.SCALE * 3 : this.size * 3,
 		});
 		const rotateInput = mainFolder.addInput(this.params, "rotation", {
 			label: "Rotation",
