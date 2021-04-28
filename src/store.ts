@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import CustomEase from "~/lib/CustomEase/src/CustomEase";
-import { StoreState } from "~/interfaces/Vue";
+import Vue from "vue"
+import Vuex from "vuex"
+import CustomEase from "~/lib/CustomEase/src/CustomEase"
+import { StoreState } from "~/interfaces/Vue"
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
@@ -30,7 +30,8 @@ const store = new Vuex.Store({
     radiologist: {
       progress: 0,
       confirm: false,
-      confirmCallback: null
+      confirmCallback: null,
+      penalty: () => { }
     }
   } as StoreState,
   mutations: {
@@ -74,6 +75,11 @@ const store = new Vuex.Store({
     setConfirmCallback(state, payload) {
       state.radiologist.confirmCallback = payload
     },
+    setPenalty(state, payload) {
+      state.radiologist.penalty = payload
+      console.log(state.radiologist.penalty)
+
+    },
     setPane(state, payload) {
       state.tweakpane = payload
     }
@@ -81,6 +87,6 @@ const store = new Vuex.Store({
   actions: {},
   modules: {},
   // TODO: computed() with isDev
-});
+})
 
-export default store;
+export default store

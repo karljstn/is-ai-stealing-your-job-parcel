@@ -47,6 +47,8 @@ export default class Radio implements ThreeGroup {
 
     clock: THREE.Clock
 
+    gameRunning: boolean
+
     constructor(
         camera: THREE.PerspectiveCamera,
         raycaster: THREE.Raycaster,
@@ -63,6 +65,9 @@ export default class Radio implements ThreeGroup {
         this.renderer = renderer
         this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
 
+        this.controls.minDistance = 10
+        this.controls.maxDistance = 30
+        this.controls.enabled = false
         // this.controls.enablePan = false
 
         this.raycaster = raycaster
@@ -83,7 +88,7 @@ export default class Radio implements ThreeGroup {
         this.isDragging = false
 
 
-
+        this.gameRunning = false
 
 
         this.controls.addEventListener("start", () => {
@@ -95,8 +100,6 @@ export default class Radio implements ThreeGroup {
                 this.isDragging = true
 
                 if (this.currentIntersect) {
-                    console.log('allo')
-
                     this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
                 }
             }
@@ -119,19 +122,19 @@ export default class Radio implements ThreeGroup {
     }
 
     init() {
-        // this.camera.position.set(0, 0, 20)
         this.group.add(Background.mesh)
 
         Foreground.init(this.renderTarget, this.renderer.getPixelRatio())
         this.group.add(Foreground.mesh)
+
         Skeleton.load(this.skeletonScene, this.progress)
-        // Clipboard.load(this.group, this.progress)
+        Clipboard.load(this.group, this.progress)
     }
 
     nextCase() {
         // this.camera.position.set(0, 0, 20)
         Skeleton.load(this.skeletonScene, this.progress)
-        // Clipboard.load(this.group, this.progress)
+        Clipboard.nextTexture(this.progress)
     }
 
     onResize() {
@@ -140,7 +143,21 @@ export default class Radio implements ThreeGroup {
     }
 
 
-    patientFile(cond: Boolean) {
+    patientFile(cond: boolean) {
+        console.log('patient file')
+        if (cond) {
+            gsap.to(Clipboard.material.uniforms.uAlpha, {
+                duration: 0.5,
+                value: 1
+            })
+        } else {
+            gsap.to(Clipboard.material.uniforms.uAlpha, {
+                duration: 0.5,
+                value: 0
+            })
+
+        }
+
         // if (cond) {
         //     gsap.to(this.skeleton.position, {
         //         duration: 0.5,
@@ -174,7 +191,23 @@ export default class Radio implements ThreeGroup {
         // }
     }
 
+    gameState(state: string, cond: boolean) {
+        console.log(state, cond)
 
+        switch (state) {
+            case 'timerCanStart':
+                this.gameRunning = true
+                this.controls.enabled = true
+                break
+            case 'timerPause':
+                this.controls.enabled = !cond
+                this.gameRunning = !cond
+                break
+            default:
+                break
+        }
+
+    }
 
     confirm = (res: boolean) => {
         if (res) {
@@ -197,6 +230,9 @@ export default class Radio implements ThreeGroup {
                 console.log("RADIOLOGIST GAME : GOOD ANSWER")
             } else {
                 console.log("RADIOLOGIST GAME: WRONG ANSWER")
+
+                store.state.radiologist.penalty()
+                console.log(store)
 
                 this.nextCase()
                 // console.log(this.currentIntersect.object)
@@ -257,58 +293,54 @@ export default class Radio implements ThreeGroup {
         this.renderer.setRenderTarget(null)
     }
 
+    fromMeshToMesh() {
+        // ÉTAIT SUR UN MESH AVANT, VIENT DE CHANGER DE MESH
+        // DONC SI CHANGEMENT DE MESH, RESET LE VISUEL DE L'ANCIEN
+
+        coef = 0
+        gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
+            duration: 0.25,
+            value: 1,
+        })
+    }
+
+    onMesh(delta: number, intersects: THREE.Intersection) {
+        // EST SUR UN MESH
+        this.currentIntersect = intersects
+        if (coef < params.fresnelIntensity) {
+            coef += delta * params.fresnelSpeed
+            this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1 - coef
+        }
+
+    }
+
+    fromMeshToBlank() {
+        //FROM MESH TO NOTHING
+
+        gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
+            duration: 0.25,
+            value: 1,
+        })
+    }
 
     update = () => {
 
         this.updateRenderTarget()
-
         const delta = this.clock.getDelta()
 
-        if (!this.isDragging) {
-            this.raycaster.setFromCamera(this.mouse, this.camera)
+        if (this.gameRunning) {
+            if (!this.isDragging) {
+                this.raycaster.setFromCamera(this.mouse, this.camera)
+                const intersects = this.raycaster.intersectObjects(Skeleton.mesh.children, true)
 
-
-            const intersects = this.raycaster.intersectObjects(Skeleton.mesh.children, true)
-
-            if (intersects.length) {
-
-
-                if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) {
-
-                    // ÉTAIT SUR UN MESH AVANT, VIENT DE CHANGER DE MESH
-                    // DONC SI CHANGEMENT DE MESH, RESET LE VISUEL DE L'ANCIEN
-
+                if (intersects.length) {
+                    if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) this.fromMeshToMesh()
+                    this.onMesh(delta, intersects[0])
+                } else {
+                    if (this.currentIntersect) this.fromMeshToBlank()
                     coef = 0
-                    gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
-                        duration: 0.25,
-                        value: 1,
-                    })
-
+                    this.currentIntersect = null
                 }
-
-
-                // EST SUR UN MESH
-                this.currentIntersect = intersects[0]
-                if (coef < params.fresnelIntensity) {
-                    coef += delta * params.fresnelSpeed
-                    this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1 - coef
-                }
-
-
-
-
-            } else {
-                if (this.currentIntersect) {
-                    //FROM MESH TO NOTHING
-
-                    gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
-                        duration: 0.25,
-                        value: 1,
-                    })
-                }
-
-                coef = 0
-                this.currentIntersect = null
             }
         }
     }

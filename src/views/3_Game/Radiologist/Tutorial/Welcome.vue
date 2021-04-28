@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-container">
-    <h1>Radiologist game</h1>
+    <img src="~/assets/Games/Radiologist/Icons/09-title.png" alt="" />
     <p>
       Your job is to detect the anomaly in each patient's 3D scan. You've got a
       lot of patient files, so don't fall behind!
@@ -16,27 +16,24 @@ export default Vue.extend({});
 
 <style lang="scss" scoped>
 .welcome-container {
-  h1 {
-    background-color: #452ca0;
-    padding: 20px;
-    border-radius: 20px;
-    position: absolute;
-    top: -40px;
-    left: -50px;
-    transform: rotateZ(-4deg);
-    color: white;
-    font-size: 2.5em;
+  img {
+    width: 381px;
+    height: 99px;
+    display: block;
+    margin: auto;
+    position: relative;
+    bottom: 100px;
   }
+
   p {
-    width: 70%;
-    // display: block;
-    // margin: auto;
+    width: 77%;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.2em;
+    font-size: 1.3em;
     text-align: center;
+    line-height: 130%;
   }
 }
 </style>

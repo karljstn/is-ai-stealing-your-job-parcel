@@ -25,6 +25,7 @@ export interface StoreState {
   radiologist: {
     progress: number,
     confirm: boolean,
-    confirmCallback: Function | null
+    confirmCallback: Function | null,
+    penalty: Function
   }
 }

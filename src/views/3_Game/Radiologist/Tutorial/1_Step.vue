@@ -1,8 +1,9 @@
 <template>
   <div class="explanation-container">
-    <img :src="`${this.img}`" alt="" />
+    <img src="~/assets/Games/Radiologist/Icons/Box/05-box.png" alt="" />
     <p>
-      {{ this.text }}
+      Each file has to be processed within a 20 second time limit. Failure to do
+      so will incur penalties in your overall timer.
     </p>
   </div>
 </template>
@@ -10,38 +11,18 @@
 <script lang="ts">
 import Vue from "vue";
 
-export default Vue.extend({
-  props: ["img", "text"],
-  data() {
-    return {
-      src: this.img,
-    };
-  },
-  mounted() {
-    console.log(this.img);
-  },
-});
+export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
 .explanation-container {
-  h1 {
-    background-color: #452ca0;
-    padding: 20px;
-    border-radius: 20px;
-    position: absolute;
-    top: -40px;
-    left: -50px;
-    transform: rotateZ(-4deg);
-    color: white;
-    font-size: 2.5em;
-  }
-
   img {
     position: absolute;
     top: 0%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 160px;
+    height: 150px;
   }
 
   p {

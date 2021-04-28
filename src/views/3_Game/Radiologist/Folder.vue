@@ -19,7 +19,7 @@ export default Vue.extend({
   data(): {
     progress: number;
     interval: any;
-    show: Boolean;
+    show: boolean;
   } {
     return {
       progress: 0,

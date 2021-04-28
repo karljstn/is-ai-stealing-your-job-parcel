@@ -3,28 +3,14 @@
     <div class="content" ref="tutorialContainer">
       <Welcome v-if="this.tutorialCount === 0"></Welcome>
 
-      <Explanation
-        v-if="this.tutorialCount === 1"
-        v-bind:text="`Each file has to be processed within a 20 second time limit. Failure to do so will incur penalties in your overall timer.`"
-        v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
-      ></Explanation>
-
-      <Explanation
-        v-if="this.tutorialCount === 2"
-        v-bind:text="`In trouble? Click on the AI cursor icon to ask the AI for assistance. Read each patient file for clues.`"
-        v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
-      ></Explanation>
-
-      <Explanation
-        v-if="this.tutorialCount === 3"
-        v-bind:text="`Drag to rotate. Scroll to zoom. Click to select anomalies.`"
-        v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
-      ></Explanation>
+      <Step1 v-if="this.tutorialCount === 1"></Step1>
+      <Step2 v-if="this.tutorialCount === 2"></Step2>
+      <Step3 v-if="this.tutorialCount === 3"></Step3>
 
       <!-- <Explanation
         v-if="this.tutorialCount === 4"
         v-bind:text="`Click to select the area on the x-ray where there is a lesion.`"
-        v-bind:img="`~/assets/Games/Radiologist/ordi.png`"
+        v-bind:img="`~/assets/Games/Radiologist/Icons/ai.png`"
       ></Explanation> -->
     </div>
     <span
@@ -41,7 +27,7 @@
       v-on:click="this.skipTutorial"
       >Skip</span
     >
-    <button v-on:click="this.fadeOut" class="next-button">
+    <button v-on:click="this.fadeOut" ref="nextButton" class="next-button">
       {{ this.buttonContent }}
     </button>
   </div>
@@ -51,13 +37,17 @@
 import Vue from "vue";
 import Welcome from "./Welcome.vue";
 import Explanation from "./Explanation.vue";
+import Step1 from "./1_Step.vue";
+import Step2 from "./2_Step.vue";
+import Step3 from "./3_Step.vue";
+
 import gsap from "gsap";
 
 export default Vue.extend({
   props: ["tutorialCount", "setTutorialCount", "hideTutorial"],
   data() {
     return {
-      buttonContent: "Ok!",
+      buttonContent: "Next",
       showUI: false,
     };
   },
@@ -78,7 +68,7 @@ export default Vue.extend({
 
         gsap.to(this.$refs.skipButton, {
           duration: 0.2,
-          opacity: 1,
+          opacity: 0.5,
         });
       }
 
@@ -88,6 +78,9 @@ export default Vue.extend({
   components: {
     Welcome,
     Explanation,
+    Step1,
+    Step2,
+    Step3,
   },
   methods: {
     skipTutorial() {
@@ -110,6 +103,19 @@ export default Vue.extend({
         opacity: 0,
       });
     },
+    updateButton() {
+      gsap.to(this.$refs.nextButton, {
+        duration: 0.2,
+        opacity: 0,
+        onComplete: () => {
+          this.buttonContent = "Play!";
+          gsap.to(this.$refs.nextButton, {
+            duration: 0.2,
+            opacity: 1,
+          });
+        },
+      });
+    },
     fadeIn() {
       gsap.to(this.$refs.tutorialContainer, {
         duration: 0.2,
@@ -125,10 +131,14 @@ export default Vue.extend({
 
         gsap.to(this.$refs.skipButton, {
           duration: 0.2,
-          opacity: 1,
+          opacity: 0.5,
         });
 
         this.showUI = true;
+      }
+
+      if (this.tutorialCount === 2) {
+        this.updateButton();
       }
 
       if (this.tutorialCount === 3) {
@@ -148,15 +158,17 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .tutorial-container {
+  width: 536px;
+  height: 260px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40%;
-  height: 36vh;
+  // width: 40%;
+  // height: 36vh;
   background-color: white;
   padding: 50px;
-  border-radius: 20px;
+  border-radius: 23px;
   color: #25213a;
 
   .skip-button {
@@ -179,20 +191,20 @@ export default Vue.extend({
     left: 15px;
     font-size: 0.8em;
     // transition: all 0.5s;
-
-    &:hover {
-    }
   }
 
   .next-button {
+    width: 104px;
+    height: 43px;
+    font-size: 1.3em;
+
     background-color: #e5cff7;
     border: none;
     outline: initial;
-    padding: 5px 25px;
-    font-size: 1em;
+    // padding: 5px 25px;
     position: absolute;
     left: 50%;
-    bottom: 2%;
+    bottom: 0;
     transform: translate(-50%, -50%);
     border-radius: 10px;
     transition: all 0.5s;
@@ -200,7 +212,7 @@ export default Vue.extend({
 
     &:hover {
       color: white;
-      background-color: #452ca0;
+      background-color: #5254dd;
     }
   }
 }

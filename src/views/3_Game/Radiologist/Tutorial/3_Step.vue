@@ -1,8 +1,10 @@
 <template>
   <div class="explanation-container">
-    <img :src="`${this.img}`" alt="" />
+    <img src="~/assets/Games/Radiologist/Icons/mouse.png" alt="" />
     <p>
-      {{ this.text }}
+      Drag to rotate. <br />
+      Scroll to zoom. <br />
+      Click to select anomalies.
     </p>
   </div>
 </template>
@@ -10,38 +12,18 @@
 <script lang="ts">
 import Vue from "vue";
 
-export default Vue.extend({
-  props: ["img", "text"],
-  data() {
-    return {
-      src: this.img,
-    };
-  },
-  mounted() {
-    console.log(this.img);
-  },
-});
+export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
 .explanation-container {
-  h1 {
-    background-color: #452ca0;
-    padding: 20px;
-    border-radius: 20px;
-    position: absolute;
-    top: -40px;
-    left: -50px;
-    transform: rotateZ(-4deg);
-    color: white;
-    font-size: 2.5em;
-  }
-
   img {
     position: absolute;
     top: 0%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 160px;
+    height: 150px;
   }
 
   p {

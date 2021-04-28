@@ -50,12 +50,12 @@ import gsap from "gsap";
 
 export default Vue.extend({
   data(): {
-    patientFile: Boolean;
+    patientFile: boolean;
     tutorialCount: number;
-    countdown: Boolean;
-    timerCanStart: Boolean;
-    timerPause: Boolean;
-    HIDE: Boolean;
+    countdown: boolean;
+    timerCanStart: boolean;
+    timerPause: boolean;
+    HIDE: boolean;
   } {
     return {
       patientFile: false,
@@ -85,6 +85,9 @@ export default Vue.extend({
   },
 
   mounted() {
+    if (this.HIDE) {
+      this.timerCanStart = true;
+    }
     document.body.style.overflowX = "hidden";
     // const ease = store.state.eases.get("test");
     // const uniforms =
@@ -145,13 +148,15 @@ export default Vue.extend({
       this.tutorialCount++;
     },
     showTutorial() {
-      this.timerPause = true;
-      this.tutorialCount = 1;
-      const manager: any = this.$refs.tutorialManager;
-      gsap.to(manager.$el, {
-        duration: 0.3,
-        scale: 1,
-      });
+      if (this.timerCanStart) {
+        this.timerPause = true;
+        this.tutorialCount = 1;
+        const manager: any = this.$refs.tutorialManager;
+        gsap.to(manager.$el, {
+          duration: 0.3,
+          scale: 1,
+        });
+      }
     },
     hideTutorial() {
       const manager: any = this.$refs.tutorialManager;

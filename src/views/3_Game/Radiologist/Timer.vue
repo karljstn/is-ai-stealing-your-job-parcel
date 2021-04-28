@@ -8,25 +8,25 @@
     <div class="timer">
       <span>{{ this.min }}:{{ this.sec }}</span>
     </div>
+    <span class="penalty" ref="penalty">-5</span>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import store from "~/store";
+import gsap from "gsap";
 
 export default Vue.extend({
   props: ["timerCanStart", "timerPause"],
-  mounted() {
-    // this.startCountdown();
-    this.convertSeconds();
-  },
+
   data(): {
     countdown: number;
     interval: any;
     min: number | string;
     sec: number | string;
     display: string;
+    penaltyAnimation: any;
   } {
     return {
       countdown: 45,
@@ -34,16 +34,31 @@ export default Vue.extend({
       min: 0,
       sec: 0,
       display: "",
+      penaltyAnimation: null,
     };
+  },
+  mounted() {
+    // this.startCountdown();
+    this.convertSeconds();
+    this.penaltyAnimation = gsap.to(this.$refs.penalty, {
+      duration: 0.5,
+      opacity: 1,
+      y: 30,
+      paused: true,
+      onComplete: () => {
+        this.penaltyAnimation.reverse();
+      },
+    });
+
+    store.commit("setPenalty", this.applyPenalty);
   },
   watch: {
     timerCanStart(newVal) {
-      console.log("newVal", newVal);
-
+      store.state.scene?.radio.gameState("timerCanStart", newVal);
       if (newVal) this.startCountdown();
     },
     timerPause(newVal) {
-      console.log("newVal", newVal);
+      store.state.scene?.radio.gameState("timerPause", newVal);
       if (newVal) this.stopCountdown();
       else this.startCountdown();
     },
@@ -58,6 +73,11 @@ export default Vue.extend({
 
       if (sec < 10) this.sec = "0" + sec;
       else this.sec = sec;
+    },
+    applyPenalty() {
+      this.countdown -= 4;
+      this.penaltyAnimation.play();
+      this.convertSeconds();
     },
     startCountdown() {
       this.convertSeconds();
@@ -86,13 +106,10 @@ export default Vue.extend({
   position: absolute;
   bottom: 5%;
   right: 10.3%;
-
   width: 194px;
   height: 72px;
-
   display: flex;
   align-items: center;
-  // justify-content: space-around;
   background-color: #dedcdc;
   border-radius: 10px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
@@ -112,6 +129,14 @@ export default Vue.extend({
     position: relative;
     right: 20px;
     font-size: 2em;
+  }
+
+  .penalty {
+    position: absolute;
+    right: 12px;
+    font-size: 2em;
+    color: red;
+    opacity: 0;
   }
 }
 </style>
