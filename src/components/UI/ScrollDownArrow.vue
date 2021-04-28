@@ -19,7 +19,7 @@ import store from '~store';
 export default Vue.extend({
 	computed: {
 		show() {
-			const router: any = this.$router;
+			const router: any = this.$router; //types are fucked
 			const isLanding = router.history.current.name === 'LandingPage';
 			return !isLanding || store.state.hideScrollDownArrow ? 'scroll hide' : 'scroll';
 		},

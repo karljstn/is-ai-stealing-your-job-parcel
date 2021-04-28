@@ -202,9 +202,6 @@ export default class Scene {
       this.camera
     )
     this.tweaks()
-
-    // SOUNDS.background.play()
-
   }
 
   tweaks() {

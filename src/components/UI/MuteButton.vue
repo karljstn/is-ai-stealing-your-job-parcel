@@ -20,7 +20,7 @@ export default {
 			this.isMute = !this.isMute;
 
 			if (this.isMute) this.volume = 0;
-			else this.volume = 0.3;
+			else this.volume = 1;
 
 			Howler.volume(this.volume);
 		},

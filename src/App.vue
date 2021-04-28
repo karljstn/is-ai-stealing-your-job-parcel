@@ -25,7 +25,7 @@ import Navigation from '~/components/UI/Navigation.vue';
 import MuteButton from '~/components/UI/MuteButton.vue';
 import ScrollDownArrow from "~/components/UI/ScrollDownArrow.vue"
 
-import {Howler} from "howler"
+import { Howler } from "howler"
 
 gsap.registerPlugin(CustomEase)
 
@@ -59,8 +59,15 @@ export default Vue.extend({
 					this.isProgressionReady = true
 				}, store.state.load.minLoaderDuration);
 
-				Howler.volume(0.3)
-				// SOUNDS.background.play()
+				SOUNDS.background.volume(0.2).play()
+
+				setTimeout(() => {
+					SOUNDS.scrollTo.play()
+				}, 3800);
+
+				setInterval(() => {
+					SOUNDS.scrollTo.play()
+				}, 11000)
 			});
 		},
 		destroyed() {
