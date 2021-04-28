@@ -41,6 +41,7 @@ export default class Scene {
   controls: OrbitControls
   raycaster: THREE.Raycaster
   mouse: THREE.Vector2
+  mouseVec3: THREE.Vector3
   clock: THREE.Clock
   meshes: THREE.Mesh[]
   radio: Radio
@@ -131,7 +132,8 @@ export default class Scene {
     this.scene.add(this.light)
     this.scene.add(this.light.target)
 
-    this.mouse = new THREE.Vector2(-1, -1)
+    this.mouse = new THREE.Vector2()
+    this.mouseVec3 = new THREE.Vector3()
     this.raycaster = new THREE.Raycaster()
 
     this.controls = new OrbitControls(this.camera, canvas)
@@ -259,7 +261,6 @@ export default class Scene {
 
   startRadiologist() {
     console.log("start radiologist game")
-    // this.camera.position.z = 15
     this.camera.position.set(0, 0, 20)
     this.scene.add(this.radio.group)
   }
@@ -267,14 +268,6 @@ export default class Scene {
   destroyRadiologist() {
     this.camera.position.copy(this.params.camera.position)
     this.scene.remove(this.radio.group)
-  }
-  bringToFront() {
-    // this.Background?.hide();
-    // this.renderer.domElement.style.zIndex = "10000";
-  }
-
-  sendToBack() {
-    // this.Background?.show();
   }
 
   setEvents() {
@@ -314,11 +307,11 @@ export default class Scene {
       )
     this.mouse.x = (e.clientX / this.w) * 2 - 1
     this.mouse.y = -(e.clientY / this.h) * 2 + 1
+
+    this.mouseVec3.set(this.mouse.x, this.mouse.y, 0)
   }
 
   render = (dt = 0) => {
-    // console.log(this.clock.elapsedTime)
-
     this.Benchmark?.checkFPS(dt)
     this.renderer.render(this.scene, this.camera)
 

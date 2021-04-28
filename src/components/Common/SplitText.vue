@@ -42,16 +42,18 @@ export default Vue.extend({
 					.addLabel('wobble')
 
 					.staggerTo( chars, this.timelineSettings.charsDuration, {
-						ease: 'Power3.easeInOut',
+						// ease: 'Power3.easeInOut',
 						y: '50%',
-					}, this.timelineSettings.staggerValue, 'wobble')
+					}, this.timelineSettings.staggerValue,)
 
 					.staggerTo( chars, this.timelineSettings.charsDuration, {
-					ease: 'Power3.easeInOut',
-					y: '0%',
-			}, this.timelineSettings.staggerValue, 'start')
+						// ease: 'Power3.easeInOut',
+						y: '0%',
+					}, this.timelineSettings.staggerValue,)
 
 			this.timeline.seek('wobble')
+			this.timeline.repeatDelay(2)
+			this.timeline.repeat(-1)
 			this.timeline.play()
 		}
 	},

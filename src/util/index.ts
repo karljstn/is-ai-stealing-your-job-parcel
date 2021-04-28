@@ -59,7 +59,6 @@ export function round(value: number, significantNumbers: number) {
 }
 
 export function fadeBackground({ color, routeName }: { color?: string, routeName?: string }) {
-  document.body.classList.remove(...document.body.classList);
   if (color) {
     document.body.style.backgroundColor = color
   } else {

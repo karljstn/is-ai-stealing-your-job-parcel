@@ -19,7 +19,9 @@ import store from '~store';
 export default Vue.extend({
 	computed: {
 		show() {
-			return store.state.hideScrollDownArrow ? 'scroll hide' : 'scroll';
+			const router: any = this.$router;
+			const isLanding = router.history.current.name === 'LandingPage';
+			return !isLanding || store.state.hideScrollDownArrow ? 'scroll hide' : 'scroll';
 		},
 	},
 });
@@ -38,7 +40,7 @@ export default Vue.extend({
 	left: 50%;
 	transform: translate(-50%, 0);
 	z-index: $menus;
-	transition: opacity 0.3s ease-in-out;
+	transition: opacity 0.3s ease-in;
 
 	&.hide {
 		opacity: 0;

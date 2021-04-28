@@ -8,10 +8,10 @@
 			<div class="form">
 				<QuestionForm>
 					<SaveRect :rectName="sadEmoji">
-						<Button size="20.1" value="yes">😧</Button>
+						<Button size="20.1" value="yes"><span class="emoji-text mr">Yeah... </span></Button>
 					</SaveRect>
 					<SaveRect :rectName="glassesEmoji">
-						<Button size="20.1" value="no">🤓</Button>
+						<Button size="20.1" value="no"><span class="emoji-text ml">Not really!</span></Button>
 					</SaveRect>
 				</QuestionForm>
 			</div>
@@ -56,14 +56,31 @@ export default Vue.extend({
     font-size: 4rem;
   }
   width: 700px;
+  height: 100%;
+  padding-top: 5%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   .form {
     width: 100%;
-    margin-top: 4rem;
-    opacity: 0;
+    margin-top: 1rem;
+    // opacity: 0;
+    .emoji-text{
+      font-size: 1.5rem;
+      position: absolute;
+      bottom: -10%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 100%;
+
+      &.mr{
+        left: 37.5%;
+      }
+
+      &.ml{
+        left: 62.5%;
+      }
+    }
   }
 }
 </style>

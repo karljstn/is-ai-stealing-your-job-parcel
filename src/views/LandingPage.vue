@@ -2,7 +2,7 @@
 <div>
 	<section>
 		<div class="container">
-			<div class="begin">
+			<div :class="getLetsBeginClass">
 					<p>Let's begin !</p>
 			</div>
 			<div class="landing-paragraphs">
@@ -45,6 +45,11 @@ export default Vue.extend({
 			show: true,
 		};
 	},
+	computed:{
+		getLetsBeginClass(){
+			return !store.state.hideScrollDownArrow ? "begin" : "begin fadeOut"
+		} 
+	},
 	mounted() {
 		const onWheel = (event: any) => {
 			const normalized = NormalizeWheel(event);
@@ -78,7 +83,7 @@ export default Vue.extend({
 			staggerValue: 0.1,
 		};
 
-		const timeline = gsap.timeline({ paused: true });
+		const timeline = gsap.timeline({ paused: true, repeat: -1 });
 		timeline.addLabel('show').set(elements, { opacity: 1, stagger: timelineSettings.staggerValue });
 		timeline.addLabel('hide').set(elements, { opacity: 0, stagger: timelineSettings.staggerValue });
 		setTimeout(() => {
@@ -91,7 +96,7 @@ export default Vue.extend({
 		const button = folder?.addButton({ title: 'Toggle' });
 		button?.on('click', () => {
 			this.show = !this.show;
-			this.show ? timeline.tweenFrswomTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
+			this.show ? timeline.tweenFromTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
 		});
 
 		fadeBackground({ routeName: 'LandingPage' });
@@ -123,6 +128,11 @@ export default Vue.extend({
 		align-items: center;
 		font-weight: 100;
 		font-style: italic;
+		transition: opacity 0.3s ease-in;
+
+		&.fadeOut{
+			opacity: 0;
+		}
 	}
 	.landing-paragraphs {
 		display: flex;
