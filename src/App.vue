@@ -38,6 +38,9 @@ const testEase = CustomEase.create(
 
 store.commit("setEase", { name: "test", ease: testEase })
 
+let timeout;
+let int;
+
 export default Vue.extend({
     name: "Home",
 		components: {
@@ -61,17 +64,14 @@ export default Vue.extend({
 
 				SOUNDS.background.volume(0.2).play()
 
-				setTimeout(() => {
+				timeout = setTimeout(() => {
 					SOUNDS.scrollTo.play()
-				}, 3800);
-
-				setInterval(() => {
-					SOUNDS.scrollTo.play()
-				}, 11000)
+				}, 4000);
 			});
 		},
 		destroyed() {
 			SOUNDS.background.stop()
+			clearTimeout(timeout)
 		}
 })
 </script>
