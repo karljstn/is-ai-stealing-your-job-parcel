@@ -69,14 +69,14 @@ ul {
 
 .range {
   width: 1px;
-  height: 300px;
+  height: 260px;
   background-color: white;
 
   ul {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 301px;
+    height: 260px;
     li {
       width: 10px;
       height: 1px;

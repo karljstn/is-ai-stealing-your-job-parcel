@@ -7,6 +7,10 @@
       <Step2 v-if="this.tutorialCount === 2"></Step2>
       <Step3 v-if="this.tutorialCount === 3"></Step3>
 
+      <Step4 v-if="this.tutorialCount === 4"></Step4>
+      <Step5 v-if="this.tutorialCount === 5"></Step5>
+      <Step6 v-if="this.tutorialCount === 6"></Step6>
+
       <!-- <Explanation
         v-if="this.tutorialCount === 4"
         v-bind:text="`Click to select the area on the x-ray where there is a lesion.`"
@@ -18,7 +22,7 @@
       ref="explanationCounter"
       class="explanation-counter"
       ><span>{{ this.tutorialCount }}</span
-      >/3</span
+      >/6</span
     >
     <span
       v-show="this.showUI"
@@ -40,6 +44,9 @@ import Explanation from "./Explanation.vue";
 import Step1 from "./1_Step.vue";
 import Step2 from "./2_Step.vue";
 import Step3 from "./3_Step.vue";
+import Step4 from "./4_Step.vue";
+import Step5 from "./5_Step.vue";
+import Step6 from "./6_Step.vue";
 
 import gsap from "gsap";
 
@@ -72,7 +79,7 @@ export default Vue.extend({
         });
       }
 
-      if (newValue < 4) this.fadeIn();
+      if (newValue < 7) this.fadeIn();
     },
   },
   components: {
@@ -81,6 +88,9 @@ export default Vue.extend({
     Step1,
     Step2,
     Step3,
+    Step4,
+    Step5,
+    Step6,
   },
   methods: {
     skipTutorial() {
@@ -137,11 +147,11 @@ export default Vue.extend({
         this.showUI = true;
       }
 
-      if (this.tutorialCount === 2) {
+      if (this.tutorialCount === 5) {
         this.updateButton();
       }
 
-      if (this.tutorialCount === 3) {
+      if (this.tutorialCount === 6) {
         this.hideTutorial();
         this.showUI = false;
       }
@@ -211,8 +221,7 @@ export default Vue.extend({
     cursor: pointer;
 
     &:hover {
-      color: white;
-      background-color: #5254dd;
+      background-color: #bb71f8;
     }
   }
 }

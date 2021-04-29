@@ -1,10 +1,10 @@
 <template>
   <div class="explanation-container">
     <img
-      src="~/assets/Games/Radiologist/Icons/Tutorial/01-mouse-left-click.png"
+      src="~/assets/Games/Radiologist/Icons/Tutorial/01-mouse-scroll.png"
       alt=""
     />
-    <p>Left click to select.</p>
+    <p>Scroll to zoom.</p>
   </div>
 </template>
 

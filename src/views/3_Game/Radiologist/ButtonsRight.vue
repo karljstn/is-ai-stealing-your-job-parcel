@@ -1,13 +1,19 @@
 <template>
   <div class="button-container">
     <div class="ai-button-container" v-on:click="this.useAI">
-      <button class="ai-button"></button>
+      <button
+        class="ai-button"
+        v-bind:class="{ tutorialOpened: timerPause || !timerCanStart }"
+      ></button>
+      <div class="btnAbout">AI's assistance</div>
     </div>
     <div class="patient-file-container">
       <button
         class="patient-file-button"
+        v-bind:class="{ tutorialOpened: timerPause || !timerCanStart }"
         v-on:click="this.openPatientFile"
       ></button>
+      <div class="btnAbout">Patient file</div>
     </div>
   </div>
 </template>
@@ -17,6 +23,7 @@ import Vue from "vue";
 import store from "~/store";
 
 export default Vue.extend({
+  props: ["timerCanStart", "timerPause"],
   data() {
     return {
       patientFile: false,
@@ -24,13 +31,15 @@ export default Vue.extend({
   },
   methods: {
     useAI() {
-      console.log("use AI");
-
-      store.state.scene?.radio.useAI();
+      if (this.timerCanStart && !this.timerPause) {
+        store.state.scene?.radio.useAI();
+      }
     },
     openPatientFile() {
-      this.patientFile = !this.patientFile;
-      store.state.scene?.radio.patientFile(this.patientFile);
+      if (this.timerCanStart && !this.timerPause) {
+        this.patientFile = !this.patientFile;
+        store.state.scene?.radio.patientFile(this.patientFile);
+      }
     },
   },
 });
@@ -47,7 +56,8 @@ export default Vue.extend({
   justify-content: space-between;
   align-items: center;
 
-  div {
+  .ai-button-container,
+  .patient-file-container {
     width: 73px;
     height: 74px;
     background-size: contain;
@@ -56,6 +66,13 @@ export default Vue.extend({
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+
+    &:hover {
+      .btnAbout {
+        opacity: 1;
+      }
+    }
 
     button {
       border: none;
@@ -71,11 +88,17 @@ export default Vue.extend({
         transform: scale(1.2);
       }
     }
+
+    .tutorialOpened {
+      &:hover {
+        transform: scale(1);
+      }
+    }
   }
 
   .ai-button-container {
     background-image: url("~assets/Games/Radiologist/Icons/square-interface.png");
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 
     .ai-button {
       background-image: url("~assets/Games/Radiologist/Icons/ai.png");
@@ -92,6 +115,20 @@ export default Vue.extend({
       position: relative;
       left: 5px;
     }
+  }
+
+  .btnAbout {
+    position: absolute;
+    bottom: -27px;
+    width: 94px;
+    height: 18px;
+    border-radius: 3px;
+    font-size: 0.7em;
+    background: rgba(253, 243, 233, 0.3);
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s;
   }
 }
 </style>

@@ -239,7 +239,7 @@ export default class Radio implements ThreeGroup {
             }
         }
 
-
+        this.gameRunning = true
         store.commit("setConfirmPopup", false)
     }
 
@@ -250,7 +250,7 @@ export default class Radio implements ThreeGroup {
             //clicked on something, show popup
             store.commit("setConfirmPopup", true)
             store.commit("setConfirmCallback", this.confirm)
-
+            this.gameRunning = false
             this.selectedMesh = this.currentIntersect.object
             // console.log(this.selectedMesh.name)
         }
@@ -265,7 +265,9 @@ export default class Radio implements ThreeGroup {
 
             gsap.to(mat.uniforms.uFresnelWidth, {
                 value: params.fresnelIntensity,
-                duration: 0.25
+                duration: 1,
+                yoyo: true,
+                repeat: -1
             })
 
         }

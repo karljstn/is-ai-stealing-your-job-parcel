@@ -1,9 +1,13 @@
 <template>
   <section>
     <Side></Side>
-    <ButtonsRight></ButtonsRight>
+    <ButtonsRight
+      :timerCanStart="this.timerCanStart"
+      :timerPause="this.timerPause"
+    ></ButtonsRight>
 
     <!-- <NotificationManager></NotificationManager> -->
+    <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
     <Toolbar></Toolbar>
 
@@ -14,7 +18,10 @@
       :timerPause="this.timerPause"
     ></Timer>
 
-    <ToggleTutorial :showTutorial="this.showTutorial"></ToggleTutorial>
+    <ToggleTutorial
+      :toggleHelp="this.toggleHelp"
+      :help="this.help"
+    ></ToggleTutorial>
 
     <TutorialManager
       v-if="!this.HIDE"
@@ -41,27 +48,28 @@ import ToggleTutorial from "./Radiologist/Tutorial/ToggleTutorial.vue";
 import NotificationManager from "./Radiologist/Notifications/NotificationManager.vue";
 import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
 import Countdown from "./Radiologist/Tutorial/Countdown.vue";
+import Help from "./Radiologist/Tutorial/Help.vue";
 
 import Timer from "./Radiologist/Timer.vue";
 
 import gsap from "gsap";
-// import PatientFile from "./Radiologist/PatientFile.vue";
 // import data from "~/assets/Games/Radiologist/data.json";
 
 export default Vue.extend({
   data(): {
-    patientFile: boolean;
     tutorialCount: number;
+    help: boolean;
     countdown: boolean;
     timerCanStart: boolean;
     timerPause: boolean;
     HIDE: boolean;
   } {
     return {
-      patientFile: false,
-
       //progress of the tutorial
       tutorialCount: 0,
+
+      //help
+      help: false,
 
       //display the 3,2,1,go
       countdown: false,
@@ -70,7 +78,7 @@ export default Vue.extend({
       timerCanStart: false,
       timerPause: false,
 
-      HIDE: true,
+      HIDE: false,
     };
   },
 
@@ -136,28 +144,34 @@ export default Vue.extend({
     Timer,
     Toolbar,
     Confirm,
+    Help,
   },
 
   methods: {
     setTutorialCount() {
-      if (this.tutorialCount === 3) {
+      if (this.tutorialCount === 6) {
         this.hideTutorial();
         return;
       }
 
       this.tutorialCount++;
     },
-    showTutorial() {
-      if (this.timerCanStart) {
-        this.timerPause = true;
-        this.tutorialCount = 1;
-        const manager: any = this.$refs.tutorialManager;
-        gsap.to(manager.$el, {
-          duration: 0.3,
-          scale: 1,
-        });
-      }
+    toggleHelp(cond: boolean) {
+      this.help = cond;
+      if (cond) this.timerPause = true;
+      else this.timerPause = false;
     },
+    // showTutorial() {
+    //   if (this.timerCanStart) {
+    //     this.timerPause = true;
+    //     this.tutorialCount = 1;
+    //     const manager: any = this.$refs.tutorialManager;
+    //     gsap.to(manager.$el, {
+    //       duration: 0.3,
+    //       scale: 1,
+    //     });
+    //   }
+    // },
     hideTutorial() {
       const manager: any = this.$refs.tutorialManager;
       gsap.to(manager.$el, {

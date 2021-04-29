@@ -123,7 +123,10 @@ export default Vue.extend({
     display: flex;
 
     img {
-      width: 70px;
+      width: 108px;
+      position: relative;
+      bottom: 10px;
+      right: 10px;
       -webkit-filter: drop-shadow(1px 1px 1px #000);
       filter: drop-shadow(1px 1px 1px #000);
     }
