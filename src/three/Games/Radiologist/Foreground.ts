@@ -4,6 +4,7 @@ import fragment from "~/shaders/radiologist/foreground/fragment.glsl"
 import vertex from "~/shaders/radiologist/foreground/vertex.glsl"
 
 import grid from '~/assets/Games/Radiologist/grid.jpg'
+import lines from '~/assets/Games/Radiologist/lines.png'
 
 const params = {
     width: 0.82,
@@ -22,7 +23,7 @@ class Foreground {
     constructor() {
         this.ratio = (window.innerWidth * params.width) / (window.innerHeight * params.height)
 
-        const texture = new THREE.TextureLoader().load(grid)
+        const texture = new THREE.TextureLoader().load(lines)
         // texture.repeat.set(10, 10)
         // texture.wrapS = THREE.RepeatWrapping
         // texture.wrapT = THREE.RepeatWrapping
@@ -40,6 +41,7 @@ class Foreground {
                 uThickness: { value: 0.004 },
                 uMap: { value: texture }
             },
+
             depthTest: false,
             fragmentShader: fragment,
             vertexShader: vertex,

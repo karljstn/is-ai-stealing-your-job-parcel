@@ -17,11 +17,10 @@ vec4 layer(vec4 foreground, vec4 background) {
 
 
 void main(){
+    float textureRatio = 1194.0 / 703.0;
+    float r = ratio/textureRatio;
 
-    vec2 textureUv = vUv;
-    textureUv.x = fract(textureUv.x * ratio * uLines);
-    textureUv.y = fract((textureUv.y) * uLines);
-
+    vec2 textureUv = vec2(fract(vUv.x * r), vUv.y);
     vec4 texelColor = texture2D(uMap, textureUv);
 
     vec2 screenUv = (gl_FragCoord.xy / uPixelRatio) / resolution.xy;
@@ -36,10 +35,11 @@ void main(){
 
     // float lines = wx + wy;
     // lines *= 0.1; 
-    // vec3 bgColor = vec3(0.019, 0.086, 0.211);
+    texelColor.a *= 0.5;
+    vec4 bgColor = vec4(0.019, 0.086, 0.211, 1.0);
 
     // vec3 col = bgColor + lines;
 
-    gl_FragColor = texelColor;
-    gl_FragColor = layer(texture2D(uRenderTarget, screenUv*size), gl_FragColor);
+    gl_FragColor = layer(texelColor, bgColor);
+    // gl_FragColor = layer(texture2D(uRenderTarget, screenUv*size), gl_FragColor);
 }
