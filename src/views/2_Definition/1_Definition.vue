@@ -6,8 +6,8 @@
 
 		<div class="form">
 			<QuestionForm>
-				<div class="btn"><Button classes="nocursor pad" value="yes"></Button><span>Of course!</span></div>
-				<div class="btn"><Button classes="nocursor pad" value="no"></Button><span>Not sure...</span></div>
+				<div class="btn"><CanvasDraw></CanvasDraw><span>Of course!</span></div>
+				<div class="btn"><CanvasDraw></CanvasDraw><span>Not sure...</span></div>
 			</QuestionForm>
 		</div>
 	</section>
@@ -16,6 +16,7 @@
 <script>
 import Button from '~/components/UI/Button';
 import QuestionForm from '~/components/UI/QuestionForm';
+import CanvasDraw from '~/components/Canvas/CanvasDraw';
 import Vue from 'vue';
 import store from '~store';
 import { fadeBackground } from '~util';
@@ -23,6 +24,7 @@ import { fadeBackground } from '~util';
 export default Vue.extend({
 	components: {
 		QuestionForm,
+		CanvasDraw,
 		Button,
 	},
 	mounted() {
@@ -36,19 +38,25 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.form {
-	margin-top: 45px;
-	width: 400px;
-}
 section {
 	cursor: none;
-}
-.btn {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	span {
-		margin-left: 20px;
+
+	p {
+		user-select: none;
+	}
+
+	.btn {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		span {
+			margin-left: 20px;
+			user-select: none;
+		}
+		.form {
+			margin-top: 45px;
+			width: 600px;
+		}
 	}
 }
 </style>

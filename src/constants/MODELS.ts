@@ -13,6 +13,7 @@ import crystal from "~/assets/Models/crystalball/BOULE_VOYANTE.glb";
 import pencil from "~/assets/Models/pencil/pencil.glb";
 import radiologistBackground from "~/assets/Models/radiologist/big-cube-bg.glb"
 import arrow from "~/assets/Images/fleche.svg"
+import slotMachine from "~/assets/Models/slot-machine/slot_machine_5.glb"
 
 type MODELS = { [name: string]: { URL: string, SCALE: number, TEXTURE?: string } }
 
@@ -63,6 +64,10 @@ export const MODELS: MODELS = {
   },
   ARROW: {
     URL: arrow,
+    SCALE: 1
+  },
+  SLOT_MACHINE: {
+    URL: slotMachine,
     SCALE: 1
   }
 }
