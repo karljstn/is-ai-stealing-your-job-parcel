@@ -19,6 +19,7 @@
     ></Timer>
 
     <ToggleTutorial
+      :timerCanStart="this.timerCanStart"
       :toggleHelp="this.toggleHelp"
       :help="this.help"
     ></ToggleTutorial>
@@ -78,7 +79,7 @@ export default Vue.extend({
       timerCanStart: false,
       timerPause: false,
 
-      HIDE: false,
+      HIDE: true,
     };
   },
 
@@ -157,9 +158,11 @@ export default Vue.extend({
       this.tutorialCount++;
     },
     toggleHelp(cond: boolean) {
-      this.help = cond;
-      if (cond) this.timerPause = true;
-      else this.timerPause = false;
+      if (this.timerCanStart) {
+        this.help = cond;
+        if (cond) this.timerPause = true;
+        else this.timerPause = false;
+      }
     },
     // showTutorial() {
     //   if (this.timerCanStart) {

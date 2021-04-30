@@ -1,4 +1,4 @@
-import skeleton1 from "~/assets/Games/Radiologist/Models/skeleton_1-2.glb"
+import skeleton1 from "~/assets/Games/Radiologist/Models/skeleton_1-3.glb"
 import skeletonBaseTex1 from "~/assets/Games/Radiologist/Textures/skeleton_1-2.jpg"
 
 import skeleton2 from "~/assets/Games/Radiologist/Models/skeleton_2-6.glb"
@@ -23,7 +23,7 @@ import clipboardTex5 from "~/assets/Games/Radiologist/Textures/clipboard_5.jpg"
 export const RADIOLOGIST = {
     SKELETON1: {
         URL: skeleton1,
-        SCALE: 1.5,
+        SCALE: 1,
         BAKE: skeletonBaseTex1,
         HEART_SCALE: 22
     },

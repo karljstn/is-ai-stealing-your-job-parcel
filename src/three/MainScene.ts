@@ -290,6 +290,7 @@ export default class Scene {
   setEvents() {
     window.addEventListener("resize", this.resize.bind(this))
     window.addEventListener("mousemove", this.mousemove.bind(this))
+    window.addEventListener('click', this.click.bind(this))
   }
 
   resize() {
@@ -310,6 +311,10 @@ export default class Scene {
     if (this.Loader)
       this.Loader.fullScreenPlane.uniforms.uAspectHorizontal.value =
         window.innerWidth / window.innerHeight
+  }
+
+  click() {
+    this.radio.onClick()
   }
 
   mousemove(e: MouseEvent) {

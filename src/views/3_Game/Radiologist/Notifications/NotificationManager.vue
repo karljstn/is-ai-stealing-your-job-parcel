@@ -6,7 +6,6 @@
         :key="notification.index"
         class="notification"
       >
-        <!-- :style="{ top: 100 * notification.index + 'px' }" -->
         Notification
         <span
           class="close-notification"
@@ -19,6 +18,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Notification from "./Notification.vue";
 
 export default Vue.extend({
   data(): { notifications: Object[]; index: number } {
@@ -28,9 +28,9 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.addNotification(2000, "bonjour");
+    this.addNotification(60000, "bonjour");
     setTimeout(() => {
-      this.addNotification(2000, "bonsoir");
+      this.addNotification(60000, "bonsoir");
     }, 1000);
   },
   methods: {
@@ -42,7 +42,7 @@ export default Vue.extend({
 
       setTimeout(() => {
         const index = this.index;
-        // this.notifications.shift();
+        this.notifications.shift();
       }, duration);
     },
     removeNotification(index: number) {
@@ -57,26 +57,50 @@ export default Vue.extend({
 .notification-container {
   width: 300px;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 11%;
+  top: 18%;
   z-index: 1000;
 }
 
 .close-notification {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 10px;
-  height: 10px;
-  background-color: black;
+  top: 5px;
+  right: -15px;
+  width: 12px;
+  height: 11px;
+  background-color: #5d34fb;
+  cursor: pointer;
+
+  &:after,
+  &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 1px;
+    background-color: white;
+    transform-origin: center;
+  }
+
+  &:after {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &:before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
 }
 
 .notification {
   // position: absolute;
   position: relative;
-  padding: 20px;
-  background-color: white;
-  border-radius: 20px;
+  padding: 10px;
+  font-size: 0.9em;
+  margin-bottom: 20px;
+  background-color: #f7edff;
+  border-radius: 5px;
   transition: all 0.5s;
 }
 

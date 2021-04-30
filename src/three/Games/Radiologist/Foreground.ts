@@ -3,6 +3,8 @@ import * as THREE from 'three'
 import fragment from "~/shaders/radiologist/foreground/fragment.glsl"
 import vertex from "~/shaders/radiologist/foreground/vertex.glsl"
 
+import grid from '~/assets/Games/Radiologist/grid.jpg'
+
 const params = {
     width: 0.82,
     height: 0.78,
@@ -20,6 +22,11 @@ class Foreground {
     constructor() {
         this.ratio = (window.innerWidth * params.width) / (window.innerHeight * params.height)
 
+        const texture = new THREE.TextureLoader().load(grid)
+        // texture.repeat.set(10, 10)
+        // texture.wrapS = THREE.RepeatWrapping
+        // texture.wrapT = THREE.RepeatWrapping
+
         this.geometry = new THREE.PlaneBufferGeometry(2, 2)
         this.material = new THREE.ShaderMaterial({
             uniforms: {
@@ -29,8 +36,9 @@ class Foreground {
                 pi: { value: Math.PI },
                 uPixelRatio: { value: 1 },
                 uRenderTarget: { value: null },
-                uLines: { value: 150 },
+                uLines: { value: 21 },
                 uThickness: { value: 0.004 },
+                uMap: { value: texture }
             },
             depthTest: false,
             fragmentShader: fragment,

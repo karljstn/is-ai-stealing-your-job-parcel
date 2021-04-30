@@ -77,8 +77,6 @@ const store = new Vuex.Store({
     },
     setPenalty(state, payload) {
       state.radiologist.penalty = payload
-      console.log(state.radiologist.penalty)
-
     },
     setPane(state, payload) {
       state.tweakpane = payload

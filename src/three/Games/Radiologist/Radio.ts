@@ -23,6 +23,10 @@ const params = {
     fresnelIntensity: 0.3
 }
 
+let minPan = new THREE.Vector3(- 2, - 2, - 2)
+let maxPan = new THREE.Vector3(2, 2, 2)
+let _v = new THREE.Vector3()
+
 export default class Radio implements ThreeGroup {
     group: THREE.Group
 
@@ -65,10 +69,14 @@ export default class Radio implements ThreeGroup {
         this.renderer = renderer
         this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
 
-        this.controls.minDistance = 10
-        this.controls.maxDistance = 30
+        // this.controls.minDistance = 10
+        // this.controls.maxDistance = 30
         this.controls.enabled = false
         // this.controls.enablePan = false
+        this.controls.enableDamping = true
+
+
+
 
         this.raycaster = raycaster
         this.camera = camera
@@ -103,15 +111,14 @@ export default class Radio implements ThreeGroup {
                     this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
                 }
             }
+
+            _v.copy(this.controls.target)
+            this.controls.target.clamp(minPan, maxPan)
+            _v.sub(this.controls.target)
+            this.camera.position.sub(_v)
         })
 
         this.controls.addEventListener("end", () => {
-            if (!this.isDragging) {
-                this.click()
-            } else {
-                // console.log('USER DRAGGED');
-            }
-
             this.mouseDown = false
             this.isDragging = false
         })
@@ -146,14 +153,20 @@ export default class Radio implements ThreeGroup {
     patientFile(cond: boolean) {
         console.log('patient file')
         if (cond) {
+            this.controls.enabled = false
             gsap.to(Clipboard.material.uniforms.uAlpha, {
                 duration: 0.5,
-                value: 1
+                value: 1,
             })
         } else {
+
+
             gsap.to(Clipboard.material.uniforms.uAlpha, {
                 duration: 0.5,
-                value: 0
+                value: 0,
+                onComplete: () => {
+                    this.controls.enabled = true
+                }
             })
 
         }
@@ -232,30 +245,29 @@ export default class Radio implements ThreeGroup {
                 console.log("RADIOLOGIST GAME: WRONG ANSWER")
 
                 store.state.radiologist.penalty()
-                console.log(store)
-
                 this.nextCase()
                 // console.log(this.currentIntersect.object)
             }
         }
 
+        gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
+            duration: 0.2,
+            value: 1
+        })
+        this.currentIntersect = null
         this.gameRunning = true
         store.commit("setConfirmPopup", false)
+
     }
 
-    click() {
+    onClick() {
         if (this.currentIntersect && !store.state.radiologist.confirm) {
-
-
             //clicked on something, show popup
             store.commit("setConfirmPopup", true)
             store.commit("setConfirmCallback", this.confirm)
             this.gameRunning = false
             this.selectedMesh = this.currentIntersect.object
-            // console.log(this.selectedMesh.name)
         }
-
-        //success
     }
 
     useAI() {
@@ -330,6 +342,9 @@ export default class Radio implements ThreeGroup {
         this.updateRenderTarget()
         const delta = this.clock.getDelta()
 
+        // Clipboard.mesh.quaternion.copy(this.camera.quaternion)
+        // Clipboard.mesh.rotation.y = Math.PI / 2
+
         if (this.gameRunning) {
             if (!this.isDragging) {
                 this.raycaster.setFromCamera(this.mouse, this.camera)
@@ -345,5 +360,7 @@ export default class Radio implements ThreeGroup {
                 }
             }
         }
+
+        // Clipboard.mesh.lookAt(this.camera.position)
     }
 }

@@ -3,6 +3,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
 import LoadManager from "~/three/Singletons/LoadManager"
 
+import raf from "~three/Singletons/RAF"
+
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
 
 import fragment from "~/shaders/radiologist/clipboard/fragment.glsl"
@@ -41,11 +43,6 @@ class Clipboard {
             fragmentShader: fragment,
             transparent: true
         })
-
-
-
-
-
     }
 
     load(group: THREE.Group, progress: number) {
@@ -77,6 +74,8 @@ class Clipboard {
                 mesh.material = this.material
             }
         })
+
+        // raf.subscribe("clipboard", this.update)
     }
 
     nextCase() {

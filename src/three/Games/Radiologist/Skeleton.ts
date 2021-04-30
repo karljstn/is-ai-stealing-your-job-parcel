@@ -11,6 +11,7 @@ import { RADIOLOGIST } from "~constants/RADIOLOGIST"
 import gsap from 'gsap'
 import { Tween } from "~lib/gsap-member/src/gsap-core"
 
+
 import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
 import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
 
@@ -25,6 +26,8 @@ class Skeleton {
     skeletons: any
     currentSkeleton: any
 
+    // test: any
+
     // tweenMap: WeakMap<THREE.Mesh, ReturnType<typeof gsap.to>>
 
     errorMesh: THREE.Mesh | null
@@ -36,6 +39,8 @@ class Skeleton {
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
 
         this.mesh = new THREE.Group()
+
+        // this.test = []
 
         this.skeletons = [
             RADIOLOGIST.SKELETON1,
@@ -67,11 +72,15 @@ class Skeleton {
                 uFresnelColor: { value: new THREE.Color("#FFFFFF") },
                 uFresnelWidth: { value: 1 },
                 uMap: { value: null },
+                uDistortion: { value: 0 },
+                uTime: { value: 0 }
             },
             vertexShader: vertex,
             fragmentShader: fragment,
             transparent: true,
         })
+
+        raf.subscribe("skeletonUpdate", this.update)
     }
 
 
@@ -103,6 +112,37 @@ class Skeleton {
 
         this.mesh.traverse(obj => {
             if (obj.type === "Mesh") {
+
+                // const mesh = obj as THREE.Mesh
+                // mesh.material = this.material.clone()
+
+                // const material = mesh.material as THREE.ShaderMaterial
+                // material.uniforms = {
+                //     uFresnelColor: { value: new THREE.Color("#fff"), },
+                //     uFresnelWidth: { value: 1 },
+                //     uMap: { value: texture },
+                //     uDistortion: { value: 0 },
+                //     uTime: { value: 0 }
+                // }
+
+                // if (mesh.name === this.errorsNames[progress]) {
+                //     this.errorMesh = mesh
+                // }
+
+                // if (mesh.name === '<3') {
+                //     this.heart = mesh
+                //     this.heartBaseScale = mesh.scale.x
+
+                //     raf.subscribe("heartbeat", this.heartbeat)
+                // }
+
+                // this.test.push(mesh)
+
+
+            }
+
+
+            if (obj.type === 'Mesh') {
                 const mesh = obj as THREE.Mesh
                 mesh.material = this.material.clone()
 
@@ -111,24 +151,21 @@ class Skeleton {
                     uFresnelColor: { value: new THREE.Color("#fff"), },
                     uFresnelWidth: { value: 1 },
                     uMap: { value: texture },
+                    uDistortion: { value: 0 },
+                    uTime: { value: 0 }
                 }
 
-                if (mesh.name === this.errorsNames[progress]) {
-                    this.errorMesh = mesh
-                }
+                const point = new THREE.Points(mesh.geometry, material)
 
-                if (mesh.name === '<3') {
-                    this.heart = mesh
-                    this.heartBaseScale = mesh.scale.x
-
-                    raf.subscribe("heartbeat", this.heartbeat)
-                }
-
+                skeletonScene.add(point)
             }
 
         })
-
         skeletonScene.add(this.mesh)
+    }
+
+    tweaks() {
+
     }
 
     nextCase() {
@@ -144,8 +181,15 @@ class Skeleton {
         )
     }
 
-    update() {
 
+    update = () => {
+        // for (let i = 0; i < this.test.length; i++) {
+        //     // this.test[i].material.uniforms.uDistortion.value += 0.001
+        //     this.test[i].material.uniforms.uTime.value += 0.001
+
+        // }
+        // this.material.uniforms.uDistortion.value += 0.001
+        // this.material.uniforms.uTime.value += 0.01
     }
 }
 
