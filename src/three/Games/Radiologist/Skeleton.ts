@@ -8,16 +8,15 @@ import { ThreeGroup } from "~/interfaces/Three"
 
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
 
-import gsap from 'gsap'
+import gsap from "gsap"
 import { Tween } from "~lib/gsap-member/src/gsap-core"
 
-import { MeshSurfaceSampler } from 'three/examples/jsm/Math/MeshSurfaceSampler'
+import { MeshSurfaceSampler } from "three/examples/jsm/Math/MeshSurfaceSampler"
 
 import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
 import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
 
-
-const amount = 500
+const amount = 5000
 
 class Skeleton {
     gltfLoader: GLTFLoader
@@ -49,51 +48,42 @@ class Skeleton {
             RADIOLOGIST.SKELETON2,
             RADIOLOGIST.SKELETON3,
             RADIOLOGIST.SKELETON4,
-            RADIOLOGIST.SKELETON5,
+            RADIOLOGIST.SKELETON5
         ]
-
 
         this.uniforms = {
             uTime: {
                 value: 0
             },
             uDistortion: {
-                value: 1
+                value: 0
             },
             uMap: {
                 value: null
             }
         }
 
-        this.errorsNames = [
-            'Simple_Pen_Cylinder007',
-            'intestins',
-            'CISEAUX',
-            'vertèbre 2',
-            'Rib_L_3'
-        ]
+        this.errorsNames = ["Simple_Pen_Cylinder007", "intestins", "CISEAUX", "vertèbre 2", "Rib_L_3"]
 
         this.errorMesh = null
         this.heart = new THREE.Mesh()
         this.heartBaseScale = 1
-
 
         this.currentSkeleton = null
 
         this.material = new THREE.ShaderMaterial({
             uniforms: {
                 ...this.uniforms,
-                uFresnelColor: { value: new THREE.Color("#fff"), },
-                uFresnelWidth: { value: 1 },
+                uFresnelColor: { value: new THREE.Color("#fff") },
+                uFresnelWidth: { value: 1 }
             },
             vertexShader: vertex,
             fragmentShader: fragment,
-            transparent: true,
+            transparent: true
         })
 
         raf.subscribe("skeletonUpdate", this.update)
     }
-
 
     load(skeletonScene: THREE.Scene, progress: number) {
         raf.unsubscribe("heartbeat")
@@ -103,7 +93,6 @@ class Skeleton {
         this.currentSkeleton = this.skeletons[progress]
 
         this.gltfLoader.load(this.currentSkeleton.URL, gltf => {
-
             this.mesh = gltf.scene
             this.mesh.scale.set(
                 this.currentSkeleton.SCALE,
@@ -119,12 +108,12 @@ class Skeleton {
         return new THREE.ShaderMaterial({
             uniforms: {
                 ...this.uniforms,
-                uFresnelColor: { value: new THREE.Color("#fff"), },
-                uFresnelWidth: { value: 1 },
+                uFresnelColor: { value: new THREE.Color("#fff") },
+                uFresnelWidth: { value: 1 }
             },
             vertexShader: vertex,
             fragmentShader: fragment,
-            transparent: true,
+            transparent: true
         })
     }
 
@@ -139,49 +128,57 @@ class Skeleton {
                 const mesh = obj as THREE.Mesh
                 mesh.material = this.getShader()
 
-                // const sampler = new MeshSurfaceSampler(mesh).build()
-                // const geo = new THREE.BufferGeometry()
+                const uvAttr = mesh.geometry.getAttribute("uv")
+                const fakeColor = new Float32Array(uvAttr.count * 3)
 
-                // const pos = new Float32Array(amount * 3)
-                // const normal = new Float32Array(amount * 3)
-                // const color = new Float32Array(amount * 3)
+                for (let i = 0; i < uvAttr.count; i++) {
+                    fakeColor[i * 3 + 0] = uvAttr.array[i * uvAttr.itemSize + 0]
+                    fakeColor[i * 3 + 1] = uvAttr.array[i * uvAttr.itemSize + 1]
+                    fakeColor[i * 3 + 2] = 0
+                }
+                mesh.geometry.setAttribute("color", new THREE.BufferAttribute(fakeColor, 3))
 
-                // const positionTarget = new THREE.Vector3()
-                // const normalTarget = new THREE.Vector3()
-                // const colorTarget = new THREE.Color()
+                const sampler = new MeshSurfaceSampler(mesh).build()
+                const geo = new THREE.BufferGeometry()
 
-                // for (let i = 0; i < amount; i++) {
-                //     sampler.sample(positionTarget, normalTarget, colorTarget)
+                const pos = new Float32Array(amount * 3)
+                const normal = new Float32Array(amount * 3)
+                const color = new Float32Array(amount * 3)
 
+                const positionTarget = new THREE.Vector3()
+                const normalTarget = new THREE.Vector3()
+                const colorTarget = new THREE.Color()
 
-                //     pos[i * 3 + 0] = positionTarget.x
-                //     pos[i * 3 + 1] = positionTarget.y
-                //     pos[i * 3 + 2] = positionTarget.z
+                for (let i = 0; i < amount; i++) {
+                    sampler.sample(positionTarget, normalTarget, colorTarget)
 
-                //     color[i * 3 + 0] = colorTarget.r
-                //     color[i * 3 + 1] = colorTarget.g
-                //     color[i * 3 + 2] = colorTarget.b
+                    pos[i * 3 + 0] = positionTarget.x
+                    pos[i * 3 + 1] = positionTarget.y
+                    pos[i * 3 + 2] = positionTarget.z
 
-                //     normal[i * 3 + 0] = normalTarget.x
-                //     normal[i * 3 + 1] = normalTarget.y
-                //     normal[i * 3 + 2] = normalTarget.z
-                // }
+                    color[i * 3 + 0] = colorTarget.r
+                    color[i * 3 + 1] = colorTarget.g
+                    color[i * 3 + 2] = colorTarget.b
 
-                // // // console.log(color)
-                // geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
-                // geo.setAttribute('color', new THREE.BufferAttribute(color, 3))
-                // geo.setAttribute('normal', new THREE.BufferAttribute(normal, 3))
+                    normal[i * 3 + 0] = normalTarget.x
+                    normal[i * 3 + 1] = normalTarget.y
+                    normal[i * 3 + 2] = normalTarget.z
+                }
 
-                // const particle = new THREE.Mesh(geo, this.getShader())
+                // console.log(color)
+                geo.setAttribute("position", new THREE.BufferAttribute(pos, 3))
+                geo.setAttribute("color", new THREE.BufferAttribute(color, 3))
+                geo.setAttribute("normal", new THREE.BufferAttribute(normal, 3))
 
-                // skeletonScene.add(particle)
+                const particle = new THREE.Points(geo, this.getShader())
 
+                skeletonScene.add(particle)
 
                 if (mesh.name === this.errorsNames[progress]) {
                     this.errorMesh = mesh
                 }
 
-                if (mesh.name === '<3') {
+                if (mesh.name === "<3") {
                     this.heart = mesh
                     this.heartBaseScale = mesh.scale.x
 
@@ -189,27 +186,20 @@ class Skeleton {
                 }
             }
 
+            // if (obj.type === 'Mesh') {
+            //     const mesh = obj as THREE.Mesh
+            //     mesh.material = this.getShader()
 
-            if (obj.type === 'Mesh') {
-                const mesh = obj as THREE.Mesh
-                mesh.material = this.getShader()
-
-                const point = new THREE.Points(mesh.geometry, mesh.material)
-                skeletonScene.add(point)
-            }
-
+            //     const point = new THREE.Points(mesh.geometry, mesh.material)
+            //     skeletonScene.add(point)
+            // }
         })
         // skeletonScene.add(this.mesh)
     }
 
-    tweaks() {
+    tweaks() {}
 
-    }
-
-    nextCase() {
-
-    }
-
+    nextCase() {}
 
     heartbeat = () => {
         this.heart.scale.set(
@@ -219,13 +209,11 @@ class Skeleton {
         )
     }
 
-
     update = () => {
         this.uniforms.uTime.value += 0.001
         // this.uniforms.uDistortion.value += 0.001
     }
 }
-
 
 const instance = new Skeleton()
 export default instance

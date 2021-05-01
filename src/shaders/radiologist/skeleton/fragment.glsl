@@ -2,7 +2,7 @@ uniform sampler2D uMap;
 uniform vec3 uFresnelColor;
 uniform float uFresnelWidth;
 
-varying vec3 vColor;
+varying vec3 fakeColor;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -10,7 +10,7 @@ varying vec3 vPosition;
 
 void main(){
     // Texel
-    vec4 texelColor = texture2D(uMap, vUv);
+    vec4 texelColor = texture2D(uMap, fakeColor.xy);
 
     // Direction du vertex par rapport a la position de la camera
     vec3 viewDirection = normalize(cameraPosition - vPosition);

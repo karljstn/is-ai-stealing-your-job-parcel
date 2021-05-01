@@ -4,7 +4,7 @@ varying vec3 vPosition;
 
 attribute vec3 color;
 
-varying vec3 vColor;
+varying vec3 fakeColor;
 
 uniform float uTime;
 uniform float uDistortion;
@@ -135,7 +135,7 @@ vec3 curlNoise( vec3 p ){
 }
 
 void main(){
-  vColor = color;
+  fakeColor = color;
 
   vec3 distortion = vec3(position.x*0.1, position.y*0.1, position.z*0.1)*curlNoise(vec3(
       position.x*1.0 + uTime,
@@ -150,7 +150,7 @@ void main(){
     vec4 projectedPosition = projectionMatrix * viewPosition;
 
     gl_Position = projectedPosition;
-    gl_PointSize = 2.0;
+    gl_PointSize = 1.0;
     vUv = uv;
     vNormal = normalize(vec3(mat3(modelMatrix) * normal));
     vPosition = modelPosition.xyz;
