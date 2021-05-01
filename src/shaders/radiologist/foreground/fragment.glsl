@@ -21,6 +21,9 @@ void main(){
     float r = ratio/textureRatio;
 
     vec2 textureUv = vec2(fract(vUv.x * r), vUv.y);
+
+    if(textureUv.x < 0.001) textureUv.x = 0.0;
+
     vec4 texelColor = texture2D(uMap, textureUv);
 
     vec2 screenUv = (gl_FragCoord.xy / uPixelRatio) / resolution.xy;
@@ -41,5 +44,5 @@ void main(){
     // vec3 col = bgColor + lines;
 
     gl_FragColor = layer(texelColor, bgColor);
-    // gl_FragColor = layer(texture2D(uRenderTarget, screenUv*size), gl_FragColor);
+    gl_FragColor = layer(texture2D(uRenderTarget, screenUv*size), gl_FragColor);
 }

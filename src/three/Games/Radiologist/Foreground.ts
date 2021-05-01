@@ -24,9 +24,8 @@ class Foreground {
         this.ratio = (window.innerWidth * params.width) / (window.innerHeight * params.height)
 
         const texture = new THREE.TextureLoader().load(lines)
-        // texture.repeat.set(10, 10)
-        // texture.wrapS = THREE.RepeatWrapping
-        // texture.wrapT = THREE.RepeatWrapping
+        // texture.minFilter = THREE.LinearMipMapLinearFilter
+        // texture.magFilter = THREE.LinearMipMapLinearFilter
 
         this.geometry = new THREE.PlaneBufferGeometry(2, 2)
         this.material = new THREE.ShaderMaterial({

@@ -36,7 +36,7 @@ export default class Radio implements ThreeGroup {
     controls: OrbitControls
 
     selectedObjects: THREE.Object3D[]
-
+    pane: Tweakpane | null
     renderTarget: THREE.WebGLRenderTarget
 
     selectedMesh: null | THREE.Mesh
@@ -75,7 +75,7 @@ export default class Radio implements ThreeGroup {
         // this.controls.enablePan = false
         this.controls.enableDamping = true
 
-
+        this.pane = pane
 
 
         this.raycaster = raycaster
@@ -127,6 +127,7 @@ export default class Radio implements ThreeGroup {
         this.init()
         raf.subscribe("radioUpdate", this.update)
     }
+
 
     init() {
         this.group.add(Background.mesh)
@@ -338,6 +339,7 @@ export default class Radio implements ThreeGroup {
     }
 
     update = () => {
+        // console.log(this.mouse.x)
 
         this.updateRenderTarget()
         const delta = this.clock.getDelta()
