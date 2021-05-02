@@ -42,16 +42,16 @@ export default Vue.extend({
 	},
 	methods: {
 		onAnimationComplete: function() {
-			store.state.scene?.EmojiScene.Emoji.out();
+			store.state.scene?.HandWaveScene.out();
 			fadeBackground({ routeName: 'IntroGuess' });
 		},
 	},
 	mounted() {
 		fadeBackground({ routeName: 'IntroHello' });
-		store.state.scene?.EmojiScene.start();
+		store.state.scene?.HandWaveScene.start();
 	},
 	destroyed() {
-		store.state.scene?.EmojiScene.destroy();
+		store.state.scene?.HandWaveScene.destroy();
 	},
 });
 </script>

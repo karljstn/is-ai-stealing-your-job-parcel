@@ -16,7 +16,7 @@ class EmojisScene {
   constructor(
     viewport: Viewport,
     scene: Scene,
-    mouse: Vector2,
+    mouse: Vector3,
     camera: PerspectiveCamera
   ) {
     this.camera = camera;

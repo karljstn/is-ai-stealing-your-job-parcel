@@ -13,9 +13,9 @@ class Pencil implements ThreeGLTF {
 	params: any
 	group: Group | null
 	loader: GLTFLoader
-	mouse: Vector2
+	mouse: Vector3
 
-	constructor(scene: Scene, viewport: Viewport, mouse: Vector2) {
+	constructor(scene: Scene, viewport: Viewport, mouse: Vector3) {
 		this.scene = scene
 		this.viewport = viewport
 		this.mouse = mouse

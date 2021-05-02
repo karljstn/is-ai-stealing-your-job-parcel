@@ -6,8 +6,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 
-import Radio from "./Games/Radiologist/Radio"
-
 import Benchmark from "./Benchmark"
 import { clamp, getViewport } from "~/util/"
 import { MainSceneParams } from "~/types/"
@@ -18,12 +16,15 @@ import { RAFS } from "~constants/RAFS"
 import TrashcanScene from "./Scenes/TrashcanScene"
 import { Vector3 } from "three"
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event"
+
 import CrystalBallScene from "./Scenes/CrystalBallScene"
 import PencilScene from "./Scenes/PencilScene"
 import EmojisScene from "./Scenes/EmojisScene"
+import SlotMachineScene from "./Scenes/SlotMachineScene"
+import Radio from "./Games/Radiologist/Radio"
+import HandWaveScene from "./Scenes/HandWaveScene"
 
 export default class Scene {
-  // Data
   params: MainSceneParams
   w: number
   h: number
@@ -40,8 +41,8 @@ export default class Scene {
 
   controls: OrbitControls
   raycaster: THREE.Raycaster
-  mouse: THREE.Vector2
-  mouseVec3: THREE.Vector3
+  mouse: THREE.Vector3
+  mouseVec2: THREE.Vector2
   clock: THREE.Clock
   meshes: THREE.Mesh[]
   radio: Radio
@@ -49,10 +50,12 @@ export default class Scene {
   Benchmark: Benchmark | null
   Loader: Loader | null
   TrashcanScene: TrashcanScene
-  EmojiScene: EmojiScene
+  // EmojiScene: EmojiScene
+  HandWaveScene: HandWaveScene
   CrystalBallScene: CrystalBallScene
   PencilScene: PencilScene
   EmojisScene: EmojisScene
+  SlotMachineScene: SlotMachineScene
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -132,8 +135,8 @@ export default class Scene {
     this.scene.add(this.light)
     this.scene.add(this.light.target)
 
-    this.mouse = new THREE.Vector2()
-    this.mouseVec3 = new THREE.Vector3()
+    this.mouse = new THREE.Vector3()
+    this.mouseVec2 = new THREE.Vector2
     this.raycaster = new THREE.Raycaster()
 
     this.controls = new OrbitControls(this.camera, canvas)
@@ -144,7 +147,7 @@ export default class Scene {
     this.radio = new Radio(
       this.camera,
       this.raycaster,
-      this.mouse,
+      this.mouseVec2,
       this.controls,
       this.pane,
       this.renderer,
@@ -181,12 +184,13 @@ export default class Scene {
       this.Loader = null
     }
 
-    this.EmojiScene = new EmojiScene(
-      this.params.viewport,
-      this.scene,
-      this.mouse,
-      this.camera
-    )
+    // this.EmojiScene = new EmojiScene(
+    //   this.params.viewport,
+    //   this.scene,
+    //   this.mouse,
+    //   this.camera
+    // )
+    this.HandWaveScene = new HandWaveScene(this.scene, this.camera, this.params.viewport, this.mouse)
     this.TrashcanScene = new TrashcanScene(
       this.params.viewport,
       this.scene,
@@ -201,6 +205,7 @@ export default class Scene {
       this.mouse,
       this.camera
     )
+    this.SlotMachineScene = new SlotMachineScene(this.params.viewport, this.scene)
     this.tweaks()
   }
 
@@ -297,15 +302,10 @@ export default class Scene {
       x: e.pageX / window.innerWidth,
       y: 1 - e.pageY / window.innerHeight,
     }
-    this.Loader &&
-      this.Loader.fullScreenPlane.uniforms.uMousePos.value.set(
-        normalized.x,
-        normalized.y
-      )
-    this.mouse.x = (e.clientX / this.w) * 2 - 1
-    this.mouse.y = -(e.clientY / this.h) * 2 + 1
 
-    this.mouseVec3.set(this.mouse.x, this.mouse.y, 0)
+    this.mouse.set((e.clientX / this.w) * 2 - 1, -(e.clientY / this.h) * 2 + 1, 0)
+    this.mouseVec2.x = this.mouse.x
+    this.mouseVec2.y = this.mouse.y
   }
 
   render = (dt = 0) => {
@@ -320,8 +320,9 @@ export default class Scene {
 
     this.controls.update()
 
-    this.EmojiScene?.update(dt) //TODO: switch based on progress
+    this.HandWaveScene.update(dt)
     this.PencilScene.update(dt)
+    this.SlotMachineScene.update(this.clock.getDelta())
   };
 }
 

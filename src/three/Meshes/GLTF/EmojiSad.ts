@@ -37,7 +37,7 @@ class EmojiSad implements ThreeGLTF {
 	animations: AnimationClip[] | null;
 	waveAction: AnimationAction | null;
 	loader: GLTFLoader;
-	mouse: Vector2;
+	mouse: Vector3;
 	viewport: Viewport;
 	isMoving: boolean;
 	bakedMaterial: ShaderMaterial;
@@ -47,7 +47,7 @@ class EmojiSad implements ThreeGLTF {
 	timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
 	mappedMouse: Vector3
 
-	constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
+	constructor(size: number, scene: Scene, mouse: Vector3, viewport: Viewport) {
 		this.params = {
 			animSpeed: 0.005,
 			size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,

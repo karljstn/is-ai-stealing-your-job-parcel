@@ -1,4 +1,4 @@
-import hand from "~/assets/Models/hand/hand_30_03_v2.glb";
+import hand from "~/assets/Models/hand/Hand-anim-v3.glb";
 import trashcan from "~/assets/Models/trashcan/v5.glb";
 import bakedTrashcan from "~/assets/Models/trashcan/bakedTrashcanV2.glb";
 import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";
@@ -68,6 +68,6 @@ export const MODELS: MODELS = {
   },
   SLOT_MACHINE: {
     URL: slotMachine,
-    SCALE: 1
+    SCALE: 0.1
   }
 }

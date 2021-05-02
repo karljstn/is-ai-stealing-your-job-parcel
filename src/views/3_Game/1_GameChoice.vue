@@ -1,13 +1,12 @@
 <template>
 	<section>
 		<div class="container">
-			<p>Ok, now, is AI going to replace</p>
+			<p>Which job will AI replace ?</p>
 			<div class="form">
 				<QuestionForm>
-					<Button value="yes">Radiologists</Button>
+					<Button value="yes">Radiologist</Button>
 				</QuestionForm>
 			</div>
-			<p>?</p>
 		</div>
 	</section>
 </template>
@@ -16,6 +15,7 @@
 import Vue from 'vue';
 import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
+import store from '~store';
 import { fadeBackground } from '~util';
 
 export default Vue.extend({
@@ -25,6 +25,7 @@ export default Vue.extend({
 	},
 	mounted() {
 		fadeBackground({ routeName: 'GameOne' });
+		store.state.scene.SlotMachineScene.start();
 	},
 });
 </script>
@@ -32,9 +33,19 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .container {
 	display: flex;
+	min-height: 330px;
+	display: flex;
+	align-items: center;
 	.form {
-		width: 230px;
+		width: 330px;
+		height: 100%;
 		margin-left: 50px;
+		opacity: 0;
+		form,
+		button {
+			width: 100%;
+			height: 100%;
+		}
 	}
 }
 </style>

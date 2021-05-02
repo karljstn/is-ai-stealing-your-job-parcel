@@ -36,16 +36,16 @@ class EmojiSmile implements ThreeGLTF {
   animations: AnimationClip[] | null;
   waveAction: AnimationAction | null;
   loader: GLTFLoader;
-  mouse: Vector2;
+  mouse: Vector3;
   viewport: Viewport;
   isMoving: boolean;
   bakedMaterial: ShaderMaterial;
   bakedTexture: Texture;
   originalPos: Vector3;
   pane: Tweakpane | null;
-  timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
+  transitionTimeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
 
-  constructor(size: number, scene: Scene, mouse: Vector2, viewport: Viewport) {
+  constructor(size: number, scene: Scene, mouse: Vector3, viewport: Viewport) {
     this.params = {
       animSpeed: 0.005,
       size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,
@@ -105,7 +105,7 @@ class EmojiSmile implements ThreeGLTF {
     });
 
     this.originalPos = new Vector3();
-    this.timeline = gsap.timeline({ paused: true, onReverseComplete: this.destroy })
+    this.transitionTimeline = gsap.timeline({ paused: true, onReverseComplete: this.destroy })
   }
 
   load = () => {
@@ -323,13 +323,13 @@ class EmojiSmile implements ThreeGLTF {
   in = () => {
     if (!this.group) return
 
-    this.timeline.to(this.group.scale, { x: this.params.size, y: this.params.size, z: this.params.size, duration: 0.2 }, 2)
-    this.timeline.fromTo(this.group.position, { x: this.originalPos.x - 0.05, y: this.originalPos.y - 0.05 }, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.2 }, 2)
-    this.timeline.play()
+    this.transitionTimeline.to(this.group.scale, { x: this.params.size, y: this.params.size, z: this.params.size, duration: 0.2 }, 2)
+    this.transitionTimeline.fromTo(this.group.position, { x: this.originalPos.x - 0.05, y: this.originalPos.y - 0.05 }, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.2 }, 2)
+    this.transitionTimeline.play()
   }
 
   out = () => {
-    this.timeline.reverse()
+    this.transitionTimeline.reverse()
   }
 
   update = (dt: number = 0) => {

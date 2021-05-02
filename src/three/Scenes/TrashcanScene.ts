@@ -1,7 +1,7 @@
 import store from "~/store";
 import { Viewport } from "~/types";
 import { rectToThree } from "~/util";
-import { Scene, Vector2, } from "three";
+import { Scene, Vector2, Vector3, } from "three";
 import { RECTS } from "~/constants/RECTS"
 import Biases from "../Meshes/GLTF/Biases";
 import Tweakpane from "tweakpane";
@@ -12,13 +12,13 @@ import { MODELS } from "~constants/MODELS"
 class TrashcanScene {
 	viewport: Viewport
 	scene: Scene
-	mouse: Vector2
+	mouse: Vector3
 
 	biases: Biases
 	trashcanBake: TrashcanBake
 	// arrow: SVG
 
-	constructor(viewport: Viewport, scene: Scene, mouse: Vector2, pane: Tweakpane | null) {
+	constructor(viewport: Viewport, scene: Scene, mouse: Vector3, pane: Tweakpane | null) {
 		this.viewport = viewport
 		this.scene = scene
 		this.mouse = mouse;

@@ -15,13 +15,9 @@ class CrystalBallScene implements ThreeScene {
 		this.CrystalBall.start()
 	}
 
-	tweaks = () => {
+	tweaks = () => { }
 
-	}
-
-	update = () => {
-
-	}
+	update = () => { }
 
 	destroy = () => {
 		this.CrystalBall.destroy()

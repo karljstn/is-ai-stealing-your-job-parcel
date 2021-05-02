@@ -1,4 +1,4 @@
-import { Scene, Vector2 } from "three";
+import { Scene, Vector2, Vector3 } from "three";
 import { ThreeScene } from "~interfaces/Three";
 import Pencil from "~three/Meshes/GLTF/Pencil";
 import { Viewport } from "~types";
@@ -6,7 +6,7 @@ import { Viewport } from "~types";
 class PencilScene implements ThreeScene {
 	Pencil: Pencil
 
-	constructor(viewport: Viewport, scene: Scene, mouse: Vector2,) {
+	constructor(viewport: Viewport, scene: Scene, mouse: Vector3,) {
 		this.Pencil = new Pencil(scene, viewport, mouse)
 	}
 
