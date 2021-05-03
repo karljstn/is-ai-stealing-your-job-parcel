@@ -17,7 +17,6 @@ export default Vue.extend({
 			if (!e.submitter) return;
 
 			const currPathFloat = parseFloat(router.history.current.path.substring(1));
-			console.log(router.history.current.path, currPathFloat);
 
 			if (!currPathFloat) return;
 

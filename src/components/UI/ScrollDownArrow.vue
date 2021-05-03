@@ -1,5 +1,5 @@
 <template>
-	<div :class="show">
+	<div :class="show" ref="scroll">
 		<p>scroll</p>
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.4 34.04">
 			<g id="Calque_2" data-name="Calque 2">
@@ -12,16 +12,22 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue';
 import store from '~store';
+import gsap from 'gsap';
 
 export default Vue.extend({
+	data(){
+		return {
+			isTugging : false
+		}
+	},
 	computed: {
 		show() {
-			const router: any = this.$router; //types are fucked
-			const isLanding = router.history.current.name === 'LandingPage';
-			return !isLanding || store.state.hideScrollDownArrow ? 'scroll hide' : 'scroll';
+			const router = this.$router;
+			const isGame = router.history.current.name.indexOf('Game') > -1;
+			return isGame ? 'scroll hide' : 'scroll';
 		},
 	},
 });

@@ -2,7 +2,7 @@
 	<section>
 		<div>
 			<SaveRect :rectName="helloRect">
-				<lottie-animation ref="anim" :animationData="lottieURL" :loop="false" @complete="onAnimationComplete" />
+				<lottie-animation ref="anim" :animationData="lottieURL" :loop="false" @complete="next" />
 			</SaveRect>
 		</div>
 		<!-- <autoskip :time="12000" /> -->
@@ -24,6 +24,7 @@ import { fadeBackground } from '~util';
 import router from '~router';
 import { RouteConfig, RouteConfigMultipleViews } from 'vue-router/types/router';
 import { PALETTE } from '~constants/PALETTE';
+import NormalizeWheel from 'normalize-wheel';
 
 export default Vue.extend({
 	name: 'IntroHello',
@@ -41,12 +42,37 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	methods: {
-		onAnimationComplete: function() {
+		onWheel(event: any) {
+			const normalized = NormalizeWheel(event);
+			const pixelSpeed = normalized.pixelY;
+			console.log(pixelSpeed);
+			if (pixelSpeed >= 1) {
+				this.next();
+			} else {
+				this.previous();
+			}
+		},
+		previous() {
+			window.removeEventListener('mousewheel', this.onWheel);
+			window.removeEventListener('wheel', this.onWheel);
+
 			store.state.scene?.HandWaveScene.out();
-			fadeBackground({ routeName: 'IntroGuess' });
+			store.commit('toggleHideScrollDownArrow');
+
+			// this.$router.push(`/`);
+		},
+		next() {
+			window.removeEventListener('mousewheel', this.onWheel);
+			window.removeEventListener('wheel', this.onWheel);
+
+			// store.state.scene?.HandWaveScene.out();
+
+			// this.$router.push(`/2`);
 		},
 	},
 	mounted() {
+		window.addEventListener('mousewheel', this.onWheel);
+		window.addEventListener('wheel', this.onWheel);
 		fadeBackground({ routeName: 'IntroHello' });
 		store.state.scene?.HandWaveScene.start();
 	},

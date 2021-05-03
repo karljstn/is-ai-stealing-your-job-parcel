@@ -5,7 +5,7 @@
 			<div :class="getLetsBeginClass">
 					<p>Let's begin !</p>
 			</div>
-			<div class="landing-paragraphs">
+			<div :class="getParagraphsClass">
 				<save-rect :rectName="rect">
 					<SplitText ref="scroll" text="Scroll"></SplitText>
 					<span>&nbsp;</span>
@@ -48,31 +48,35 @@ export default Vue.extend({
 	computed:{
 		getLetsBeginClass(){
 			return !store.state.hideScrollDownArrow ? "begin" : "begin fadeOut"
-		} 
+		},
+		getParagraphsClass(){
+			return !store.state.hideScrollDownArrow ? "landing-paragraphs" : "landing-paragraphs fadeOut"
+		}
 	},
-	mounted() {
-		const onWheel = (event: any) => {
+	methods: {
+		onWheel(event: any){
 			const normalized = NormalizeWheel(event);
 			const pixelSpeed = normalized.pixelY;
 
-			if (pixelSpeed > 1) {
-				window.removeEventListener('mousewheel', onWheel);
-				window.removeEventListener('wheel', onWheel);
-				
-				store.state.scene?.TrashcanScene.Trashcan.drop()?.then(()=>{
-					setTimeout(() => {
-						store.commit('incrementProgression');
-						this.$router.push(`/${store.state.progression}`);
-					}, 400);
-				});
+			if (pixelSpeed >= 1) {
+				this.out()
+			}	
+		},
+		out(){
+			window.removeEventListener('mousewheel', this.onWheel);
+			window.removeEventListener('wheel', this.onWheel);
+			
+			store.state.scene?.TrashcanScene.Trashcan.drop()?.then(()=>{
+				this.$router.push(`/1`);
+			});
 
-				store.commit("toggleHideScrollDownArrow")
-				fadeBackground({ color: PALETTE.YELLOW });
-			}
-		};
-
-		window.addEventListener('mousewheel', onWheel);
-		window.addEventListener('wheel', onWheel);
+			store.commit("toggleHideScrollDownArrow")
+			fadeBackground({ color: PALETTE.YELLOW });
+		}
+	},
+	mounted() {
+		window.addEventListener('mousewheel', this.onWheel);
+		window.addEventListener('wheel', this.onWheel);
 
 		// Three
 		store.state.scene?.TrashcanScene.start();
@@ -140,6 +144,12 @@ export default Vue.extend({
 		height: 50vh;
 		justify-content: center;
 		align-items: center;
+		transition: opacity 0.2s ease-in-out;
+
+		&.fadeOut{
+			opacity: 0;
+		}
+
 		.hello,
 		.threatened,
 		.amiright {

@@ -1,4 +1,4 @@
-import hand from "~/assets/Models/hand/Hand-anim-v3.glb";
+import hand from "~/assets/Models/hand/Hand-anim-v4.glb";
 import trashcan from "~/assets/Models/trashcan/v10_POUBELLE_4.glb";
 import bakedTrashcan from "~/assets/Models/trashcan/bakedTrashcanV2.glb";
 import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";

@@ -42,6 +42,7 @@ export default class Scene {
   controls: OrbitControls
   raycaster: THREE.Raycaster
   mouse: THREE.Vector3
+  mouseViewport: THREE.Vector3
   mouseVec2: THREE.Vector2
   clock: THREE.Clock
   meshes: THREE.Mesh[]
@@ -50,7 +51,6 @@ export default class Scene {
   Benchmark: Benchmark | null
   Loader: Loader | null
   TrashcanScene: TrashcanScene
-  // EmojiScene: EmojiScene
   HandWaveScene: HandWaveScene
   CrystalBallScene: CrystalBallScene
   PencilScene: PencilScene
@@ -136,7 +136,9 @@ export default class Scene {
     this.scene.add(this.light.target)
 
     this.mouse = new THREE.Vector3()
-    this.mouseVec2 = new THREE.Vector2
+    this.mouseViewport = new THREE.Vector3()
+    this.mouseVec2 = new THREE.Vector2()
+
     this.raycaster = new THREE.Raycaster()
 
     this.controls = new OrbitControls(this.camera, canvas)
@@ -185,12 +187,6 @@ export default class Scene {
       this.Loader = null
     }
 
-    // this.EmojiScene = new EmojiScene(
-    //   this.params.viewport,
-    //   this.scene,
-    //   this.mouse,
-    //   this.camera
-    // )
     this.HandWaveScene = new HandWaveScene(this.scene, this.camera, this.params.viewport, this.mouse)
     this.TrashcanScene = new TrashcanScene(
       this.params.viewport,
@@ -304,28 +300,24 @@ export default class Scene {
     }
 
     this.mouse.set((e.clientX / this.w) * 2 - 1, -(e.clientY / this.h) * 2 + 1, 0)
+    this.mouseViewport.x = this.mouse.x * (this.params.viewport.width / 2)
+    this.mouseViewport.x = this.mouse.y * (this.params.viewport.height / 2)
     this.mouseVec2.x = this.mouse.x
     this.mouseVec2.y = this.mouse.y
   }
 
   render = (dt = 0) => {
     this.Benchmark?.checkFPS(dt)
-    this.renderer.render(this.scene, this.camera)
-
-    this.Loader && this.Loader.update(dt)
+    // this.Loader && this.Loader.update(dt)
 
     this.renderer.render(this.scene, this.camera)
 
-    this.pane && this.pane.refresh()
-
-    this.controls.update()
-
-    const dtime = this.clock.getDelta()
+    // this.pane && this.pane.refresh()
 
     this.TrashcanScene.update(dt)
     this.HandWaveScene.update(dt)
     this.PencilScene.update(dt)
-    this.SlotMachineScene.update(dtime)
+    this.SlotMachineScene.update(dt)
   };
 }
 

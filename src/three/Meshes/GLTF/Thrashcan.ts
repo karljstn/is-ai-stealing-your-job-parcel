@@ -7,6 +7,7 @@ import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
 class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	params: {
 		animation: { speed: number }
+		out: { duration: number, delay: number }
 	}
 	original: { position: Vector3 }
 	mouse: Vector3
@@ -16,7 +17,7 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 
 	constructor(scene: Scene, viewport: Viewport, mouse: Vector3) {
 		super(scene, viewport)
-		this.params = { animation: { speed: 0.001 } }
+		this.params = { animation: { speed: 0.001 }, out: { duration: 0.5, delay: 1 } }
 		this.original = { position: new Vector3() }
 		this.mouse = mouse
 		this.mixer = null
@@ -63,7 +64,7 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 		this.scene.add(this.group)
 
 		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
-		this.setTransition(MODELS.TRASHCAN.SCALE, this.original.position, new Vector3(0, -0.3, 0), 1)
+		this.setTransition(MODELS.TRASHCAN.SCALE, this.original.position, new Vector3(0, -0.3, 0), this.params.out.delay, this.params.out.duration)
 
 		this.in()
 	}
@@ -78,7 +79,9 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 		return new Promise((resolve) => {
 			setTimeout(() => {
 				this.out()
-				resolve()
+				setTimeout(() => {
+					resolve()
+				}, this.params.out.duration * 1000);
 			}, 2000);
 		})
 	}

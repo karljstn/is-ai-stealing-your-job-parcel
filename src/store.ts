@@ -32,7 +32,8 @@ const store = new Vuex.Store({
       confirm: false,
       confirmCallback: null
     },
-    hideScrollDownArrow: false
+    hideScrollDownArrow: false,
+    tugArrow: false
   } as StoreState,
   mutations: {
     incrementProgression(state) {
@@ -80,6 +81,9 @@ const store = new Vuex.Store({
     },
     toggleHideScrollDownArrow(state) {
       state.hideScrollDownArrow = !state.hideScrollDownArrow
+    },
+    toggleTug(state) {
+      state.tugArrow = !state.tugArrow
     }
   },
   actions: {},

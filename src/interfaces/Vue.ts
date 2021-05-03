@@ -28,4 +28,5 @@ export interface StoreState {
     confirmCallback: Function | null
   }
   hideScrollDownArrow: boolean
+  tugArrow: boolean
 }

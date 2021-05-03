@@ -51,7 +51,6 @@ class Pencil implements ThreeGLTF {
 		);
 
 		this.group.position.lerp(mouse, 0.8)
-
 	}
 
 	checkBox = () => {

@@ -115,14 +115,13 @@ export default class Radio implements ThreeGroup {
         })
 
 
-        this.init()
-        raf.subscribe("radioUpdate", this.update)
+        // this.init()
     }
 
     init() {
         // this.camera.position.set(0, 0, 20)
+        raf.subscribe("radioUpdate", this.update)
         this.group.add(Background.mesh)
-
         Foreground.init(this.renderTarget, this.renderer.getPixelRatio())
         this.group.add(Foreground.mesh)
         Skeleton.load(this.skeletonScene, this.progress)
@@ -263,6 +262,7 @@ export default class Radio implements ThreeGroup {
     update = () => {
 
         this.updateRenderTarget()
+        this.controls.update()
 
         const delta = this.clock.getDelta()
 
