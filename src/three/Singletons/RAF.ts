@@ -1,12 +1,12 @@
 class RAF {
     callbacks: Map<string, (dt: number) => void>
-    time: number
+    prevTime: number
     rafID: number
 
     constructor() {
         this.callbacks = new Map<string, (dt: number) => void>()
-        this.time = performance.now()
-        this.rafID = 0;
+        this.prevTime = 0
+        this.rafID = 0
         this.render()
     }
 
@@ -23,20 +23,19 @@ class RAF {
         this.callbacks.delete(name)
     }
 
-    render = () => {
+    render = (time = 0) => {
         this.rafID = requestAnimationFrame(this.render) //TODO: check native time value
 
-        const dt = performance.now() - this.time //TODO: instance performance.now()
-
+        const dt = time - this.prevTime
         this.callbacks.forEach((cb) => cb(dt))
 
-        this.time = performance.now()
+        this.prevTime = time
     }
 }
 
 const instance = new RAF()
 export default instance
 
-// module.hot.dispose(() => {
-//     cancelAnimationFrame(instance.rafID)
-// })
+module.hot.dispose(() => {
+    cancelAnimationFrame(instance.rafID)
+})

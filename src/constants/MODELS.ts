@@ -1,5 +1,5 @@
 import hand from "~/assets/Models/hand/Hand-anim-v3.glb";
-import trashcan from "~/assets/Models/trashcan/v5.glb";
+import trashcan from "~/assets/Models/trashcan/v10_POUBELLE_4.glb";
 import bakedTrashcan from "~/assets/Models/trashcan/bakedTrashcanV2.glb";
 import bakedTrashcanTexture from "~/assets/Models/trashcan/bake2.jpg";
 import clipboard from "~/assets/Games/Radiologist/Models/clipboard_1.glb";
@@ -24,7 +24,7 @@ export const MODELS: MODELS = {
   },
   TRASHCAN: {
     URL: trashcan,
-    SCALE: 0.15,
+    SCALE: 0.12,
   },
   BAKED_TRASHCAN: {
     URL: bakedTrashcan,

@@ -3,7 +3,7 @@
 		<SaveRect :rectName="helloRect">
 			<p class="hello">by <span>Artificial Intelligence</span></p>
 		</SaveRect>
-		<autoskip :time="3000" />
+		<!-- <autoskip :time="3000" /> -->
 	</section>
 </template>
 

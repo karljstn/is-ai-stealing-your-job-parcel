@@ -5,7 +5,7 @@
 				<lottie-animation ref="anim" :animationData="lottieURL" :loop="false" @complete="onAnimationComplete" />
 			</SaveRect>
 		</div>
-		<autoskip :time="12000" />
+		<!-- <autoskip :time="12000" /> -->
 	</section>
 </template>
 

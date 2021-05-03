@@ -5,7 +5,7 @@
 				Let me guess :
 			</p>
 		</SaveRect>
-		<autoskip :time="3000" />
+		<!-- <autoskip :time="3000" /> -->
 	</section>
 </template>
 

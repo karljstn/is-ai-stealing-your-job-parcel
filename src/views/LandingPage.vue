@@ -58,15 +58,16 @@ export default Vue.extend({
 			if (pixelSpeed > 1) {
 				window.removeEventListener('mousewheel', onWheel);
 				window.removeEventListener('wheel', onWheel);
+				
+				store.state.scene?.TrashcanScene.Trashcan.drop()?.then(()=>{
+					setTimeout(() => {
+						store.commit('incrementProgression');
+						this.$router.push(`/${store.state.progression}`);
+					}, 400);
+				});
 
-				store.state.scene?.TrashcanScene.biases.drop();
-				fadeBackground({ color: PALETTE.YELLOW });
 				store.commit("toggleHideScrollDownArrow")
-
-				setTimeout(() => {
-					store.commit('incrementProgression');
-					this.$router.push(`/${store.state.progression}`);
-				}, 1200);
+				fadeBackground({ color: PALETTE.YELLOW });
 			}
 		};
 
@@ -102,8 +103,7 @@ export default Vue.extend({
 		fadeBackground({ routeName: 'LandingPage' });
 	},
 	destroyed() {
-		store.state.scene?.TrashcanScene.biases.destroy();
-		store.state.scene?.TrashcanScene.trashcanBake.destroy();
+		store.state.scene?.TrashcanScene.destroy();
 	},
 	components: {
 		QuestionForm,

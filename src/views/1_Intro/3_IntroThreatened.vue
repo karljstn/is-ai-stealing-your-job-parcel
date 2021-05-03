@@ -5,7 +5,7 @@
 				you're here because you feel like your job is threatened
 			</p>
 		</SaveRect>
-		<autoskip :time="3000" />
+		<!-- <autoskip :time="3000" /> -->
 	</section>
 </template>
 

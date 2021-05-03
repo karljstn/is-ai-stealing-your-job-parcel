@@ -1,5 +1,5 @@
 import { ThreeGLTF } from "~interfaces/Three";
-import BaseGLTF from '~three/Meshes/GLTF/BaseGLTF'
+import BaseGLTF from '~three/Meshes/GLTF/base/BaseGLTF'
 import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene } from "three"
 import { Viewport } from "~types"
 import { MODELS } from "~constants/MODELS";

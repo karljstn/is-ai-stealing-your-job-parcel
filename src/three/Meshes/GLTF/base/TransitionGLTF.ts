@@ -35,11 +35,14 @@ class TransitionGLTF extends BaseGLTF {
 		}
 	}
 
-	in = (size: number, position: Vector3, offset: Vector3, onComplete: () => void = () => null) => {
+	setTransition = (size: number, position: Vector3, offset: Vector3, delay = 2, duration = 0.3) => {
 		if (!this.group) return
 
-		this.transition.timeline.to(this.group.scale, { x: size, y: size, z: size, duration: 0.2 }, 2)
-		this.transition.timeline.fromTo(this.group.position, { x: position.x - offset.x, y: position.y - offset.y }, { x: position.x, y: position.y, duration: 0.2 }, 2)
+		this.transition.timeline.to(this.group.scale, { x: size, y: size, z: size, duration: duration }, delay)
+		this.transition.timeline.fromTo(this.group.position, { x: position.x + offset.x, y: position.y + offset.y }, { x: position.x, y: position.y, duration: duration }, delay)
+	}
+
+	in = () => {
 		this.transition.timeline.play()
 	}
 

@@ -19,10 +19,11 @@ class HandWaveScene {
   ) {
     this.camera = camera;
     this.Hand = new Hand(scene, viewport, mouse);
+    this.Hand.load();
   }
 
   start() {
-    this.Hand.load();
+    this.Hand.start()
   }
 
   tweaks() { }

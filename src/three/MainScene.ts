@@ -142,6 +142,7 @@ export default class Scene {
     this.controls = new OrbitControls(this.camera, canvas)
 
     this.clock = new THREE.Clock(true)
+    this.clock.start()
     this.meshes = []
 
     this.radio = new Radio(
@@ -195,7 +196,6 @@ export default class Scene {
       this.params.viewport,
       this.scene,
       this.mouse,
-      this.pane
     )
     this.CrystalBallScene = new CrystalBallScene(this.params.viewport, this.scene)
     this.PencilScene = new PencilScene(this.params.viewport, this.scene, this.mouse)
@@ -320,9 +320,12 @@ export default class Scene {
 
     this.controls.update()
 
+    const dtime = this.clock.getDelta()
+
+    this.TrashcanScene.update(dt)
     this.HandWaveScene.update(dt)
     this.PencilScene.update(dt)
-    this.SlotMachineScene.update(this.clock.getDelta())
+    this.SlotMachineScene.update(dtime)
   };
 }
 
