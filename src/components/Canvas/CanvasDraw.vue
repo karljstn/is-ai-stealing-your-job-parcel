@@ -51,7 +51,6 @@ export default Vue.extend({
 				const d = origin.distanceTo(current);
 				if (d > 185 && !store.state.isPencilFinished) {
 					store.commit('setPencilFinished', true);
-					console.log(store.state.isPencilFinished);
 				}
 				if (origin.length() === 0) {
 					origin.set(scaled.x, scaled.y);
