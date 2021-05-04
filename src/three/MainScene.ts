@@ -90,7 +90,7 @@ export default class Scene {
     ) {
       store.commit("setPane", new Tweakpane())
       this.pane = store.state.tweakpane
-      if (store.state.tweakpane) store.state.tweakpane.hidden = true
+      // if (store.state.tweakpane) store.state.tweakpane.hidden = true
     } else this.pane = null
 
     this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000)

@@ -54,3 +54,7 @@ declare module "*.json";
 declare module "normalize-wheel";
 
 declare module "lottie-web-vue";
+
+declare module 'noisejs';
+
+declare module 'bezier-easing';

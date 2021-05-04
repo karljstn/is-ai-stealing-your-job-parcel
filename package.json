@@ -12,11 +12,13 @@
 		"build-prod": "parcel build src/index.html"
 	},
 	"dependencies": {
+		"bezier-easing": "^2.1.0",
 		"firebase": "^8.3.2",
 		"glsl-noise": "^0.0.0",
 		"gsap": "^3.6.0",
 		"howler": "^2.2.1",
 		"lottie-web-vue": "^1.0.1",
+		"noisejs": "^2.1.0",
 		"normalize-wheel": "^1.0.1",
 		"rafz": "^0.1.14",
 		"src": "^1.1.2",

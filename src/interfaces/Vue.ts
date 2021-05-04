@@ -29,4 +29,6 @@ export interface StoreState {
   }
   hideScrollDownArrow: boolean
   tugArrow: boolean
+  isPencilWriting: boolean
+  isPencilFinished: boolean
 }

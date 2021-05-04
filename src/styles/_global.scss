@@ -15,6 +15,7 @@ body {
 
 body {
 	transition: background-color 0.5s ease-in-out;
+	will-change: background-color;
 
 	&.cursor-grab {
 		cursor: grab;

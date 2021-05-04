@@ -20,7 +20,7 @@
 			</router-link>
 		</div>
 		<div class="right">
-			<!-- <button v-on:click="togglePane">debug</button> -->
+			<button v-on:click="togglePane">debug</button>
 			<button v-on:click="toggleMenu"><span>menu</span></button>
 		</div>
 	</nav>
