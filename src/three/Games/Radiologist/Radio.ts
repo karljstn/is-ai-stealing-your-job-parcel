@@ -8,7 +8,7 @@ import Background from './Background'
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
-import raf from "~three/Singletons/RAF"
+import raf from "~singletons/RAF"
 import store from "~/store"
 
 import { ThreeGroup } from "~/interfaces/Three"

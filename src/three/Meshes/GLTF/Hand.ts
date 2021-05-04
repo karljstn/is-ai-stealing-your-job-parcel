@@ -3,7 +3,7 @@ import LoadManager from '~/three/Singletons/LoadManager'
 import { MODELS } from '~/constants/MODELS'
 import { AnimationAction, AnimationClip, AnimationMixer, Group, LoopOnce, Mesh, MeshBasicMaterial, MeshLambertMaterial, Scene, Vector2, Vector3 } from "three"
 import Tweakpane from "tweakpane"
-import raf from "~three/Singletons/RAF"
+import raf from "~singletons/RAF"
 import { RAFS } from "~constants/RAFS"
 import { ThreeGLTF } from "~interfaces/Three"
 import store from "~store"

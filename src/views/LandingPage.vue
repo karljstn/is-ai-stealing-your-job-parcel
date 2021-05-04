@@ -54,18 +54,7 @@ export default Vue.extend({
 		}
 	},
 	methods: {
-		onWheel(event: any){
-			const normalized = NormalizeWheel(event);
-			const pixelSpeed = normalized.pixelY;
-
-			if (pixelSpeed >= 1) {
-				this.out()
-			}	
-		},
-		out(){
-			window.removeEventListener('mousewheel', this.onWheel);
-			window.removeEventListener('wheel', this.onWheel);
-			
+		out(){			
 			store.state.scene?.TrashcanScene.Trashcan.drop()?.then(()=>{
 				this.$router.push(`/1`);
 			});
@@ -75,9 +64,6 @@ export default Vue.extend({
 		}
 	},
 	mounted() {
-		window.addEventListener('mousewheel', this.onWheel);
-		window.addEventListener('wheel', this.onWheel);
-
 		// Three
 		store.state.scene?.TrashcanScene.start();
 
@@ -176,11 +162,12 @@ export default Vue.extend({
 	> div {
 		display: flex;
 		flex-wrap: wrap;
-		width: 700px;
+		width: 50vh;
 		justify-content: center;
 		align-items: center;
+		
 		span {
-			font-size: 5rem;
+			font-size: 5.7vh;
 			text-align: center;
 		}
 	}

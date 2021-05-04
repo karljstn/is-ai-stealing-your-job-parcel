@@ -28,7 +28,7 @@ export interface StoreState {
     confirmCallback: Function | null
   }
   hideScrollDownArrow: boolean
-  tugArrow: boolean
   isPencilWriting: boolean
   isPencilFinished: boolean
+  scrollNavigationDelay: number
 }

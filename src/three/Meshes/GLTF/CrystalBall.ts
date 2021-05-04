@@ -14,7 +14,7 @@ import { Viewport } from "~types";
 import gsap from 'gsap'
 import { PALETTE } from "~constants/PALETTE";
 import { RAFS } from "~constants/RAFS";
-import raf from "~three/Singletons/RAF";
+import raf from "~singletons/RAF";
 
 class CrystalBall implements ThreeGLTF {
 	scene: Scene
@@ -24,7 +24,7 @@ class CrystalBall implements ThreeGLTF {
 	loader: GLTFLoader
 	material: ShaderMaterial
 	originalPos: Vector3
-	timeline: Timeline
+	timeline: any
 
 	constructor(scene: Scene, viewport: Viewport) {
 		this.scene = scene
@@ -93,8 +93,8 @@ class CrystalBall implements ThreeGLTF {
 
 	update = () => {
 		if (this.group) {
-			this.group.rotation.z += 0.0020
-			this.group.rotation.y += 0.035
+			// this.group.rotation.z += 0.0020
+			// this.group.rotation.y += 0.035
 		}
 	}
 

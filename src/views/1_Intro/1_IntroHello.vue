@@ -17,17 +17,11 @@ import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import Autoskip from '~/components/Common/Autoskip.vue';
 import { RECTS } from '~/constants/RECTS';
-import gsap from 'gsap';
-import Vue, { Component } from 'vue';
+import Vue from 'vue';
 import store from '~store';
 import { fadeBackground } from '~util';
-import router from '~router';
-import { RouteConfig, RouteConfigMultipleViews } from 'vue-router/types/router';
-import { PALETTE } from '~constants/PALETTE';
-import NormalizeWheel from 'normalize-wheel';
 
 export default Vue.extend({
-	name: 'IntroHello',
 	data() {
 		return {
 			lottieURL: lottie,
@@ -42,37 +36,18 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	methods: {
-		onWheel(event: any) {
-			const normalized = NormalizeWheel(event);
-			const pixelSpeed = normalized.pixelY;
-			console.log(pixelSpeed);
-			if (pixelSpeed >= 1) {
-				this.next();
-			} else {
-				this.previous();
-			}
-		},
 		previous() {
-			window.removeEventListener('mousewheel', this.onWheel);
-			window.removeEventListener('wheel', this.onWheel);
-
 			store.state.scene?.HandWaveScene.out();
 			store.commit('toggleHideScrollDownArrow');
-
-			// this.$router.push(`/`);
 		},
 		next() {
-			window.removeEventListener('mousewheel', this.onWheel);
-			window.removeEventListener('wheel', this.onWheel);
-
-			// store.state.scene?.HandWaveScene.out();
-
-			// this.$router.push(`/2`);
+			store.state.scene?.HandWaveScene.out();
+			setTimeout(() => {
+				this.$router.push('/2');
+			}, 1000);
 		},
 	},
 	mounted() {
-		window.addEventListener('mousewheel', this.onWheel);
-		window.addEventListener('wheel', this.onWheel);
 		fadeBackground({ routeName: 'IntroHello' });
 		store.state.scene?.HandWaveScene.start();
 	},

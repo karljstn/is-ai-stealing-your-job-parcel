@@ -4,7 +4,9 @@
 		<CanvasThree></CanvasThree>
 		<MuteButton></MuteButton>
 		<ScrollDownArrow></ScrollDownArrow>
-		<router-view></router-view>
+		<ScrollController>
+			<router-view></router-view>
+		</ScrollController>
 	</div>
 </template>
 
@@ -24,6 +26,7 @@ import CanvasThree from '~/components/Canvas/CanvasThree.vue';
 import Navigation from '~/components/UI/Navigation.vue';
 import MuteButton from '~/components/UI/MuteButton.vue';
 import ScrollDownArrow from "~/components/UI/ScrollDownArrow.vue"
+import ScrollController from "~/components/Common/ScrollController.vue"
 
 import { Howler } from "howler"
 
@@ -47,7 +50,8 @@ export default Vue.extend({
 			CanvasThree,
 			Navigation,
 			MuteButton,
-			ScrollDownArrow
+			ScrollDownArrow,
+			ScrollController
 		},
 		mounted() {
 			this.$nextTick(() => {

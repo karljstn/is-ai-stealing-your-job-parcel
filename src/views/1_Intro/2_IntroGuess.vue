@@ -5,7 +5,6 @@
 				Let me guess :
 			</p>
 		</SaveRect>
-		<!-- <autoskip :time="3000" /> -->
 	</section>
 </template>
 
@@ -18,8 +17,6 @@ import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
 import store from '~store';
 import { fadeBackground } from '~util';
-import { PALETTE } from '~constants/PALETTE';
-import NormalizeWheel from 'normalize-wheel';
 
 export default Vue.extend({
 	data() {
@@ -33,34 +30,7 @@ export default Vue.extend({
 		Button,
 		Autoskip,
 	},
-	methods: {
-		onWheel(event) {
-			const normalized = NormalizeWheel(event);
-			const pixelSpeed = normalized.pixelY;
-
-			if (pixelSpeed >= 1) {
-				this.next();
-			} else {
-				this.previous();
-			}
-		},
-		previous() {
-			window.removeEventListener('mousewheel', this.onWheel);
-			window.removeEventListener('wheel', this.onWheel);
-
-			// this.$router.push(`/1`);
-		},
-		next() {
-			window.removeEventListener('mousewheel', this.onWheel);
-			window.removeEventListener('wheel', this.onWheel);
-
-			// this.$router.push(`/3`);
-		},
-	},
 	mounted() {
-		window.addEventListener('mousewheel', this.onWheel);
-		window.addEventListener('wheel', this.onWheel);
-
 		fadeBackground({ routeName: 'IntroGuess' });
 		store.state.scene.CrystalBallScene.start();
 	},

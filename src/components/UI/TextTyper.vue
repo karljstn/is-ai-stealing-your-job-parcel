@@ -8,7 +8,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { RAFS } from '~constants/RAFS';
-import raf from '~three/Singletons/RAF';
+import raf from '~singletons/RAF';
 
 let displayRatio = 0;
 let needUpdate = false;

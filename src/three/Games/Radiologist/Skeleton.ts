@@ -2,7 +2,7 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
 import LoadManager from "~/three/Singletons/LoadManager"
-import raf from "~three/Singletons/RAF"
+import raf from "~singletons/RAF"
 
 import { ThreeGroup } from "~/interfaces/Three"
 

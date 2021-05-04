@@ -33,9 +33,9 @@ const store = new Vuex.Store({
       confirmCallback: null
     },
     hideScrollDownArrow: false,
-    tugArrow: false,
     isPencilWriting: false,
-    isPencilFinished: false
+    isPencilFinished: false,
+    scrollNavigationDelay: 1000
   } as StoreState,
   mutations: {
     incrementProgression(state) {
@@ -84,14 +84,14 @@ const store = new Vuex.Store({
     toggleHideScrollDownArrow(state) {
       state.hideScrollDownArrow = !state.hideScrollDownArrow
     },
-    toggleTug(state) {
-      state.tugArrow = !state.tugArrow
-    },
     setPencilWriting(state, payload) {
       state.isPencilWriting = payload
     },
     setPencilFinished(state, payload) {
       state.isPencilFinished = payload
+    },
+    setScrollNavigationDelay(state, payload) {
+      state.scrollNavigationDelay = payload
     }
   },
   actions: {},

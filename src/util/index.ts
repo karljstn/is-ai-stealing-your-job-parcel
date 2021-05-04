@@ -1,6 +1,4 @@
 import { PerspectiveCamera } from "three"
-import { Component } from "vue"
-import { RouteConfig } from "vue-router"
 import router from "~router"
 
 /**
@@ -87,3 +85,5 @@ export function map(
 export function lerp(start: number, end: number, alpha: number) {
   return (1 - alpha) * start + alpha * end
 }
+
+

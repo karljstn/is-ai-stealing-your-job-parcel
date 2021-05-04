@@ -14,7 +14,7 @@ import {
   Vector3,
 } from "three";
 import Tweakpane from "tweakpane";
-import raf from "~three/Singletons/RAF";
+import raf from "~singletons/RAF";
 import { RAFS } from "~constants/RAFS";
 import { Viewport } from "~types";
 import gsap from "gsap";

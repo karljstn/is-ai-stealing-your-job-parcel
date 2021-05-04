@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import raf from "~three/Singletons/RAF"
+import raf from "~singletons/RAF"
 import Tweakpane from "tweakpane"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 

@@ -51,36 +51,43 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.container {
-  p {
-    font-size: 4rem;
-  }
-  width: 700px;
-  height: 100%;
-  padding-top: 5%;
+section{
   display: flex;
-  flex-direction: column;
   align-items: center;
-  .form {
-    width: 100%;
-    margin-top: 1rem;
-    // opacity: 0;
-    .emoji-text{
-      font-size: 1.5rem;
-      position: absolute;
-      bottom: -10%;
-      left: 50%;
-      transform: translate(-50%, 0);
+  justify-content: center;
+
+  .container {
+    p {
+      font-size: 4rem;
+    }
+    width: 700px;
+
+    padding-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .form {
       width: 100%;
+      margin-top: 1rem;
 
-      &.mr{
-        left: 37.5%;
-      }
+      .emoji-text{
+        font-size: 1.5rem;
+        position: absolute;
+        bottom: -25%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 100%;
 
-      &.ml{
-        left: 62.5%;
+        &.mr{
+          left: 37.5%;
+        }
+
+        &.ml{
+          left: 62.5%;
+        }
       }
     }
   }
 }
+
 </style>
