@@ -1,4 +1,4 @@
-import skeleton1 from "~/assets/Games/Radiologist/Models/skeleton_1-3.glb"
+import skeleton1 from "~/assets/Games/Radiologist/Models/skeleton_1-4.glb"
 import skeletonBaseTex1 from "~/assets/Games/Radiologist/Textures/skeleton_1-2.jpg"
 
 import skeleton2 from "~/assets/Games/Radiologist/Models/skeleton_2-6.glb"

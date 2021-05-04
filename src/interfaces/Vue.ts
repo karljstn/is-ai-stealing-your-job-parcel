@@ -26,6 +26,7 @@ export interface StoreState {
     progress: number,
     confirm: boolean,
     confirmCallback: Function | null,
-    penalty: Function
+    penalty: Function,
+    gameEnded: boolean
   }
 }

@@ -31,7 +31,8 @@ const store = new Vuex.Store({
       progress: 0,
       confirm: false,
       confirmCallback: null,
-      penalty: () => { }
+      penalty: () => { },
+      gameEnded: false
     }
   } as StoreState,
   mutations: {
@@ -77,6 +78,11 @@ const store = new Vuex.Store({
     },
     setPenalty(state, payload) {
       state.radiologist.penalty = payload
+    },
+    setGameEnded(state, payload) {
+      console.log('STATE IS UPDATING TO', payload)
+
+      state.radiologist.gameEnded = payload
     },
     setPane(state, payload) {
       state.tweakpane = payload

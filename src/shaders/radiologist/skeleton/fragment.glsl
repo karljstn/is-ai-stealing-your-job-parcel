@@ -1,8 +1,7 @@
 uniform sampler2D uMap;
 uniform vec3 uFresnelColor;
 uniform float uFresnelWidth;
-
-varying vec3 fakeColor;
+uniform float uAlpha;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -10,7 +9,7 @@ varying vec3 vPosition;
 
 void main(){
     // Texel
-    vec4 texelColor = texture2D(uMap, fakeColor.xy);
+    vec4 texelColor = texture2D(uMap, vUv);
 
     // Direction du vertex par rapport a la position de la camera
     vec3 viewDirection = normalize(cameraPosition - vPosition);
@@ -27,5 +26,5 @@ void main(){
     
     vec3 finalColor = mix(texelColor.rgb, uFresnelColor, inverseFresnelFactor);
 
-    gl_FragColor = vec4(finalColor, 1.); 
+    gl_FragColor = vec4(finalColor, uAlpha); 
 }

@@ -270,7 +270,8 @@ export default class Scene {
   startRadiologist() {
     console.log("start radiologist game")
     // this.camera.position.z = 15
-    this.camera.position.set(0, 0, 30)
+    this.radio.init()
+    // this.camera.position.set(0, 0, 30)
     this.scene.add(this.radio.group)
   }
 
@@ -334,19 +335,19 @@ export default class Scene {
   render = (dt = 0) => {
     // console.log(this.clock.elapsedTime)
 
-    this.Benchmark?.checkFPS(dt)
+    // this.Benchmark?.checkFPS(dt)
+    // this.renderer.render(this.scene, this.camera)
+
+    // this.Loader && this.Loader.update(dt)
+
     this.renderer.render(this.scene, this.camera)
 
-    this.Loader && this.Loader.update(dt)
-
-    this.renderer.render(this.scene, this.camera)
-
-    this.pane && this.pane.refresh()
+    // this.pane && this.pane.refresh()
 
     this.controls.update()
 
-    this.EmojiScene?.update(dt) //TODO: switch based on progress
-    this.PencilScene.update(dt)
+    // this.EmojiScene?.update(dt) //TODO: switch based on progress
+    // this.PencilScene.update(dt)
   };
 }
 

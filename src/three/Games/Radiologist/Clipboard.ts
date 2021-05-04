@@ -57,6 +57,8 @@ class Clipboard {
 
             this.mesh.rotation.y = Math.PI / 2
 
+            this.mesh.position.set(10, -2, 0)
+
             this.nextTexture(progress)
             group.add(this.mesh)
         })
@@ -74,17 +76,8 @@ class Clipboard {
                 mesh.material = this.material
             }
         })
-
-        // raf.subscribe("clipboard", this.update)
     }
 
-    nextCase() {
-
-    }
-
-    update() {
-
-    }
 }
 
 

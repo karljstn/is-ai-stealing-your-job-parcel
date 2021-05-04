@@ -15,21 +15,27 @@ import { MeshSurfaceSampler } from "three/examples/jsm/Math/MeshSurfaceSampler"
 
 import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
 import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
-const amount = 5000
 
 class Skeleton {
     gltfLoader: GLTFLoader
     textureLoader: THREE.TextureLoader
+    skeletonScene: THREE.Scene
 
-    mesh: THREE.Group
+    skeletons: THREE.Group[]
+    textures: THREE.Texture[]
+
     material: THREE.ShaderMaterial
 
+    progress: number
+    loaded: boolean
+
     errorsNames: string[]
-    skeletons: any
+    skeletonsInfos: any
     currentSkeleton: any
-    time: any
-    distortion: any
+
+    isAnimating: boolean
 
     uniforms: any
 
@@ -40,36 +46,15 @@ class Skeleton {
     constructor() {
         this.gltfLoader = new GLTFLoader(LoadManager.manager)
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
+        this.skeletonScene = new THREE.Scene()
 
-        this.mesh = new THREE.Group()
+        this.loaded = false
+        this.isAnimating = false
 
-        this.skeletons = [
-            RADIOLOGIST.SKELETON1,
-            RADIOLOGIST.SKELETON2,
-            RADIOLOGIST.SKELETON3,
-            RADIOLOGIST.SKELETON4,
-            RADIOLOGIST.SKELETON5
-        ]
+        this.skeletons = []
+        this.textures = []
 
-        this.uniforms = {
-            uTime: {
-                value: 0
-            },
-            uDistortion: {
-                value: 0
-            },
-            uMap: {
-                value: null
-            }
-        }
-
-        this.errorsNames = ["Simple_Pen_Cylinder007", "intestins", "CISEAUX", "vertèbre 2", "Rib_L_3"]
-
-        this.errorMesh = null
-        this.heart = new THREE.Mesh()
-        this.heartBaseScale = 1
-
-        this.currentSkeleton = null
+        this.progress = 0
 
         this.material = new THREE.ShaderMaterial({
             uniforms: {
@@ -82,27 +67,130 @@ class Skeleton {
             transparent: true
         })
 
-        raf.subscribe("skeletonUpdate", this.update)
+        this.errorsNames = ["Simple_Pen_Cylinder007", "intestins", "CISEAUX", "vertèbre 2", "Rib_L_3"]
+        this.skeletonsInfos = [
+            RADIOLOGIST.SKELETON1,
+            RADIOLOGIST.SKELETON2,
+            RADIOLOGIST.SKELETON3,
+            RADIOLOGIST.SKELETON4,
+            RADIOLOGIST.SKELETON5
+        ]
+        this.currentSkeleton = null
+
+        this.uniforms = {
+            uMap: {
+                value: null
+            },
+            uAlpha: {
+                value: 0
+            }
+        }
+
+        this.errorMesh = null
+        this.heart = new THREE.Mesh()
+        this.heartBaseScale = 1
     }
 
-    load(skeletonScene: THREE.Scene, progress: number) {
-        raf.unsubscribe("heartbeat")
-        skeletonScene.remove(this.mesh)
-        this.errorMesh = null
+    init(skeletonScene: THREE.Scene) {
+        this.skeletonScene = skeletonScene
+        this.loadModels(0)
+    }
 
-        this.currentSkeleton = this.skeletons[progress]
-
-        this.gltfLoader.load(this.currentSkeleton.URL, gltf => {
-            this.mesh = gltf.scene
-            this.mesh.scale.set(
-                this.currentSkeleton.SCALE,
-                this.currentSkeleton.SCALE,
-                this.currentSkeleton.SCALE
+    loadModels(i: number) {
+        this.gltfLoader.load(this.skeletonsInfos[i].URL, gltf => {
+            this.skeletons[i] = gltf.scene
+            this.skeletons[i].scale.set(
+                this.skeletonsInfos[i].SCALE,
+                this.skeletonsInfos[i].SCALE,
+                this.skeletonsInfos[i].SCALE
             )
 
-            this.applyTexture(skeletonScene, progress)
+            if (i === 3) {
+                console.log('fourth model')
+                this.skeletons[i].rotation.y = -Math.PI / 2
+            }
+
+            this.textureLoader.load(this.skeletonsInfos[i].BAKE, (texture) => {
+                texture.flipY = false
+                this.textures.push(texture)
+
+                if (i < 4) {
+                    this.loadModels(i + 1)
+                } else {
+                    this.loaded = true
+                    console.log('SKELETON AND TEXTURES LOADED')
+                    this.nextSkeleton(0)
+                }
+            })
         })
     }
+
+    transitionIn(elem: THREE.Group) {
+        elem.position.y = 20
+        gsap.to(elem.position, {
+            duration: 0.5,
+            y: 0,
+        })
+
+        gsap.to(this.uniforms.uAlpha, {
+            duration: 0.5,
+            value: 1
+        })
+    }
+
+    transitionOut(progress: number, controls: OrbitControls) {
+        this.isAnimating = true
+        gsap.to(this.currentSkeleton.position, {
+            duration: 0.5,
+            y: -20,
+            onComplete: () => {
+                controls.reset()
+                this.nextSkeleton(progress)
+            }
+        })
+
+        gsap.to(this.uniforms.uAlpha, {
+            duration: 0.5,
+            value: 0
+        })
+    }
+
+
+    nextSkeleton(progress: number) {
+
+        this.progress = progress
+
+        raf.unsubscribe("heartbeat")
+        this.errorMesh = null
+        this.skeletonScene.remove(this.currentSkeleton)
+
+        this.currentSkeleton = this.skeletons[this.progress]
+        this.uniforms.uMap.value = this.textures[this.progress]
+
+        const group = this.skeletons[this.progress] as THREE.Group
+        group.traverse(obj => {
+            if (obj.type === "Mesh") {
+                const mesh = obj as THREE.Mesh
+                mesh.material = this.getShader()
+
+                if (mesh.name === this.errorsNames[this.progress]) {
+                    this.errorMesh = mesh
+                }
+
+                if (mesh.name === "<3") {
+                    this.heart = mesh
+                    this.heartBaseScale = mesh.scale.x
+
+                    raf.subscribe("heartbeat", this.heartbeat)
+                }
+            }
+        })
+
+        this.isAnimating = false
+        this.skeletonScene.add(this.currentSkeleton)
+        this.transitionIn(this.currentSkeleton)
+    }
+
 
     getShader() {
         return new THREE.ShaderMaterial({
@@ -117,101 +205,13 @@ class Skeleton {
         })
     }
 
-    applyTexture(skeletonScene: THREE.Scene, progress: number) {
-        const texture = this.textureLoader.load(this.currentSkeleton.BAKE)
-        texture.flipY = false
-        this.uniforms.uMap.value = texture
-        console.log(texture)
-
-        this.mesh.traverse(obj => {
-            if (obj.type === "Mesh") {
-                const mesh = obj as THREE.Mesh
-                mesh.material = this.getShader()
-
-                const uvAttr = mesh.geometry.getAttribute("uv")
-                const fakeColor = new Float32Array(uvAttr.count * 3)
-
-                for (let i = 0; i < uvAttr.count; i++) {
-                    fakeColor[i * 3 + 0] = uvAttr.array[i * uvAttr.itemSize + 0]
-                    fakeColor[i * 3 + 1] = uvAttr.array[i * uvAttr.itemSize + 1]
-                    fakeColor[i * 3 + 2] = 0
-                }
-                mesh.geometry.setAttribute("color", new THREE.BufferAttribute(fakeColor, 3))
-
-                const sampler = new MeshSurfaceSampler(mesh).build()
-                const geo = new THREE.BufferGeometry()
-
-                const pos = new Float32Array(amount * 3)
-                const normal = new Float32Array(amount * 3)
-                const color = new Float32Array(amount * 3)
-
-                const positionTarget = new THREE.Vector3()
-                const normalTarget = new THREE.Vector3()
-                const colorTarget = new THREE.Color()
-
-                for (let i = 0; i < amount; i++) {
-                    sampler.sample(positionTarget, normalTarget, colorTarget)
-
-                    pos[i * 3 + 0] = positionTarget.x
-                    pos[i * 3 + 1] = positionTarget.y
-                    pos[i * 3 + 2] = positionTarget.z
-
-                    color[i * 3 + 0] = colorTarget.r
-                    color[i * 3 + 1] = colorTarget.g
-                    color[i * 3 + 2] = colorTarget.b
-
-                    normal[i * 3 + 0] = normalTarget.x
-                    normal[i * 3 + 1] = normalTarget.y
-                    normal[i * 3 + 2] = normalTarget.z
-                }
-
-                // console.log(color)
-                geo.setAttribute("position", new THREE.BufferAttribute(pos, 3))
-                geo.setAttribute("color", new THREE.BufferAttribute(color, 3))
-                geo.setAttribute("normal", new THREE.BufferAttribute(normal, 3))
-
-                const particle = new THREE.Points(geo, this.getShader())
-
-                skeletonScene.add(particle)
-
-                if (mesh.name === this.errorsNames[progress]) {
-                    this.errorMesh = mesh
-                }
-
-                if (mesh.name === "<3") {
-                    this.heart = mesh
-                    this.heartBaseScale = mesh.scale.x
-
-                    raf.subscribe("heartbeat", this.heartbeat)
-                }
-            }
-
-            // if (obj.type === 'Mesh') {
-            //     const mesh = obj as THREE.Mesh
-            //     mesh.material = this.getShader()
-
-            //     const point = new THREE.Points(mesh.geometry, mesh.material)
-            //     skeletonScene.add(point)
-            // }
-        })
-        // skeletonScene.add(this.mesh)
-    }
-
-    tweaks() {}
-
-    nextCase() {}
 
     heartbeat = () => {
         this.heart.scale.set(
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.currentSkeleton.HEART_SCALE,
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.currentSkeleton.HEART_SCALE,
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.currentSkeleton.HEART_SCALE
+            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE
         )
-    }
-
-    update = () => {
-        this.uniforms.uTime.value += 0.001
-        // this.uniforms.uDistortion.value += 0.001
     }
 }
 

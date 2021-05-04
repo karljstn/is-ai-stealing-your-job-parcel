@@ -23,8 +23,8 @@ const params = {
     fresnelIntensity: 0.3
 }
 
-let minPan = new THREE.Vector3(- 2, - 2, - 2)
-let maxPan = new THREE.Vector3(2, 2, 2)
+let minPan = new THREE.Vector3(0, -5, 0)
+let maxPan = new THREE.Vector3(0, 3.5, 0)
 let _v = new THREE.Vector3()
 
 export default class Radio implements ThreeGroup {
@@ -35,6 +35,8 @@ export default class Radio implements ThreeGroup {
     camera: THREE.PerspectiveCamera
     controls: OrbitControls
 
+    patientFileOpened: boolean
+
     selectedObjects: THREE.Object3D[]
     pane: Tweakpane | null
     renderTarget: THREE.WebGLRenderTarget
@@ -44,6 +46,8 @@ export default class Radio implements ThreeGroup {
     currentIntersect: any
     mouseDown: boolean
     isDragging: boolean
+
+    gameEnded: boolean
 
     skeletonScene: THREE.Scene
     renderer: any
@@ -66,17 +70,20 @@ export default class Radio implements ThreeGroup {
 
         this.controls = controls
 
+        this.patientFileOpened = false
+
         this.renderer = renderer
         this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
 
-        // this.controls.minDistance = 10
-        // this.controls.maxDistance = 30
+        this.controls.minDistance = 5
+        this.controls.maxDistance = 30
         this.controls.enabled = false
         // this.controls.enablePan = false
         this.controls.enableDamping = true
 
         this.pane = pane
 
+        this.gameEnded = false
 
         this.raycaster = raycaster
         this.camera = camera
@@ -112,36 +119,41 @@ export default class Radio implements ThreeGroup {
                 }
             }
 
+            // console.log('dragging')
+
+            // if (!Skeleton.isAnimating) {
+
             _v.copy(this.controls.target)
             this.controls.target.clamp(minPan, maxPan)
             _v.sub(this.controls.target)
             this.camera.position.sub(_v)
+            // }
         })
 
         this.controls.addEventListener("end", () => {
             this.mouseDown = false
             this.isDragging = false
         })
-
-
-        this.init()
-        raf.subscribe("radioUpdate", this.update)
     }
 
 
     init() {
+        raf.subscribe("radioUpdate", this.update)
+        this.camera.position.set(0, 0, 30)
+        this.controls.saveState()
+
+        Skeleton.init(this.skeletonScene)
+
         this.group.add(Background.mesh)
 
         Foreground.init(this.renderTarget, this.renderer.getPixelRatio())
         this.group.add(Foreground.mesh)
 
-        Skeleton.load(this.skeletonScene, this.progress)
         Clipboard.load(this.group, this.progress)
     }
 
     nextCase() {
-        // this.camera.position.set(0, 0, 20)
-        Skeleton.load(this.skeletonScene, this.progress)
+        Skeleton.transitionOut(this.progress, this.controls)
         Clipboard.nextTexture(this.progress)
     }
 
@@ -150,18 +162,31 @@ export default class Radio implements ThreeGroup {
         this.renderTarget.setSize(window.innerWidth, window.innerHeight)
     }
 
-
     patientFile(cond: boolean) {
-        console.log('patient file')
+        this.patientFileOpened = cond
+
         if (cond) {
+            this.controls.reset()
             this.controls.enabled = false
+            gsap.to(Skeleton.skeletons[this.progress].position, {
+                duration: 0.5,
+                x: -5
+            })
+
             gsap.to(Clipboard.material.uniforms.uAlpha, {
                 duration: 0.5,
                 value: 1,
             })
+
+            gsap.to(Clipboard.mesh.position, {
+                duration: 0.5,
+                x: 5
+            })
         } else {
-
-
+            gsap.to(Skeleton.skeletons[this.progress].position, {
+                duration: 0.5,
+                x: 0
+            })
             gsap.to(Clipboard.material.uniforms.uAlpha, {
                 duration: 0.5,
                 value: 0,
@@ -170,44 +195,15 @@ export default class Radio implements ThreeGroup {
                 }
             })
 
-        }
+            gsap.to(Clipboard.mesh.position, {
+                duration: 0.5,
+                x: 10
+            })
 
-        // if (cond) {
-        //     gsap.to(this.skeleton.position, {
-        //         duration: 0.5,
-        //         x: -10,
-        //         z: -10
-        //     })
-        //     gsap.to(this.meshesGroup.position, {
-        //         duration: 0.5,
-        //         x: -10,
-        //         z: -10
-        //     })
-        //     gsap.to(this.clipboard.position, {
-        //         duration: 0.5,
-        //         x: 2.5
-        //     })
-        // } else {
-        //     gsap.to(this.skeleton.position, {
-        //         duration: 0.5,
-        //         x: 0,
-        //         z: 0
-        //     })
-        //     gsap.to(this.meshesGroup.position, {
-        //         duration: 0.5,
-        //         x: 0,
-        //         z: 0
-        //     })
-        //     gsap.to(this.clipboard.position, {
-        //         duration: 0.5,
-        //         x: 50
-        //     })
-        // }
+        }
     }
 
     gameState(state: string, cond: boolean) {
-        console.log(state, cond)
-
         switch (state) {
             case 'timerCanStart':
                 this.gameRunning = true
@@ -229,7 +225,9 @@ export default class Radio implements ThreeGroup {
             store.commit("updateProgress", this.progress)
 
             if (this.progress === 5) {
+                this.gameEnded = true
                 store.commit("setConfirmPopup", false)
+
                 this.endGame()
                 return
             }
@@ -255,14 +253,14 @@ export default class Radio implements ThreeGroup {
             duration: 0.2,
             value: 1
         })
+
         this.currentIntersect = null
         this.gameRunning = true
         store.commit("setConfirmPopup", false)
-
     }
 
     onClick() {
-        if (this.currentIntersect && !store.state.radiologist.confirm) {
+        if (!this.gameEnded && this.currentIntersect && !store.state.radiologist.confirm) {
             //clicked on something, show popup
             store.commit("setConfirmPopup", true)
             store.commit("setConfirmCallback", this.confirm)
@@ -287,18 +285,28 @@ export default class Radio implements ThreeGroup {
     }
 
     endGame() {
-        gsap.to(Skeleton.mesh.position, {
-            y: -30,
-            duration: 1,
-            onComplete: () => {
-                store.commit("incrementProgression")
-                // this.meshesGroup.clear()
 
-                // this.group.remove(this.skeleton)
-                // this.group.remove(this.clipboard)
+        Skeleton.isAnimating = true
+        gsap.to(Skeleton.currentSkeleton.position, {
+            y: -20,
+            duration: 0.5,
+            onComplete: () => {
+                store.commit("setGameEnded", true)
+                // store.commit("incrementProgression")
+                Skeleton.isAnimating = false
+
+                this.group.remove(Clipboard.mesh)
+                this.skeletonScene.remove(Skeleton.currentSkeleton)
 
                 this.camera.position.z = 1
+
+                this.controls.dispose()
             }
+        })
+
+        gsap.to(Skeleton.uniforms.uAlpha, {
+            duration: 0.5,
+            value: 0
         })
     }
 
@@ -339,30 +347,26 @@ export default class Radio implements ThreeGroup {
     }
 
     update = () => {
-        // console.log(this.mouse.x)
-
         this.updateRenderTarget()
         const delta = this.clock.getDelta()
 
-        // Clipboard.mesh.quaternion.copy(this.camera.quaternion)
-        // Clipboard.mesh.rotation.y = Math.PI / 2
+        if (Skeleton.loaded) {
+            if (this.gameRunning) {
+                if (!this.isDragging && !Skeleton.isAnimating && !this.patientFileOpened) {
+                    this.raycaster.setFromCamera(this.mouse, this.camera)
+                    const intersects = this.raycaster.intersectObjects(Skeleton.skeletons[this.progress].children, true)
 
-        if (this.gameRunning) {
-            if (!this.isDragging) {
-                this.raycaster.setFromCamera(this.mouse, this.camera)
-                const intersects = this.raycaster.intersectObjects(Skeleton.mesh.children, true)
-
-                if (intersects.length) {
-                    if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) this.fromMeshToMesh()
-                    this.onMesh(delta, intersects[0])
-                } else {
-                    if (this.currentIntersect) this.fromMeshToBlank()
-                    coef = 0
-                    this.currentIntersect = null
+                    if (intersects.length) {
+                        if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) this.fromMeshToMesh()
+                        this.onMesh(delta, intersects[0])
+                    } else {
+                        if (this.currentIntersect) this.fromMeshToBlank()
+                        coef = 0
+                        this.currentIntersect = null
+                    }
                 }
             }
         }
 
-        // Clipboard.mesh.lookAt(this.camera.position)
     }
 }

@@ -1,38 +1,40 @@
 <template>
   <section>
-    <Side></Side>
-    <ButtonsRight
-      :timerCanStart="this.timerCanStart"
-      :timerPause="this.timerPause"
-    ></ButtonsRight>
+    <div ref="gameContainer">
+      <Side></Side>
+      <ButtonsRight
+        :timerCanStart="this.timerCanStart"
+        :timerPause="this.timerPause"
+      ></ButtonsRight>
 
-    <!-- <NotificationManager></NotificationManager> -->
-    <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
+      <!-- <NotificationManager></NotificationManager> -->
+      <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
-    <Toolbar></Toolbar>
+      <Toolbar></Toolbar>
 
-    <Confirm v-if="this.confirm"></Confirm>
+      <Confirm v-if="this.confirm"></Confirm>
 
-    <Timer
-      :timerCanStart="this.timerCanStart"
-      :timerPause="this.timerPause"
-    ></Timer>
+      <Timer
+        :timerCanStart="this.timerCanStart"
+        :timerPause="this.timerPause"
+      ></Timer>
 
-    <ToggleTutorial
-      :timerCanStart="this.timerCanStart"
-      :toggleHelp="this.toggleHelp"
-      :help="this.help"
-    ></ToggleTutorial>
+      <ToggleTutorial
+        :timerCanStart="this.timerCanStart"
+        :toggleHelp="this.toggleHelp"
+        :help="this.help"
+      ></ToggleTutorial>
 
-    <TutorialManager
-      v-if="!this.HIDE"
-      v-bind:tutorialCount="tutorialCount"
-      v-bind:setTutorialCount="this.setTutorialCount"
-      v-bind:hideTutorial="this.hideTutorial"
-      ref="tutorialManager"
-    ></TutorialManager>
+      <TutorialManager
+        v-if="!this.HIDE"
+        v-bind:tutorialCount="tutorialCount"
+        v-bind:setTutorialCount="this.setTutorialCount"
+        v-bind:hideTutorial="this.hideTutorial"
+        ref="tutorialManager"
+      ></TutorialManager>
 
-    <Countdown v-if="this.countdown" :hide="this.hideCountdown"></Countdown>
+      <Countdown v-if="this.countdown" :hide="this.hideCountdown"></Countdown>
+    </div>
   </section>
 </template>
 
@@ -85,7 +87,16 @@ export default Vue.extend({
 
   computed: {
     confirm() {
+      console.log(store.state.radiologist.gameEnded);
+
       return store.state.radiologist.confirm;
+    },
+    gameEnded() {
+      console.log("game ended");
+
+      console.log(store.state.radiologist.gameEnded);
+
+      return store.state.radiologist.gameEnded;
     },
   },
 
@@ -204,6 +215,10 @@ section {
   // width: initial;
   height: initial;
   display: initial;
+
+  .log {
+    position: absolute;
+  }
 
   .tutorial {
     padding: 10px;
