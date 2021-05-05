@@ -12,17 +12,18 @@ import BezierEasing from 'bezier-easing'
 import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
 import raf from '~singletons/RAF'
 import { RAFS } from "~constants/RAFS";
+import MouseController from '~singletons/MouseController'
 
 class Pencil extends TransitionGLTF implements ThreeGLTF {
 	params: any
 	mouse: Vector3
 	eventData: any
 
-	constructor(scene: Scene, viewport: Viewport, mouse: Vector3) {
+	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
 		this.scene = scene
 		this.viewport = viewport
-		this.mouse = mouse
+		this.mouse = MouseController.mouseVec3
 		this.params = {
 			size: MODELS.PENCIL.SCALE,
 			rotation: {

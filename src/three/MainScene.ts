@@ -1,5 +1,6 @@
 import * as THREE from "three"
 import raf from "~singletons/RAF"
+import MouseController from "~singletons/MouseController"
 import Tweakpane from "tweakpane"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { clamp, getViewport } from "~/util/"
@@ -38,9 +39,6 @@ export default class Scene {
 
   controls: OrbitControls
   raycaster: THREE.Raycaster
-  mouse: THREE.Vector3
-  mouseViewport: THREE.Vector3
-  mouseVec2: THREE.Vector2
   clock: THREE.Clock
   meshes: THREE.Mesh[]
   radio: Radio
@@ -132,10 +130,6 @@ export default class Scene {
     this.scene.add(this.light)
     this.scene.add(this.light.target)
 
-    this.mouse = new THREE.Vector3()
-    this.mouseViewport = new THREE.Vector3()
-    this.mouseVec2 = new THREE.Vector2()
-
     this.raycaster = new THREE.Raycaster()
 
     this.controls = new OrbitControls(this.camera, canvas)
@@ -147,7 +141,7 @@ export default class Scene {
     this.radio = new Radio(
       this.camera,
       this.raycaster,
-      this.mouseVec2,
+      MouseController.mouseVec2,
       this.controls,
       this.pane,
       this.renderer,
@@ -184,19 +178,16 @@ export default class Scene {
       this.Loader = null
     }
 
-    this.HandWaveScene = new HandWaveScene(this.scene, this.camera, this.params.viewport, this.mouse)
+    this.HandWaveScene = new HandWaveScene(this.scene, this.params.viewport)
     this.TrashcanScene = new TrashcanScene(
       this.params.viewport,
       this.scene,
-      this.mouse,
     )
     this.CrystalBallScene = new CrystalBallScene(this.params.viewport, this.scene)
-    this.PencilScene = new PencilScene(this.params.viewport, this.scene, this.mouse)
+    this.PencilScene = new PencilScene(this.params.viewport, this.scene)
     this.EmojisScene = new EmojisScene(
       this.params.viewport,
       this.scene,
-      this.mouse,
-      this.camera
     )
     this.SlotMachineScene = new SlotMachineScene(this.params.viewport, this.scene)
     this.tweaks()
@@ -267,7 +258,6 @@ export default class Scene {
 
   setEvents() {
     window.addEventListener("resize", this.resize.bind(this))
-    window.addEventListener("mousemove", this.mousemove.bind(this))
   }
 
   resize() {
@@ -290,31 +280,12 @@ export default class Scene {
         window.innerWidth / window.innerHeight
   }
 
-  mousemove(e: MouseEvent) {
-    const normalized = {
-      x: e.pageX / window.innerWidth,
-      y: 1 - e.pageY / window.innerHeight,
-    }
-
-    this.mouse.set((e.clientX / this.w) * 2 - 1, -(e.clientY / this.h) * 2 + 1, 0)
-    this.mouseViewport.x = this.mouse.x * (this.params.viewport.width / 2)
-    this.mouseViewport.x = this.mouse.y * (this.params.viewport.height / 2)
-    this.mouseVec2.x = this.mouse.x
-    this.mouseVec2.y = this.mouse.y
-  }
-
   render = (dt = 0) => {
-    this.Benchmark?.checkFPS(dt)
-    // this.Loader && this.Loader.update(dt)
-
     this.renderer.render(this.scene, this.camera)
-
+    this.Benchmark?.checkFPS(dt)
+    MouseController.setFromViewport(this.params.viewport)
+    // this.Loader && this.Loader.update(dt)
     // this.pane && this.pane.refresh()
-
-    // this.TrashcanScene.update(dt)
-    // this.HandWaveScene.update(dt)
-    // this.PencilScene.update(dt)
-    // this.SlotMachineScene.update(dt)
   };
 }
 

@@ -15,7 +15,8 @@ import radiologistBackground from "~assets/Models/radiologist/big-cube-bg.glb"
 import arrow from "~assets/Images/fleche.svg"
 import slotMachine from "~assets/Models/slot-machine/slot_machine_6.glb"
 
-type MODELS = { [name: string]: { URL: string, SCALE: number, TEXTURE?: string } }
+export type MODEL = { URL: string, SCALE: number, TEXTURE?: string }
+type MODELS = { [name: string]: MODEL }
 
 export const MODELS: MODELS = {
   HAND: {

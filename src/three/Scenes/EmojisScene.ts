@@ -7,39 +7,25 @@ import EmojiGlasses from "../Meshes/GLTF/EmojiGlasses";
 import Tweakpane from "tweakpane";
 import EmojiSad from "~three/Meshes/GLTF/EmojiSad";
 import { MODELS } from "~constants/MODELS";
+import Emoji from "~three/Meshes/GLTF/base/Emoji";
+import { RAFS } from "~constants/RAFS";
 
 class EmojisScene {
-  camera: PerspectiveCamera;
-  EmojiGlasses: EmojiGlasses;
-  EmojiSad: EmojiSad;
-  params: any;
+  EmojiGlasses: Emoji;
+  EmojiSad: Emoji;
 
   constructor(
     viewport: Viewport,
     scene: Scene,
-    mouse: Vector3,
-    camera: PerspectiveCamera
   ) {
-    this.camera = camera;
-    this.EmojiGlasses = new EmojiGlasses(1, scene, mouse, viewport);
-    this.EmojiSad = new EmojiSad(1, scene, mouse, viewport)
+    this.EmojiGlasses = new Emoji(scene, viewport, MODELS.EMOJI_GLASSES, RAFS.EMOJIGLASSES, RECTS.INTRO.AMIRITE.LEFT)
+    this.EmojiSad = new Emoji(scene, viewport, MODELS.EMOJI_SAD, RAFS.EMOJISAD, RECTS.INTRO.AMIRITE.RIGHT)
+
     this.EmojiGlasses.load(MODELS.EMOJI_GLASSES.URL);
     this.EmojiSad.load(MODELS.EMOJI_SAD.URL);
   }
 
   start() {
-    // this.params = {
-    //   fov: 20,
-    //   position: new Vector3().copy(this.camera.position).setZ(4),
-    // };
-    // this.camera.fov = this.params.fov;
-    // this.camera.position.set(
-    //   this.params.position.x,
-    //   this.params.position.y,
-    //   this.params.position.z
-    // );
-    // this.camera.updateProjectionMatrix();
-
     this.EmojiGlasses.start(MODELS.EMOJI_GLASSES.URL, this.EmojiGlasses.initialize)
     this.EmojiSad.start(MODELS.EMOJI_SAD.URL, this.EmojiSad.initialize)
   }

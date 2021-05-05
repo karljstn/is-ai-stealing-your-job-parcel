@@ -3,6 +3,7 @@ import { MODELS } from "~constants/MODELS";
 import { ThreeGLTF } from "~interfaces/Three";
 import { Viewport } from "~types";
 import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import MouseController from '~singletons/MouseController'
 
 class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	params: {
@@ -15,11 +16,11 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	animations: AnimationClip[]
 	actions: AnimationAction[]
 
-	constructor(scene: Scene, viewport: Viewport, mouse: Vector3) {
+	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
 		this.params = { animation: { speed: 0.001 }, out: { duration: 0.5, delay: 1 } }
 		this.original = { position: new Vector3() }
-		this.mouse = mouse
+		this.mouse = MouseController.mouseVec3
 		this.mixer = null
 		this.animations = []
 		this.actions = []

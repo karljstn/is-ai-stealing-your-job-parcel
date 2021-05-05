@@ -9,6 +9,7 @@ class SlotMachineScene implements ThreeScene {
 
 	constructor(viewport: Viewport, scene: Scene) {
 		this.SlotMachine = new SlotMachine(scene, viewport)
+
 		this.SlotMachine.load(MODELS.SLOT_MACHINE.URL)
 	}
 

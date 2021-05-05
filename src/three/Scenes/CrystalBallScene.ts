@@ -9,6 +9,7 @@ class CrystalBallScene implements ThreeScene {
 
 	constructor(viewport: Viewport, scene: Scene) {
 		this.CrystalBall = new CrystalBall(scene, viewport)
+
 		this.CrystalBall.load(MODELS.CRYSTAL_BALL.URL)
 	}
 

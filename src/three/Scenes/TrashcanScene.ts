@@ -1,20 +1,16 @@
 import { Viewport } from "~/types";
-import { Scene, Vector3, } from "three";
+import { Scene } from "three";
 import { MODELS } from "~constants/MODELS"
 import Trashcan from "~three/Meshes/GLTF/Thrashcan";
 import { ThreeScene } from "~interfaces/Three";
 
 class TrashcanScene implements ThreeScene {
-	viewport: Viewport
-	scene: Scene
-	mouse: Vector3
 	Trashcan: Trashcan
 
-	constructor(viewport: Viewport, scene: Scene, mouse: Vector3) {
-		this.viewport = viewport
-		this.scene = scene
-		this.mouse = mouse;
-		this.Trashcan = new Trashcan(scene, viewport, mouse)
+	constructor(viewport: Viewport, scene: Scene) {
+		this.Trashcan = new Trashcan(scene, viewport)
+
+		this.Trashcan.load(MODELS.TRASHCAN.URL)
 	}
 
 	start() {

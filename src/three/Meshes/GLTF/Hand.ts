@@ -7,6 +7,7 @@ import store from "~store"
 import { RECTS } from "~constants/RECTS";
 import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF"
 import { Viewport } from '~types'
+import MouseController from "~singletons/MouseController"
 
 class Hand extends TransitionGLTF implements ThreeGLTF {
 	params: { animation: { speed: number }, size: number }
@@ -14,10 +15,10 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 	world: { position: Vector3 }
 	mixer: THREE.AnimationMixer | null
 	waveAction: AnimationAction | null
-	mouse: { normalized: Vector3, viewport: { current: Vector3, target: Vector3 } }
+	mouse: { current: Vector3, target: Vector3 }
 	mat: MeshLambertMaterial
 
-	constructor(scene: Scene, viewport: Viewport, mouse: Vector3) {
+	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
 		this.params = {
 			animation: { speed: 0.002 },
@@ -26,13 +27,12 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		this.original = { position: new Vector3() }
 		this.world = { position: new Vector3() }
 		this.mouse = {
-			normalized: new Vector3(),
-			viewport: { current: new Vector3(), target: new Vector3() }
+			current: new Vector3(),
+			target: new Vector3()
 		}
 		this.isLoaded = false
 		this.mixer = null
 		this.waveAction = null
-		this.mouse = { normalized: mouse, viewport: { current: new Vector3(), target: new Vector3() } };
 		this.mat = new MeshLambertMaterial({ color: '#F4933B' })
 	}
 
@@ -62,6 +62,8 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 				obj.material.roughness = 0.9
 			}
 		})
+
+		raf.subscribe(RAFS.HAND, this.update)
 
 		this.in()
 		this.tweaks()
@@ -100,23 +102,22 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		if (this.isLoaded) {
 			this.mixer && this.mixer.update(dt)
 
-			this.mouse.viewport.target.set(
-				(this.mouse.normalized.x * this.viewport.width) / 2,
-				(this.mouse.normalized.y * this.viewport.height) / 2,
-				0
-			);
+			this.mouse.target.copy(MouseController.mouseVec3Viewport);
 
-			this.mouse.viewport.current.lerp(this.mouse.viewport.target, 0.8)
+			this.mouse.current.lerp(this.mouse.target, 0.8)
 
-			if (this.mouse.viewport.current.distanceTo(this.group.position) <= 0.075) {
+			if (this.mouse.current.distanceTo(this.group.position) <= 0.075) {
 				document.body.classList.add('cursor-grab')
-				if (this.waveAction?.paused) this.wave()
+				if (this.waveAction?.paused) {
+					this.wave()
+				}
 			} else {
-				if (document.body.classList.contains('cursor-grab')) document.body.classList.remove('cursor-grab')
+				if (document.body.classList.contains('cursor-grab')) {
+					document.body.classList.remove('cursor-grab')
+				}
 			}
 
-			this.group.lookAt(this.mouse.viewport.current.x, this.mouse.viewport.current.y, 1)
-			// this.group.rotation.setFromVector3
+			this.group.lookAt(this.mouse.current.x, this.mouse.current.y, 1)
 		}
 	}
 
@@ -127,4 +128,3 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 }
 
 export default Hand
-

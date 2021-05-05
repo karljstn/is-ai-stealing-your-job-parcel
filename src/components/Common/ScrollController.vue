@@ -11,7 +11,7 @@ import NormalizeWheel from 'normalize-wheel';
 import VueRouter, { RouteRecordPublic } from 'vue-router';
 import { debounce } from '~util/_index.js';
 
-const wait = 500;
+const wait = 300;
 
 export default Vue.extend({
 	props: ['time'],

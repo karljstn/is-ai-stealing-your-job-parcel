@@ -7,8 +7,9 @@ import { Viewport } from "~types";
 class PencilScene implements ThreeScene {
 	Pencil: Pencil
 
-	constructor(viewport: Viewport, scene: Scene, mouse: Vector3,) {
-		this.Pencil = new Pencil(scene, viewport, mouse)
+	constructor(viewport: Viewport, scene: Scene) {
+		this.Pencil = new Pencil(scene, viewport)
+
 		this.Pencil.load(MODELS.PENCIL.URL)
 	}
 
