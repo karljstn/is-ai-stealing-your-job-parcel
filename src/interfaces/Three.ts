@@ -18,16 +18,12 @@ export interface ThreeGroup {
 }
 
 export interface ThreeGLTF {
-  group: THREE.Group | null
-  loader: GLTFLoader
-  load(): void
-  start(): void
+  initialize(): void
   update(dt: number): void
   destroy(): void
 }
 
 export interface ThreeScene {
   start(): void
-  tweaks(): void
-  update(dt: number): void
+  destroy(): void
 }

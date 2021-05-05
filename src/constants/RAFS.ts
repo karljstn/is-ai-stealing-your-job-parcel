@@ -7,7 +7,9 @@ export const RAFS = {
   TRASHCAN: "trashcanUpdate",
   EMOJISMILE: "emojiUpdate",
   EMOJIGLASSES: "emojiGlassesUpdate",
-  EMOJISAD: "emojiSadUpdate",
+  EMOJISAD: "emojiSadUpdateUpdate",
+  SLOT_MACHINE: "slotMachineUpdate",
+  PENCIL: "pencilUpdate"
 };
 
 //TODO: enums ? research typescript

@@ -10,12 +10,11 @@ import { timeStamp } from "node:console";
 import { clamp, map } from "~util";
 import BezierEasing from 'bezier-easing'
 import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import raf from '~singletons/RAF'
+import { RAFS } from "~constants/RAFS";
 
 class Pencil extends TransitionGLTF implements ThreeGLTF {
-	scene: Scene
-	viewport: Viewport
 	params: any
-	loader: GLTFLoader
 	mouse: Vector3
 	eventData: any
 
@@ -42,25 +41,22 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 				rotation: new BezierEasing(.61, .27, .78, .99)
 			}
 		}
-		this.loader = new GLTFLoader(LoadManager.manager)
+
+		this.load(MODELS.PENCIL.URL)
 	}
 
-	load = () => {
-		this.loader.load(MODELS.PENCIL.URL, (gltf) => {
-			this.group = gltf.scene
-			this.group.scale.set(0, 0, 0)
-			this.group.rotation.setFromVector3(this.params.rotation.resting)
-			this.start()
-		})
-	}
+	initialize = () => {
+		this.group.scale.set(0, 0, 0)
+		this.group.rotation.setFromVector3(this.params.rotation.resting)
 
-	start = () => {
 		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
 		this.setTransition(MODELS.PENCIL.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
 
 		this.group && this.scene.add(this.group)
 		this.tweaks()
 		this.setEvents()
+
+		raf.subscribe(RAFS.PENCIL, this.update);
 	}
 
 	update = (dt: number) => {
@@ -101,10 +97,6 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 		})
 	}
 
-	destroy = () => {
-		this.group && this.scene.remove(this.group)
-	}
-
 	setEvents = () => {
 		const onMouseDown = (e: MouseEvent) => {
 			this.params.eventData.mouseDown.factor = this.params.eventData.mouseDown.speed
@@ -120,6 +112,13 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 		window.addEventListener("mouseup", onMouseUp)
 		window.addEventListener('mousemove', onMouseMove)
 	}
+
+	destroy = () => {
+		this.group && this.scene.remove(this.group)
+		raf.unsubscribe(RAFS.PENCIL)
+	}
+
+
 }
 
 export default Pencil

@@ -20,11 +20,12 @@ import OutroRessources from '~views/5_Epilogue/2_EpilogueRessources.vue';
 import OutroShare from '~views/5_Epilogue/3_EpilogueShare.vue';
 import OutroTakeAction from '~views/5_Epilogue/4_EpilogueTakeAction.vue';
 import Credits from '~views/5_Epilogue/5_EpilogueCredits.vue';
+import store from '~store';
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: LandingPage, name: "LandingPage", color: PALETTE.WHITE },
+  { path: '/', component: LandingPage, name: "LandingPage", color: PALETTE.WHITE, transitions: { delay: 500, out: () => { store.state.scene?.TrashcanScene.Trashcan.out() } } },
   { path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.YELLOW },
   { path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK },
   { path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.BLACK },

@@ -8,10 +8,10 @@
 import Vue from 'vue';
 import router from '~/router';
 import NormalizeWheel from 'normalize-wheel';
-import VueRouter, { Route, RouteRecordPublic } from 'vue-router';
+import VueRouter, { RouteRecordPublic } from 'vue-router';
 import { debounce } from '~util/_index.js';
 
-const wait = 700;
+const wait = 500;
 
 export default Vue.extend({
 	props: ['time'],

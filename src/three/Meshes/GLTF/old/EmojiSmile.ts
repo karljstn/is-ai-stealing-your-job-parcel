@@ -25,6 +25,7 @@ import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import fragment from "~shaders/bakedFresnelDirectional/fragment.glsl";
 import vertex from "~shaders/bakedFresnelDirectional/vertex.glsl";
 import { ThreeGLTF } from "~interfaces/Three";
+import { Timeline } from "~lib/gsap-member/src/gsap-core";
 
 
 class EmojiSmile implements ThreeGLTF {
@@ -43,7 +44,7 @@ class EmojiSmile implements ThreeGLTF {
   bakedTexture: Texture;
   originalPos: Vector3;
   pane: Tweakpane | null;
-  transitionTimeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
+  transitionTimeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any } & any
 
   constructor(size: number, scene: Scene, mouse: Vector3, viewport: Viewport) {
     this.params = {
@@ -150,14 +151,12 @@ class EmojiSmile implements ThreeGLTF {
           0, 0, 0
         );
         this.scene.add(this.group);
-        this.start();
       }
     }, 50);
   }
 
-  start = () => {
+  initialize = () => {
     this.tweaks();
-    raf.subscribe(RAFS.EMOJISMILE, this.update);
     this.in()
   };
 

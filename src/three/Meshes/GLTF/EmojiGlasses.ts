@@ -7,12 +7,10 @@ import {
   AnimationClip,
   Color,
   Mesh,
-  Object3D,
   Scene,
   ShaderMaterial,
   Texture,
   TextureLoader,
-  Vector2,
   Vector3,
 } from "three";
 import Tweakpane from "tweakpane";
@@ -27,14 +25,14 @@ import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import { ThreeGLTF } from "~interfaces/Three";
 import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
+import { Timeline } from "~lib/gsap-member/src/gsap-core";
+import TransitionGLTF from "./base/TransitionGLTF";
 
-class EmojiGlasses implements ThreeGLTF {
+class EmojiGlasses extends TransitionGLTF implements ThreeGLTF {
   params: any;
   size: number;
   scene: Scene;
-  group: THREE.Group | null;
   mixer: THREE.AnimationMixer | null;
-  animations: AnimationClip[] | null;
   waveAction: AnimationAction | null;
   loader: GLTFLoader;
   mouse: Vector3;
@@ -44,13 +42,14 @@ class EmojiGlasses implements ThreeGLTF {
   bakedTexture: Texture;
   originalPos: Vector3;
   pane: Tweakpane | null;
-  timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
+  timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any } & any
   mappedMouse: Vector3
 
   constructor(size: number, scene: Scene, mouse: Vector3, viewport: Viewport) {
+    super(scene, viewport)
     this.params = {
       animSpeed: 0.005,
-      size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,
+      size: MODELS.EMOJI_GLASSES.SCALE ? size * MODELS.EMOJI_GLASSES.SCALE : size,
       pos: { x: 0, y: 0, z: 0 },
       factor: 0,
       rotation: new Vector3(0, 0, 0),
@@ -66,9 +65,7 @@ class EmojiGlasses implements ThreeGLTF {
     this.size = size;
     this.pane = store.state.tweakpane;
     this.scene = scene;
-    this.group = null;
     this.mixer = null;
-    this.animations = null;
     this.waveAction = null;
     this.loader = new GLTFLoader(LoadManager.manager);
     this.mouse = mouse;
@@ -95,59 +92,36 @@ class EmojiGlasses implements ThreeGLTF {
     this.mappedMouse = new Vector3()
   }
 
-  load = () => {
-    this.loader.load(MODELS.EMOJI_GLASSES.URL, (gltf) => {
-      this.group = gltf.scene; // Group
+  initialize = () => this.setFromRect(RECTS.INTRO.AMIRITE.RIGHT).then(({ x, y, w, h }) => {
+    // Center
+    x += w / 2
+    y -= h / 2
 
-      // Set baked material
-      this.group.traverse((object3D) => {
-        const mesh = object3D as Mesh;
-        if (mesh.material) mesh.material = this.bakedMaterial;
-      });
+    this.group.position.set(
+      x,
+      y,
+      0
+    );
+    this.originalPos.copy(this.group.position);
+    this.group.rotation.set(
+      this.params.rotation.x,
+      this.params.rotation.y,
+      this.params.rotation.z
+    );
+    this.group.scale.set(
+      0, 0, 0
+    );
+    this.scene.add(this.group);
+
+    // Set baked material
+    this.group.traverse((object3D) => {
+      const mesh = object3D as Mesh;
+      if (mesh.material) mesh.material = this.bakedMaterial;
     });
 
-    this.setFromRect()
-  };
-
-  setFromRect = () => {
-    let rect = store.state.rects.get(RECTS.INTRO.AMIRITE.RIGHT);
-
-    const intervalID = setInterval(() => {
-      rect = store.state.rects.get(RECTS.INTRO.AMIRITE.RIGHT);
-      if (rect && this.group) {
-        clearInterval(intervalID);
-        // Upper left
-        let { x, y, w, h } = rectToThree(this.viewport, rect);
-
-        // Center
-        x += w / 2
-        y -= h / 2
-
-        this.group.position.set(
-          x,
-          y,
-          0
-        );
-        this.originalPos.copy(this.group.position);
-        this.group.rotation.set(
-          this.params.rotation.x,
-          this.params.rotation.y,
-          this.params.rotation.z
-        );
-        this.group.scale.set(
-          0, 0, 0
-        );
-        this.scene.add(this.group);
-        this.start();
-      }
-    }, 50);
-  }
-
-  start = () => {
-    this.tweaks();
     raf.subscribe(RAFS.EMOJIGLASSES, this.update);
     this.in()
-  };
+  })
 
   tweaks = () => {
     if (!this.pane) return;

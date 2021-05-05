@@ -5,7 +5,7 @@ import { MODELS } from '~/constants/MODELS'
 import { Mesh, MeshBasicMaterial, Scene, TextureLoader } from "three"
 import { ThreeGLTF } from "~interfaces/Three"
 
-class TrashcanBake implements ThreeGLTF {
+class TrashcanBake {
   params: { animSpeed: number, size: number }
   size: number
   scene: Scene

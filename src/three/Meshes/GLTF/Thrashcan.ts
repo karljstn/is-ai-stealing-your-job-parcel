@@ -23,31 +23,24 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 		this.mixer = null
 		this.animations = []
 		this.actions = []
+
+		this.load(MODELS.TRASHCAN.URL)
 	}
 
-	load = () => {
-		this.loader.load(MODELS.TRASHCAN.URL, (gltf) => {
-			this.group = gltf.scene
+	initialize = () => {
+		// Animations
+		this.mixer = new AnimationMixer(this.group)
+		this.mixer.timeScale = this.params.animation.speed
 
-			// Animations
-			this.mixer = new AnimationMixer(this.group)
-			this.mixer.timeScale = this.params.animation.speed
-			this.animations = gltf.animations
+		this.animations.forEach((anim) => {
+			if (!this.mixer) return
 
-			this.animations.forEach((anim) => {
-				if (!this.mixer) return
-
-				const clipAction = this.mixer.clipAction(anim)
-				clipAction.loop = LoopOnce
-				clipAction.clampWhenFinished = true
-				this.actions?.push(clipAction)
-			})
-
-			this.start()
+			const clipAction = this.mixer.clipAction(anim)
+			clipAction.loop = LoopOnce
+			clipAction.clampWhenFinished = true
+			this.actions?.push(clipAction)
 		})
-	}
 
-	start = () => {
 		const target = new Vector3(0, -this.viewport.height / 2.7, 0)
 		this.group.position.copy(target)
 		this.original.position.copy(target)

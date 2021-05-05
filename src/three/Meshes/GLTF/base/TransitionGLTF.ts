@@ -2,6 +2,7 @@ import { Scene, Vector3 } from "three";
 import { Viewport } from "~types";
 import BaseGLTF from "./BaseGLTF";
 import gsap from 'gsap'
+import { Timeline } from "~lib/gsap-member/src/gsap-core";
 
 export enum CallbackType {
 	ONCOMPLETE,

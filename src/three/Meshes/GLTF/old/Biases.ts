@@ -8,7 +8,7 @@ import raf from "~singletons/RAF"
 import { RAFS } from "~constants/RAFS"
 import { ThreeGLTF } from "~interfaces/Three"
 
-class Biases implements ThreeGLTF {
+class Biases {
 	params: { animSpeed: number, size: number }
 	size: number
 	pane: Tweakpane | null
@@ -36,7 +36,6 @@ class Biases implements ThreeGLTF {
 
 	start = () => {
 		this.tweaks()
-		raf.subscribe(RAFS.TRASHCAN, this.update)
 	}
 
 	load = () => {

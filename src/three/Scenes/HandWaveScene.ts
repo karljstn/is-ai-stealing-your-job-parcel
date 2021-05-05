@@ -1,10 +1,7 @@
-import store from "~/store";
 import { Viewport } from "~/types";
-import { rectToThree } from "~/util";
-import { PerspectiveCamera, Scene, Vector2, Vector3 } from "three";
-import { RECTS } from "~/constants/RECTS";
+import { PerspectiveCamera, Scene, Vector3 } from "three";
 import Hand from "../Meshes/GLTF/Hand";
-import Tweakpane from "tweakpane";
+import { MODELS } from "~constants/MODELS";
 
 class HandWaveScene {
   camera: PerspectiveCamera;
@@ -19,17 +16,11 @@ class HandWaveScene {
   ) {
     this.camera = camera;
     this.Hand = new Hand(scene, viewport, mouse);
-    this.Hand.load();
+    this.Hand.load(MODELS.HAND.URL);
   }
 
   start() {
-    this.Hand.start()
-  }
-
-  tweaks() { }
-
-  update(dt: number) {
-    this.Hand.update(dt)
+    this.Hand.start(MODELS.HAND.URL, this.Hand.initialize)
   }
 
   out() {

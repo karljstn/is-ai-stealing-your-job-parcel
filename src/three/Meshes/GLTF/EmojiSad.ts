@@ -7,12 +7,10 @@ import {
 	AnimationClip,
 	Color,
 	Mesh,
-	Object3D,
 	Scene,
 	ShaderMaterial,
 	Texture,
 	TextureLoader,
-	Vector2,
 	Vector3,
 } from "three";
 import Tweakpane from "tweakpane";
@@ -27,14 +25,14 @@ import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import { ThreeGLTF } from "~interfaces/Three";
 import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
+import { Timeline } from "~lib/gsap-member/src/gsap-core";
+import TransitionGLTF from "./base/TransitionGLTF";
 
-class EmojiSad implements ThreeGLTF {
+class EmojiGlasses extends TransitionGLTF implements ThreeGLTF {
 	params: any;
 	size: number;
 	scene: Scene;
-	group: THREE.Group | null;
 	mixer: THREE.AnimationMixer | null;
-	animations: AnimationClip[] | null;
 	waveAction: AnimationAction | null;
 	loader: GLTFLoader;
 	mouse: Vector3;
@@ -44,10 +42,11 @@ class EmojiSad implements ThreeGLTF {
 	bakedTexture: Texture;
 	originalPos: Vector3;
 	pane: Tweakpane | null;
-	timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any }
+	timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any } & any
 	mappedMouse: Vector3
 
 	constructor(size: number, scene: Scene, mouse: Vector3, viewport: Viewport) {
+		super(scene, viewport)
 		this.params = {
 			animSpeed: 0.005,
 			size: MODELS.EMOJI_SAD.SCALE ? size * MODELS.EMOJI_SAD.SCALE : size,
@@ -66,9 +65,7 @@ class EmojiSad implements ThreeGLTF {
 		this.size = size;
 		this.pane = store.state.tweakpane;
 		this.scene = scene;
-		this.group = null;
 		this.mixer = null;
-		this.animations = null;
 		this.waveAction = null;
 		this.loader = new GLTFLoader(LoadManager.manager);
 		this.mouse = mouse;
@@ -95,59 +92,36 @@ class EmojiSad implements ThreeGLTF {
 		this.mappedMouse = new Vector3()
 	}
 
-	load = () => {
-		this.loader.load(MODELS.EMOJI_SAD.URL, (gltf) => {
-			this.group = gltf.scene; // Group
+	initialize = () => this.setFromRect(RECTS.INTRO.AMIRITE.LEFT).then(({ x, y, w, h }) => {
+		// Center
+		x += w / 2
+		y -= h / 2
 
-			// Set baked material
-			this.group.traverse((object3D) => {
-				const mesh = object3D as Mesh;
-				if (mesh.material) mesh.material = this.bakedMaterial;
-			});
+		this.group.position.set(
+			x,
+			y,
+			0
+		);
+		this.originalPos.copy(this.group.position);
+		this.group.rotation.set(
+			this.params.rotation.x,
+			this.params.rotation.y,
+			this.params.rotation.z
+		);
+		this.group.scale.set(
+			0, 0, 0
+		);
+		this.scene.add(this.group);
+
+		// Set baked material
+		this.group.traverse((object3D) => {
+			const mesh = object3D as Mesh;
+			if (mesh.material) mesh.material = this.bakedMaterial;
 		});
 
-		this.setFromRect()
-	};
-
-	setFromRect = () => {
-		let rect = store.state.rects.get(RECTS.INTRO.AMIRITE.LEFT);
-
-		const intervalID = setInterval(() => {
-			rect = store.state.rects.get(RECTS.INTRO.AMIRITE.LEFT);
-			if (rect && this.group) {
-				clearInterval(intervalID);
-				// Upper left
-				let { x, y, w, h } = rectToThree(this.viewport, rect);
-
-				// Center
-				x += w / 2
-				y -= h / 2
-
-				this.group.position.set(
-					x,
-					y,
-					0
-				);
-				this.originalPos.copy(this.group.position);
-				this.group.rotation.set(
-					this.params.rotation.x,
-					this.params.rotation.y,
-					this.params.rotation.z
-				);
-				this.group.scale.set(
-					0, 0, 0
-				);
-				this.scene.add(this.group);
-				this.start();
-			}
-		}, 50);
-	}
-
-	start = () => {
-		this.tweaks();
 		raf.subscribe(RAFS.EMOJISAD, this.update);
 		this.in()
-	};
+	})
 
 	tweaks = () => {
 		if (!this.pane) return;
@@ -155,8 +129,8 @@ class EmojiSad implements ThreeGLTF {
 		const mainFolder = this.pane.addFolder({ title: "Emoji", expanded: false });
 		const sizeInput = mainFolder.addInput(this.params, "size", {
 			label: "Size",
-			min: MODELS.EMOJI_SAD.SCALE ? this.size * MODELS.EMOJI_SAD.SCALE * 0.33 : this.size * 0.33,
-			max: MODELS.EMOJI_SAD.SCALE ? this.size * MODELS.EMOJI_SAD.SCALE * 3 : this.size * 3,
+			min: this.size * MODELS.EMOJI_GLASSES.SCALE * 0.33,
+			max: this.size * MODELS.EMOJI_GLASSES.SCALE * 3,
 		});
 		const rotateInput = mainFolder.addInput(this.params, "rotation", {
 			label: "Rotation",
@@ -223,8 +197,8 @@ class EmojiSad implements ThreeGLTF {
 	in = () => {
 		if (!this.group) return
 
-		this.timeline.to(this.group.scale, { x: this.params.size, y: this.params.size, z: this.params.size, duration: 0.2 }, 1.5)
-		this.timeline.fromTo(this.group.position, { x: this.originalPos.x - 0.05, y: this.originalPos.y - 0.05 }, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.2 }, 1.5)
+		this.timeline.to(this.group.scale, { x: this.params.size, y: this.params.size, z: this.params.size, duration: 0.2 }, 1)
+		this.timeline.fromTo(this.group.position, { x: this.originalPos.x - 0.05, y: this.originalPos.y - 0.05 }, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.2 }, 1)
 		this.timeline.play()
 	}
 
@@ -286,8 +260,8 @@ class EmojiSad implements ThreeGLTF {
 
 	destroy = () => {
 		this.group && this.scene.remove(this.group);
-		raf.unsubscribe(RAFS.EMOJISAD);
+		raf.unsubscribe(RAFS.EMOJIGLASSES);
 	};
 }
 
-export default EmojiSad;
+export default EmojiGlasses;

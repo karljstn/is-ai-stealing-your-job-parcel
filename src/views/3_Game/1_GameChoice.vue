@@ -27,6 +27,9 @@ export default Vue.extend({
 		fadeBackground({ routeName: 'GameOne' });
 		store.state.scene.SlotMachineScene.start();
 	},
+	destroyed() {
+		store.state.scene.SlotMachineScene.destroy();
+	},
 });
 </script>
 

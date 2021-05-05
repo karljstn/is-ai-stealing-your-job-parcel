@@ -1,14 +1,10 @@
-import store from "~/store";
 import { Viewport } from "~/types";
-import { rectToThree } from "~/util";
-import { Scene, Vector2, Vector3, } from "three";
-import { RECTS } from "~/constants/RECTS"
-import Tweakpane from "tweakpane";
-import SVG from "~three/Meshes/SVG";
+import { Scene, Vector3, } from "three";
 import { MODELS } from "~constants/MODELS"
 import Trashcan from "~three/Meshes/GLTF/Thrashcan";
+import { ThreeScene } from "~interfaces/Three";
 
-class TrashcanScene {
+class TrashcanScene implements ThreeScene {
 	viewport: Viewport
 	scene: Scene
 	mouse: Vector3
@@ -22,18 +18,7 @@ class TrashcanScene {
 	}
 
 	start() {
-		this.Trashcan.load()
-	}
-
-	update(dt: number) {
-		// if (!this.biases.group) return
-		// const position = this.trashcan.group.position
-		// const mouse = new Vector3(this.mouse.x * this.viewport.width, this.mouse.y * this.viewport.height, 0)
-		// const rotationFactor = 0.07
-		// const target = this.trashcan.group.rotation.toVector3().clone().subVectors(mouse, position).multiplyScalar(rotationFactor)
-		// this.trashcan.group.rotation.setFromVector3(target)
-
-		this.Trashcan.update(dt)
+		this.Trashcan.start(MODELS.TRASHCAN.URL, this.Trashcan.initialize)
 	}
 
 	destroy = () => {

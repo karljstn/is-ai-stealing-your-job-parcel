@@ -1,56 +1,55 @@
 import { ThreeGLTF } from "~interfaces/Three";
-import BaseGLTF from '~three/Meshes/GLTF/base/BaseGLTF'
-import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene } from "three"
+import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene, Vector3 } from "three"
 import { Viewport } from "~types"
 import { MODELS } from "~constants/MODELS";
+import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import { RAFS } from "~constants/RAFS";
+import raf from '~singletons/RAF';
 
-class SlotMachine extends BaseGLTF implements ThreeGLTF {
+class SlotMachine extends TransitionGLTF implements ThreeGLTF {
 	params: {
 		animation: { speed: number }
 	}
 	mixer: AnimationMixer | null
-	animations: AnimationClip[] | null
 	actions: AnimationAction[] | null
 
 	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
 		this.params = {
-			animation: { speed: 3 }
+			animation: { speed: 0.001 }
 		}
 		this.mixer = null
 		this.animations = []
 		this.actions = []
+
+		this.load(MODELS.SLOT_MACHINE.URL)
 	}
 
-	load = () => {
-		this.loader.load(MODELS.SLOT_MACHINE.URL, (gltf) => {
-			this.group = gltf.scene
-			this.group.scale.set(MODELS.SLOT_MACHINE.SCALE, MODELS.SLOT_MACHINE.SCALE, MODELS.SLOT_MACHINE.SCALE)
-			this.group.rotateY(-Math.PI / 2)
-			this.group.position.x += this.viewport.width / 8;
+	initialize = () => {
+		this.group.scale.set(0, 0, 0)
+		this.group.rotateY(-Math.PI / 2)
+		this.group.position.x += this.viewport.width / 8;
 
-			// Animations
-			this.mixer = new AnimationMixer(this.group)
-			this.mixer.timeScale = this.params.animation.speed
-			this.animations = gltf.animations
+		// Animations
+		this.mixer = new AnimationMixer(this.group)
+		this.mixer.timeScale = this.params.animation.speed
 
-			this.animations.forEach((anim) => {
-				if (!this.mixer) return
+		this.animations.forEach((anim) => {
+			if (!this.mixer) return
 
-				const clipAction = this.mixer.clipAction(anim)
-				clipAction.loop = LoopOnce
-				clipAction.clampWhenFinished = true
-				clipAction.stop()
-				this.actions?.push(clipAction)
-			})
-
-			this.start()
+			const clipAction = this.mixer.clipAction(anim)
+			clipAction.loop = LoopOnce
+			clipAction.clampWhenFinished = true
+			this.actions?.push(clipAction)
 		})
-	}
 
-	start = () => {
+		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
+		this.setTransition(MODELS.SLOT_MACHINE.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
 		this.scene.add(this.group)
+		this.in()
 		setTimeout(this.pull, 1000);
+
+		raf.subscribe(RAFS.SLOT_MACHINE, this.update)
 	}
 
 	pull = () => {
@@ -66,7 +65,7 @@ class SlotMachine extends BaseGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
-
+		this.scene.remove(this.group)
 	}
 }
 

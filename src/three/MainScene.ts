@@ -2,21 +2,18 @@ import * as THREE from "three"
 import raf from "~singletons/RAF"
 import Tweakpane from "tweakpane"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-
-// import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-// import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-
-import Benchmark from "./Benchmark"
 import { clamp, getViewport } from "~/util/"
 import { MainSceneParams } from "~/types/"
-import Loader from "./Loader"
 import store from "~/store"
-import EmojiScene from "./Scenes/EmojiSmileScene"
 import { RAFS } from "~constants/RAFS"
 import TrashcanScene from "./Scenes/TrashcanScene"
 import { Vector3 } from "three"
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event"
+// import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+// import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 
+import Benchmark from "./Benchmark"
+import Loader from "./Loader"
 import CrystalBallScene from "./Scenes/CrystalBallScene"
 import PencilScene from "./Scenes/PencilScene"
 import EmojisScene from "./Scenes/EmojisScene"
@@ -314,10 +311,10 @@ export default class Scene {
 
     // this.pane && this.pane.refresh()
 
-    this.TrashcanScene.update(dt)
-    this.HandWaveScene.update(dt)
-    this.PencilScene.update(dt)
-    this.SlotMachineScene.update(dt)
+    // this.TrashcanScene.update(dt)
+    // this.HandWaveScene.update(dt)
+    // this.PencilScene.update(dt)
+    // this.SlotMachineScene.update(dt)
   };
 }
 
