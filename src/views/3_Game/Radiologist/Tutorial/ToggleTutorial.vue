@@ -1,31 +1,44 @@
 <template>
-  <button v-on:click="this.showTutorial">help</button>
+  <button
+    class="toggleTutorial"
+    v-bind:class="{ tutorialOpened: !timerCanStart }"
+    v-on:click="help ? toggleHelp(false) : toggleHelp(true)"
+  >
+    Help
+  </button>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 
 export default Vue.extend({
-  props: ["showTutorial"],
+  props: ["toggleHelp", "help", "timerCanStart"],
 });
 </script>
 
 <style lang="scss" scoped>
-button {
+.toggleTutorial {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  background-color: transparent;
-  font-weight: bolder;
-  color: white;
-  background-image: url("~/assets/Games/Radiologist/controls.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 83px;
-  height: 41px;
+  bottom: 10%;
+  left: 11.5%;
+  border-radius: 5px;
+  background-color: #f6f6f4;
+  width: 55px;
+  height: 29px;
   border: none;
   outline: initial;
   cursor: pointer;
+  transition: all 0.5s;
+
+  &:hover {
+    background-color: #b4b4b3;
+  }
+}
+
+.tutorialOpened {
+  // cursor: initial;
+  &:hover {
+    background-color: #f6f6f4;
+  }
 }
 </style>

@@ -4,7 +4,7 @@
       <div class="bar">
         <div
           class="progress"
-          :style="{ width: (this.progress / this.duration) * 100 + '%' }"
+          :style="{ width: 100 - (this.progress / this.duration) * 100 + '%' }"
         ></div>
       </div>
     </div>
@@ -19,7 +19,7 @@ export default Vue.extend({
   data(): {
     progress: number;
     interval: any;
-    show: Boolean;
+    show: boolean;
   } {
     return {
       progress: 0,
@@ -49,31 +49,32 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .folder {
-  width: 70px;
-  height: 100px;
+  width: 90px;
+  height: 70px;
   background-image: url("~/assets/Games/Radiologist/Icons/File/01-files.png");
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
-  margin-right: 30px;
+  bottom: 15px;
+  margin-right: 10px;
 
   //transition enter
   transition: all 1s;
 
   .bar-background {
-    width: 40px;
-    height: 15px;
+    width: 43px;
+    height: 17px;
     position: absolute;
     background-color: #4f4f7e;
-    border-radius: 20px;
-    bottom: 35px;
-    right: -10px;
+    border-radius: 5px;
+    bottom: 10px;
+    right: 5px;
 
     .bar {
-      background-color: #373655;
-      width: 70%;
-      border-radius: 20px;
+      background-color: #f1b832;
+      width: 30px;
       height: 5px;
+      border-radius: 5px;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -84,7 +85,7 @@ export default Vue.extend({
         transition: all 0.5s;
         border-radius: 20px;
         height: 5px;
-        width: 0;
+        width: 100%;
         transition: all 0.3s;
       }
     }

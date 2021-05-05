@@ -4,28 +4,35 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import LoadManager from "~/three/Singletons/LoadManager"
 import raf from "~singletons/RAF"
 
-import { ThreeGroup } from "~/interfaces/Three"
-
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
-import gsap from 'gsap'
-import { Tween } from "~lib/gsap-member/src/gsap-core"
+import gsap from "gsap"
 
 import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
 import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
 
+
 class Skeleton {
     gltfLoader: GLTFLoader
     textureLoader: THREE.TextureLoader
+    skeletonScene: THREE.Scene
 
-    mesh: THREE.Group
+    skeletons: THREE.Group[]
+    textures: THREE.Texture[]
+
     material: THREE.ShaderMaterial
 
+    progress: number
+    loaded: boolean
+
     errorsNames: string[]
-    skeletons: any
+    skeletonsInfos: any
     currentSkeleton: any
 
-    // tweenMap: WeakMap<THREE.Mesh, ReturnType<typeof gsap.to>>
+    isAnimating: boolean
+
+    uniforms: any
 
     errorMesh: THREE.Mesh | null
     heart: THREE.Mesh
@@ -34,121 +41,174 @@ class Skeleton {
     constructor() {
         this.gltfLoader = new GLTFLoader(LoadManager.manager)
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
+        this.skeletonScene = new THREE.Scene()
 
-        this.mesh = new THREE.Group()
+        this.loaded = false
+        this.isAnimating = false
 
-        this.skeletons = [
+        this.skeletons = []
+        this.textures = []
+
+        this.progress = 0
+
+        this.material = new THREE.ShaderMaterial({
+            uniforms: {
+                ...this.uniforms,
+                uFresnelColor: { value: new THREE.Color("#fff") },
+                uFresnelWidth: { value: 1 }
+            },
+            vertexShader: vertex,
+            fragmentShader: fragment,
+            transparent: true
+        })
+
+        this.errorsNames = ["Simple_Pen_Cylinder007", "intestins", "CISEAUX", "vertèbre 2", "Rib_L_3"]
+        this.skeletonsInfos = [
             RADIOLOGIST.SKELETON1,
             RADIOLOGIST.SKELETON2,
             RADIOLOGIST.SKELETON3,
             RADIOLOGIST.SKELETON4,
-            RADIOLOGIST.SKELETON5,
+            RADIOLOGIST.SKELETON5
         ]
+        this.currentSkeleton = null
 
-        this.errorsNames = [
-            'Simple_Pen_Cylinder007',
-            'intestins',
-            'CISEAUX',
-            'vertèbre 2',
-            'Rib_L_3'
-        ]
-
-        // this.tweenMap = new WeakMap()
+        this.uniforms = {
+            uMap: {
+                value: null
+            },
+            uAlpha: {
+                value: 0
+            }
+        }
 
         this.errorMesh = null
         this.heart = new THREE.Mesh()
         this.heartBaseScale = 1
-
-
-        this.currentSkeleton = null
-
-        this.material = new THREE.ShaderMaterial({
-            uniforms: {
-                uFresnelColor: { value: new THREE.Color("#FFFFFF") },
-                uFresnelWidth: { value: 1 },
-                uMap: { value: null },
-            },
-            vertexShader: vertex,
-            fragmentShader: fragment,
-            transparent: true,
-        })
     }
 
+    init(skeletonScene: THREE.Scene) {
+        this.skeletonScene = skeletonScene
+        this.loadModels(0)
+    }
 
-    load(skeletonScene: THREE.Scene, progress: number) {
-        raf.unsubscribe("heartbeat")
-        skeletonScene.remove(this.mesh)
-        this.errorMesh = null
-
-        this.currentSkeleton = this.skeletons[progress]
-
-        this.gltfLoader.load(this.currentSkeleton.URL, gltf => {
-
-            this.mesh = gltf.scene
-            this.mesh.scale.set(
-                this.currentSkeleton.SCALE,
-                this.currentSkeleton.SCALE,
-                this.currentSkeleton.SCALE
+    loadModels(i: number) {
+        this.gltfLoader.load(this.skeletonsInfos[i].URL, gltf => {
+            this.skeletons[i] = gltf.scene
+            this.skeletons[i].scale.set(
+                this.skeletonsInfos[i].SCALE,
+                this.skeletonsInfos[i].SCALE,
+                this.skeletonsInfos[i].SCALE
             )
 
-            this.applyTexture(skeletonScene, progress)
+            if (i === 3) {
+                console.log('fourth model')
+                this.skeletons[i].rotation.y = -Math.PI / 2
+            }
+
+            this.textureLoader.load(this.skeletonsInfos[i].BAKE, (texture) => {
+                texture.flipY = false
+                this.textures.push(texture)
+
+                if (i < 4) {
+                    this.loadModels(i + 1)
+                } else {
+                    this.loaded = true
+                    console.log('SKELETON AND TEXTURES LOADED')
+                    this.nextSkeleton(0)
+                }
+            })
         })
     }
 
-    applyTexture(skeletonScene: THREE.Scene, progress: number) {
-        const texture = this.textureLoader.load(this.currentSkeleton.BAKE)
-        texture.flipY = false
+    transitionIn(elem: THREE.Group) {
+        elem.position.y = 20
+        gsap.to(elem.position, {
+            duration: 0.5,
+            y: 0,
+        })
 
-        this.material.uniforms.uMap.value = texture
+        gsap.to(this.uniforms.uAlpha, {
+            duration: 0.5,
+            value: 1
+        })
+    }
 
-        this.mesh.traverse(obj => {
+    transitionOut(progress: number, controls: OrbitControls) {
+        this.isAnimating = true
+        gsap.to(this.currentSkeleton.position, {
+            duration: 0.5,
+            y: -20,
+            onComplete: () => {
+                controls.reset()
+                this.nextSkeleton(progress)
+            }
+        })
+
+        gsap.to(this.uniforms.uAlpha, {
+            duration: 0.5,
+            value: 0
+        })
+    }
+
+
+    nextSkeleton(progress: number) {
+
+        this.progress = progress
+
+        raf.unsubscribe("heartbeat")
+        this.errorMesh = null
+        this.skeletonScene.remove(this.currentSkeleton)
+
+        this.currentSkeleton = this.skeletons[this.progress]
+        this.uniforms.uMap.value = this.textures[this.progress]
+
+        const group = this.skeletons[this.progress] as THREE.Group
+        group.traverse(obj => {
             if (obj.type === "Mesh") {
                 const mesh = obj as THREE.Mesh
-                mesh.material = this.material.clone()
+                mesh.material = this.getShader()
 
-                const material = mesh.material as THREE.ShaderMaterial
-                material.uniforms = {
-                    uFresnelColor: { value: new THREE.Color("#fff"), },
-                    uFresnelWidth: { value: 1 },
-                    uMap: { value: texture },
-                }
-
-                if (mesh.name === this.errorsNames[progress]) {
+                if (mesh.name === this.errorsNames[this.progress]) {
                     this.errorMesh = mesh
                 }
 
-                if (mesh.name === '<3') {
+                if (mesh.name === "<3") {
                     this.heart = mesh
                     this.heartBaseScale = mesh.scale.x
 
                     raf.subscribe("heartbeat", this.heartbeat)
                 }
-
             }
-
         })
 
-        skeletonScene.add(this.mesh)
+        this.isAnimating = false
+        this.skeletonScene.add(this.currentSkeleton)
+        this.transitionIn(this.currentSkeleton)
     }
 
-    nextCase() {
 
+    getShader() {
+        return new THREE.ShaderMaterial({
+            uniforms: {
+                ...this.uniforms,
+                uFresnelColor: { value: new THREE.Color("#fff") },
+                uFresnelWidth: { value: 1 }
+            },
+            vertexShader: vertex,
+            fragmentShader: fragment,
+            transparent: true
+        })
     }
 
 
     heartbeat = () => {
         this.heart.scale.set(
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.currentSkeleton.HEART_SCALE,
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.currentSkeleton.HEART_SCALE,
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.currentSkeleton.HEART_SCALE
+            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE
         )
     }
-
-    update() {
-
-    }
 }
-
 
 const instance = new Skeleton()
 export default instance

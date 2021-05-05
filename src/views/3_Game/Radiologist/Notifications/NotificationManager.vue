@@ -6,8 +6,11 @@
         :key="notification.index"
         class="notification"
       >
-        <!-- :style="{ top: 100 * notification.index + 'px' }" -->
-        Notification
+        <Notification
+          :index="notification.index"
+          :content="notification.text"
+          :vduration="notification.duration"
+        ></Notification>
         <span
           class="close-notification"
           v-on:click="removeNotification(notification.index)"
@@ -19,6 +22,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Notification from "./Notification.vue";
 
 export default Vue.extend({
   data(): { notifications: Object[]; index: number } {
@@ -28,22 +32,26 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.addNotification(2000, "bonjour");
-    setTimeout(() => {
-      this.addNotification(2000, "bonsoir");
-    }, 1000);
+    this.addNotification(5000, "bonjour");
+    // setTimeout(() => {
+    //   this.addNotification(2000, "bonsoir");
+    // }, 1000);
+  },
+  components: {
+    Notification,
   },
   methods: {
     addNotification(duration: number, text: string) {
       this.notifications.push({
         text,
+        duration,
         index: this.index++,
       });
 
       setTimeout(() => {
         const index = this.index;
-        // this.notifications.shift();
-      }, duration);
+        this.notifications.shift();
+      }, duration + 1000);
     },
     removeNotification(index: number) {
       const i = this.notifications.findIndex((elem) => elem.index === index);
@@ -57,26 +65,50 @@ export default Vue.extend({
 .notification-container {
   width: 300px;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 11%;
+  top: 18%;
   z-index: 1000;
 }
 
 .close-notification {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 10px;
-  height: 10px;
-  background-color: black;
+  top: 5px;
+  right: -15px;
+  width: 12px;
+  height: 11px;
+  background-color: #5d34fb;
+  cursor: pointer;
+
+  &:after,
+  &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 1px;
+    background-color: white;
+    transform-origin: center;
+  }
+
+  &:after {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &:before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
 }
 
 .notification {
   // position: absolute;
   position: relative;
-  padding: 20px;
-  background-color: white;
-  border-radius: 20px;
+  padding: 10px;
+
+  margin-bottom: 20px;
+  background-color: #f7edff;
+  border-radius: 5px;
   transition: all 0.5s;
 }
 

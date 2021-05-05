@@ -247,7 +247,9 @@ export default class Scene {
 
   startRadiologist() {
     console.log("start radiologist game")
-    this.camera.position.set(0, 0, 20)
+    // this.camera.position.z = 15
+    this.radio.init()
+    // this.camera.position.set(0, 0, 30)
     this.scene.add(this.radio.group)
   }
 
@@ -258,6 +260,7 @@ export default class Scene {
 
   setEvents() {
     window.addEventListener("resize", this.resize.bind(this))
+    window.addEventListener('click', this.click)
   }
 
   resize() {
@@ -278,6 +281,10 @@ export default class Scene {
     if (this.Loader)
       this.Loader.fullScreenPlane.uniforms.uAspectHorizontal.value =
         window.innerWidth / window.innerHeight
+  }
+
+  click = () => {
+    this.radio.onClick()
   }
 
   render = (dt = 0) => {

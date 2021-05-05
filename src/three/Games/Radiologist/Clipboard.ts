@@ -3,6 +3,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
 import LoadManager from "~/three/Singletons/LoadManager"
 
+import raf from "~three/Singletons/RAF"
+
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
 
 import fragment from "~/shaders/radiologist/clipboard/fragment.glsl"
@@ -11,6 +13,8 @@ import vertex from "~/shaders/radiologist/clipboard/vertex.glsl"
 class Clipboard {
     gltfLoader: GLTFLoader
     textureLoader: THREE.TextureLoader
+
+    texturesArray: string[]
 
     mesh: THREE.Group
     material: THREE.ShaderMaterial
@@ -21,15 +25,24 @@ class Clipboard {
         this.gltfLoader = new GLTFLoader(LoadManager.manager)
         this.textureLoader = new THREE.TextureLoader(LoadManager.manager)
 
+        this.texturesArray = [
+            RADIOLOGIST.CLIPBOARD.BAKE1,
+            RADIOLOGIST.CLIPBOARD.BAKE2,
+            RADIOLOGIST.CLIPBOARD.BAKE3,
+            RADIOLOGIST.CLIPBOARD.BAKE4,
+            RADIOLOGIST.CLIPBOARD.BAKE5,
+        ]
+
         this.material = new THREE.ShaderMaterial({
             uniforms: {
-                size: { value: new THREE.Vector2(1, 1) },
-                baseTex: { value: null }
+                uSize: { value: new THREE.Vector2(1, 1) },
+                uMap: { value: null },
+                uAlpha: { value: 0 }
             },
             vertexShader: vertex,
             fragmentShader: fragment,
+            transparent: true
         })
-
     }
 
     load(group: THREE.Group, progress: number) {
@@ -42,37 +55,29 @@ class Clipboard {
                 RADIOLOGIST.CLIPBOARD.SCALE
             )
 
-            this.applyTexture(group, progress)
+            this.mesh.rotation.y = Math.PI / 2
+
+            this.mesh.position.set(10, -2, 0)
+
+            this.nextTexture(progress)
+            group.add(this.mesh)
         })
     }
 
-    applyTexture(group: THREE.Group, progress: number) {
-        const texture = this.textureLoader.load(RADIOLOGIST.CLIPBOARD.BAKE)
+    nextTexture(progress: number) {
+        const texture = this.textureLoader.load(this.texturesArray[progress])
         texture.flipY = false
 
-        this.material.uniforms.baseTex.value = texture
-        const uniforms = this.material.uniforms
+        this.material.uniforms.uMap.value = texture
 
         this.mesh.traverse(obj => {
             if (obj.type === "Mesh") {
                 const mesh = obj as THREE.Mesh
-                mesh.material = this.material.clone()
-
-                const material = mesh.material as THREE.ShaderMaterial
-                material.uniforms = uniforms
+                mesh.material = this.material
             }
         })
-
-        group.add(this.mesh)
     }
 
-    nextCase() {
-
-    }
-
-    update() {
-
-    }
 }
 
 

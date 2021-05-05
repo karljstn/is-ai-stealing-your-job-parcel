@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import CustomEase from "~/lib/CustomEase/src/CustomEase";
-import { StoreState } from "~/interfaces/Vue";
+import Vue from "vue"
+import Vuex from "vuex"
+import CustomEase from "~/lib/CustomEase/src/CustomEase"
+import { StoreState } from "~types"
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
@@ -30,7 +30,9 @@ const store = new Vuex.Store({
     radiologist: {
       progress: 0,
       confirm: false,
-      confirmCallback: null
+      confirmCallback: null,
+      penalty: () => { },
+      gameEnded: false
     },
     hideScrollDownArrow: false,
     isPencilWriting: false,
@@ -78,6 +80,14 @@ const store = new Vuex.Store({
     setConfirmCallback(state, payload) {
       state.radiologist.confirmCallback = payload
     },
+    setPenalty(state, payload) {
+      state.radiologist.penalty = payload
+    },
+    setGameEnded(state, payload) {
+      console.log('STATE IS UPDATING TO', payload)
+
+      state.radiologist.gameEnded = payload
+    },
     setPane(state, payload) {
       state.tweakpane = payload
     },
@@ -97,6 +107,6 @@ const store = new Vuex.Store({
   actions: {},
   modules: {},
   // TODO: computed() with isDev
-});
+})
 
-export default store;
+export default store

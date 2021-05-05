@@ -1,6 +1,6 @@
 <template>
   <div class="explanation-container">
-    <img src="~/assets/Games/Radiologist/ordi.png" alt="" />
+    <img :src="`${this.img}`" alt="" />
     <p>
       {{ this.text }}
     </p>
@@ -16,6 +16,9 @@ export default Vue.extend({
     return {
       src: this.img,
     };
+  },
+  mounted() {
+    console.log(this.img);
   },
 });
 </script>
@@ -42,15 +45,14 @@ export default Vue.extend({
   }
 
   p {
-    width: 70%;
-    // display: block;
-    // margin: auto;
+    width: 77%;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     font-size: 1.2em;
     text-align: center;
+    line-height: 130%;
   }
 }
 </style>

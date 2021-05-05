@@ -1,6 +1,7 @@
 uniform sampler2D uMap;
 uniform vec3 uFresnelColor;
 uniform float uFresnelWidth;
+uniform float uAlpha;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -23,7 +24,7 @@ void main(){
     // Shaping function
     inverseFresnelFactor = smoothstep(uFresnelWidth, uFresnelWidth + 0.01, inverseFresnelFactor);
     
-    vec3 color = mix(texelColor.rgb, uFresnelColor, inverseFresnelFactor);
+    vec3 finalColor = mix(texelColor.rgb, uFresnelColor, inverseFresnelFactor);
 
-    gl_FragColor = vec4(color, 1.); 
+    gl_FragColor = vec4(finalColor, uAlpha); 
 }

@@ -1,4 +1,7 @@
 import { Vector3 } from "three";
+import MainScene from "~/three/MainScene"
+import { CustomEase } from "gsap/all"
+import Tweakpane from "tweakpane"
 
 export type Viewport = {
   height: number
@@ -22,3 +25,36 @@ export type MainSceneParams = {
     position: Vector3
   }
 };
+
+export type StoreState = {
+  progression: number
+  devMode: {
+    enabled: boolean
+    benchmark: boolean
+    loader: boolean
+    tweakpane: boolean
+    forceRadiologist: boolean
+  }
+  load: {
+    isVueReady: boolean
+    isThreeReady: boolean
+    isLoaderReady: boolean
+    minLoaderDuration: number
+    pauseBeforeLoaderDuration: number
+  }
+  eases: Map<string, typeof CustomEase>
+  scene: MainScene | null
+  rects: Map<string, DOMRect>
+  tweakpane: Tweakpane | null,
+  radiologist: {
+    progress: number,
+    confirm: boolean,
+    confirmCallback: Function | null,
+    penalty: Function,
+    gameEnded: boolean
+  }
+  hideScrollDownArrow: boolean
+  isPencilWriting: boolean
+  isPencilFinished: boolean
+  scrollNavigationDelay: number
+}
