@@ -4,18 +4,13 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import LoadManager from "~/three/Singletons/LoadManager"
 import raf from "~three/Singletons/RAF"
 
-import { ThreeGroup } from "~/interfaces/Three"
-
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 import gsap from "gsap"
-import { Tween } from "~lib/gsap-member/src/gsap-core"
-
-import { MeshSurfaceSampler } from "three/examples/jsm/Math/MeshSurfaceSampler"
 
 import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
 import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 
 class Skeleton {

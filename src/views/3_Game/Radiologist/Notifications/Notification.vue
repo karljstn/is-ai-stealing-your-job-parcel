@@ -1,10 +1,73 @@
 <template>
-  <div></div>
+  <div>
+    <p class="notification-content">{{ content }}</p>
+    <div
+      class="bar"
+      :style="{ width: (this.progress / this.duration) * 100 + '%' }"
+    ></div>
+  </div>
 </template>
 
 <script lang="ts">
-export default {};
+import Vue from "vue";
+export default Vue.extend({
+  props: ["index", "content", "vduration"],
+  data(): {
+    interval: any;
+    progress: number;
+    duration: number;
+  } {
+    return {
+      interval: null,
+      progress: 0,
+      duration: 0,
+    };
+  },
+  mounted() {
+    this.duration = this.vduration / 1000;
+
+    this.interval = setInterval(() => {
+      if (this.progress === this.duration) {
+        clearInterval(this.interval);
+      }
+
+      this.progress++;
+    }, 1000);
+  },
+
+  destroyed() {
+    console.log("clear interval");
+
+    clearInterval(this.interval);
+  },
+  methods: {
+    // clock() {
+    //   this.interval = setInterval(() => {
+    //     console.log("mounted");
+    //     if (this.progress === this.duration) {
+    //       console.log("clear interval");
+    //       clearInterval(this.interval);
+    //     }
+    //     this.progress++;
+    //   });
+    // },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
+.notification-content {
+  font-size: 0.9em;
+}
+.bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #5d34fb;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  transition: width 0.5s;
+}
 </style>

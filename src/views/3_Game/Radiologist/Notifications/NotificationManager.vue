@@ -6,7 +6,11 @@
         :key="notification.index"
         class="notification"
       >
-        Notification
+        <Notification
+          :index="notification.index"
+          :content="notification.text"
+          :vduration="notification.duration"
+        ></Notification>
         <span
           class="close-notification"
           v-on:click="removeNotification(notification.index)"
@@ -28,22 +32,26 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.addNotification(60000, "bonjour");
-    setTimeout(() => {
-      this.addNotification(60000, "bonsoir");
-    }, 1000);
+    this.addNotification(5000, "bonjour");
+    // setTimeout(() => {
+    //   this.addNotification(2000, "bonsoir");
+    // }, 1000);
+  },
+  components: {
+    Notification,
   },
   methods: {
     addNotification(duration: number, text: string) {
       this.notifications.push({
         text,
+        duration,
         index: this.index++,
       });
 
       setTimeout(() => {
         const index = this.index;
         this.notifications.shift();
-      }, duration);
+      }, duration + 1000);
     },
     removeNotification(index: number) {
       const i = this.notifications.findIndex((elem) => elem.index === index);
@@ -97,7 +105,7 @@ export default Vue.extend({
   // position: absolute;
   position: relative;
   padding: 10px;
-  font-size: 0.9em;
+
   margin-bottom: 20px;
   background-color: #f7edff;
   border-radius: 5px;
