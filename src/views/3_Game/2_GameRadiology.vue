@@ -8,12 +8,14 @@
       ></ButtonsRight>
 
       <!-- <NotificationManager></NotificationManager> -->
+
       <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
       <Toolbar></Toolbar>
 
       <Confirm v-if="this.confirm"></Confirm>
 
+      <button v-on:click="this.log" class="log">Log</button>
       <Timer
         :timerCanStart="this.timerCanStart"
         :timerPause="this.timerPause"
@@ -87,16 +89,14 @@ export default Vue.extend({
 
   computed: {
     confirm() {
-      console.log(store.state.radiologist.gameEnded);
+      console.log(store.state.radiologist);
 
       return store.state.radiologist.confirm;
     },
     gameEnded() {
-      console.log("game ended");
-
       console.log(store.state.radiologist.gameEnded);
 
-      return store.state.radiologist.gameEnded;
+      return store.state.radiologist;
     },
   },
 
@@ -160,6 +160,9 @@ export default Vue.extend({
   },
 
   methods: {
+    log() {
+      store.state.scene.radio.log();
+    },
     setTutorialCount() {
       if (this.tutorialCount === 6) {
         this.hideTutorial();
@@ -218,6 +221,8 @@ section {
 
   .log {
     position: absolute;
+    bottom: 0;
+    z-index: 1000;
   }
 
   .tutorial {
