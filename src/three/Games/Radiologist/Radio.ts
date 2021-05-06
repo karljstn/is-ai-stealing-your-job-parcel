@@ -28,6 +28,8 @@ let minPan = new THREE.Vector3(0, -5, 0)
 let maxPan = new THREE.Vector3(0, 3.5, 0)
 let _v = new THREE.Vector3()
 
+let dragForce = 0
+
 export default class Radio implements ThreeGroup {
     group: THREE.Group
 
@@ -106,35 +108,55 @@ export default class Radio implements ThreeGroup {
 
         this.gameRunning = false
 
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial())
+        // this.group.add(mesh)
+
+        // mesh.position.y = 3.5
+
 
         this.controls.addEventListener("start", () => {
             this.mouseDown = true
+            dragForce = 0
         })
 
         this.controls.addEventListener("change", () => {
-            if (this.mouseDown) {
+            dragForce += 1
+            if (this.mouseDown && dragForce > 15) {
                 this.isDragging = true
 
-                if (this.currentIntersect) {
-                    this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
-                }
+
+                // if (this.currentIntersect) {
+
+                //     this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
+                //     // this.currentIntersect = null
+                //     // coef
+                // }
             }
 
-            // console.log('dragging')
+            //doesn't work in the update
+            if (this.controls.enabled) {
 
-            // if (!Skeleton.isAnimating) {
+                _v.copy(this.controls.target)
+                this.controls.target.clamp(minPan, maxPan)
+                _v.sub(this.controls.target)
+                this.camera.position.sub(_v)
+            }
 
-            _v.copy(this.controls.target)
-            this.controls.target.clamp(minPan, maxPan)
-            _v.sub(this.controls.target)
-            this.camera.position.sub(_v)
-            // }
         })
 
         this.controls.addEventListener("end", () => {
-            this.mouseDown = false
+            // this.mouseDown = false
+            dragForce = 0
             this.isDragging = false
         })
+
+        window.addEventListener('pointerup', this.mouseup)
+    }
+
+    mouseup = () => {
+        dragForce = 0
+        this.mouseDown = false
+        this.isDragging = false
     }
 
 
@@ -201,6 +223,11 @@ export default class Radio implements ThreeGroup {
             })
 
         }
+    }
+
+    log() {
+        console.log(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+
     }
 
     gameState(state: string, cond: boolean) {
@@ -281,6 +308,22 @@ export default class Radio implements ThreeGroup {
                 repeat: -1
             })
 
+            // this.camera.lookAt(Skeleton.errorMesh.position)
+
+            this.controls.enabled = false
+            this.controls.autoRotate = true
+            // Skeleton.errorMesh.position.copy(this.controls.target)
+
+            gsap.to(this.controls.target, {
+                duration: 1,
+                y: 3.5,
+            })
+
+            gsap.to(this.camera.position, {
+                duration: 1,
+                y: 3.5,
+                z: 4
+            })
         }
     }
 
@@ -298,7 +341,7 @@ export default class Radio implements ThreeGroup {
                 this.group.remove(Clipboard.mesh)
                 this.skeletonScene.remove(Skeleton.currentSkeleton)
 
-                router.push('10')
+                // router.push('10')
                 this.camera.position.z = 1
 
                 this.controls.dispose()
@@ -351,19 +394,34 @@ export default class Radio implements ThreeGroup {
         this.updateRenderTarget()
         const delta = this.clock.getDelta()
 
+        this.controls.update()
+
         if (Skeleton.loaded) {
             if (this.gameRunning) {
-                if (!this.isDragging && !Skeleton.isAnimating && !this.patientFileOpened) {
-                    this.raycaster.setFromCamera(this.mouse, this.camera)
-                    const intersects = this.raycaster.intersectObjects(Skeleton.skeletons[this.progress].children, true)
+                if (!Skeleton.isAnimating && !this.patientFileOpened) {
 
-                    if (intersects.length) {
-                        if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) this.fromMeshToMesh()
-                        this.onMesh(delta, intersects[0])
+                    if (!this.isDragging) {
+
+                        this.raycaster.setFromCamera(this.mouse, this.camera)
+                        const intersects = this.raycaster.intersectObjects(Skeleton.skeletons[this.progress].children, true)
+
+                        if (intersects.length) {
+
+                            if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) this.fromMeshToMesh()
+                            this.onMesh(delta, intersects[0])
+
+                        } else {
+                            if (this.currentIntersect) this.fromMeshToBlank()
+                            this.currentIntersect = null
+                            coef = 0
+                        }
+
                     } else {
-                        if (this.currentIntersect) this.fromMeshToBlank()
-                        coef = 0
-                        this.currentIntersect = null
+                        if (this.currentIntersect) {
+                            //on drag, if current intersect is defined, make it unselect and put it to null
+                            this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1
+                            this.currentIntersect = null
+                        }
                     }
                 }
             }
