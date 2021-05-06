@@ -2,8 +2,11 @@ import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene, Vector
 import { MODELS } from "~constants/MODELS";
 import { ThreeGLTF } from "~interfaces/Three";
 import { Viewport } from "~types";
-import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import TransitionGLTF from "./base/TransitionGLTF";
 import MouseController from '~singletons/MouseController'
+import raf from "~singletons/RAF"
+import { RAFS } from "~constants/RAFS"
+import store from "~store";
 
 class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	params: {
@@ -29,18 +32,7 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	initialize = () => {
-		// Animations
-		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
-
-		this.animations.forEach((anim) => {
-			if (!this.mixer) return
-
-			const clipAction = this.mixer.clipAction(anim)
-			clipAction.loop = LoopOnce
-			clipAction.clampWhenFinished = true
-			this.actions?.push(clipAction)
-		})
 
 		const target = new Vector3(0, -this.viewport.height / 2.7, 0)
 		this.group.position.copy(target)
@@ -52,19 +44,34 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 			}
 		})
 
-		this.group.scale.set(0, 0, 0)
+		this.group.scale.setScalar(0)
 		this.group.rotateY(-Math.PI / 2)
 
 		this.scene.add(this.group)
 
-		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
-		this.setTransition(MODELS.TRASHCAN.SCALE, this.original.position, new Vector3(0, -0.3, 0), this.params.out.delay, this.params.out.duration)
+		this.tweaks()
 
-		this.in()
+		raf.subscribe(RAFS.TRASHCAN, this.update)
+		this.setTransition(MODELS.TRASHCAN.SCALE, this.original.position, new Vector3(0, -0.3, 0), this.params.out.delay, this.params.out.duration)
+	}
+
+	tweaks = () => {
+		const dropBtn = store.state.tweakpane.addButton({ title: 'Drop' })
+		dropBtn.on('click', () => {
+			this.drop()
+		})
+		const inBtn = store.state.tweakpane.addButton({ title: 'In' })
+		inBtn.on('click', () => {
+			this.in()
+		})
+		const outBtn = store.state.tweakpane.addButton({ title: 'Out' })
+		outBtn.on('click', () => {
+			this.out()
+		})
 	}
 
 	drop: () => Promise<void> | undefined = () => {
-		if (!this.actions) return
+		if (!this.actions) return null
 
 		this.actions?.forEach(action => {
 			action.play()
@@ -72,11 +79,14 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 
 		return new Promise((resolve) => {
 			setTimeout(() => {
+				this.actions?.forEach(action => {
+
+				})
 				this.out()
 				setTimeout(() => {
 					resolve()
 				}, this.params.out.duration * 1000);
-			}, 2000);
+			}, 3000);
 		})
 	}
 
@@ -85,6 +95,7 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		raf.unsubscribe(RAFS.TRASHCAN)
 		this.scene.remove(this.group)
 	}
 }

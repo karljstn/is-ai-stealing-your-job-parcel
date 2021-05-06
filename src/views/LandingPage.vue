@@ -1,26 +1,28 @@
 <template>
-<div>
-	<section>
-		<div class="container">
-			<div :class="getLetsBeginClass">
-					<p>Let's begin !</p>
-			</div>
-			<div :class="getParagraphsClass">
-				<save-rect :rectName="rect">
-					<SplitText ref="scroll" text="Scroll"></SplitText>
-					<span>&nbsp;</span>
-					<SplitText ref="to" text="to"></SplitText>
-					<span>&nbsp;</span>
-					<SplitText ref="throw" text="throw"></SplitText>
-					<SplitText ref="your" text="your"></SplitText>
-					<span>&nbsp;</span>
-					<SplitText ref="biases" text="biases"></SplitText>
-					<span>&nbsp;</span>
-					<SplitText ref="away" text="away"></SplitText>
-				</save-rect>
-			</div>
-	</section>
-</div>
+	<!-- <transition appear name="landing" v-bind:css="false" v-on:enter="enter" v-on:leave="leave"> -->
+		<div>
+			<section>
+				<div class="container">
+					<div :class="getLetsBeginClass">
+							<p>Let's begin !</p>
+					</div>
+					<div :class="getParagraphsClass">
+						<save-rect :rectName="rect">
+							<SplitText ref="scroll" text="Scroll"></SplitText>
+							<span>&nbsp;</span>
+							<SplitText ref="to" text="to"></SplitText>
+							<span>&nbsp;</span>
+							<SplitText ref="throw" text="throw"></SplitText>
+							<SplitText ref="your" text="your"></SplitText>
+							<span>&nbsp;</span>
+							<SplitText ref="biases" text="biases"></SplitText>
+							<span>&nbsp;</span>
+							<SplitText ref="away" text="away"></SplitText>
+						</save-rect>
+					</div>
+			</section>
+		</div>
+	<!-- </transition> -->
 </template>
 
 <script lang="ts">
@@ -33,9 +35,7 @@ import SplitText from '~components/Common/SplitText.vue';
 import Vue from 'vue';
 import store from '~/store';
 import gsap from 'gsap';
-import NormalizeWheel from 'normalize-wheel';
 import { fadeBackground } from '~util';
-import { PALETTE } from '~constants/PALETTE';
 
 export default Vue.extend({
 	name: 'landing-page',
@@ -54,18 +54,25 @@ export default Vue.extend({
 		}
 	},
 	methods: {
-		out(){			
+		enter(){
+			// console.log('hey')
+			store.state.scene?.TrashcanScene.Trashcan.in()
+		},
+		leave(el:any, done:any){			
+			// store.state.scene?.TrashcanScene.Trashcan.drop().then(done)
+
 			store.state.scene?.TrashcanScene.Trashcan.drop()?.then(()=>{
-				this.$router.push(`/1`);
+				done()
 			});
 
-			store.commit("toggleHideScrollDownArrow")
-			fadeBackground({ color: PALETTE.YELLOW });
+			// store.commit("toggleHideScrollDownArrow")
+			// fadeBackground({ color: PALETTE.YELLOW });
 		}
 	},
 	mounted() {
 		// Three
 		store.state.scene?.TrashcanScene.start();
+		store.state.scene?.TrashcanScene.Trashcan.in()
 
 		// Text animations
 		const refs: any[] = Object.values(this.$refs);

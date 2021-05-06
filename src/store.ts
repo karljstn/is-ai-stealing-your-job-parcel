@@ -94,6 +94,9 @@ const store = new Vuex.Store({
     toggleHideScrollDownArrow(state) {
       state.hideScrollDownArrow = !state.hideScrollDownArrow
     },
+    setHideScrollDownArrow(state, payload) {
+      state.hideScrollDownArrow = payload
+    },
     setPencilWriting(state, payload) {
       state.isPencilWriting = payload
     },

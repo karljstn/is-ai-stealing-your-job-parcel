@@ -1,4 +1,4 @@
-import { AnimationClip, Group, Scene } from "three"
+import { AnimationAction, AnimationClip, AnimationMixer, Group, LoopOnce, Scene } from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { Viewport } from "~types"
 import LoadManager from '~/three/Singletons/LoadManager'
@@ -10,7 +10,9 @@ class BaseGLTF {
 	viewport: Viewport
 
 	group: Group
+	mixer: AnimationMixer | null
 	animations: AnimationClip[]
+	actions: AnimationAction[]
 	loader: GLTFLoader
 	isLoaded: boolean
 
@@ -19,7 +21,9 @@ class BaseGLTF {
 		this.viewport = viewport
 
 		this.group = new Group()
+		this.mixer = null
 		this.animations = []
+		this.actions = []
 		this.loader = new GLTFLoader(LoadManager.manager)
 		this.isLoaded = false
 	}
@@ -27,7 +31,20 @@ class BaseGLTF {
 	load = (url: string) => new Promise<void>((resolve, reject) => {
 		this.loader.load(url, (gltf) => {
 			this.group = gltf.scene
+
+			// Animations
 			this.animations = gltf.animations
+			this.mixer = new AnimationMixer(this.group)
+
+			this.animations.forEach((anim) => {
+				if (!this.mixer) return
+
+				const clipAction = this.mixer.clipAction(anim)
+				// clipAction.loop = LoopOnce
+				clipAction.clampWhenFinished = true
+				this.actions?.push(clipAction)
+			})
+
 			this.isLoaded = true
 			resolve()
 		}, () => null, () => reject())

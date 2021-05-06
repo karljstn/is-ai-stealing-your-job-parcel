@@ -5,7 +5,7 @@ import { RAFS } from "~constants/RAFS"
 import { ThreeGLTF } from "~interfaces/Three"
 import store from "~store"
 import { RECTS } from "~constants/RECTS";
-import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF"
+import TransitionGLTF from "./base/TransitionGLTF"
 import { Viewport } from '~types'
 import MouseController from "~singletons/MouseController"
 
@@ -43,17 +43,13 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		this.group.scale.set(0, 0, 0)
 		this.group && this.scene.add(this.group)
 
-		// Animations
-		if (!this.animations) return
-		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
+
 		const clip = AnimationClip.findByName(this.animations, 'ArmatureAction');
 		this.waveAction = this.mixer.clipAction(clip)
 		this.waveAction.loop = LoopOnce
 		this.waveAction.clampWhenFinished = true
 
-		this.setCallback(CallbackType.ONCOMPLETE, this.wave)
-		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
 		this.setTransition(MODELS.HAND.SCALE, this.group.position, new Vector3(0, 0, 0))
 
 		this.group.traverse((obj: any) => {

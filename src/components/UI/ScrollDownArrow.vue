@@ -18,16 +18,9 @@ import store from '~store';
 import gsap from 'gsap';
 
 export default Vue.extend({
-	data(){
-		return {
-			isTugging : false
-		}
-	},
 	computed: {
 		show() {
-			const router = this.$router;
-			const isGame = router.history.current.name.indexOf('Game') > -1;
-			return isGame ? 'scroll hide' : 'scroll';
+			return store.state.hideScrollDownArrow ? 'scroll hide' : 'scroll';
 		},
 	},
 });

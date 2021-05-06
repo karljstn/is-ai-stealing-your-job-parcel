@@ -1,15 +1,12 @@
-import { Group, Object3D, Scene, Vector2, Vector3 } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import LoadManager from '~/three/Singletons/LoadManager'
+import { Scene, Vector3 } from "three";
 import { ThreeGLTF } from "~interfaces/Three";
 import { MODELS } from "~constants/MODELS";
 import { Viewport } from "~types";
 import store from "~store";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
-import { timeStamp } from "node:console";
 import { clamp, map } from "~util";
 import BezierEasing from 'bezier-easing'
-import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import TransitionGLTF from "./base/TransitionGLTF";
 import raf from '~singletons/RAF'
 import { RAFS } from "~constants/RAFS";
 import MouseController from '~singletons/MouseController'
@@ -35,7 +32,7 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 			eventData: {
 				mouseDown: {
 					factor: 0,
-					speed: 0.04
+					speed: 0.05
 				}
 			},
 			eases: {
@@ -50,7 +47,6 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 		this.group.scale.set(0, 0, 0)
 		this.group.rotation.setFromVector3(this.params.rotation.resting)
 
-		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
 		this.setTransition(MODELS.PENCIL.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
 
 		this.group && this.scene.add(this.group)

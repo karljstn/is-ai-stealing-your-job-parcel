@@ -25,24 +25,96 @@ import store from '~store';
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: LandingPage, name: "LandingPage", color: PALETTE.WHITE, transitions: { delay: 500, out: () => { store.state.scene?.TrashcanScene.Trashcan.out() } } },
-  { path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.YELLOW },
-  { path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK },
-  { path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.BLACK },
-  { path: '/4', component: IntroAI, name: "IntroAI", color: PALETTE.PINK },
-  { path: '/5', component: IntroQuestion, name: "IntroQuestion", color: PALETTE.YELLOW },
-  { path: '/6', component: DefinitionOne, name: "DefinitionOne", color: PALETTE.ORANGE },
-  { path: '/7', component: DefinitionTwo, name: "DefinitionTwo", color: PALETTE.WHITE },
-  { path: '/8', component: GameOne, name: "GameOne", color: PALETTE.LIGHTPINK },
-  { path: '/9', component: GameTwo, name: "GameTwo" },
-  { path: '/10', component: EndOne, name: "EndOne", color: PALETTE.ORANGE },
-  { path: '/11', component: EndTwo, name: "EndTwo", color: PALETTE.WHITE },
-  { path: '/12', component: EndThree, name: "EndThree", color: PALETTE.BLACK },
-  { path: '/outro', component: Outro, name: "Outro", color: PALETTE.LIGHTPINK },
-  { path: '/outro/ressources', component: OutroRessources, name: "OutroRessources" },
-  { path: '/outro/share', component: OutroShare, name: "OutroShare" },
-  { path: '/outro/takeaction', component: OutroTakeAction, name: "OutroTakeAction" },
-  { path: '/credits', component: Credits, name: "Credits" },
+  {
+    path: '/', component: LandingPage, name: "LandingPage", color: PALETTE.WHITE, meta: {
+      scroll: { disabled: false }, transition: { delay: 1000, out: () => { store.state.scene.TrashcanScene.Trashcan.drop(); } }
+    }
+  },
+  {
+    path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.YELLOW, meta: {
+      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK, meta: {
+      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.BLACK, meta: {
+      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/4', component: IntroAI, name: "IntroAI", color: PALETTE.PINK, meta: {
+      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/5', component: IntroQuestion, name: "IntroQuestion", color: PALETTE.YELLOW, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/6', component: DefinitionOne, name: "DefinitionOne", color: PALETTE.ORANGE, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/7', component: DefinitionTwo, name: "DefinitionTwo", color: PALETTE.WHITE, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/8', component: GameOne, name: "GameOne", color: PALETTE.LIGHTPINK, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/9', component: GameTwo, name: "GameTwo", meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/10', component: EndOne, name: "EndOne", color: PALETTE.ORANGE, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/11', component: EndTwo, name: "EndTwo", color: PALETTE.WHITE, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/12', component: EndThree, name: "EndThree", color: PALETTE.BLACK, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/outro', component: Outro, name: "Outro", color: PALETTE.LIGHTPINK, meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/outro/ressources', component: OutroRessources, name: "OutroRessources", meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/outro/share', component: OutroShare, name: "OutroShare", meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/outro/takeaction', component: OutroTakeAction, name: "OutroTakeAction", meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/credits', component: Credits, name: "Credits", meta: {
+      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+    }
+  },
 ]
 
 const router = new VueRouter({

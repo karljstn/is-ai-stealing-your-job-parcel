@@ -2,7 +2,7 @@ import { ThreeGLTF } from "~interfaces/Three";
 import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene, Vector3 } from "three"
 import { Viewport } from "~types"
 import { MODELS } from "~constants/MODELS";
-import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import TransitionGLTF from "./base/TransitionGLTF";
 import { RAFS } from "~constants/RAFS";
 import raf from '~singletons/RAF';
 
@@ -30,20 +30,8 @@ class SlotMachine extends TransitionGLTF implements ThreeGLTF {
 		this.group.rotateY(-Math.PI / 2)
 		this.group.position.x += this.viewport.width / 8;
 
-		// Animations
-		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
 
-		this.animations.forEach((anim) => {
-			if (!this.mixer) return
-
-			const clipAction = this.mixer.clipAction(anim)
-			clipAction.loop = LoopOnce
-			clipAction.clampWhenFinished = true
-			this.actions?.push(clipAction)
-		})
-
-		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
 		this.setTransition(MODELS.SLOT_MACHINE.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
 		this.scene.add(this.group)
 		this.in()

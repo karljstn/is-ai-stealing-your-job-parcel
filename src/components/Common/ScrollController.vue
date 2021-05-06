@@ -10,29 +10,37 @@ import router from '~/router';
 import NormalizeWheel from 'normalize-wheel';
 import VueRouter, { RouteRecordPublic } from 'vue-router';
 import { debounce } from '~util/_index.js';
+import store from '~store';
 
 const wait = 300;
 
 export default Vue.extend({
-	props: ['time'],
 	methods: {
 		onWheel(event: Event) {
-			const r = router as VueRouter & { history: any }; // bad type
 			const routes = router.getRoutes();
-			const currPath: number = parseFloat(r.history.current.path.substring(1));
+			const normalized = NormalizeWheel(event);
+			const pixelSpeed = normalized.pixelY;
+			const index = this.getPathIndex(router);
+			const currentRoute = router.getRoutes()[this.getPathIndex(router)];
+			const transition = this.getTransition(currentRoute.meta);
+
+			if (currentRoute && this.getDisabled(currentRoute.meta)) return;
 
 			let target: RouteRecordPublic;
 
-			const normalized = NormalizeWheel(event);
-			const pixelSpeed = normalized.pixelY;
 			if (pixelSpeed >= 1) {
-				target = this.getNextRoute(routes, currPath);
-			} else if (!currPath) return;
+				target = this.getNextRoute(routes, index);
+			} else if (!index) return;
 			else {
-				target = this.getPreviousRoute(routes, currPath);
+				target = this.getPreviousRoute(routes, index);
 			}
 
-			router.push(target);
+			this.setScrollArrow(target.meta);
+
+			transition.out();
+			setTimeout(() => {
+				router.push(target);
+			}, transition.delay);
 		},
 		getNextRoute(routes: RouteRecordPublic[], index: number) {
 			if (!index) {
@@ -48,9 +56,30 @@ export default Vue.extend({
 				return routes[index - 1];
 			}
 		},
+		getPathIndex(router: VueRouter) {
+			const r = router as VueRouter & any; // bad type
+			const index = parseFloat(r.history.current.path.substring(1));
+			return index ? index : 0;
+		},
+		setScrollArrow(meta: any) {
+			if (this.getDisabled(meta)) {
+				store.commit('setHideScrollDownArrow', true);
+			} else {
+				store.commit('setHideScrollDownArrow', false);
+			}
+		},
+		getDisabled(meta: any) {
+			return meta.scroll.disabled;
+		},
+		getTransition(meta: any) {
+			return meta.transition;
+		},
 	},
 	mounted() {
 		const debounced = debounce(this.onWheel, wait, true);
+		const currentRoute = router.getRoutes()[this.getPathIndex(router)];
+
+		if (currentRoute) this.setScrollArrow(currentRoute.meta);
 
 		window.addEventListener('wheel', debounced);
 		window.addEventListener('mousewheel', debounced);
