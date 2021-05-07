@@ -26,7 +26,7 @@ import { ThreeGLTF } from "~interfaces/Three";
 import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
 import { Timeline } from "~lib/gsap-member/src/gsap-core";
-import TransitionGLTF from "./base/TransitionGLTF";
+import TransitionGLTF from "~three/Meshes/GLTF/base/TransitionGLTF";
 
 class EmojiGlasses extends TransitionGLTF implements ThreeGLTF {
   params: any;
