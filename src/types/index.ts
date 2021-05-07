@@ -54,7 +54,9 @@ export type StoreState = {
     gameEnded: boolean
   }
   hideScrollDownArrow: boolean
+  darkenScrollDownArrow: boolean
   isPencilWriting: boolean
   isPencilFinished: boolean
   scrollNavigationDelay: number
+  hideLanding: boolean
 }

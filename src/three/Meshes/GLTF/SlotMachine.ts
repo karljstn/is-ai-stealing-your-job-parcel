@@ -30,13 +30,21 @@ class SlotMachine extends TransitionGLTF implements ThreeGLTF {
 		this.group.rotateY(-Math.PI / 2)
 		this.group.position.x += this.viewport.width / 8;
 
+		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
+		this.animations.forEach((anim) => {
+			if (!this.mixer) return
 
-		this.setTransition(MODELS.SLOT_MACHINE.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
+			const clipAction = this.mixer.clipAction(anim)
+			clipAction.loop = LoopOnce
+			clipAction.clampWhenFinished = true
+			this.actions?.push(clipAction)
+		})
+
+		this.setTransition(MODELS.SLOT_MACHINE.SCALE, this.group.position, new Vector3(0, 0, 0))
 		this.scene.add(this.group)
 		this.in()
 		setTimeout(this.pull, 1000);
-
 		raf.subscribe(RAFS.SLOT_MACHINE, this.update)
 	}
 
@@ -53,6 +61,7 @@ class SlotMachine extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		// this.killTween()
 		this.scene.remove(this.group)
 	}
 }

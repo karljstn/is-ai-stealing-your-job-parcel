@@ -24,7 +24,10 @@ export default Vue.extend({
 			const currentRoute = router.getRoutes()[this.getPathIndex(router)];
 			const transition = this.getTransition(currentRoute.meta);
 
-			if (currentRoute && this.getDisabled(currentRoute.meta)) return;
+			if (currentRoute && this.getDisabled(currentRoute.meta)) {
+				store.commit('setHideScrollDownArrow', true);
+				return;
+			}
 
 			let target: RouteRecordPublic;
 
@@ -36,7 +39,6 @@ export default Vue.extend({
 			}
 
 			this.setScrollArrow(target.meta);
-
 			transition.out();
 			setTimeout(() => {
 				router.push(target);
@@ -67,12 +69,21 @@ export default Vue.extend({
 			} else {
 				store.commit('setHideScrollDownArrow', false);
 			}
+
+			if (this.getDarkenScrollDownArrow(meta)) {
+				store.commit('setDarkenScrollDownArrow', true);
+			} else {
+				store.commit('setDarkenScrollDownArrow', false);
+			}
 		},
 		getDisabled(meta: any) {
 			return meta.scroll.disabled;
 		},
 		getTransition(meta: any) {
 			return meta.transition;
+		},
+		getDarkenScrollDownArrow(meta: any) {
+			return meta.scroll.darkenScrollDownArrow;
 		},
 	},
 	mounted() {

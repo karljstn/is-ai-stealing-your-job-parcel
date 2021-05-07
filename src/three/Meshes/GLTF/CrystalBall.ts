@@ -6,7 +6,7 @@ import { MODELS } from "~constants/MODELS";
 import { RECTS } from "~constants/RECTS";
 import { Viewport } from "~types";
 import { PALETTE } from "~constants/PALETTE";
-import TransitionGLTF, { CallbackType } from "./base/TransitionGLTF";
+import TransitionGLTF from "~three/Meshes/GLTF/base/TransitionGLTF";
 
 // import vertex from '~shaders/refraction/vertex.glsl'
 // import fragment from '~shaders/refraction/fragment.glsl'
@@ -52,18 +52,13 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 			this.params.rotation.z
 		);
 		this.group.scale.setScalar(0)
-
 		this.group.traverse((object3D) => {
 			const mesh = object3D as Mesh;
 			if (mesh.material) mesh.material = this.material;
 		});
-
 		this.group && this.scene.add(this.group)
 		// raf.subscribe(RAFS.CRYSTALBALL, this.update);
-
-		this.setCallback(CallbackType.ONREVERSECOMPLETE, this.destroy)
-		this.setTransition(MODELS.CRYSTAL_BALL.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
-
+		this.setTransition(MODELS.CRYSTAL_BALL.SCALE, this.group.position, new Vector3(0, 0, 0),)
 		this.in()
 	})
 
@@ -75,6 +70,7 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		// this.killTween()
 		this.group && this.scene.remove(this.group)
 	}
 }

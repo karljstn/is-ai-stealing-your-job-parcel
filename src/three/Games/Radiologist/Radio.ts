@@ -76,7 +76,7 @@ export default class Radio implements ThreeGroup {
         this.patientFileOpened = false
 
         this.renderer = renderer
-        this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
+        this.renderTarget = new THREE.WebGLMultisampleRenderTarget(window.innerWidth, window.innerHeight)
 
         this.controls.minDistance = 5
         this.controls.maxDistance = 30

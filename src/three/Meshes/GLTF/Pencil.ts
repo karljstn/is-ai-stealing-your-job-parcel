@@ -46,13 +46,10 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 	initialize = () => {
 		this.group.scale.set(0, 0, 0)
 		this.group.rotation.setFromVector3(this.params.rotation.resting)
-
-		this.setTransition(MODELS.PENCIL.SCALE, this.group.position, new Vector3(0, 0, 0), 0)
-
+		this.setTransition(MODELS.PENCIL.SCALE, this.group.position, new Vector3(0, 0, 0),)
 		this.group && this.scene.add(this.group)
 		this.tweaks()
 		this.setEvents()
-
 		raf.subscribe(RAFS.PENCIL, this.update);
 	}
 
@@ -111,6 +108,7 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		// this.killTween()
 		this.group && this.scene.remove(this.group)
 		raf.unsubscribe(RAFS.PENCIL)
 	}

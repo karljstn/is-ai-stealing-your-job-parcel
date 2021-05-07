@@ -1,11 +1,6 @@
-import store from "~/store";
 import { Viewport } from "~/types";
-import { rectToThree } from "~/util";
-import { PerspectiveCamera, Scene, Vector2, Vector3 } from "three";
+import { Scene, } from "three";
 import { RECTS } from "~/constants/RECTS";
-import EmojiGlasses from "../Meshes/GLTF/EmojiGlasses";
-import Tweakpane from "tweakpane";
-import EmojiSad from "~three/Meshes/GLTF/EmojiSad";
 import { MODELS } from "~constants/MODELS";
 import Emoji from "~three/Meshes/GLTF/base/Emoji";
 import { RAFS } from "~constants/RAFS";
@@ -18,8 +13,8 @@ class EmojisScene {
     viewport: Viewport,
     scene: Scene,
   ) {
-    this.EmojiGlasses = new Emoji(scene, viewport, MODELS.EMOJI_GLASSES, RAFS.EMOJIGLASSES, RECTS.INTRO.AMIRITE.LEFT)
-    this.EmojiSad = new Emoji(scene, viewport, MODELS.EMOJI_SAD, RAFS.EMOJISAD, RECTS.INTRO.AMIRITE.RIGHT)
+    this.EmojiGlasses = new Emoji(scene, viewport, MODELS.EMOJI_GLASSES, RAFS.EMOJIGLASSES, RECTS.INTRO.AMIRITE.LEFT, 0)
+    this.EmojiSad = new Emoji(scene, viewport, MODELS.EMOJI_SAD, RAFS.EMOJISAD, RECTS.INTRO.AMIRITE.RIGHT, 0.5)
 
     this.EmojiGlasses.load(MODELS.EMOJI_GLASSES.URL);
     this.EmojiSad.load(MODELS.EMOJI_SAD.URL);

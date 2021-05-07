@@ -29,6 +29,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 	params: any;
 
 	RECT: string
+	MODEL: MODEL
 	rafKey: string
 	mixer: THREE.AnimationMixer | null;
 	waveAction: AnimationAction | null;
@@ -38,10 +39,10 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 	bakedMaterial: ShaderMaterial;
 	bakedTexture: Texture;
 	originalPos: Vector3;
-	timeline: Timeline & { to: (targets: gsap.TweenTarget, vars: gsap.TweenVars, position?: gsap.Position | undefined) => any, fromTo: (targets: gsap.TweenTarget, fromVars: gsap.TweenVars, toVars: gsap.TweenVars, position?: gsap.Position | undefined) => any } & any
 	mappedMouse: Vector3
+	inDelay: number
 
-	constructor(scene: Scene, viewport: Viewport, MODEL: MODEL, RAF: string, RECT: string) {
+	constructor(scene: Scene, viewport: Viewport, MODEL: MODEL, RAF: string, RECT: string, inDelay: number) {
 		super(scene, viewport)
 
 		this.params = {
@@ -61,6 +62,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 		};
 
 		this.RECT = RECT
+		this.MODEL = MODEL
 		this.rafKey = RAF
 		this.mixer = null;
 		this.waveAction = null;
@@ -84,8 +86,8 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 		});
 
 		this.originalPos = new Vector3();
-		this.timeline = gsap.timeline({ paused: true, onReverseComplete: this.destroy })
-		this.mappedMouse = new Vector3()
+		this.mappedMouse = new Vector3();
+		this.inDelay = inDelay
 	}
 
 	initialize = () => this.setFromRect(this.RECT).then(({ x, y, w, h }) => {
@@ -108,6 +110,8 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 			0, 0, 0
 		);
 		this.scene.add(this.group);
+
+		this.setTransition(this.MODEL.SCALE, this.group.position, new Vector3(0, 0, 0), this.inDelay)
 
 		// Set baked material
 		this.group.traverse((object3D) => {
@@ -189,18 +193,6 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 			this.out()
 		})
 	};
-
-	in = () => {
-		if (!this.group) return
-
-		this.timeline.to(this.group.scale, { x: this.params.size, y: this.params.size, z: this.params.size, duration: 0.2 }, 1)
-		this.timeline.fromTo(this.group.position, { x: this.originalPos.x - 0.05, y: this.originalPos.y - 0.05 }, { x: this.originalPos.x, y: this.originalPos.y, duration: 0.2 }, 1)
-		this.timeline.play()
-	}
-
-	out = () => {
-		this.timeline.reverse()
-	}
 
 	hover = (toggle: boolean) => {
 		if (!this.group) return

@@ -32,27 +32,27 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	initialize = () => {
+		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
+
+		this.animations.forEach((anim) => {
+			if (!this.mixer) return
+
+			const clipAction = this.mixer.clipAction(anim)
+			clipAction.loop = LoopOnce
+			clipAction.clampWhenFinished = true
+			this.actions?.push(clipAction)
+		})
 
 		const target = new Vector3(0, -this.viewport.height / 2.7, 0)
 		this.group.position.copy(target)
 		this.original.position.copy(target)
-
-		this.group.traverse((obj) => {
-			if (obj.name === "POUBELLE") {
-				obj.position.y += this.viewport.height / 6
-			}
-		})
-
 		this.group.scale.setScalar(0)
 		this.group.rotateY(-Math.PI / 2)
-
 		this.scene.add(this.group)
-
 		this.tweaks()
-
 		raf.subscribe(RAFS.TRASHCAN, this.update)
-		this.setTransition(MODELS.TRASHCAN.SCALE, this.original.position, new Vector3(0, -0.3, 0), this.params.out.delay, this.params.out.duration)
+		this.setTransition(MODELS.TRASHCAN.SCALE, this.original.position, new Vector3(0, -0.3, 0), { in: 0, out: 0 }, this.params.out.duration)
 	}
 
 	tweaks = () => {
@@ -79,9 +79,6 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				this.actions?.forEach(action => {
-
-				})
 				this.out()
 				setTimeout(() => {
 					resolve()
@@ -95,7 +92,10 @@ class Trashcan extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		// this.killTween()
 		raf.unsubscribe(RAFS.TRASHCAN)
+		this.group.rotateY(Math.PI / 2)
+		this.mixer.stopAllAction()
 		this.scene.remove(this.group)
 	}
 }

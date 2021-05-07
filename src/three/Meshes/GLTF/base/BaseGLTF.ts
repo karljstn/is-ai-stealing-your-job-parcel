@@ -31,20 +31,7 @@ class BaseGLTF {
 	load = (url: string) => new Promise<void>((resolve, reject) => {
 		this.loader.load(url, (gltf) => {
 			this.group = gltf.scene
-
-			// Animations
 			this.animations = gltf.animations
-			this.mixer = new AnimationMixer(this.group)
-
-			this.animations.forEach((anim) => {
-				if (!this.mixer) return
-
-				const clipAction = this.mixer.clipAction(anim)
-				// clipAction.loop = LoopOnce
-				clipAction.clampWhenFinished = true
-				this.actions?.push(clipAction)
-			})
-
 			this.isLoaded = true
 			resolve()
 		}, () => null, () => reject())

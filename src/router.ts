@@ -21,38 +21,53 @@ import OutroShare from '~views/5_Epilogue/3_EpilogueShare.vue';
 import OutroTakeAction from '~views/5_Epilogue/4_EpilogueTakeAction.vue';
 import Credits from '~views/5_Epilogue/5_EpilogueCredits.vue';
 import store from '~store';
+import { fadeBackground } from '~util';
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/', component: LandingPage, name: "LandingPage", color: PALETTE.WHITE, meta: {
-      scroll: { disabled: false }, transition: { delay: 1000, out: () => { store.state.scene.TrashcanScene.Trashcan.drop(); } }
+      scroll: {
+        disabled: false
+      },
+      transition: {
+        delay: 2700,
+        out: () => {
+          store.state.scene.TrashcanScene.Trashcan.drop();
+          store.commit("setHideLanding", true)
+          fadeBackground({ color: PALETTE.YELLOW });
+
+          setTimeout(() => {
+            store.state.scene.TrashcanScene.Trashcan.out()
+          }, 1700)
+        }
+      }
     }
   },
   {
     path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.YELLOW, meta: {
-      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 500, out: () => { store.state.scene.HandWaveScene.Hand.out() } }
     }
   },
   {
     path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK, meta: {
-      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 0, out: () => { } }
     }
   },
   {
     path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.BLACK, meta: {
-      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: false }, transition: { delay: 0, out: () => { } }
     }
   },
   {
     path: '/4', component: IntroAI, name: "IntroAI", color: PALETTE.PINK, meta: {
-      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 0, out: () => { } }
     }
   },
   {
     path: '/5', component: IntroQuestion, name: "IntroQuestion", color: PALETTE.YELLOW, meta: {
-      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
+      scroll: { disabled: true }, transition: { delay: 0, out: () => { } }
     }
   },
   {

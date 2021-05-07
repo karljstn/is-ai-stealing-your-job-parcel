@@ -254,8 +254,10 @@ export default class Scene {
   }
 
   destroyRadiologist() {
-    this.camera.position.copy(this.params.camera.position)
     this.scene.remove(this.radio.group)
+    this.camera.position.copy(this.params.camera.position)
+    console.log(this.camera.position.z)
+    console.log('hey', this.params.camera.position)
   }
 
   setEvents() {

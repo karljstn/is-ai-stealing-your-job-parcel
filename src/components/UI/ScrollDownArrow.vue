@@ -1,15 +1,17 @@
 <template>
-	<div :class="show" ref="scroll">
-		<p>scroll</p>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.4 34.04">
-			<g id="Calque_2" data-name="Calque 2">
-				<g id="Calque_1-2" data-name="Calque 1">
-					<line class="cls-1" x1="4.7" x2="4.7" y2="32.8" />
-					<polygon class="cls-2" points="0 28.99 0.84 28.2 4.7 32.36 8.56 28.2 9.4 28.99 4.7 34.04 0 28.99" />
+	<div :class="darken">
+		<div :class="show" ref="scroll">
+			<p>scroll</p>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.4 34.04">
+				<g id="Calque_2" data-name="Calque 2">
+					<g id="Calque_1-2" data-name="Calque 1">
+						<line class="cls-1" x1="4.7" x2="4.7" y2="32.8" />
+						<polygon class="cls-2" points="0 28.99 0.84 28.2 4.7 32.36 8.56 28.2 9.4 28.99 4.7 34.04 0 28.99" />
+					</g>
 				</g>
-			</g>
-		</svg>
-	</div>
+			</svg>
+		</div>
+	<div>
 </template>
 
 <script lang="js">
@@ -22,12 +24,30 @@ export default Vue.extend({
 		show() {
 			return store.state.hideScrollDownArrow ? 'scroll hide' : 'scroll';
 		},
+		darken() {
+			return store.state.darkenScrollDownArrow ? 'dark' : ''
+		}
 	},
 });
 </script>
 
 <style lang="scss" scoped>
 @import '~/styles/_variables.scss';
+.dark .scroll {
+	p{
+		color: $black;
+	}
+	
+	svg{
+			.cls-1 {
+				stroke: $black;
+			}
+			.cls-2 {
+				fill: $black;
+			}
+	}
+}
+
 .scroll {
 	display: flex;
 	justify-content: center;
