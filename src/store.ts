@@ -84,8 +84,6 @@ const store = new Vuex.Store({
       state.radiologist.penalty = payload
     },
     setGameEnded(state, payload) {
-      console.log('STATE IS UPDATING TO', payload)
-
       state.radiologist.gameEnded = payload
     },
     setPane(state, payload) {

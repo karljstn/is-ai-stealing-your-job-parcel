@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div ref="gameContainer">
+    <div ref="gameContainer" class="game-container" :class="this.gameEnded">
       <Side></Side>
       <ButtonsRight
         :timerCanStart="this.timerCanStart"
@@ -89,14 +89,10 @@ export default Vue.extend({
 
   computed: {
     confirm() {
-      console.log(store.state.radiologist);
-
       return store.state.radiologist.confirm;
     },
     gameEnded() {
-      console.log(store.state.radiologist.gameEnded);
-
-      return store.state.radiologist;
+      return store.state.radiologist.gameEnded ? "game-fade" : "";
     },
   },
 
@@ -223,6 +219,14 @@ section {
     position: absolute;
     bottom: 0;
     z-index: 1000;
+  }
+
+  .game-container {
+    transition: all 1s;
+  }
+
+  .game-fade {
+    opacity: 0;
   }
 
   .tutorial {

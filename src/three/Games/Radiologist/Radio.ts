@@ -315,12 +315,16 @@ export default class Radio implements ThreeGroup {
             // Skeleton.errorMesh.position.copy(this.controls.target)
 
             gsap.to(this.controls.target, {
-                duration: 1,
+                duration: 1.5,
                 y: 3.5,
+                onComplete: () => {
+                    this.controls.enabled = true
+                    this.controls.autoRotate = false
+                }
             })
 
             gsap.to(this.camera.position, {
-                duration: 1,
+                duration: 1.5,
                 y: 3.5,
                 z: 4
             })
