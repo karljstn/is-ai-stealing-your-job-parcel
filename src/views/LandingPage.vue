@@ -1,5 +1,4 @@
 <template>
-	<!-- <transition appear name="landing" v-bind:css="false" v-on:enter="enter" v-on:leave="leave"> -->
 		<div>
 			<section>
 				<div class="container">
@@ -22,7 +21,6 @@
 					</div>
 			</section>
 		</div>
-	<!-- </transition> -->
 </template>
 
 <script lang="ts">
@@ -47,29 +45,16 @@ export default Vue.extend({
 	},
 	computed:{
 		getLetsBeginClass(){
-			return !store.state.hideScrollDownArrow ? "begin" : "begin fadeOut"
+			return !store.state.hideLanding ? "begin" : "begin fadeOut"
 		},
 		getParagraphsClass(){
-			return !store.state.hideScrollDownArrow ? "landing-paragraphs" : "landing-paragraphs fadeOut"
-		}
-	},
-	methods: {
-		enter(){
-			// console.log('hey')
-			store.state.scene?.TrashcanScene.Trashcan.in()
-		},
-		leave(el:any, done:any){			
-			// store.state.scene?.TrashcanScene.Trashcan.drop().then(done)
-
-			store.state.scene?.TrashcanScene.Trashcan.drop()?.then(()=>{
-				done()
-			});
-
-			// store.commit("toggleHideScrollDownArrow")
-			// fadeBackground({ color: PALETTE.YELLOW });
+			return !store.state.hideLanding ? "landing-paragraphs" : "landing-paragraphs fadeOut"
 		}
 	},
 	mounted() {
+		store.commit('setDarkenScrollDownArrow', false);
+		store.commit("setHideLanding", false)
+
 		// Three
 		store.state.scene?.TrashcanScene.start();
 		store.state.scene?.TrashcanScene.Trashcan.in()

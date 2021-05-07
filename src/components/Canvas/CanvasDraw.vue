@@ -26,6 +26,7 @@ export default Vue.extend({
 			line: {
 				width: 10,
 			},
+			finishDistance: 160,
 		};
 
 		// canvas rect
@@ -49,7 +50,7 @@ export default Vue.extend({
 
 			if (mapped.x > 0 && mapped.x < 1 && mapped.y > 0 && mapped.y < 1) {
 				const d = origin.distanceTo(current);
-				if (d > 185 && !store.state.isPencilFinished) {
+				if (d > params.finishDistance && !store.state.isPencilFinished) {
 					store.commit('setPencilFinished', true);
 				}
 				if (origin.length() === 0) {

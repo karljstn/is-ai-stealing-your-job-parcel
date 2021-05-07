@@ -43,7 +43,17 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		this.group.scale.set(0, 0, 0)
 		this.group && this.scene.add(this.group)
 
+		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
+
+		this.animations.forEach((anim) => {
+			if (!this.mixer) return
+
+			const clipAction = this.mixer.clipAction(anim)
+			clipAction.loop = LoopOnce
+			clipAction.clampWhenFinished = true
+			this.actions?.push(clipAction)
+		})
 
 		const clip = AnimationClip.findByName(this.animations, 'ArmatureAction');
 		this.waveAction = this.mixer.clipAction(clip)
@@ -118,6 +128,7 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		// this.killTween()
 		this.group && this.scene.remove(this.group)
 		raf.unsubscribe(RAFS.HAND)
 	}

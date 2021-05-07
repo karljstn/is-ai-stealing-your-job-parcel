@@ -35,9 +35,11 @@ const store = new Vuex.Store({
       gameEnded: false
     },
     hideScrollDownArrow: false,
+    darkenScrollDownArrow: false,
     isPencilWriting: false,
     isPencilFinished: false,
-    scrollNavigationDelay: 1000
+    scrollNavigationDelay: 1000,
+    hideLanding: false
   } as StoreState,
   mutations: {
     incrementProgression(state) {
@@ -103,6 +105,12 @@ const store = new Vuex.Store({
     },
     setScrollNavigationDelay(state, payload) {
       state.scrollNavigationDelay = payload
+    },
+    setHideLanding(state, payload) {
+      state.hideLanding = payload
+    },
+    setDarkenScrollDownArrow(state, payload) {
+      state.darkenScrollDownArrow = payload
     }
   },
   actions: {},

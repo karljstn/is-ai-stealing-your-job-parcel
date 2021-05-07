@@ -12,7 +12,10 @@ type ThreeMeshTransition = {
 		position: Vector3, offset: Vector3, scale: Vector3,
 	}
 	speed: number
-	delay: number
+	delay: {
+		in: number,
+		out: number
+	}
 	duration: number
 	eases: {
 		default: ReturnType<typeof BezierEasing>
@@ -34,16 +37,16 @@ class TransitionGLTF extends BaseGLTF {
 				offset: new Vector3(),
 				scale: new Vector3()
 			},
-			speed: 0.01,
-			delay: 0,
+			speed: 0.04,
+			delay: { in: 0, out: 0 },
 			duration: 0.3,
-			eases: { default: new BezierEasing(.61, .27, .78, .99) }
+			eases: { default: new BezierEasing(.42, 0, .58, 1) }
 		}
 
 		raf.subscribe(this.rafKey, this.tween)
 	}
 
-	setTransition = (scaleScalar: number, position: Vector3, offset: Vector3 = new Vector3(), delay = 0, duration = 0.3) => {
+	setTransition = (scaleScalar: number, position: Vector3, offset: Vector3 = new Vector3(), delay = { in: 0, out: 0 }, duration = 0.3) => {
 		if (!this.group) return
 
 		this.transition.target.scale.setScalar(scaleScalar)
@@ -55,11 +58,15 @@ class TransitionGLTF extends BaseGLTF {
 	}
 
 	in = () => {
-		this.transition.factor = this.transition.speed
+		setTimeout(() => {
+			this.transition.factor = this.transition.speed
+		}, this.transition.delay.in * 1000);
 	}
 
 	out = () => {
-		this.transition.factor = -this.transition.speed
+		setTimeout(() => {
+			this.transition.factor = -this.transition.speed
+		}, this.transition.delay.out * 1000);
 	}
 
 	tween = () => {
