@@ -12,7 +12,7 @@ import VueRouter, { RouteRecordPublic } from 'vue-router';
 import { debounce } from '~util/_index.js';
 import store from '~store';
 
-const wait = 300;
+const wait = 150;
 
 export default Vue.extend({
 	methods: {

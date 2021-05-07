@@ -37,8 +37,10 @@ const routes = [
           store.state.scene.TrashcanScene.Trashcan.drop();
           store.commit("setHideLanding", true)
           fadeBackground({ color: PALETTE.YELLOW });
+          store.commit('setDarkenScrollDownArrow', false)
 
           setTimeout(() => {
+            store.commit('setDarkenScrollDownArrow', true);
             store.state.scene.TrashcanScene.Trashcan.out()
           }, 1700)
         }

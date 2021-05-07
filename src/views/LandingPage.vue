@@ -52,8 +52,9 @@ export default Vue.extend({
 		}
 	},
 	mounted() {
-		store.commit('setDarkenScrollDownArrow', false);
+		store.commit('setHideScrollDownArrow', false);
 		store.commit("setHideLanding", false)
+		store.commit('setDarkenScrollDownArrow', false);
 
 		// Three
 		store.state.scene?.TrashcanScene.start();
