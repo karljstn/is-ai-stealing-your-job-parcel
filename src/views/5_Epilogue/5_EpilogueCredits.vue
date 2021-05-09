@@ -21,7 +21,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-li {
-	// color: white;
-}
+// li {
+// color: white;
+// }
 </style>
