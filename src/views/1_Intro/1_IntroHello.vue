@@ -37,11 +37,11 @@ export default Vue.extend({
 	},
 	methods: {
 		previous() {
-			store.state.scene?.HandWaveScene.out();
+			store.state.scene?.HandWaveScene.Hand.out();
 			store.commit('toggleHideScrollDownArrow');
 		},
 		next() {
-			store.state.scene?.HandWaveScene.out();
+			store.state.scene?.HandWaveScene.Hand.out();
 			setTimeout(() => {
 				this.$router.push('/2');
 			}, 1000);

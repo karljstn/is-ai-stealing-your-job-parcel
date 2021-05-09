@@ -5,7 +5,7 @@
 				<h3>is ai stealing your job.com</h3>
 			</router-link>
 		</div>
-		<div ref="middle" class="middle">
+		<div ref="middle" class="middle disable">
 			<router-link to="/credits">
 				credits
 			</router-link>
@@ -44,8 +44,22 @@ export default Vue.extend({
 		},
 		toggleMenu: function() {
 			this.isMenu = !this.isMenu;
-			if (this.isMenu) gsap.to(this.$refs.middle, { opacity: 1, duration: 0.4 });
-			else gsap.to(this.$refs.middle, { opacity: 0, duration: 0.4 });
+			if (this.isMenu)
+				gsap.to(this.$refs.middle, {
+					opacity: 1,
+					duration: 0.4,
+					onStart: () => {
+						this.$refs.middle.classList.remove('disable');
+					},
+				});
+			else
+				gsap.to(this.$refs.middle, {
+					opacity: 0,
+					duration: 0.4,
+					onComplete: () => {
+						this.$refs.middle.classList.add('disable');
+					},
+				});
 		},
 	},
 });
@@ -76,6 +90,10 @@ nav {
 		left: 50%;
 		transform: translate(-50%, 0);
 		opacity: 0;
+
+		&.disable {
+			display: none;
+		}
 
 		a {
 			transition: color 0.5s ease-in-out;

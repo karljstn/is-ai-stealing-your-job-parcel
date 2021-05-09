@@ -5,20 +5,23 @@ import CrystalBall from "~three/Meshes/GLTF/CrystalBall";
 import { Viewport } from "~types";
 
 class CrystalBallScene implements ThreeScene {
+	viewport: Viewport
+	scene: Scene
 	CrystalBall: CrystalBall
 
 	constructor(viewport: Viewport, scene: Scene) {
-		this.CrystalBall = new CrystalBall(scene, viewport)
-
-		this.CrystalBall.load(MODELS.CRYSTAL_BALL.URL)
+		this.viewport = viewport
+		this.scene = scene
 	}
 
 	start = () => {
+		this.CrystalBall = new CrystalBall(this.scene, this.viewport)
 		this.CrystalBall.start(MODELS.CRYSTAL_BALL.URL, this.CrystalBall.initialize)
 	}
 
 	destroy = () => {
 		this.CrystalBall.destroy()
+		this.CrystalBall = null
 	}
 }
 

@@ -6,21 +6,20 @@ import Emoji from "~three/Meshes/GLTF/base/Emoji";
 import { RAFS } from "~constants/RAFS";
 
 class EmojisScene {
+  viewport: Viewport
+  scene: Scene
   EmojiGlasses: Emoji;
   EmojiSad: Emoji;
 
-  constructor(
-    viewport: Viewport,
-    scene: Scene,
-  ) {
-    this.EmojiGlasses = new Emoji(scene, viewport, MODELS.EMOJI_GLASSES, RAFS.EMOJIGLASSES, RECTS.INTRO.AMIRITE.LEFT, 0)
-    this.EmojiSad = new Emoji(scene, viewport, MODELS.EMOJI_SAD, RAFS.EMOJISAD, RECTS.INTRO.AMIRITE.RIGHT, 0.5)
-
-    this.EmojiGlasses.load(MODELS.EMOJI_GLASSES.URL);
-    this.EmojiSad.load(MODELS.EMOJI_SAD.URL);
+  constructor(viewport: Viewport, scene: Scene) {
+    this.viewport = viewport
+    this.scene = scene
   }
 
   start() {
+    this.EmojiGlasses = new Emoji(this.scene, this.viewport, MODELS.EMOJI_GLASSES, RAFS.EMOJIGLASSES, RECTS.INTRO.AMIRITE.LEFT, 0)
+    this.EmojiSad = new Emoji(this.scene, this.viewport, MODELS.EMOJI_SAD, RAFS.EMOJISAD, RECTS.INTRO.AMIRITE.RIGHT, 0.5)
+
     this.EmojiGlasses.start(MODELS.EMOJI_GLASSES.URL, this.EmojiGlasses.initialize)
     this.EmojiSad.start(MODELS.EMOJI_SAD.URL, this.EmojiSad.initialize)
   }
@@ -28,6 +27,9 @@ class EmojisScene {
   destroy() {
     this.EmojiGlasses.destroy()
     this.EmojiSad.destroy()
+
+    this.EmojiGlasses = null
+    this.EmojiSad = null
   }
 }
 

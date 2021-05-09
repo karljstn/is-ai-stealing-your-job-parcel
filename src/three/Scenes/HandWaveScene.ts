@@ -4,27 +4,23 @@ import Hand from "../Meshes/GLTF/Hand";
 import { MODELS } from "~constants/MODELS";
 
 class HandWaveScene {
+  viewport: Viewport
+  scene: Scene
   Hand: Hand;
 
-  constructor(
-    scene: Scene,
-    viewport: Viewport,
-  ) {
-    this.Hand = new Hand(scene, viewport);
-
-    this.Hand.load(MODELS.HAND.URL);
+  constructor(viewport: Viewport, scene: Scene) {
+    this.viewport = viewport
+    this.scene = scene
   }
 
   start() {
+    this.Hand = new Hand(this.scene, this.viewport);
     this.Hand.start(MODELS.HAND.URL, this.Hand.initialize)
-  }
-
-  out() {
-    this.Hand.out()
   }
 
   destroy() {
     this.Hand.destroy()
+    this.Hand = null
   }
 }
 

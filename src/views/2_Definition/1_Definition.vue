@@ -52,7 +52,7 @@ export default Vue.extend({
 					this.$router.push('/7');
 				}, 1000);
 			}
-		}, 2000);
+		}, 64);
 	},
 	destroyed() {
 		store.state.scene.PencilScene.destroy();

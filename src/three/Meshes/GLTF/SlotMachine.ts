@@ -1,5 +1,5 @@
 import { ThreeGLTF } from "~interfaces/Three";
-import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene, Vector3 } from "three"
+import { AnimationAction, AnimationMixer, LoopOnce, Scene, Vector3 } from "three"
 import { Viewport } from "~types"
 import { MODELS } from "~constants/MODELS";
 import TransitionGLTF from "./base/TransitionGLTF";
@@ -63,6 +63,7 @@ class SlotMachine extends TransitionGLTF implements ThreeGLTF {
 	destroy = () => {
 		// this.killTween()
 		this.scene.remove(this.group)
+		raf.unsubscribe(RAFS.SLOT_MACHINE)
 	}
 }
 

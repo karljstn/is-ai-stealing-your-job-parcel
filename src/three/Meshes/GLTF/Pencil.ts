@@ -14,7 +14,7 @@ import MouseController from '~singletons/MouseController'
 class Pencil extends TransitionGLTF implements ThreeGLTF {
 	params: any
 	mouse: Vector3
-	eventData: any
+	hasTweened: boolean
 
 	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
@@ -39,6 +39,7 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 				rotation: new BezierEasing(.61, .27, .78, .99)
 			}
 		}
+		this.hasTweened = false
 
 		this.load(MODELS.PENCIL.URL)
 	}
@@ -47,7 +48,7 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 		this.group.scale.set(0, 0, 0)
 		this.group.rotation.setFromVector3(this.params.rotation.resting)
 		this.setTransition(MODELS.PENCIL.SCALE, this.group.position, new Vector3(0, 0, 0),)
-		this.group && this.scene.add(this.group)
+		this.scene.add(this.group)
 		this.tweaks()
 		this.setEvents()
 		raf.subscribe(RAFS.PENCIL, this.update);
@@ -99,7 +100,10 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 			this.params.eventData.mouseDown.factor = -this.params.eventData.mouseDown.speed * 1.3
 		}
 		const onMouseMove = () => {
-			if (this.group.scale.length() === 0) this.in()
+			if (this.group.scale.length() === 0 && !this.hasTweened) {
+				this.in()
+				this.hasTweened = true
+			}
 		}
 
 		window.addEventListener("mousedown", onMouseDown)
@@ -111,6 +115,7 @@ class Pencil extends TransitionGLTF implements ThreeGLTF {
 		// this.killTween()
 		this.group && this.scene.remove(this.group)
 		raf.unsubscribe(RAFS.PENCIL)
+		this.hasTweened = false
 	}
 
 

@@ -111,7 +111,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 		);
 		this.scene.add(this.group);
 
-		this.setTransition(this.MODEL.SCALE, this.group.position, new Vector3(0, 0, 0), this.inDelay)
+		this.setTransition(this.MODEL.SCALE, this.group.position, new Vector3(0, 0, 0), { in: this.inDelay, out: 0 })
 
 		// Set baked material
 		this.group.traverse((object3D) => {

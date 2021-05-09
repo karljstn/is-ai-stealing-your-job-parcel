@@ -14,6 +14,7 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 	original: { position: Vector3 }
 	world: { position: Vector3 }
 	mixer: THREE.AnimationMixer | null
+	actions: AnimationAction[] | null
 	waveAction: AnimationAction | null
 	mouse: { current: Vector3, target: Vector3 }
 	mat: MeshLambertMaterial
@@ -41,7 +42,7 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		this.original.position.copy(target)
 		this.group.position.copy(target)
 		this.group.scale.set(0, 0, 0)
-		this.group && this.scene.add(this.group)
+		this.scene.add(this.group)
 
 		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed
@@ -129,7 +130,7 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 
 	destroy = () => {
 		// this.killTween()
-		this.group && this.scene.remove(this.group)
+		this.scene.remove(this.group)
 		raf.unsubscribe(RAFS.HAND)
 	}
 }

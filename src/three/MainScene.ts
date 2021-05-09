@@ -178,7 +178,7 @@ export default class Scene {
       this.Loader = null
     }
 
-    this.HandWaveScene = new HandWaveScene(this.scene, this.params.viewport)
+    this.HandWaveScene = new HandWaveScene(this.params.viewport, this.scene)
     this.TrashcanScene = new TrashcanScene(
       this.params.viewport,
       this.scene,
@@ -256,8 +256,7 @@ export default class Scene {
   destroyRadiologist() {
     this.scene.remove(this.radio.group)
     this.camera.position.copy(this.params.camera.position)
-    console.log(this.camera.position.z)
-    console.log('hey', this.params.camera.position)
+    raf.unsubscribe("radioUpdate")
   }
 
   setEvents() {
