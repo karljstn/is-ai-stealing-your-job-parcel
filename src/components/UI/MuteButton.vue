@@ -55,7 +55,7 @@ export default {
 			content: '';
 			width: 0px;
 			height: 1px;
-			background-color: black;
+			background-color: $black;
 			position: absolute;
 			top: 13px;
 			//   top: 20px;

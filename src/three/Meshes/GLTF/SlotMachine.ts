@@ -2,11 +2,11 @@ import { ThreeGLTF } from "~interfaces/Three";
 import { AnimationAction, AnimationMixer, LoopOnce, Scene, Vector3 } from "three"
 import { Viewport } from "~types"
 import { MODELS } from "~constants/MODELS";
-import TransitionGLTF from "./base/TransitionGLTF";
+import withTween from "./base/withTween";
 import { RAFS } from "~constants/RAFS";
 import raf from '~singletons/RAF';
 
-class SlotMachine extends TransitionGLTF implements ThreeGLTF {
+class SlotMachine extends withTween implements ThreeGLTF {
 	params: {
 		animation: { speed: number }
 	}

@@ -5,18 +5,16 @@ import { RAFS } from "~constants/RAFS"
 import { ThreeGLTF } from "~interfaces/Three"
 import store from "~store"
 import { RECTS } from "~constants/RECTS";
-import TransitionGLTF from "./base/TransitionGLTF"
+import withMouse from "./base/withMouse"
 import { Viewport } from '~types'
-import MouseController from "~singletons/MouseController"
 
-class Hand extends TransitionGLTF implements ThreeGLTF {
+class Hand extends withMouse implements ThreeGLTF {
 	params: { animation: { speed: number }, size: number }
 	original: { position: Vector3 }
 	world: { position: Vector3 }
 	mixer: THREE.AnimationMixer | null
 	actions: AnimationAction[] | null
 	waveAction: AnimationAction | null
-	mouse: { current: Vector3, target: Vector3 }
 	mat: MeshLambertMaterial
 
 	constructor(scene: Scene, viewport: Viewport) {
@@ -27,10 +25,6 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		}
 		this.original = { position: new Vector3() }
 		this.world = { position: new Vector3() }
-		this.mouse = {
-			current: new Vector3(),
-			target: new Vector3()
-		}
 		this.isLoaded = false
 		this.mixer = null
 		this.waveAction = null
@@ -38,7 +32,7 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 	}
 
 	initialize = () => this.setFromRect(RECTS.INTRO.HELLO).then(({ x, y, w, h }) => {
-		const target = new Vector3(x + w - this.viewport.width / 6, y - h / 2, 0)
+		const target = new Vector3(x + w - this.viewport.width / 4.8, y - h / 2, 0)
 		this.original.position.copy(target)
 		this.group.position.copy(target)
 		this.group.scale.set(0, 0, 0)
@@ -61,7 +55,7 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		this.waveAction.loop = LoopOnce
 		this.waveAction.clampWhenFinished = true
 
-		this.setTransition(MODELS.HAND.SCALE, this.group.position, new Vector3(0, 0, 0))
+		this.setTransition(MODELS.HAND.SCALE, this.group.position)
 
 		this.group.traverse((obj: any) => {
 			if (obj.name === "mesh") {
@@ -105,13 +99,9 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 		this.waveAction.play()
 	}
 
-	update = (dt: number = 0) => {
+	update = (dt = 0) => {
 		if (this.isLoaded) {
 			this.mixer && this.mixer.update(dt)
-
-			this.mouse.target.copy(MouseController.mouseVec3Viewport);
-
-			this.mouse.current.lerp(this.mouse.target, 0.8)
 
 			if (this.mouse.current.distanceTo(this.group.position) <= 0.075) {
 				document.body.classList.add('cursor-grab')
@@ -123,13 +113,12 @@ class Hand extends TransitionGLTF implements ThreeGLTF {
 					document.body.classList.remove('cursor-grab')
 				}
 			}
-
-			this.group.lookAt(this.mouse.current.x, this.mouse.current.y, 1)
 		}
 	}
 
 	destroy = () => {
 		// this.killTween()
+		this.killUpdateMouse()
 		this.scene.remove(this.group)
 		raf.unsubscribe(RAFS.HAND)
 	}

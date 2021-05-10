@@ -36,6 +36,6 @@ class RAF {
 const instance = new RAF()
 export default instance
 
-// module.hot.dispose(() => {
-//     cancelAnimationFrame(instance.rafID)
-// })
+module.hot.dispose(() => {
+    cancelAnimationFrame(instance.rafID)
+})

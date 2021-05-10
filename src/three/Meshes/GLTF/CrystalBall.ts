@@ -6,16 +6,19 @@ import { MODELS } from "~constants/MODELS";
 import { RECTS } from "~constants/RECTS";
 import { Viewport } from "~types";
 import { PALETTE } from "~constants/PALETTE";
-import TransitionGLTF from "~three/Meshes/GLTF/base/TransitionGLTF";
-
+import withTween from "~three/Meshes/GLTF/base/withTween";
+// import MouseController from "~singletons/MouseController"
 // import vertex from '~shaders/refraction/vertex.glsl'
 // import fragment from '~shaders/refraction/fragment.glsl'
 import vertex from '~shaders/fresnel/vertex.glsl'
 import fragment from '~shaders/fresnel/fragment.glsl'
 import store from "~store";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
+import withMouse from "./base/withMouse";
+// import raf from "~singletons/RAF"
+// import { RAFS } from "~constants/RAFS";
 
-class CrystalBall extends TransitionGLTF implements ThreeGLTF {
+class CrystalBall extends withMouse implements ThreeGLTF {
 	params: any
 	loader: GLTFLoader
 	material: ShaderMaterial
@@ -47,7 +50,7 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 
 	initialize = () => this.setFromRect(RECTS.INTRO.GUESS).then(({ x, y, w, h }) => {
 		this.group.position.set(
-			x - this.viewport.width / 15,
+			x - this.viewport.width / 30,
 			y - h / 2 - this.viewport.height / 20,
 			0
 		);
@@ -70,16 +73,15 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 		this.scene.add(this.light)
 		// raf.subscribe(RAFS.CRYSTALBALL, this.update);
 		this.setTransition(MODELS.CRYSTAL_BALL.SCALE, this.group.position, new Vector3(0, 0, 0),)
+		this.setUpdateMouse(0.8, new Vector3(3, -1, 0), 0.3)
 		this.in()
 		this.tweaks()
 	})
 
-	update = () => {
-		if (this.group) {
-			// this.group.rotation.z += 0.0020
-			// this.group.rotation.y += 0.035
-		}
-	}
+	//offset 3, -1, 0
+	//scalar 0.3
+
+	update = () => { }
 
 	tweaks = () => {
 		const folder = store.state.tweakpane.addFolder({ title: 'Crystal ball', expanded: false })
@@ -91,6 +93,8 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 
 	destroy = () => {
 		// this.killTween()
+		// raf.unsubscribe(RAFS.CRYSTALBALL);
+		this.killUpdateMouse()
 		this.scene.remove(this.light)
 		this.scene.remove(this.group)
 	}

@@ -59,6 +59,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 div {
-	width: 72vw;
+	width: 1030px;
 }
 </style>

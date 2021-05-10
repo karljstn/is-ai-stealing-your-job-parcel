@@ -52,7 +52,9 @@ section {
 	color: $black;
 	padding: 10vw;
 
-	p {
+	p,
+	span {
+		color: $black;
 		font-size: $text-size;
 		line-height: 160%;
 	}

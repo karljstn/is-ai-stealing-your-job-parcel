@@ -1,7 +1,7 @@
 import { Scene, Vector3 } from "three";
 import { Viewport } from "~types";
 import { clamp } from "~util";
-import BaseGLTF from "./BaseGLTF";
+import withBase from "./withBase";
 import BezierEasing from 'bezier-easing'
 import raf from "~singletons/RAF"
 
@@ -22,13 +22,14 @@ type ThreeMeshTransition = {
 	}
 }
 
-class TransitionGLTF extends BaseGLTF {
-	rafKey: string
+class withTween extends withBase {
+	tweenRAFKey: string
 	transition: ThreeMeshTransition
 
 	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
-		this.rafKey = performance.now().toString()
+
+		this.tweenRAFKey = performance.now().toString()
 		this.transition = {
 			value: 0,
 			factor: 0,
@@ -43,7 +44,7 @@ class TransitionGLTF extends BaseGLTF {
 			eases: { default: new BezierEasing(.42, 0, .58, 1) }
 		}
 
-		raf.subscribe(this.rafKey, this.tween)
+		raf.subscribe(this.tweenRAFKey, this.tween)
 	}
 
 	setTransition = (scaleScalar: number, position: Vector3, offset: Vector3 = new Vector3(), delay = { in: 0, out: 0 }, duration = 0.3) => {
@@ -79,8 +80,8 @@ class TransitionGLTF extends BaseGLTF {
 	}
 
 	killTween = () => {
-		raf.unsubscribe(this.rafKey)
+		raf.unsubscribe(this.tweenRAFKey)
 	}
 }
 
-export default TransitionGLTF
+export default withTween

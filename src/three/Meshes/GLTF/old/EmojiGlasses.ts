@@ -26,9 +26,9 @@ import { ThreeGLTF } from "~interfaces/Three";
 import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
 import { Timeline } from "~lib/gsap-member/src/gsap-core";
-import TransitionGLTF from "~three/Meshes/GLTF/base/TransitionGLTF";
+import withTween from "~three/Meshes/GLTF/base/withTween";
 
-class EmojiGlasses extends TransitionGLTF implements ThreeGLTF {
+class EmojiGlasses extends withTween implements ThreeGLTF {
   params: any;
   size: number;
   scene: Scene;

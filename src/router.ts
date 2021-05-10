@@ -49,61 +49,60 @@ const routes = [
   },
   {
     path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.WHITE, meta: {
-      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 500, out: () => { store.state.scene.HandWaveScene.Hand.out() } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 1000, out: () => { store.state.scene.HandWaveScene.Hand.out() } }
     }
   },
   {
     path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK, meta: {
-      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 0, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
+        delay: 800, out: () => {
+          store.state.scene.CrystalBallScene.CrystalBall.out()
+        }
+      }
     }
   },
   {
-    path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.BLACK, meta: {
+    path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.VIOLET, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: false }, transition: { delay: 0, out: () => { } }
     }
   },
   {
-    path: '/4', component: IntroAI, name: "IntroAI", color: PALETTE.PINK, meta: {
-      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 0, out: () => { } }
-    }
-  },
-  {
-    path: '/5', component: IntroQuestion, name: "IntroQuestion", color: PALETTE.YELLOW, meta: {
+    path: '/4', component: IntroQuestion, name: "IntroQuestion", color: PALETTE.YELLOW, meta: {
       scroll: { disabled: true }, transition: { delay: 0, out: () => { } }
     }
   },
   {
-    path: '/6', component: DefinitionOne, name: "DefinitionOne", color: PALETTE.ORANGE, meta: {
+    path: '/5', component: DefinitionOne, name: "DefinitionOne", color: PALETTE.ORANGE, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/7', component: DefinitionTwo, name: "DefinitionTwo", color: PALETTE.WHITE, meta: {
+    path: '/6', component: DefinitionTwo, name: "DefinitionTwo", color: PALETTE.WHITE, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/8', component: GameOne, name: "GameOne", color: PALETTE.LIGHTPINK, meta: {
+    path: '/7', component: GameOne, name: "GameOne", color: PALETTE.LIGHTPINK, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/9', component: GameTwo, name: "GameTwo", meta: {
+    path: '/8', component: GameTwo, name: "GameTwo", meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/10', component: EndOne, name: "EndOne", color: PALETTE.ORANGE, meta: {
+    path: '/9', component: EndOne, name: "EndOne", color: PALETTE.ORANGE, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/11', component: EndTwo, name: "EndTwo", color: PALETTE.WHITE, meta: {
+    path: '/10', component: EndTwo, name: "EndTwo", color: PALETTE.WHITE, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/12', component: EndThree, name: "EndThree", color: PALETTE.BLACK, meta: {
+    path: '/11', component: EndThree, name: "EndThree", color: PALETTE.BLACK, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },

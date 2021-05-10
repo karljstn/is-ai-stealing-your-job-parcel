@@ -21,7 +21,7 @@ type MODELS = { [name: string]: MODEL }
 export const MODELS: MODELS = {
   HAND: {
     URL: hand,
-    SCALE: 0.0275,
+    SCALE: 0.0285,
   },
   TRASHCAN: {
     URL: trashcan,

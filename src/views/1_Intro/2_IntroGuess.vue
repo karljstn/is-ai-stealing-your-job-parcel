@@ -41,7 +41,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-p {
+p,
+span {
 	font-size: 4rem;
 }
 .hello {

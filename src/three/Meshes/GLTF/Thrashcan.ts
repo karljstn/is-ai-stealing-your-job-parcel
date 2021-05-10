@@ -2,13 +2,13 @@ import { AnimationAction, AnimationClip, AnimationMixer, LoopOnce, Scene, Vector
 import { MODELS } from "~constants/MODELS";
 import { ThreeGLTF } from "~interfaces/Three";
 import { Viewport } from "~types";
-import TransitionGLTF from "./base/TransitionGLTF";
+import withTween from "./base/withTween";
 import MouseController from '~singletons/MouseController'
 import raf from "~singletons/RAF"
 import { RAFS } from "~constants/RAFS"
 import store from "~store";
 
-class Trashcan extends TransitionGLTF implements ThreeGLTF {
+class Trashcan extends withTween implements ThreeGLTF {
 	params: {
 		animation: { speed: number }
 		out: { duration: number, delay: number }

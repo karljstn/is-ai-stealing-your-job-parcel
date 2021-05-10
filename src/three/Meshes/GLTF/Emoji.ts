@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { MODEL, MODELS } from "~/constants/MODELS";
+import { MODEL } from "~/constants/MODELS";
+import { PALETTE } from "~/constants/PALETTE"
 import {
 	AnimationAction,
-
 	Color,
 	Mesh,
 	Scene,
@@ -16,21 +16,19 @@ import { RAFS } from "~constants/RAFS";
 import { Viewport } from "~types";
 import gsap from "gsap";
 import store from "~store";
-import { RECTS } from "~constants/RECTS";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import { ThreeGLTF } from "~interfaces/Three";
 import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
-import { Timeline } from "~lib/gsap-member/src/gsap-core";
-import TransitionGLTF from "~three/Meshes/GLTF/base/TransitionGLTF";
+import withTween from "~three/Meshes/GLTF/base/withTween";
 import MouseController from '~singletons/MouseController'
 
-class Emoji extends TransitionGLTF implements ThreeGLTF {
+class Emoji extends withTween implements ThreeGLTF {
 	params: any;
 
 	RECT: string
 	MODEL: MODEL
-	rafKey: string
+	tweenRAFKey: string
 	mixer: THREE.AnimationMixer | null;
 	waveAction: AnimationAction | null;
 	mouse: Vector3;
@@ -41,8 +39,9 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 	originalPos: Vector3;
 	mappedMouse: Vector3
 	inDelay: number
+	offset: Vector3
 
-	constructor(scene: Scene, viewport: Viewport, MODEL: MODEL, RAF: string, RECT: string, inDelay: number) {
+	constructor(scene: Scene, viewport: Viewport, MODEL: MODEL, RAF: string, RECT: string, inDelay: number, offset: Vector3) {
 		super(scene, viewport)
 
 		this.params = {
@@ -53,7 +52,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 			rotation: new Vector3(0, 0, 0),
 			initialPos: new Vector3(),
 			lightIntensity: 0.22,
-			fresnelColor: new Color("#fff"),
+			fresnelColor: new Color(PALETTE.WHITE),
 			sinus: {
 				amplitude: 0.1,
 				frequency: 0.00304
@@ -63,7 +62,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 
 		this.RECT = RECT
 		this.MODEL = MODEL
-		this.rafKey = RAF
+		this.tweenRAFKey = RAF
 		this.mixer = null;
 		this.waveAction = null;
 		this.mouse = MouseController.mouseVec3;
@@ -77,7 +76,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 			uniforms: {
 				uMap: { value: this.bakedTexture },
 				uFresnelColor: {
-					value: new Color("#fff"),
+					value: this.params.fresnelColor,
 				},
 				uFresnelWidth: {
 					value: 0
@@ -88,6 +87,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 		this.originalPos = new Vector3();
 		this.mappedMouse = new Vector3();
 		this.inDelay = inDelay
+		this.offset = offset
 	}
 
 	initialize = () => this.setFromRect(this.RECT).then(({ x, y, w, h }) => {
@@ -96,9 +96,9 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 		y -= h / 2
 
 		this.group.position.set(
-			x,
-			y,
-			0
+			x + this.offset.x,
+			y + this.offset.y,
+			0 + this.offset.z
 		);
 		this.originalPos.copy(this.group.position);
 		this.group.rotation.set(
@@ -119,7 +119,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 			if (mesh.material) mesh.material = this.bakedMaterial;
 		});
 
-		raf.subscribe(this.rafKey, this.update);
+		raf.subscribe(this.tweenRAFKey, this.update);
 		this.in()
 	})
 
@@ -208,7 +208,7 @@ class Emoji extends TransitionGLTF implements ThreeGLTF {
 				const mat = mesh.material as ShaderMaterial;
 
 				if (mat) {
-					gsap.to(mat.uniforms.uFresnelWidth, { value: 1, duration: 1.2 })
+					gsap.to(mat.uniforms.uFresnelWidth, { value: 0.7, duration: 1.2 })
 				}
 			})
 		} else {

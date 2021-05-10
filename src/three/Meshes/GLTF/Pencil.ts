@@ -6,12 +6,12 @@ import store from "~store";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import { clamp, map } from "~util";
 import BezierEasing from 'bezier-easing'
-import TransitionGLTF from "./base/TransitionGLTF";
+import withTween from "./base/withTween";
 import raf from '~singletons/RAF'
 import { RAFS } from "~constants/RAFS";
 import MouseController from '~singletons/MouseController'
 
-class Pencil extends TransitionGLTF implements ThreeGLTF {
+class Pencil extends withTween implements ThreeGLTF {
 	params: any
 	mouse: Vector3
 	hasTweened: boolean

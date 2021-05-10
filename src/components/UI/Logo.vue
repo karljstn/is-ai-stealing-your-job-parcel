@@ -1,19 +1,20 @@
 <template>
-  <div class="logo">logo :)</div>
+	<div class="logo">logo :)</div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({});
 </script>
 
 <style lang="scss" scoped>
+@import '~@/styles/variables';
+
 .logo {
-  width: 50px;
-  height: 50px;
-  background-color: white;
-  color: black;
+	width: 50px;
+	height: 50px;
+	background-color: white;
+	color: $black;
 }
 </style>
-

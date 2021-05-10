@@ -1,11 +1,11 @@
-import { AnimationAction, AnimationClip, AnimationMixer, Group, LoopOnce, Scene } from "three"
+import { AnimationClip, Group, Scene } from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { Viewport } from "~types"
 import LoadManager from '~/three/Singletons/LoadManager'
 import store from "~store"
 import { rectToThree } from "~util"
 
-class BaseGLTF {
+class withBase {
 	scene: Scene
 	viewport: Viewport
 
@@ -15,14 +15,15 @@ class BaseGLTF {
 	isLoaded: boolean
 	rectToThree: ReturnType<typeof rectToThree>
 	rectName: string
+	responsive: { baseScale: { desktop: number } }
 
 	constructor(scene: Scene, viewport: Viewport) {
 		this.scene = scene
 		this.viewport = viewport
-
 		this.group = new Group()
 		this.loader = new GLTFLoader(LoadManager.manager)
 		this.isLoaded = false
+		this.responsive = { baseScale: { desktop: window.innerWidth / 1440 } }
 	}
 
 	load = (url: string) => new Promise<void>((resolve, reject) => {
@@ -59,6 +60,7 @@ class BaseGLTF {
 	resize = (e: Event) => {
 		let rect = store.state.rects.get(this.rectName);
 		this.rectToThree = rectToThree(this.viewport, rect)
+		this.responsive.baseScale.desktop = window.innerWidth / 1440
 	}
 
 	setEvents = () => {
@@ -66,4 +68,4 @@ class BaseGLTF {
 	}
 }
 
-export default BaseGLTF
+export default withBase
