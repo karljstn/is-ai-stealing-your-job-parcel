@@ -39,6 +39,8 @@ export default Vue.extend({
 	min-height: 330px;
 	display: flex;
 	align-items: center;
+	flex-direction: column;
+
 	.form {
 		width: 330px;
 		height: 100%;

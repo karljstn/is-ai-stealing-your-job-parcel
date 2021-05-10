@@ -2,7 +2,7 @@
 	<section>
 		<SaveRect :rectName="helloRect">
 			<p class="hello">
-				you're here because you feel like your job is threatened
+				you're here because you feel like your job is threatened by Artificial Intelligence
 			</p>
 		</SaveRect>
 		<!-- <autoskip :time="3000" /> -->

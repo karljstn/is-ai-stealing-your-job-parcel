@@ -28,7 +28,8 @@ class SlotMachine extends TransitionGLTF implements ThreeGLTF {
 	initialize = () => {
 		this.group.scale.set(0, 0, 0)
 		this.group.rotateY(-Math.PI / 2)
-		this.group.position.x += this.viewport.width / 8;
+		this.group.rotateY(-Math.PI / 7)
+		this.group.position.y -= this.viewport.height / 10
 
 		this.mixer = new AnimationMixer(this.group)
 		this.mixer.timeScale = this.params.animation.speed

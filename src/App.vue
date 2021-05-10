@@ -71,6 +71,8 @@ export default Vue.extend({
 			this.$nextTick(() => {
 				store.commit('toggleIsVueReady');
 
+				store.state.tweakpane.hidden = true
+
 				setTimeout(() => {
 					this.show = true;
 				}, store.state.load.pauseBeforeLoaderDuration);

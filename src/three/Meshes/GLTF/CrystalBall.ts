@@ -1,4 +1,4 @@
-import { Color, Mesh, Scene, ShaderMaterial, Vector3 } from "three";
+import { Color, Mesh, PointLight, Scene, ShaderMaterial, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import LoadManager from '~/three/Singletons/LoadManager'
 import { ThreeGLTF } from "~interfaces/Three";
@@ -12,6 +12,8 @@ import TransitionGLTF from "~three/Meshes/GLTF/base/TransitionGLTF";
 // import fragment from '~shaders/refraction/fragment.glsl'
 import vertex from '~shaders/fresnel/vertex.glsl'
 import fragment from '~shaders/fresnel/fragment.glsl'
+import store from "~store";
+import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 
 class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 	params: any
@@ -19,12 +21,13 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 	material: ShaderMaterial
 	originalPos: Vector3
 	timeline: any
+	light: PointLight
 
 	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
 		this.params = {
 			size: MODELS.CRYSTAL_BALL.SCALE,
-			rotation: new Vector3()
+			rotation: new Vector3(0.5, -2.5, 0.2)
 		}
 		this.loader = new GLTFLoader(LoadManager.manager)
 		this.material = new ShaderMaterial({
@@ -37,12 +40,15 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 			},
 		});
 		this.originalPos = new Vector3()
+		this.light = new PointLight()
+		this.light.position.z = 2
+		this.light.intensity = 10
 	}
 
 	initialize = () => this.setFromRect(RECTS.INTRO.GUESS).then(({ x, y, w, h }) => {
 		this.group.position.set(
-			x + w,
-			y,
+			x - this.viewport.width / 15,
+			y - h / 2 - this.viewport.height / 20,
 			0
 		);
 		this.originalPos.copy(this.group.position);
@@ -53,13 +59,19 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 		);
 		this.group.scale.setScalar(0)
 		this.group.traverse((object3D) => {
+			if (object3D.name != "Sphere") return
+
 			const mesh = object3D as Mesh;
 			if (mesh.material) mesh.material = this.material;
 		});
 		this.group && this.scene.add(this.group)
+
+
+		this.scene.add(this.light)
 		// raf.subscribe(RAFS.CRYSTALBALL, this.update);
 		this.setTransition(MODELS.CRYSTAL_BALL.SCALE, this.group.position, new Vector3(0, 0, 0),)
 		this.in()
+		this.tweaks()
 	})
 
 	update = () => {
@@ -69,9 +81,18 @@ class CrystalBall extends TransitionGLTF implements ThreeGLTF {
 		}
 	}
 
+	tweaks = () => {
+		const folder = store.state.tweakpane.addFolder({ title: 'Crystal ball', expanded: false })
+		const rotation = folder.addInput(this.params, 'rotation')
+		rotation.on('change', (e: TpChangeEvent<Vector3>) => {
+			this.group.rotation.setFromVector3(e.value)
+		})
+	}
+
 	destroy = () => {
 		// this.killTween()
-		this.group && this.scene.remove(this.group)
+		this.scene.remove(this.light)
+		this.scene.remove(this.group)
 	}
 }
 

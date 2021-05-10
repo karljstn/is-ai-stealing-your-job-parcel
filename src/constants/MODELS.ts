@@ -21,7 +21,7 @@ type MODELS = { [name: string]: MODEL }
 export const MODELS: MODELS = {
   HAND: {
     URL: hand,
-    SCALE: 0.02,
+    SCALE: 0.0275,
   },
   TRASHCAN: {
     URL: trashcan,
@@ -69,6 +69,6 @@ export const MODELS: MODELS = {
   },
   SLOT_MACHINE: {
     URL: slotMachine,
-    SCALE: 0.1
+    SCALE: 0.15
   }
 }

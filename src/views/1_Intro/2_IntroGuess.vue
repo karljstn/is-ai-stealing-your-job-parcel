@@ -1,10 +1,10 @@
 <template>
 	<section>
-		<SaveRect :rectName="rect">
-			<p class="hello">
-				Let me guess :
-			</p>
-		</SaveRect>
+		<p class="hello">
+			<span>Let me</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<SaveRect :rectName="rect"><span>guess :</span></SaveRect>
+		</p>
 	</section>
 </template>
 
@@ -43,5 +43,8 @@ export default Vue.extend({
 <style lang="scss" scoped>
 p {
 	font-size: 4rem;
+}
+.hello {
+	display: flex;
 }
 </style>

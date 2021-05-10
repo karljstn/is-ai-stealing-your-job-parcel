@@ -36,7 +36,7 @@ const routes = [
         out: () => {
           store.state.scene.TrashcanScene.Trashcan.drop();
           store.commit("setHideLanding", true)
-          fadeBackground({ color: PALETTE.YELLOW });
+          fadeBackground({ routeName: "IntroHello" });
           store.commit('setDarkenScrollDownArrow', false)
 
           setTimeout(() => {
@@ -48,7 +48,7 @@ const routes = [
     }
   },
   {
-    path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.YELLOW, meta: {
+    path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.WHITE, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 500, out: () => { store.state.scene.HandWaveScene.Hand.out() } }
     }
   },
