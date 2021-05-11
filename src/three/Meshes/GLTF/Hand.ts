@@ -32,7 +32,7 @@ class Hand extends withMouse implements ThreeGLTF {
 	}
 
 	initialize = () => this.setFromRect(RECTS.INTRO.HELLO).then(({ x, y, w, h }) => {
-		const target = new Vector3(x + w - this.viewport.width / 4.8, y - h / 2, 0)
+		const target = new Vector3(x + w, y - h / 2, 0)
 		this.original.position.copy(target)
 		this.group.position.copy(target)
 		this.group.scale.set(0, 0, 0)

@@ -57,7 +57,7 @@ export default Vue.extend({
 		left: 50%;
 		transform: translate(-50%, 0);
 		font-size: 0.8rem;
-		z-index: 1;
+		z-index: 2;
 	}
 
 	.article__frame {

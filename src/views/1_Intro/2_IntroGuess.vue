@@ -1,10 +1,13 @@
 <template>
 	<section>
-		<p class="hello">
+		<!-- <p class="hello">
 			<span>Let me</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<SaveRect :rectName="rect"><span>guess :</span></SaveRect>
-		</p>
+		</p> -->
+		<div class="lottie">
+			<lottie-animation :animationData="lottieURL" :loop="true" />
+		</div>
 	</section>
 </template>
 
@@ -17,11 +20,14 @@ import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
 import store from '~store';
 import { fadeBackground } from '~util';
+import lottie from '~/assets/Lottie/2. LET ME GUESS.json';
+import LottieAnimation from 'lottie-web-vue';
 
 export default Vue.extend({
 	data() {
 		return {
 			rect: RECTS.INTRO.GUESS,
+			lottieURL: lottie,
 		};
 	},
 	components: {
@@ -29,6 +35,7 @@ export default Vue.extend({
 		QuestionForm,
 		Button,
 		Autoskip,
+		LottieAnimation,
 	},
 	mounted() {
 		fadeBackground({ routeName: 'IntroGuess' });
@@ -47,5 +54,8 @@ span {
 }
 .hello {
 	display: flex;
+}
+.lottie {
+	width: 560px;
 }
 </style>

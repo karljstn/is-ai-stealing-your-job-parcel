@@ -1,11 +1,14 @@
 <template>
 	<section>
-		<SaveRect :rectName="helloRect">
+		<!-- <SaveRect :rectName="helloRect">
 			<p class="hello">
 				you're here because you feel like your job is threatened by Artificial Intelligence
 			</p>
-		</SaveRect>
+		</SaveRect> -->
 		<!-- <autoskip :time="3000" /> -->
+		<div class="lottie">
+			<lottie-animation :animationData="lottieURL" :loop="true" />
+		</div>
 	</section>
 </template>
 
@@ -17,11 +20,14 @@ import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
 import { fadeBackground } from '~util';
+import lottie from '~/assets/Lottie/3. YOURE HERE BECAUSE.json';
+import LottieAnimation from 'lottie-web-vue';
 
 export default Vue.extend({
 	data() {
 		return {
 			helloRect: RECTS.INTRO.THREATHENED,
+			lottieURL: lottie,
 		};
 	},
 	components: {
@@ -29,6 +35,7 @@ export default Vue.extend({
 		QuestionForm,
 		Button,
 		Autoskip,
+		LottieAnimation,
 	},
 	mounted() {
 		fadeBackground({ routeName: 'IntroThreatened' });
@@ -45,5 +52,9 @@ p {
 	font-size: 4rem;
 	text-align: center;
 	color: white;
+}
+
+.lottie {
+	width: 560px;
 }
 </style>

@@ -2,7 +2,7 @@
 	<section>
 		<div>
 			<SaveRect :rectName="helloRect">
-				<lottie-animation ref="anim" :animationData="lottieURL" :loop="false" @complete="next" />
+				<lottie-animation :animationData="lottieURL" :loop="true" />
 			</SaveRect>
 		</div>
 		<!-- <autoskip :time="12000" /> -->
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import LottieAnimation from 'lottie-web-vue';
-import lottie from '~/assets/Lottie/HELLO_THERE_2.json';
+import lottie from '~/assets/Lottie/1. HELLO THERE.json';
 import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
@@ -59,6 +59,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 div {
-	width: 1030px;
+	width: 380px;
 }
 </style>
