@@ -27,7 +27,7 @@ import Vue from "vue";
 import store from "~/store";
 
 export default Vue.extend({
-  props: ["timerCanStart", "timerPause"],
+  props: ["timerCanStart", "timerPause", "progress"],
   data() {
     return {
       patientFile: false,
@@ -47,6 +47,12 @@ export default Vue.extend({
         this.patientFile = !this.patientFile;
         store.state.scene?.radio.patientFile(this.patientFile);
       }
+    },
+  },
+  watch: {
+    progress(newVal) {
+      console.log(newVal);
+      this.usedAI = false;
     },
   },
   computed: {

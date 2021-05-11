@@ -56,6 +56,8 @@ export default class Radio implements ThreeGroup {
     renderer: any
     progress: number
 
+    aiUsed: number
+
     clock: THREE.Clock
 
     gameRunning: boolean
@@ -72,6 +74,9 @@ export default class Radio implements ThreeGroup {
         this.group = new THREE.Group()
 
         this.controls = controls
+
+        this.aiUsed = 0
+        // this.aiUsedThisCase = true
 
         this.patientFileOpened = false
 
@@ -175,8 +180,11 @@ export default class Radio implements ThreeGroup {
     }
 
     nextCase() {
-        Skeleton.transitionOut(this.progress, this.controls)
-        Clipboard.nextTexture(this.progress)
+        if (!this.gameEnded) {
+
+            Skeleton.transitionOut(this.progress, this.controls)
+            Clipboard.nextTexture(this.progress)
+        }
     }
 
     onResize() {
@@ -247,6 +255,8 @@ export default class Radio implements ThreeGroup {
     }
 
     confirm = (res: boolean) => {
+        console.log('confirm')
+
         if (res) {
             this.progress++
             store.commit("updateProgress", this.progress)
@@ -308,11 +318,11 @@ export default class Radio implements ThreeGroup {
                 repeat: -1
             })
 
-            // this.camera.lookAt(Skeleton.errorMesh.position)
+
+            this.aiUsed++
 
             this.controls.enabled = false
             this.controls.autoRotate = true
-            // Skeleton.errorMesh.position.copy(this.controls.target)
 
             gsap.to(this.controls.target, {
                 duration: 1.5,
@@ -332,6 +342,8 @@ export default class Radio implements ThreeGroup {
     }
 
     endGame() {
+        console.log('end game')
+        this.gameEnded = true
 
         Skeleton.isAnimating = true
         gsap.to(Skeleton.currentSkeleton.position, {
@@ -344,7 +356,8 @@ export default class Radio implements ThreeGroup {
 
                 this.group.remove(Clipboard.mesh)
                 this.skeletonScene.remove(Skeleton.currentSkeleton)
-
+                console.log('skeleton remove')
+                raf.unsubscribe("radioUpdate")
                 // router.push('10')
                 this.camera.position.z = 1
 

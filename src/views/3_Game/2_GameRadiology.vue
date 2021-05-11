@@ -5,13 +5,14 @@
       <ButtonsRight
         :timerCanStart="this.timerCanStart"
         :timerPause="this.timerPause"
+        :progress="this.progress"
       ></ButtonsRight>
 
       <!-- <NotificationManager></NotificationManager> -->
 
       <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
-      <Toolbar></Toolbar>
+      <Toolbar :progress="this.progress"></Toolbar>
 
       <Confirm v-if="this.confirm"></Confirm>
 
@@ -37,6 +38,7 @@
 
       <Countdown v-if="this.countdown" :hide="this.hideCountdown"></Countdown>
     </div>
+    <EndScreen></EndScreen>
   </section>
 </template>
 
@@ -54,6 +56,7 @@ import NotificationManager from "./Radiologist/Notifications/NotificationManager
 import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
 import Countdown from "./Radiologist/Tutorial/Countdown.vue";
 import Help from "./Radiologist/Tutorial/Help.vue";
+import EndScreen from "./Radiologist/EndScreen.vue";
 
 import Timer from "./Radiologist/Timer.vue";
 
@@ -93,6 +96,9 @@ export default Vue.extend({
     },
     gameEnded() {
       return store.state.radiologist.gameEnded ? "game-fade" : "";
+    },
+    progress() {
+      return store.state.radiologist.progress;
     },
   },
 
@@ -153,6 +159,7 @@ export default Vue.extend({
     Toolbar,
     Confirm,
     Help,
+    EndScreen,
   },
 
   methods: {
@@ -227,6 +234,7 @@ section {
 
   .game-fade {
     opacity: 0;
+    pointer-events: none;
   }
 
   .tutorial {

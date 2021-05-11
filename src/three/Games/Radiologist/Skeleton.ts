@@ -183,6 +183,8 @@ class Skeleton {
 
         this.isAnimating = false
         this.skeletonScene.add(this.currentSkeleton)
+        console.log('skeleton add')
+
         this.transitionIn(this.currentSkeleton)
     }
 

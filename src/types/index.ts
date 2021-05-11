@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3 } from "three"
 import MainScene from "~/three/MainScene"
 import { CustomEase } from "gsap/all"
 import Tweakpane from "tweakpane"
@@ -6,7 +6,7 @@ import Tweakpane from "tweakpane"
 export type Viewport = {
   height: number
   width: number
-};
+}
 
 export type MainSceneParams = {
   maxFPS: number
@@ -16,7 +16,7 @@ export type MainSceneParams = {
   scoreFPS: number
   viewport: Viewport
   light: {
-    pos: Vector3;
+    pos: Vector3
     intensity: number
     target: Vector3
   }
@@ -24,7 +24,7 @@ export type MainSceneParams = {
     fov: number,
     position: Vector3
   }
-};
+}
 
 export type StoreState = {
   progression: number
@@ -51,7 +51,12 @@ export type StoreState = {
     confirm: boolean,
     confirmCallback: Function | null,
     penalty: Function,
-    gameEnded: boolean
+    gameEnded: boolean,
+    results: {
+      AIused: number,
+      processedFiles: number,
+      goodAnswers: number
+    }
   }
   hideScrollDownArrow: boolean
   darkenScrollDownArrow: boolean

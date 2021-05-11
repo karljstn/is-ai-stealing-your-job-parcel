@@ -32,6 +32,7 @@ import Folder from "./Folder.vue";
 import store from "~/store";
 
 export default Vue.extend({
+  props: ["progress"],
   data(): { casesPending: Object[]; index: number } {
     return {
       casesPending: [],
@@ -47,11 +48,6 @@ export default Vue.extend({
     setTimeout(() => {
       this.addFolder(500);
     }, 3000);
-  },
-  computed: {
-    progress() {
-      return store.state.radiologist.progress;
-    },
   },
   methods: {
     addFolder(duration: number) {

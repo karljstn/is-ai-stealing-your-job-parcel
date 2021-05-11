@@ -29,7 +29,7 @@ export default Vue.extend({
     penaltyAnimation: any;
   } {
     return {
-      countdown: 45,
+      countdown: 10,
       interval: 0,
       min: 0,
       sec: 0,
@@ -77,7 +77,13 @@ export default Vue.extend({
     applyPenalty() {
       this.countdown -= 4;
       this.penaltyAnimation.play();
-      this.convertSeconds();
+      if (this.countdown <= 0) {
+        console.log("stop countdown");
+
+        this.stopCountdown();
+      } else {
+        this.convertSeconds();
+      }
     },
     startCountdown() {
       this.convertSeconds();
@@ -95,7 +101,9 @@ export default Vue.extend({
       this.countdown = newCountdown;
     },
     stopCountdown() {
-      // store.state.scene?.radio.endGame();
+      this.min = "00";
+      this.sec = "00";
+      store.state.scene?.radio.endGame();
       clearInterval(this.interval);
     },
   },
