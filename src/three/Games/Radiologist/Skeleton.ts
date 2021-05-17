@@ -12,7 +12,6 @@ import gsap from "gsap"
 import fragment from "~/shaders/radiologist/skeleton/fragment.glsl"
 import vertex from "~/shaders/radiologist/skeleton/vertex.glsl"
 
-
 class Skeleton {
     gltfLoader: GLTFLoader
     textureLoader: THREE.TextureLoader
@@ -62,7 +61,7 @@ class Skeleton {
             transparent: true
         })
 
-        this.errorsNames = ["Simple_Pen_Cylinder007", "intestins", "CISEAUX", "vertèbre 2", "Rib_L_3"]
+        this.errorsNames = ["Simple_Pen_Cylinder007", "intestins", "CISEAUX", "vertebre_2", "Rib_L_3"]
         this.skeletonsInfos = [
             RADIOLOGIST.SKELETON1,
             RADIOLOGIST.SKELETON2,
@@ -101,11 +100,11 @@ class Skeleton {
             )
 
             if (i === 3) {
-                console.log('fourth model')
+                console.log("fourth model")
                 this.skeletons[i].rotation.y = -Math.PI / 2
             }
 
-            this.textureLoader.load(this.skeletonsInfos[i].BAKE, (texture) => {
+            this.textureLoader.load(this.skeletonsInfos[i].BAKE, texture => {
                 texture.flipY = false
                 this.textures.push(texture)
 
@@ -113,7 +112,7 @@ class Skeleton {
                     this.loadModels(i + 1)
                 } else {
                     this.loaded = true
-                    console.log('SKELETON AND TEXTURES LOADED')
+                    console.log("SKELETON AND TEXTURES LOADED")
                     this.nextSkeleton(0)
                 }
             })
@@ -124,7 +123,7 @@ class Skeleton {
         elem.position.y = 20
         gsap.to(elem.position, {
             duration: 0.5,
-            y: 0,
+            y: 0
         })
 
         gsap.to(this.uniforms.uAlpha, {
@@ -150,9 +149,7 @@ class Skeleton {
         })
     }
 
-
     nextSkeleton(progress: number) {
-
         this.progress = progress
 
         raf.unsubscribe("heartbeat")
@@ -183,9 +180,10 @@ class Skeleton {
 
         this.isAnimating = false
         this.skeletonScene.add(this.currentSkeleton)
+        console.log("skeleton add")
+
         this.transitionIn(this.currentSkeleton)
     }
-
 
     getShader() {
         return new THREE.ShaderMaterial({
@@ -200,12 +198,14 @@ class Skeleton {
         })
     }
 
-
     heartbeat = () => {
         this.heart.scale.set(
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
-            this.heartBaseScale + (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE
+            this.heartBaseScale +
+                (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            this.heartBaseScale +
+                (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            this.heartBaseScale +
+                (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE
         )
     }
 }

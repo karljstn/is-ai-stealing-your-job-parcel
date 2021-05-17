@@ -1,6 +1,10 @@
 <template>
   <div class="button-container">
-    <div class="ai-button-container" v-on:click="this.useAI">
+    <div
+      class="ai-button-container"
+      v-on:click="this.useAI"
+      :class="this.classAIBtn"
+    >
       <button
         class="ai-button"
         v-bind:class="{ tutorialOpened: timerPause || !timerCanStart }"
@@ -23,23 +27,37 @@ import Vue from "vue";
 import store from "~/store";
 
 export default Vue.extend({
-  props: ["timerCanStart", "timerPause"],
+  props: ["timerCanStart", "timerPause", "progress"],
   data() {
     return {
       patientFile: false,
+      usedAI: false,
     };
   },
   methods: {
     useAI() {
-      if (this.timerCanStart && !this.timerPause) {
+      if (this.timerCanStart && !this.timerPause && !this.usedAI) {
         store.state.scene?.radio.useAI();
+        this.usedAI = true;
       }
     },
+
     openPatientFile() {
       if (this.timerCanStart && !this.timerPause) {
         this.patientFile = !this.patientFile;
         store.state.scene?.radio.patientFile(this.patientFile);
       }
+    },
+  },
+  watch: {
+    progress(newVal) {
+      console.log(newVal);
+      this.usedAI = false;
+    },
+  },
+  computed: {
+    classAIBtn() {
+      return this.usedAI ? "used-ai" : "";
     },
   },
 });
@@ -56,17 +74,29 @@ export default Vue.extend({
   justify-content: space-between;
   align-items: center;
 
+  .used-ai {
+    filter: grayscale(1);
+    cursor: initial;
+    .ai-button {
+      cursor: initial;
+      &:hover {
+        transform: scale(1);
+      }
+    }
+  }
+
   .ai-button-container,
   .patient-file-container {
     width: 73px;
     height: 74px;
     background-size: contain;
     background-repeat: no-repeat;
-    cursor: pointer;
+    // cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    transition: filter 0.5s;
 
     &:hover {
       .btnAbout {

@@ -1,10 +1,10 @@
 import * as THREE from "three"
 import Tweakpane from "tweakpane"
 
-import Skeleton from './Skeleton'
-import Clipboard from './Clipboard'
-import Foreground from './Foreground'
-import Background from './Background'
+import Skeleton from "./Skeleton"
+import Clipboard from "./Clipboard"
+import Foreground from "./Foreground"
+import Background from "./Background"
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
@@ -29,6 +29,8 @@ let maxPan = new THREE.Vector3(0, 3.5, 0)
 let _v = new THREE.Vector3()
 
 let dragForce = 0
+
+const AI_CAMERA_VALUES = [3.5, 0.5, 0.5, 0, 3]
 
 export default class Radio implements ThreeGroup {
     group: THREE.Group
@@ -56,6 +58,9 @@ export default class Radio implements ThreeGroup {
     renderer: any
     progress: number
 
+    aiUsed: number
+    goodAnswers: number
+
     clock: THREE.Clock
 
     gameRunning: boolean
@@ -72,6 +77,9 @@ export default class Radio implements ThreeGroup {
         this.group = new THREE.Group()
 
         this.controls = controls
+
+        this.aiUsed = 0
+        this.goodAnswers = 0
 
         this.patientFileOpened = false
 
@@ -105,14 +113,12 @@ export default class Radio implements ThreeGroup {
         this.mouseDown = false
         this.isDragging = false
 
-
         this.gameRunning = false
 
         const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial())
         // this.group.add(mesh)
 
         // mesh.position.y = 3.5
-
 
         this.controls.addEventListener("start", () => {
             this.mouseDown = true
@@ -124,7 +130,6 @@ export default class Radio implements ThreeGroup {
             if (this.mouseDown && dragForce > 15) {
                 this.isDragging = true
 
-
                 // if (this.currentIntersect) {
 
                 //     this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 0.5
@@ -135,13 +140,11 @@ export default class Radio implements ThreeGroup {
 
             //doesn't work in the update
             if (this.controls.enabled) {
-
                 _v.copy(this.controls.target)
                 this.controls.target.clamp(minPan, maxPan)
                 _v.sub(this.controls.target)
                 this.camera.position.sub(_v)
             }
-
         })
 
         this.controls.addEventListener("end", () => {
@@ -150,7 +153,7 @@ export default class Radio implements ThreeGroup {
             this.isDragging = false
         })
 
-        window.addEventListener('pointerup', this.mouseup)
+        window.addEventListener("pointerup", this.mouseup)
     }
 
     mouseup = () => {
@@ -158,7 +161,6 @@ export default class Radio implements ThreeGroup {
         this.mouseDown = false
         this.isDragging = false
     }
-
 
     init() {
         raf.subscribe("radioUpdate", this.update)
@@ -175,8 +177,10 @@ export default class Radio implements ThreeGroup {
     }
 
     nextCase() {
-        Skeleton.transitionOut(this.progress, this.controls)
-        Clipboard.nextTexture(this.progress)
+        if (!this.gameEnded) {
+            Skeleton.transitionOut(this.progress, this.controls)
+            Clipboard.nextTexture(this.progress)
+        }
     }
 
     onResize() {
@@ -197,7 +201,7 @@ export default class Radio implements ThreeGroup {
 
             gsap.to(Clipboard.material.uniforms.uAlpha, {
                 duration: 0.5,
-                value: 1,
+                value: 1
             })
 
             gsap.to(Clipboard.mesh.position, {
@@ -221,29 +225,26 @@ export default class Radio implements ThreeGroup {
                 duration: 0.5,
                 x: 10
             })
-
         }
     }
 
     log() {
         console.log(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-
     }
 
     gameState(state: string, cond: boolean) {
         switch (state) {
-            case 'timerCanStart':
+            case "timerCanStart":
                 this.gameRunning = true
                 this.controls.enabled = true
                 break
-            case 'timerPause':
+            case "timerPause":
                 this.controls.enabled = !cond
                 this.gameRunning = !cond
                 break
             default:
                 break
         }
-
     }
 
     confirm = (res: boolean) => {
@@ -265,6 +266,7 @@ export default class Radio implements ThreeGroup {
                 // this.currentIntersect = null
 
                 this.nextCase()
+                this.goodAnswers++
 
                 console.log("RADIOLOGIST GAME : GOOD ANSWER")
             } else {
@@ -297,6 +299,9 @@ export default class Radio implements ThreeGroup {
     }
 
     useAI() {
+        console.log("ai used")
+        console.log(Skeleton.errorMesh)
+
         if (Skeleton.errorMesh) {
             const mat = Skeleton.errorMesh.material as THREE.ShaderMaterial
             mat.uniforms.uFresnelColor.value = new THREE.Color("#FF0000")
@@ -308,26 +313,46 @@ export default class Radio implements ThreeGroup {
                 repeat: -1
             })
 
-            // this.camera.lookAt(Skeleton.errorMesh.position)
-
+            this.aiUsed++
+            this.controls.enableDamping = false
             this.controls.enabled = false
             this.controls.autoRotate = true
-            // Skeleton.errorMesh.position.copy(this.controls.target)
+
+            console.log("AI USED")
 
             gsap.to(this.controls.target, {
-                duration: 1,
-                y: 3.5,
+                duration: 1.5,
+                y: AI_CAMERA_VALUES[this.progress],
+                onComplete: () => {
+                    this.controls.enabled = true
+                    this.controls.autoRotate = false
+                    this.controls.enableDamping = true
+                }
             })
 
             gsap.to(this.camera.position, {
-                duration: 1,
-                y: 3.5,
+                duration: 1.5,
+                y: AI_CAMERA_VALUES[this.progress],
                 z: 4
             })
         }
     }
 
     endGame() {
+        this.gameEnded = true
+
+        console.log("END OF THE GAME")
+        console.log("AI was used", this.aiUsed, "times")
+        console.log("You processed", this.progress, "files")
+        console.log("Your diagnosis was right", this.goodAnswers, "times")
+
+        const results = {
+            AIused: this.aiUsed,
+            processedFiles: this.progress,
+            goodAnswers: this.goodAnswers
+        }
+
+        store.commit("setResults", results)
 
         Skeleton.isAnimating = true
         gsap.to(Skeleton.currentSkeleton.position, {
@@ -340,7 +365,8 @@ export default class Radio implements ThreeGroup {
 
                 this.group.remove(Clipboard.mesh)
                 this.skeletonScene.remove(Skeleton.currentSkeleton)
-
+                console.log("skeleton remove")
+                raf.unsubscribe("radioUpdate")
                 // router.push('10')
                 this.camera.position.z = 1
 
@@ -367,7 +393,7 @@ export default class Radio implements ThreeGroup {
         coef = 0
         gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
             duration: 0.25,
-            value: 1,
+            value: 1
         })
     }
 
@@ -378,7 +404,6 @@ export default class Radio implements ThreeGroup {
             coef += delta * params.fresnelSpeed
             this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1 - coef
         }
-
     }
 
     fromMeshToBlank() {
@@ -386,7 +411,7 @@ export default class Radio implements ThreeGroup {
 
         gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
             duration: 0.25,
-            value: 1,
+            value: 1
         })
     }
 
@@ -399,23 +424,25 @@ export default class Radio implements ThreeGroup {
         if (Skeleton.loaded) {
             if (this.gameRunning) {
                 if (!Skeleton.isAnimating && !this.patientFileOpened) {
-
                     if (!this.isDragging) {
-
                         this.raycaster.setFromCamera(this.mouse, this.camera)
-                        const intersects = this.raycaster.intersectObjects(Skeleton.skeletons[this.progress].children, true)
+                        const intersects = this.raycaster.intersectObjects(
+                            Skeleton.skeletons[this.progress].children,
+                            true
+                        )
 
                         if (intersects.length) {
-
-                            if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object) this.fromMeshToMesh()
+                            if (
+                                this.currentIntersect &&
+                                this.currentIntersect.object !== intersects[0].object
+                            )
+                                this.fromMeshToMesh()
                             this.onMesh(delta, intersects[0])
-
                         } else {
                             if (this.currentIntersect) this.fromMeshToBlank()
                             this.currentIntersect = null
                             coef = 0
                         }
-
                     } else {
                         if (this.currentIntersect) {
                             //on drag, if current intersect is defined, make it unselect and put it to null
@@ -426,6 +453,5 @@ export default class Radio implements ThreeGroup {
                 }
             }
         }
-
     }
 }

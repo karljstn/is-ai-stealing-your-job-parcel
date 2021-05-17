@@ -32,7 +32,12 @@ const store = new Vuex.Store({
       confirm: false,
       confirmCallback: null,
       penalty: () => { },
-      gameEnded: false
+      gameEnded: false,
+      results: {
+        AIused: 0,
+        processedFiles: 0,
+        goodAnswers: 0
+      }
     },
     hideScrollDownArrow: false,
     darkenScrollDownArrow: false,
@@ -86,9 +91,10 @@ const store = new Vuex.Store({
       state.radiologist.penalty = payload
     },
     setGameEnded(state, payload) {
-      console.log('STATE IS UPDATING TO', payload)
-
       state.radiologist.gameEnded = payload
+    },
+    setResults(state, payload) {
+      state.radiologist.results = payload
     },
     setPane(state, payload) {
       state.tweakpane = payload
