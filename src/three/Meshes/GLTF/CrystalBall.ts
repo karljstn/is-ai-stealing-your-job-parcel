@@ -48,36 +48,6 @@ class CrystalBall extends withMouse implements ThreeGLTF {
 		this.light.intensity = 10
 	}
 
-	// initialize = () => this.setFromRect(RECTS.INTRO.GUESS).then(({ x, y, w, h }) => {
-	// 	this.group.position.set(
-	// 		x - this.viewport.width / 30,
-	// 		y - h / 2 - this.viewport.height / 20,
-	// 		0
-	// 	);
-	// 	this.originalPos.copy(this.group.position);
-	// 	this.group.rotation.set(
-	// 		this.params.rotation.x,
-	// 		this.params.rotation.y,
-	// 		this.params.rotation.z
-	// 	);
-	// 	this.group.scale.setScalar(0)
-	// 	this.group.traverse((object3D) => {
-	// 		if (object3D.name != "Sphere") return
-
-	// 		const mesh = object3D as Mesh;
-	// 		if (mesh.material) mesh.material = this.material;
-	// 	});
-	// 	this.group && this.scene.add(this.group)
-
-
-	// 	this.scene.add(this.light)
-	// 	// raf.subscribe(RAFS.CRYSTALBALL, this.update);
-	// 	this.setTransition(MODELS.CRYSTAL_BALL.SCALE, this.group.position, new Vector3(0, 0, 0),)
-	// 	this.setUpdateMouse(0.8, new Vector3(3, -1, 0), 0.3)
-	// 	this.in()
-	// 	this.tweaks()
-	// })
-
 	initialize = () => {
 		this.group.position.set(
 			this.viewport.width / 70,

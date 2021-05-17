@@ -2,7 +2,7 @@
 	<section>
 		<div>
 			<SaveRect :rectName="helloRect">
-				<lottie-animation :animationData="lottieURL" :loop="true" />
+				<lottie-animation :animationData="lottieURL" :loop="false" />
 			</SaveRect>
 		</div>
 		<!-- <autoskip :time="12000" /> -->

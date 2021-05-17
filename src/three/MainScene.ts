@@ -21,6 +21,9 @@ import EmojisScene from "./Scenes/EmojisScene"
 import SlotMachineScene from "./Scenes/SlotMachineScene"
 import Radio from "./Games/Radiologist/Radio"
 import HandWaveScene from "./Scenes/HandWaveScene"
+import HandOKScene from "./Scenes/HandOKScene"
+import DistraughtEmojiScene from "./Scenes/DistraughtEmojiScene"
+import EmojiSmileScene from "./Scenes/EmojiSmileScene"
 
 export default class Scene {
   params: MainSceneParams
@@ -51,6 +54,9 @@ export default class Scene {
   PencilScene: PencilScene
   EmojisScene: EmojisScene
   SlotMachineScene: SlotMachineScene
+  HandOKScene: HandOKScene
+  DistraughtEmojiScene: DistraughtEmojiScene
+  EmojiSmileScene: EmojiSmileScene
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -64,7 +70,7 @@ export default class Scene {
         width: 0,
       },
       light: {
-        pos: new Vector3(4.1, 0.86, 5.2),
+        pos: new Vector3(3.1, 0.86, 4.2),
         intensity: 0.51,
         target: new Vector3(),
       },
@@ -190,6 +196,10 @@ export default class Scene {
       this.scene,
     )
     this.SlotMachineScene = new SlotMachineScene(this.params.viewport, this.scene)
+    this.HandOKScene = new HandOKScene(this.params.viewport, this.scene)
+    this.DistraughtEmojiScene = new DistraughtEmojiScene(this.params.viewport, this.scene)
+    this.EmojiSmileScene = new EmojiSmileScene(this.params.viewport, this.scene)
+
     this.tweaks()
   }
 

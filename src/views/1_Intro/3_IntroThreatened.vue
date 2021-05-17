@@ -7,7 +7,7 @@
 		</SaveRect> -->
 		<!-- <autoskip :time="3000" /> -->
 		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="true" />
+			<lottie-animation :animationData="lottieURL" :loop="false" />
 		</div>
 	</section>
 </template>

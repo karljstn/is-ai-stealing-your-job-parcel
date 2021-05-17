@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="true" />
+			<lottie-animation :animationData="lottieURL" :loop="false" />
 		</div>
 	</section>
 </template>
@@ -16,6 +16,7 @@ import Autoskip from '~components/Common/Autoskip.vue';
 import { fadeBackground } from '~util';
 import lottie from '~/assets/Lottie/4. WELL LET ME TELL.json';
 import LottieAnimation from 'lottie-web-vue';
+import store from '~store';
 
 export default Vue.extend({
 	data() {
@@ -32,9 +33,17 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	mounted() {
+		store.state.scene.EmojiSmileScene.start()
 		fadeBackground({ routeName: 'DefinitionOne' });
 	},
+	destroyed(){
+		store.state.scene.EmojiSmileScene.destroy()
+	}
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.lottie {
+	width: 600px;
+}
+</style>

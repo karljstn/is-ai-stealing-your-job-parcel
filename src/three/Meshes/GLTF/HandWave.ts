@@ -8,7 +8,7 @@ import { RECTS } from "~constants/RECTS";
 import withMouse from "./base/withMouse"
 import { Viewport } from '~types'
 
-class Hand extends withMouse implements ThreeGLTF {
+class HandWave extends withMouse implements ThreeGLTF {
 	params: { animation: { speed: number }, size: number }
 	original: { position: Vector3 }
 	world: { position: Vector3 }
@@ -21,7 +21,7 @@ class Hand extends withMouse implements ThreeGLTF {
 		super(scene, viewport)
 		this.params = {
 			animation: { speed: 0.002 },
-			size: MODELS.HAND.SCALE
+			size: MODELS.HAND_WAVE.SCALE
 		}
 		this.original = { position: new Vector3() }
 		this.world = { position: new Vector3() }
@@ -55,7 +55,7 @@ class Hand extends withMouse implements ThreeGLTF {
 		this.waveAction.loop = LoopOnce
 		this.waveAction.clampWhenFinished = true
 
-		this.setTransition(MODELS.HAND.SCALE, this.group.position)
+		this.setTransition(MODELS.HAND_WAVE.SCALE, this.group.position)
 
 		this.group.traverse((obj: any) => {
 			if (obj.name === "mesh") {
@@ -64,7 +64,7 @@ class Hand extends withMouse implements ThreeGLTF {
 			}
 		})
 
-		raf.subscribe(RAFS.HAND, this.update)
+		raf.subscribe(RAFS.HAND_WAVE, this.update)
 
 		this.in()
 		this.tweaks()
@@ -78,7 +78,7 @@ class Hand extends withMouse implements ThreeGLTF {
 		const folder = store.state.tweakpane.addFolder({ title: 'Hand', expanded: false })
 
 		const speedInput = folder.addInput(this.params.animation, 'speed', { label: "Wave speed", min: this.params.animation.speed * 0.33, max: this.params.animation.speed * 3 })
-		const sizeInput = folder.addInput(this.params, 'size', { label: "Hand size", min: MODELS.HAND.SCALE * 0.33, max: MODELS.HAND.SCALE * 3 })
+		const sizeInput = folder.addInput(this.params, 'size', { label: "Hand size", min: MODELS.HAND_WAVE.SCALE * 0.33, max: MODELS.HAND_WAVE.SCALE * 3 })
 		const btn = folder.addButton({ title: "Wave" })
 
 		speedInput.on('change', (speed: any) => {
@@ -120,8 +120,8 @@ class Hand extends withMouse implements ThreeGLTF {
 		// this.killTween()
 		this.killUpdateMouse()
 		this.scene.remove(this.group)
-		raf.unsubscribe(RAFS.HAND)
+		raf.unsubscribe(RAFS.HAND_WAVE)
 	}
 }
 
-export default Hand
+export default HandWave

@@ -1,12 +1,13 @@
 import { Viewport } from "~/types";
 import { PerspectiveCamera, Scene, Vector3 } from "three";
-import Hand from "../Meshes/GLTF/Hand";
+import HandWave from "../Meshes/GLTF/HandWave";
 import { MODELS } from "~constants/MODELS";
+import { ThreeScene } from "~interfaces/Three";
 
-class HandWaveScene {
+class HandWaveScene implements ThreeScene {
   viewport: Viewport
   scene: Scene
-  Hand: Hand;
+  Hand: HandWave;
 
   constructor(viewport: Viewport, scene: Scene) {
     this.viewport = viewport
@@ -14,8 +15,8 @@ class HandWaveScene {
   }
 
   start() {
-    this.Hand = new Hand(this.scene, this.viewport);
-    this.Hand.start(MODELS.HAND.URL, this.Hand.initialize)
+    this.Hand = new HandWave(this.scene, this.viewport);
+    this.Hand.start(MODELS.HAND_WAVE.URL, this.Hand.initialize)
   }
 
   destroy() {

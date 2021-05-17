@@ -23,6 +23,17 @@ import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
 import withTween from "~three/Meshes/GLTF/base/withTween";
 import MouseController from '~singletons/MouseController'
 
+type EmojiArgs = {
+	scene: Scene,
+	viewport: Viewport,
+	MODEL: MODEL,
+	RAF: string,
+	RECT?: string,
+	delay?: { in: number, out: number },
+	offset: Vector3
+	rotation?: Vector3
+}
+
 class Emoji extends withTween implements ThreeGLTF {
 	params: any;
 
@@ -38,10 +49,10 @@ class Emoji extends withTween implements ThreeGLTF {
 	bakedTexture: Texture;
 	originalPos: Vector3;
 	mappedMouse: Vector3
-	inDelay: number
+	delay: { in: number, out: number }
 	offset: Vector3
 
-	constructor(scene: Scene, viewport: Viewport, MODEL: MODEL, RAF: string, RECT: string, inDelay: number, offset: Vector3) {
+	constructor({ scene, viewport, MODEL, RAF, RECT = null, delay = { in: 0, out: 0 }, offset, rotation = new Vector3() }: EmojiArgs) {
 		super(scene, viewport)
 
 		this.params = {
@@ -49,7 +60,7 @@ class Emoji extends withTween implements ThreeGLTF {
 			size: MODEL.SCALE,
 			pos: { x: 0, y: 0, z: 0 },
 			factor: 0,
-			rotation: new Vector3(0, 0, 0),
+			rotation: rotation,
 			initialPos: new Vector3(),
 			lightIntensity: 0.22,
 			fresnelColor: new Color(PALETTE.WHITE),
@@ -86,32 +97,52 @@ class Emoji extends withTween implements ThreeGLTF {
 
 		this.originalPos = new Vector3();
 		this.mappedMouse = new Vector3();
-		this.inDelay = inDelay
+		this.delay = delay
 		this.offset = offset
 	}
 
-	initialize = () => this.setFromRect(this.RECT).then(({ x, y, w, h }) => {
-		// Center
-		x += w / 2
-		y -= h / 2
+	initialize = () => {
+		if (this.RECT) {
+			this.setFromRect(this.RECT).then(({ x, y, w, h }) => {
+				// Center
+				x += w / 2
+				y -= h / 2
 
-		this.group.position.set(
-			x + this.offset.x,
-			y + this.offset.y,
-			0 + this.offset.z
-		);
-		this.originalPos.copy(this.group.position);
-		this.group.rotation.set(
-			this.params.rotation.x,
-			this.params.rotation.y,
-			this.params.rotation.z
-		);
-		this.group.scale.set(
-			0, 0, 0
-		);
-		this.scene.add(this.group);
+				this.group.position.set(
+					x + this.offset.x,
+					y + this.offset.y,
+					0 + this.offset.z
+				);
+				this.originalPos.copy(this.group.position);
+				this.group.rotation.set(
+					this.params.rotation.x,
+					this.params.rotation.y,
+					this.params.rotation.z
+				);
+				this.group.scale.set(
+					0, 0, 0
+				);
+				this.scene.add(this.group);
+			})
+		} else {
+			this.group.position.set(
+				this.offset.x,
+				this.offset.y,
+				0 + this.offset.z
+			);
+			this.originalPos.copy(this.group.position);
+			this.group.rotation.set(
+				this.params.rotation.x,
+				this.params.rotation.y,
+				this.params.rotation.z
+			);
+			this.group.scale.set(
+				0, 0, 0
+			);
+			this.scene.add(this.group);
+		}
 
-		this.setTransition(this.MODEL.SCALE, this.group.position, new Vector3(0, 0, 0), { in: this.inDelay, out: 0 })
+		this.setTransition(this.MODEL.SCALE, this.group.position, new Vector3(0, 0, 0), { in: this.delay.in, out: this.delay.out })
 
 		// Set baked material
 		this.group.traverse((object3D) => {
@@ -121,7 +152,8 @@ class Emoji extends withTween implements ThreeGLTF {
 
 		raf.subscribe(this.tweenRAFKey, this.update);
 		this.in()
-	})
+		this.tweaks()
+	}
 
 	tweaks = () => {
 		if (!store.state.tweakpane) return;
@@ -208,7 +240,7 @@ class Emoji extends withTween implements ThreeGLTF {
 				const mat = mesh.material as ShaderMaterial;
 
 				if (mat) {
-					gsap.to(mat.uniforms.uFresnelWidth, { value: 0.7, duration: 1.2 })
+					gsap.to(mat.uniforms.uFresnelWidth, { value: 0.9, duration: 1.2 })
 				}
 			})
 		} else {
@@ -237,7 +269,7 @@ class Emoji extends withTween implements ThreeGLTF {
 			this.hover(false)
 		}
 
-		this.group.rotation.z = Math.sin(performance.now() * this.params.sinus.frequency) * this.params.sinus.amplitude
+		this.group.rotation.z = this.params.rotation.z + Math.sin(performance.now() * this.params.sinus.frequency) * this.params.sinus.amplitude
 	};
 
 	destroy = () => {

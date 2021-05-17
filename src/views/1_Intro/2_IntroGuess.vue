@@ -6,7 +6,7 @@
 			<SaveRect :rectName="rect"><span>guess :</span></SaveRect>
 		</p> -->
 		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="true" />
+			<lottie-animation :animationData="lottieURL" :loop="false" />
 		</div>
 	</section>
 </template>
