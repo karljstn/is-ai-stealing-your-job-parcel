@@ -10,6 +10,11 @@ import IntroQuestion from '~views/1_Intro/4_IntroQuestion.vue';
 import DefinitionOne from '~views/2_Definition/1_Definition.vue';
 import DefinitionTwo from '~views/2_Definition/2_Definition.vue';
 import DefinitionThree from '~views/2_Definition/3_Definition.vue';
+import DefinitionFour from '~views/2_Definition/4_Definition.vue';
+import DefinitionFive from '~views/2_Definition/5_Definition.vue';
+import DefinitionSix from '~views/2_Definition/6_Definition.vue';
+import DefinitionSeven from '~views/2_Definition/7_Definition.vue';
+import DefinitionEight from '~views/2_Definition/8_Definition.vue';
 import GameOne from '~/views/3_Game/1_GameChoice.vue';
 import GameTwo from '~/views/3_Game/2_GameRadiology.vue';
 import EndOne from '~views/4_End/1_EndHard.vue';
@@ -89,22 +94,51 @@ const routes = [
     }
   },
   {
-    path: '/7', component: DefinitionThree, name: "DefinitionThree", color: PALETTE.WHITE, meta: {
+    path: '/7', component: DefinitionThree, name: "DefinitionThree", color: PALETTE.BLACK, meta: {
+      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+    }
+  },
+  {
+    path: '/8', component: DefinitionFour, name: "DefinitionFour", color: PALETTE.YELLOW, meta: {
+      scroll: { disabled: false }, transition: {
+        delay: 1150, out: () => {
+          store.state.scene.TreeScene.Tree.out()
+        }
+      }
+    }
+  },
+  {
+    path: '/9', component: DefinitionFive, name: "DefinitionFive", color: PALETTE.ORANGE, meta: {
+      scroll: { disabled: false }, transition: { delay: 0, out: () => { } }
+    }
+  },
+  {
+    path: '/10', component: DefinitionSix, name: "DefinitionSix", color: PALETTE.VIOLET, meta: {
+      scroll: { disabled: false }, transition: { delay: 0, out: () => { } }
+    }
+  },
+  {
+    path: '/11', component: DefinitionSeven, name: "DefinitionSeven", color: PALETTE.YELLOW, meta: {
+      scroll: { disabled: false }, transition: { delay: 0, out: () => { } }
+    }
+  },
+  {
+    path: '/12', component: DefinitionEight, name: "DefinitionEight", color: PALETTE.LIGHTPINK, meta: {
+      scroll: { disabled: false }, transition: { delay: 0, out: () => { } }
+    }
+  },
+  {
+    path: '/13', component: GameOne, name: "GameOne", color: PALETTE.LIGHTPINK, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/8', component: GameOne, name: "GameOne", color: PALETTE.LIGHTPINK, meta: {
+    path: '/14', component: GameTwo, name: "GameTwo", meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/9', component: GameTwo, name: "GameTwo", meta: {
-      scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
-    }
-  },
-  {
-    path: '/10', component: EndOne, name: "EndOne", color: PALETTE.YELLOW, meta: {
+    path: '/15', component: EndOne, name: "EndOne", color: PALETTE.YELLOW, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
         delay: 1000, out: () => {
           store.state.scene.DistraughtEmojiScene.Emoji.out()
@@ -113,7 +147,7 @@ const routes = [
     }
   },
   {
-    path: '/11', component: EndTwo, name: "EndTwo", color: PALETTE.LIGHTPINK, meta: {
+    path: '/16', component: EndTwo, name: "EndTwo", color: PALETTE.LIGHTPINK, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
         delay: 1000, out: () => {
           store.state.scene.HandOKScene.Hand.out()
@@ -122,17 +156,17 @@ const routes = [
     }
   },
   {
-    path: '/12', component: EndThree, name: "EndThree", color: PALETTE.ORANGE, meta: {
+    path: '/17', component: EndThree, name: "EndThree", color: PALETTE.ORANGE, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/13', component: EndFour, name: "EndFour", color: PALETTE.WHITE, meta: {
+    path: '/18', component: EndFour, name: "EndFour", color: PALETTE.WHITE, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },
   {
-    path: '/14', component: EndFive, name: "EndFive", color: PALETTE.BLACK, meta: {
+    path: '/19', component: EndFive, name: "EndFive", color: PALETTE.BLACK, meta: {
       scroll: { disabled: true }, transition: { delay: 1000, out: () => { } }
     }
   },

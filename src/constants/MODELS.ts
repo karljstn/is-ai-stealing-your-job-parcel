@@ -21,6 +21,9 @@ import arrow from "~assets/Images/fleche.svg"
 import slotMachine from "~assets/Models/slot-machine/slot_machine_9.glb"
 import here from "~assets/Models/here/HERE.glb"
 import questionMark from "~assets/Models/question-mark/QUESTION_MARK.glb"
+import penPaper from "~assets/Models/pen-paper/Stylo.glb"
+import penPaperBake from "~assets/Models/pen-paper/bake.jpg"
+import tree from "~assets/Models/tree/TREE.glb"
 
 export type MODEL = { URL: string, SCALE: number, TEXTURE?: string }
 type MODELS = { [name: string]: MODEL }
@@ -99,5 +102,14 @@ export const MODELS: MODELS = {
   QUESTION_MARK: {
     URL: questionMark,
     SCALE: 0.1
+  },
+  PEN_PAPER: {
+    URL: penPaper,
+    SCALE: 0.03,
+    TEXTURE: penPaperBake
+  },
+  TREE: {
+    URL: tree,
+    SCALE: 0.03
   }
 }

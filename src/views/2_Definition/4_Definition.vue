@@ -9,7 +9,7 @@
 <script>
 import Vue from 'vue';
 import { fadeBackground } from '~util';
-import lottieURL from '~/assets/Lottie/6. AI IS.json';
+import lottieURL from '~/assets/Lottie/7. DEVICES THAT.json';
 import LottieAnimation from 'lottie-web-vue';
 import store from '~store';
 
@@ -23,13 +23,11 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	mounted() {
-		store.state.scene.PenPaperScene.start();
-		document.body.classList.add('white-nav');
-		fadeBackground({ routeName: 'DefinitionThree' });
+		store.state.scene.TreeScene.start();
+		fadeBackground({ routeName: 'DefinitionFour' });
 	},
 	destroyed() {
-		store.state.scene.PenPaperScene.destroy();
-		document.body.classList.remove('white-nav');
+		store.state.scene.TreeScene.destroy();
 	},
 });
 </script>

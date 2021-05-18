@@ -4,7 +4,6 @@ import { MODELS } from "~constants/MODELS";
 import { RAFS } from "~constants/RAFS"
 import { ThreeScene } from "~interfaces/Three";
 import Emoji from "~three/Meshes/GLTF/Emoji";
-import QuestionMark from "~three/Meshes/GLTF/QuestionMark";
 import Here from "~three/Meshes/GLTF/Here";
 
 class HereCryEmojiScene implements ThreeScene {

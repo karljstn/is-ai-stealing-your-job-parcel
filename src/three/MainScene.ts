@@ -25,6 +25,8 @@ import HandOKScene from "./Scenes/HandOKScene"
 import DistraughtEmojiScene from "./Scenes/DistraughtEmojiScene"
 import EmojiSmileScene from "./Scenes/EmojiSmileScene"
 import HereCryEmojiScene from "./Scenes/HereCryEmojiScene"
+import PenPaperScene from "./Scenes/PenPaperScene"
+import TreeScene from "./Scenes/TreeScene"
 
 export default class Scene {
   params: MainSceneParams
@@ -59,6 +61,8 @@ export default class Scene {
   DistraughtEmojiScene: DistraughtEmojiScene
   EmojiSmileScene: EmojiSmileScene
   HereCryEmojiScene: HereCryEmojiScene
+  PenPaperScene: PenPaperScene
+  TreeScene: TreeScene
 
   constructor(canvas: HTMLCanvasElement, maxFPS: number) {
     this.params = {
@@ -202,6 +206,8 @@ export default class Scene {
     this.DistraughtEmojiScene = new DistraughtEmojiScene(this.params.viewport, this.scene)
     this.EmojiSmileScene = new EmojiSmileScene(this.params.viewport, this.scene)
     this.HereCryEmojiScene = new HereCryEmojiScene(this.params.viewport, this.scene)
+    this.PenPaperScene = new PenPaperScene(this.params.viewport, this.scene)
+    this.TreeScene = new TreeScene(this.params.viewport, this.scene)
 
     this.tweaks()
   }
