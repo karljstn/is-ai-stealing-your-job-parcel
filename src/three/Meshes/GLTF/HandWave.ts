@@ -35,7 +35,6 @@ class HandWave extends withMouse implements ThreeGLTF {
 		const target = new Vector3(x + w, y - h / 2, 0)
 		this.original.position.copy(target)
 		this.group.position.copy(target)
-		this.group.scale.set(0, 0, 0)
 		this.scene.add(this.group)
 
 		this.mixer = new AnimationMixer(this.group)

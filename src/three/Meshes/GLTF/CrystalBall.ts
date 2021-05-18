@@ -60,7 +60,7 @@ class CrystalBall extends withMouse implements ThreeGLTF {
 			this.params.rotation.y,
 			this.params.rotation.z
 		);
-		this.group.scale.setScalar(0)
+
 		this.group.traverse((object3D) => {
 			if (object3D.name != "Sphere") return
 

@@ -147,9 +147,6 @@ class EmojiSmile implements ThreeGLTF {
           this.params.rotation.y,
           this.params.rotation.z
         );
-        this.group.scale.set(
-          0, 0, 0
-        );
         this.scene.add(this.group);
       }
     }, 50);

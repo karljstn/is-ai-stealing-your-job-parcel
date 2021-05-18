@@ -22,6 +22,7 @@ import Autoskip from '~components/Common/Autoskip.vue';
 import { fadeBackground } from '~util';
 import lottie from '~/assets/Lottie/3. YOURE HERE BECAUSE.json';
 import LottieAnimation from 'lottie-web-vue';
+import store from '~store';
 
 export default Vue.extend({
 	data() {
@@ -38,10 +39,12 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	mounted() {
+		store.state.scene.HereCryEmojiScene.start();
 		fadeBackground({ routeName: 'IntroThreatened' });
 		document.body.classList.add('white-nav');
 	},
 	destroyed() {
+		store.state.scene.HereCryEmojiScene.destroy();
 		document.body.classList.remove('white-nav');
 	},
 });

@@ -1,5 +1,5 @@
 import { Viewport } from "~/types";
-import { PerspectiveCamera, Scene, Vector3 } from "three";
+import { Scene } from "three";
 import HandWave from "../Meshes/GLTF/HandWave";
 import { MODELS } from "~constants/MODELS";
 import { ThreeScene } from "~interfaces/Three";

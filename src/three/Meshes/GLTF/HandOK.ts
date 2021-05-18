@@ -39,7 +39,6 @@ class HandOK extends withMouse implements ThreeGLTF {
 			const target = new Vector3(0.66, 0, 0)
 			this.origin.position.copy(target)
 			this.group.position.copy(target)
-			this.group.scale.set(0, 0, 0)
 			// this.group.rotation.y += Math.PI / 2
 			this.scene.add(this.group)
 

@@ -47,7 +47,6 @@ class Trashcan extends withTween implements ThreeGLTF {
 		const target = new Vector3(0, -this.viewport.height / 2.7, 0)
 		this.group.position.copy(target)
 		this.original.position.copy(target)
-		this.group.scale.setScalar(0)
 		this.group.rotateY(-Math.PI / 2)
 		this.scene.add(this.group)
 		this.tweaks()

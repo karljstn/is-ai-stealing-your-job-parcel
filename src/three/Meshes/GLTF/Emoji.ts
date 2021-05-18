@@ -119,9 +119,6 @@ class Emoji extends withTween implements ThreeGLTF {
 					this.params.rotation.y,
 					this.params.rotation.z
 				);
-				this.group.scale.set(
-					0, 0, 0
-				);
 				this.scene.add(this.group);
 			})
 		} else {
@@ -135,9 +132,6 @@ class Emoji extends withTween implements ThreeGLTF {
 				this.params.rotation.x,
 				this.params.rotation.y,
 				this.params.rotation.z
-			);
-			this.group.scale.set(
-				0, 0, 0
 			);
 			this.scene.add(this.group);
 		}

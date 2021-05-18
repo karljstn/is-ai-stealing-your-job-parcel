@@ -36,7 +36,8 @@ class withBase {
 	})
 
 	start = (url: string, cb: () => void) => {
-		!this.isLoaded ? this.load(url).then(cb) : cb()
+		if (!this.isLoaded) { this.load(url).then(() => { this.group.scale.setScalar(0) }).then(cb) }
+		else { this.group.scale.setScalar(0), cb() }
 	}
 
 	setFromRect = (rectName: string) => new Promise<ReturnType<typeof rectToThree>>((resolve, reject) => {

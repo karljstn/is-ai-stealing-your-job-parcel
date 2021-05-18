@@ -26,7 +26,6 @@ class SlotMachine extends withTween implements ThreeGLTF {
 	}
 
 	initialize = () => {
-		this.group.scale.set(0, 0, 0)
 		this.group.rotateY(-Math.PI / 2)
 		this.group.rotateY(-Math.PI / 6)
 		this.group.position.y -= this.viewport.height / 10

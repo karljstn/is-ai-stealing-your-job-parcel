@@ -3,7 +3,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import LoadManager from '~/three/Singletons/LoadManager'
 import { MODELS } from '~/constants/MODELS'
 import { Mesh, MeshBasicMaterial, Scene, TextureLoader } from "three"
-import { ThreeGLTF } from "~interfaces/Three"
 
 class TrashcanBake {
   params: { animSpeed: number, size: number }

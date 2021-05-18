@@ -12,11 +12,15 @@ import emojiSad from "~assets/Models/emoji-sad/EMOJI_2.glb";
 import emojiSadBake from "~assets/Models/emoji-sad/EMOJI2_bake2.jpg";
 import emojiDistraught from "~assets/Models/emoji-distraught/EMOJI STUPEUR.glb";
 import emojiDistraughtBake from "~assets/Models/emoji-distraught/bake2.jpg";
+import emojiCry from "~assets/Models/emoji-cry/EMOJI_larme.glb"
+import emojiCryBake from "~assets/Models/emoji-cry/bake_2.jpg"
 import crystal from "~assets/Models/crystalball/BOULE_VOYANTE.glb";
 import pencil from "~assets/Models/pencil/pencil.glb";
 import radiologistBackground from "~assets/Models/radiologist/big-cube-bg.glb"
 import arrow from "~assets/Images/fleche.svg"
-import slotMachine from "~assets/Models/slot-machine/slot_machine_8.glb"
+import slotMachine from "~assets/Models/slot-machine/slot_machine_9.glb"
+import here from "~assets/Models/here/HERE.glb"
+import questionMark from "~assets/Models/question-mark/QUESTION_MARK.glb"
 
 export type MODEL = { URL: string, SCALE: number, TEXTURE?: string }
 type MODELS = { [name: string]: MODEL }
@@ -54,6 +58,16 @@ export const MODELS: MODELS = {
     SCALE: 0.1,
     TEXTURE: emojiSadBake,
   },
+  EMOJI_DISTRAUGHT: {
+    URL: emojiDistraught,
+    SCALE: 0.1,
+    TEXTURE: emojiDistraughtBake
+  },
+  EMOJI_CRY: {
+    URL: emojiCry,
+    SCALE: 0.06,
+    TEXTURE: emojiCryBake
+  },
   CRYSTAL_BALL: {
     URL: crystal,
     SCALE: 0.075
@@ -78,9 +92,12 @@ export const MODELS: MODELS = {
     URL: handOkay,
     SCALE: 0.04
   },
-  EMOJI_DISTRAUGHT: {
-    URL: emojiDistraught,
-    SCALE: 0.1,
-    TEXTURE: emojiDistraughtBake
+  HERE: {
+    URL: here,
+    SCALE: 0.08
   },
+  QUESTION_MARK: {
+    URL: questionMark,
+    SCALE: 0.1
+  }
 }

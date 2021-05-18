@@ -45,7 +45,6 @@ class Pencil extends withTween implements ThreeGLTF {
 	}
 
 	initialize = () => {
-		this.group.scale.set(0, 0, 0)
 		this.group.rotation.setFromVector3(this.params.rotation.resting)
 		this.setTransition(MODELS.PENCIL.SCALE, this.group.position, new Vector3(0, 0, 0),)
 		this.scene.add(this.group)

@@ -65,7 +65,12 @@ const routes = [
   },
   {
     path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.VIOLET, meta: {
-      scroll: { disabled: false, darkenScrollDownArrow: false }, transition: { delay: 0, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: false }, transition: {
+        delay: 1100, out: () => {
+          store.state.scene.HereCryEmojiScene.Here.out()
+          store.state.scene.HereCryEmojiScene.SadEmoji.out()
+        }
+      }
     }
   },
   {
