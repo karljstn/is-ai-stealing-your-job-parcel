@@ -156,6 +156,7 @@ export default Vue.extend({
       .processed {
         line-height: 15px;
         font-weight: lighter;
+        font-size: initial;
       }
     }
   }
