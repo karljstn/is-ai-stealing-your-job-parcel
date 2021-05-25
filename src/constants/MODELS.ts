@@ -77,7 +77,7 @@ export const MODELS: MODELS = {
   },
   PENCIL: {
     URL: pencil,
-    SCALE: 0.04
+    SCALE: 0.04,
   },
   RADIOLOGIST_BACKGROUND: {
     URL: radiologistBackground,
@@ -105,7 +105,7 @@ export const MODELS: MODELS = {
   },
   PEN_PAPER: {
     URL: penPaper,
-    SCALE: 0.03,
+    SCALE: 0.02,
     TEXTURE: penPaperBake
   },
   TREE: {

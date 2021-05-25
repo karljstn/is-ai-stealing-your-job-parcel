@@ -1,4 +1,4 @@
-import { PointLight, Scene, Vector3 } from "three";
+import { Mesh, MeshPhongMaterial, PointLight, Scene, TextureLoader, Vector3 } from "three";
 import { MODELS } from "~constants/MODELS";
 import { ThreeGLTF } from "~interfaces/Three";
 import store from "~store";
@@ -19,10 +19,19 @@ class PenPaper extends withTween implements ThreeGLTF {
 		light.intensity = 0.5
 		this.scene.add(light)
 
-		// this.group.rotateY(Math.PI)
+		// Set baked material
+		const bakedTexture = new TextureLoader().load(MODELS.PEN_PAPER.TEXTURE);
+		bakedTexture.flipY = false;
+		const bakedMat = new MeshPhongMaterial({ map: bakedTexture })
+		this.group.traverse((object3D) => {
+			const mesh = object3D as Mesh;
+			if (mesh.material) mesh.material = bakedMat;
+		});
+
+		this.group.rotateY(Math.PI)
 		this.group.position.copy(this.params.position)
 		this.scene.add(this.group)
-		this.setTransition(MODELS.PEN_PAPER.SCALE, new Vector3(0.2, 0, 0))
+		this.setTransition(MODELS.PEN_PAPER.SCALE, new Vector3(0.0, 0, 0))
 		this.in()
 		this.tweaks()
 	}
