@@ -27,9 +27,9 @@ export default Vue.extend({
       },
     });
     tl.to(this.$refs.endScreen1, { duration: 1, opacity: 1 });
-    tl.to(this.$refs.endScreen1, { duration: 1, opacity: 0, delay: 1 });
+    tl.to(this.$refs.endScreen1, { duration: 1, opacity: 0, delay: 3 });
     tl.to(this.$refs.endScreen2, { duration: 1, opacity: 1 });
-    tl.to(this.$refs.endScreen2, { duration: 1, opacity: 0, delay: 1 });
+    tl.to(this.$refs.endScreen2, { duration: 1, opacity: 0, delay: 3 });
   },
   computed: {
     results() {
@@ -47,6 +47,8 @@ export default Vue.extend({
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
     opacity: 0;
   }
 
