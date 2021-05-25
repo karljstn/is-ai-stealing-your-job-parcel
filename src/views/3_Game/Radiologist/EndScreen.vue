@@ -53,6 +53,8 @@ export default Vue.extend({
   }
 
   p {
+    color: white;
+    text-align: center;
     font-size: 2.5em;
   }
 }
