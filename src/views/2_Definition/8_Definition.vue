@@ -22,6 +22,7 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	mounted() {
+		console.log(this.lottieURL);
 		fadeBackground({ routeName: 'DefinitionEight' });
 	},
 });

@@ -10,7 +10,7 @@ class PenPaper extends withTween implements ThreeGLTF {
 
 	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
-		this.params = { position: new Vector3(0.34, 0.07, 0) }
+		this.params = { position: new Vector3(0.27, 0.07, 0) }
 	}
 
 	initialize = () => {

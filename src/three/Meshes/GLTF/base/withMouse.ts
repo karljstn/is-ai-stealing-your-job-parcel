@@ -15,7 +15,7 @@ class withMouse extends withTween {
 		this.mouse = {
 			current: new Vector3(),
 			target: new Vector3(),
-			lerp: 0.8,
+			lerp: 0.23,
 			offset: new Vector3(),
 			scalar: 1
 		}

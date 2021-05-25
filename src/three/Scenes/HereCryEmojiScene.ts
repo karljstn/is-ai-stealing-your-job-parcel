@@ -23,7 +23,7 @@ class HereCryEmojiScene implements ThreeScene {
 			this.Here.start(MODELS.HERE.URL, this.Here.initialize)
 		}, 500);
 
-		this.SadEmoji = new Emoji({ scene: this.scene, viewport: this.viewport, MODEL: MODELS.EMOJI_CRY, RAF: RAFS.EMOJISAD, offset: new Vector3(0.31, -0.05, 0) });
+		this.SadEmoji = new Emoji({ scene: this.scene, viewport: this.viewport, MODEL: MODELS.EMOJI_CRY, RAF: RAFS.EMOJISAD, offset: new Vector3(0.23, -0.05, 0) });
 		setTimeout(() => {
 			this.SadEmoji.start(MODELS.EMOJI_CRY.URL, this.SadEmoji.initialize)
 		}, 1000);

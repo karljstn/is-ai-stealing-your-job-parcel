@@ -7,23 +7,24 @@ import withMouse from "./base/withMouse";
 
 class Tree extends withMouse implements ThreeGLTF {
 	params: any
+	light: PointLight
 
 	constructor(scene: Scene, viewport: Viewport) {
 		super(scene, viewport)
-		this.params = { position: new Vector3(0.30, -0.13, 0) }
+		this.params = { position: new Vector3(0.25, -0.2, 0) }
 	}
 
 	initialize = () => {
-		const light = new PointLight(0xffffff, 100)
-		light.position.set(this.params.position.x + 0.5, this.params.position.y + 0.5, 1)
-		light.intensity = 1
-		this.scene.add(light)
+		this.light = new PointLight(0xffffff, 100)
+		this.light.position.set(this.params.position.x + 0.7, this.params.position.y + 0.7, 1)
+		this.light.intensity = 4
+		this.scene.add(this.light)
 
 		this.group.rotateY(-Math.PI / 1.5)
 		this.group.position.copy(this.params.position)
 		this.scene.add(this.group)
-		this.setTransition(MODELS.TREE.SCALE, new Vector3(0.2, 0, 0))
-		this.setUpdateMouse(0.5, new Vector3(10, -2, 0), 0.1)
+		this.setTransition(MODELS.TREE.SCALE, new Vector3(0.2, 0, 0), new Vector3(), { in: 1.3, out: 0 })
+		this.setUpdateMouse(0.5, new Vector3(5, -2, 0), 0.3)
 		this.in()
 		this.tweaks()
 	}
@@ -44,6 +45,7 @@ class Tree extends withMouse implements ThreeGLTF {
 	}
 
 	destroy = () => {
+		this.scene.remove(this.light)
 		this.scene.remove(this.group)
 		this.killUpdateMouse()
 	}

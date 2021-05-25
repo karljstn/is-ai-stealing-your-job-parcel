@@ -71,7 +71,7 @@ const routes = [
   {
     path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.VIOLET, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: false }, transition: {
-        delay: 1100, out: () => {
+        delay: 1300, out: () => {
           store.state.scene.HereCryEmojiScene.Here.out()
           store.state.scene.HereCryEmojiScene.SadEmoji.out()
         }
@@ -95,7 +95,11 @@ const routes = [
   },
   {
     path: '/7', component: DefinitionThree, name: "DefinitionThree", color: PALETTE.BLACK, meta: {
-      scroll: { disabled: false }, transition: { delay: 1000, out: () => { } }
+      scroll: { disabled: false }, transition: {
+        delay: 1000, out: () => {
+          store.state.scene.PenPaperScene.PenPaper.out()
+        }
+      }
     }
   },
   {
