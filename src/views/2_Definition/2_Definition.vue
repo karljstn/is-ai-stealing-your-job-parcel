@@ -42,12 +42,12 @@ export default Vue.extend({
 	},
 	mounted() {
 		fadeBackground({ routeName: 'DefinitionOne' });
-		store.state.scene.PencilScene.start();
+		store.state.sceneManager.PencilScene.start();
 
 		const intID = setInterval(() => {
 			if (this.isWritingFinished) {
 				clearInterval(intID);
-				store.state.scene.PencilScene.Pencil.out();
+				store.state.sceneManager.PencilScene.Pencil.out();
 				setTimeout(() => {
 					this.$router.push('/7');
 				}, 1000);
@@ -55,7 +55,7 @@ export default Vue.extend({
 		}, 64);
 	},
 	destroyed() {
-		store.state.scene.PencilScene.destroy();
+		store.state.sceneManager.PencilScene.destroy();
 	},
 });
 </script>

@@ -68,7 +68,7 @@ export default Vue.extend({
 			});
 		},
 		removeFolder(index: number) {
-			store.state.scene.radio.nextCase();
+			store.state.sceneManager.radio.nextCase();
 			const i = this.casesPending.findIndex((elem: any) => elem.index === index);
 			this.casesPending.splice(i, 1);
 		},

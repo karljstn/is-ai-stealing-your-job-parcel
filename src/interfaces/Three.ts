@@ -1,5 +1,3 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-
 export interface ThreeObject {
   object3d: THREE.Object3D;
   update(dt: number): void;
@@ -18,12 +16,12 @@ export interface ThreeGroup {
 }
 
 export interface ThreeGLTF {
-  initialize(): void
+  initialize({ }): void
   update(dt: number): void
   destroy(): void
 }
 
-export interface ThreeScene {
+export interface ViewInterface {
   start(): void
   destroy(): void
 }

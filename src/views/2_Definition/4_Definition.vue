@@ -23,11 +23,11 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	mounted() {
-		store.state.scene.TreeScene.start();
+		store.state.sceneManager.TreeScene.start();
 		fadeBackground({ routeName: 'DefinitionFour' });
 	},
 	destroyed() {
-		store.state.scene.TreeScene.destroy();
+		store.state.sceneManager.TreeScene.destroy();
 	},
 });
 </script>

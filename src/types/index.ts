@@ -1,5 +1,5 @@
-import { Vector3 } from "three"
-import MainScene from "~/three/MainScene"
+import { Group, Vector3 } from "three"
+import MainScene from "~three/MainController"
 import { CustomEase } from "gsap/all"
 import Tweakpane from "tweakpane"
 
@@ -14,7 +14,6 @@ export type MainSceneParams = {
   averageFPS: number
   arrFPS: number[]
   scoreFPS: number
-  viewport: Viewport
   light: {
     pos: Vector3
     intensity: number
@@ -43,7 +42,7 @@ export type StoreState = {
     pauseBeforeLoaderDuration: number
   }
   eases: Map<string, typeof CustomEase>
-  scene: MainScene | null
+  sceneManager: MainScene | null
   rects: Map<string, DOMRect>
   tweakpane: Tweakpane | null,
   radiologist: {
@@ -65,3 +64,24 @@ export type StoreState = {
   scrollNavigationDelay: number
   hideLanding: boolean
 }
+
+export enum GLTF_TYPE {
+  BASE,
+  MOUSED,
+  TWEENED
+}
+
+export type VIEW_MESH = {
+  TYPE: GLTF_TYPE
+  MODEL: MODEL
+}
+
+export type VIEW = {
+  ROUTE_NAME: string
+  LOTTIE: { URL: string, SCALE: number },
+  MESHES: VIEW_MESH[],
+}
+
+export type MODEL = { URL: string, BASE_SCALE: number, TEXTURE?: string }
+
+export type onRect = (x: number, y: number, w: number, h: number, group: Group, viewport: Viewport) => void

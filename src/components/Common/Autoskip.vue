@@ -16,7 +16,7 @@ export default Vue.extend({
 
 		setTimeout(() => {
 			const currPathFloat = parseFloat(router.history.current.path.substring(1));
-			console.log('autoskip', currPathFloat);
+			// console.log('autoskip', currPathFloat);
 
 			if (!currPathFloat) {
 				router.push('/2');

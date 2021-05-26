@@ -1,11 +1,10 @@
 <template>
 	<section>
 		<div>
-			<SaveRect :rectName="helloRect">
+			<SaveRect rectName="IntroHello">
 				<lottie-animation :animationData="lottieURL" :loop="false" />
 			</SaveRect>
 		</div>
-		<!-- <autoskip :time="12000" /> -->
 	</section>
 </template>
 
@@ -16,7 +15,6 @@ import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import Autoskip from '~/components/Common/Autoskip.vue';
-import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import store from '~store';
 import { fadeBackground } from '~util';
@@ -25,7 +23,6 @@ export default Vue.extend({
 	data() {
 		return {
 			lottieURL: lottie,
-			helloRect: RECTS.INTRO.HELLO,
 		};
 	},
 	components: {
@@ -37,11 +34,11 @@ export default Vue.extend({
 	},
 	methods: {
 		previous() {
-			store.state.scene?.HandWaveScene.Hand.out();
+			// store.state.sceneManager?.HandWaveScene.Hand.out();
 			store.commit('toggleHideScrollDownArrow');
 		},
 		next() {
-			store.state.scene?.HandWaveScene.Hand.out();
+			// store.state.sceneManager?.HandWaveScene.Hand.out();
 			setTimeout(() => {
 				this.$router.push('/2');
 			}, 1000);
@@ -49,10 +46,10 @@ export default Vue.extend({
 	},
 	mounted() {
 		fadeBackground({ routeName: 'IntroHello' });
-		store.state.scene?.HandWaveScene.start();
+		// store.state.sceneManager?.HandWaveScene.start();
 	},
 	destroyed() {
-		store.state.scene?.HandWaveScene.destroy();
+		// store.state.sceneManager?.HandWaveScene.destroy();
 	},
 });
 </script>

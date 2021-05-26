@@ -32,6 +32,10 @@ export default {
 @import '~/styles/_variables.scss';
 .white-nav .bottom span {
 	color: $white;
+
+	&:after {
+		background-color: $white;
+	}
 }
 .bottom {
 	position: fixed;

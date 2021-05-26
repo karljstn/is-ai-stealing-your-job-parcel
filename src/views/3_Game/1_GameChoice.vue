@@ -25,10 +25,10 @@ export default Vue.extend({
 	},
 	mounted() {
 		fadeBackground({ routeName: 'GameOne' });
-		store.state.scene.SlotMachineScene.start();
+		store.state.sceneManager.SlotMachineScene.start();
 	},
 	destroyed() {
-		store.state.scene.SlotMachineScene.destroy();
+		store.state.sceneManager.SlotMachineScene.destroy();
 	},
 });
 </script>

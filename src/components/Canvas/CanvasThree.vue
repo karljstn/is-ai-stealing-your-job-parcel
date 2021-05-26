@@ -2,22 +2,20 @@
 	<canvas ref="canvasThree" />
 </template>
 
-<script lang="js">
-import Vue from "vue";
-
-import Scene from "~/three/MainScene";
-import { getMaxFPS } from "~/util/";
-import store from "~/store";
+<script lang="ts">
+import Vue from 'vue';
+import ThreeMainController from '~three/MainController';
+import store from '~/store';
 
 export default Vue.extend({
-  name: "CanvasThree",
-  mounted() {
-    const scene = new Scene(this.$refs.canvasThree, 60);
-    scene.start()
+	name: 'CanvasThree',
+	mounted() {
+		const controller = new ThreeMainController(this.$refs.canvasThree, 60);
+		controller.start();
 
-    if(store.state.devMode.forceRadiologist) scene.startRadiologist()
-    store.commit("setScene", scene)
-  },
+		// if(store.state.devMode.forceRadiologist) scene.startRadiologist()
+		store.commit('setScene', controller);
+	},
 });
 </script>
 

@@ -23,7 +23,7 @@ const store = new Vuex.Store({
       pauseBeforeLoaderDuration: 500,
     },
     eases: new Map<string, typeof CustomEase>(),
-    scene: null,
+    sceneManager: null,
     rects: new Map<string, DOMRect>(),
     count: 0,
     tweakpane: null,
@@ -49,7 +49,7 @@ const store = new Vuex.Store({
   mutations: {
     incrementProgression(state) {
       ++state.progression
-      console.log(state.progression)
+      // console.log(state.progression)
     },
     decrementProgression(state) {
       --state.progression
@@ -67,7 +67,7 @@ const store = new Vuex.Store({
       state.progression = payload
     },
     setScene(state, payload) {
-      state.scene = payload
+      state.sceneManager = payload
     },
     setEase(state, payload) {
       if (state.eases.get(payload.name)) console.warn("Name already taken")

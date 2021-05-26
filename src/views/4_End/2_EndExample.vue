@@ -19,11 +19,11 @@ export default Vue.extend({
 		};
 	},
 	mounted() {
-		store.state.scene.HandOKScene.start();
+		store.state.sceneManager.HandOKScene.start();
 		fadeBackground({ routeName: 'EndTwo' });
 	},
 	destroyed() {
-		store.state.scene.HandOKScene.destroy();
+		store.state.sceneManager.HandOKScene.destroy();
 	},
 });
 </script>

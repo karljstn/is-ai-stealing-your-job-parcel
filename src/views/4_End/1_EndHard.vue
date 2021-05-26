@@ -22,10 +22,10 @@ export default Vue.extend({
 	},
 	mounted() {
 		fadeBackground({ routeName: 'EndOne' });
-		store.state.scene.DistraughtEmojiScene.start();
+		store.state.sceneManager.DistraughtEmojiScene.start();
 	},
 	destroyed() {
-		store.state.scene.DistraughtEmojiScene.destroy();
+		store.state.sceneManager.DistraughtEmojiScene.destroy();
 	},
 });
 </script>

@@ -23,12 +23,12 @@ export default Vue.extend({
 		LottieAnimation,
 	},
 	mounted() {
-		store.state.scene.PenPaperScene.start();
+		store.state.sceneManager.PenPaperScene.start();
 		document.body.classList.add('white-nav');
 		fadeBackground({ routeName: 'DefinitionThree' });
 	},
 	destroyed() {
-		store.state.scene.PenPaperScene.destroy();
+		store.state.sceneManager.PenPaperScene.destroy();
 		document.body.classList.remove('white-nav');
 	},
 });

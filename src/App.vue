@@ -53,20 +53,6 @@ export default Vue.extend({
 			ScrollDownArrow,
 			ScrollController
 		},
-		methods:{
-			enter(el, done){
-				console.log('hey')
-				setTimeout(() => {
-					done()
-				}, 100);
-			},
-			leave(el, done){
-				console.log('hey2')
-				setTimeout(() => {
-					done()
-				}, 100);
-			}
-		},
 		mounted() {
 			this.$nextTick(() => {
 				store.commit('toggleIsVueReady');

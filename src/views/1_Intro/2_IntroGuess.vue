@@ -1,12 +1,7 @@
 <template>
 	<section>
-		<!-- <p class="hello">
-			<span>Let me</span>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<SaveRect :rectName="rect"><span>guess :</span></SaveRect>
-		</p> -->
 		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="false" />
+			<lottie-animation :animaationData="lottieURL" :loop="false" />
 		</div>
 	</section>
 </template>
@@ -15,7 +10,6 @@
 import Button from '~/components/UI/Button';
 import QuestionForm from '~/components/UI/QuestionForm';
 import SaveRect from '~/components/Common/SaveRect.vue';
-import { RECTS } from '~/constants/RECTS';
 import Vue from 'vue';
 import Autoskip from '~components/Common/Autoskip.vue';
 import store from '~store';
@@ -26,7 +20,6 @@ import LottieAnimation from 'lottie-web-vue';
 export default Vue.extend({
 	data() {
 		return {
-			rect: RECTS.INTRO.GUESS,
 			lottieURL: lottie,
 		};
 	},
@@ -39,10 +32,10 @@ export default Vue.extend({
 	},
 	mounted() {
 		fadeBackground({ routeName: 'IntroGuess' });
-		store.state.scene.CrystalBallScene.start();
+		store.state.sceneManager.CrystalBallScene.start();
 	},
 	destroyed() {
-		store.state.scene.CrystalBallScene.destroy();
+		store.state.sceneManager.CrystalBallScene.destroy();
 	},
 });
 </script>

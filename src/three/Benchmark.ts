@@ -1,9 +1,8 @@
-import { clamp, getAverage, round } from "~/util/"
+import { getAverage } from "~/util/"
 import { Scene, WebGLRenderer, WebGLRenderTarget } from "three"
 import Tweakpane from "tweakpane"
-import Cube from "./Meshes/Cube"
+import Cube from "../old/Meshes/Cube"
 import { MainSceneParams } from "~/types/"
-
 class Benchmark {
   pane: Tweakpane | null
   PARAMS: MainSceneParams
@@ -57,8 +56,6 @@ class Benchmark {
   }
 
   tweaks = () => {
-    //https://cocopon.github.io/tweakpane/quick-tour.html
-
     if (!this.pane) return
 
     const folder = this.pane.addFolder({ title: 'Performance', expanded: false })
@@ -72,7 +69,6 @@ class Benchmark {
   }
 
   checkFPS = (deltaTime: number) => {
-    //from https://codesandbox.io/s/caixa-7b0iv?file=/sketch.js:4987-5086
     const fps = 1000 / deltaTime
     this.PARAMS.arrFPS.push(fps)
 

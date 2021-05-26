@@ -7,10 +7,10 @@
 
 			<div class="form">
 				<QuestionForm>
-					<SaveRect :rectName="sadEmoji">
+					<SaveRect rectName="IntroQuestionFourLeft">
 						<Button size="20.1" value="yes"><span class="emoji-text mr">Yeah... </span></Button>
 					</SaveRect>
-					<SaveRect :rectName="glassesEmoji">
+					<SaveRect rectName="IntroQuestionFourRight">
 						<Button size="20.1" value="no"><span class="emoji-text ml">Not really!</span></Button>
 					</SaveRect>
 				</QuestionForm>
@@ -23,18 +23,11 @@
 import Button from "~/components/UI/ButtonEmoji";
 import QuestionForm from "~/components/UI/QuestionForm";
 import SaveRect from "~/components/Common/SaveRect.vue";
-import { RECTS } from "~/constants/RECTS";
 import Vue from "vue";
 import { fadeBackground } from "~util";
 import store from "~store";
 
 export default Vue.extend({
-  data() {
-    return {
-      glassesEmoji: RECTS.INTRO.AMIRITE.RIGHT,
-      sadEmoji: RECTS.INTRO.AMIRITE.LEFT,
-    };
-  },
   components: {
     SaveRect,
     QuestionForm,
@@ -42,10 +35,10 @@ export default Vue.extend({
   },
   mounted() {
     fadeBackground({ routeName: "IntroQuestion" });
-    store.state.scene.EmojisScene.start();
+    store.state.sceneManager.EmojisScene.start();
   },
   destroyed() {
-    store.state.scene.EmojisScene.destroy();
+    store.state.sceneManager.EmojisScene.destroy();
   },
 });
 </script>

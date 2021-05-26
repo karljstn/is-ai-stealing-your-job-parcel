@@ -12,6 +12,11 @@ export default Vue.extend({
 	mounted() {
 		const element: HTMLDivElement = this.$refs.saveRect as HTMLDivElement;
 		store.commit('setRect', { name: this.$props.rectName, rect: element.getBoundingClientRect() });
+
+		if (!module.hot) return;
+		module.hot.dispose(() => {
+			store.state.rects.delete(this.$props.rectName);
+		});
 	},
 });
 </script>

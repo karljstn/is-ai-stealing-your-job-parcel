@@ -5,7 +5,7 @@ import bakedTrashcan from "~assets/Models/trashcan/bakedTrashcanV2.glb";
 import bakedTrashcanTexture from "~assets/Models/trashcan/bake2.jpg";
 import clipboard from "~assets/Games/Radiologist/Models/clipboard_1.glb";
 import emojiSmile from "~assets/Models/emoji-smile/EMOJI2.glb";
-import emojiSmileBake from "~assets/Models/emoji-smile/BAKEDFINAL.jpg";
+import emojiSmileBake from "~assets/Models/emoji-smile/BAKEDv1.jpg";
 import emojiGlasses from "~assets/Models/emoji-glasses/EMOJI.glb";
 import emojiGlassesBake from "~assets/Models/emoji-glasses/EMOJI1_bake_light.jpg";
 import emojiSad from "~assets/Models/emoji-sad/EMOJI_2.glb";
@@ -24,92 +24,90 @@ import questionMark from "~assets/Models/question-mark/QUESTION_MARK.glb"
 import penPaper from "~assets/Models/pen-paper/Stylo.glb"
 import penPaperBake from "~assets/Models/pen-paper/bake.jpg"
 import tree from "~assets/Models/tree/TREE.glb"
+import { MODEL } from "~types";
 
-export type MODEL = { URL: string, SCALE: number, TEXTURE?: string }
-type MODELS = { [name: string]: MODEL }
-
-export const MODELS: MODELS = {
+export const MODELS: { [name: string]: MODEL } = {
   HAND_WAVE: {
     URL: handWave,
-    SCALE: 0.0285,
+    BASE_SCALE: 0.0285,
   },
   TRASHCAN: {
     URL: trashcan,
-    SCALE: 0.12,
+    BASE_SCALE: 0.12,
   },
   BAKED_TRASHCAN: {
     URL: bakedTrashcan,
-    SCALE: 0.15,
+    BASE_SCALE: 0.15,
     TEXTURE: bakedTrashcanTexture,
   },
   CLIPBOARD: {
     URL: clipboard,
-    SCALE: 0.1,
+    BASE_SCALE: 0.1,
   },
   EMOJI_SMILE: {
     URL: emojiSmile,
-    SCALE: 0.1,
+    BASE_SCALE: 0.1,
     TEXTURE: emojiSmileBake,
   },
   EMOJI_GLASSES: {
     URL: emojiGlasses,
-    SCALE: 0.1,
+    BASE_SCALE: 0.1,
     TEXTURE: emojiGlassesBake,
   },
   EMOJI_SAD: {
     URL: emojiSad,
-    SCALE: 0.1,
+    BASE_SCALE: 0.09,
     TEXTURE: emojiSadBake,
   },
   EMOJI_DISTRAUGHT: {
     URL: emojiDistraught,
-    SCALE: 0.1,
+    BASE_SCALE: 0.1,
     TEXTURE: emojiDistraughtBake
   },
   EMOJI_CRY: {
     URL: emojiCry,
-    SCALE: 0.06,
+    BASE_SCALE: 0.1,
     TEXTURE: emojiCryBake
   },
   CRYSTAL_BALL: {
     URL: crystal,
-    SCALE: 0.075
+    BASE_SCALE: 0.075
   },
   PENCIL: {
     URL: pencil,
-    SCALE: 0.04
+    BASE_SCALE: 0.04
   },
   RADIOLOGIST_BACKGROUND: {
     URL: radiologistBackground,
-    SCALE: 1
+    BASE_SCALE: 1
   },
   ARROW: {
     URL: arrow,
-    SCALE: 1
+    BASE_SCALE: 1
   },
   SLOT_MACHINE: {
     URL: slotMachine,
-    SCALE: 0.15
+    BASE_SCALE: 0.15
   },
   HAND_OK: {
     URL: handOkay,
-    SCALE: 0.04
+    BASE_SCALE: 0.04
   },
   HERE: {
     URL: here,
-    SCALE: 0.08
+    BASE_SCALE: 0.08
   },
   QUESTION_MARK: {
     URL: questionMark,
-    SCALE: 0.1
+    BASE_SCALE: 0.4
   },
   PEN_PAPER: {
     URL: penPaper,
-    SCALE: 0.03,
+    BASE_SCALE: 0.02,
     TEXTURE: penPaperBake
   },
   TREE: {
     URL: tree,
-    SCALE: 0.03
+    BASE_SCALE: 0.03
   }
 }

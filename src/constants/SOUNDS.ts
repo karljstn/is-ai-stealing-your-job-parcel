@@ -1,4 +1,4 @@
-import { Howl, Howler } from "howler"
+import { Howl } from "howler"
 import background from '~/assets/Sounds/icial.mp3'
 import scrollTo from '~/assets/Sounds/scrollto.mp3'
 

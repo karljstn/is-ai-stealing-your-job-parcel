@@ -1,26 +1,32 @@
+import { RAFS } from "~constants/RAFS"
+
 class RAF {
-    callbacks: Map<string, (dt: number) => void>
+    callbacks: Map<string | RAFS, (dt: number) => void>
     prevTime: number
     rafID: number
 
     constructor() {
-        this.callbacks = new Map<string, (dt: number) => void>()
+        this.callbacks = new Map<string | RAFS, (dt: number) => void>()
         this.prevTime = 0
         this.rafID = 0
         this.render()
     }
 
-    subscribe = (name: string, callback: (dt: number) => void) => {
-        // console.log('subscribe : ', name)
+    subscribe = (key: string | RAFS, callback: (dt: number) => void) => {
+        // console.log('subscribe : ', key)
+        if (this.callbacks.has(key)) console.error(`Duplicate RAF : ${key}`)
+
         this.callbacks.set(
-            name,
+            key,
             callback
         )
     }
 
-    unsubscribe = (name: string) => {
-        // console.log('unsubscribe : ', name)
-        this.callbacks.delete(name)
+    unsubscribe = (key: string | RAFS) => {
+        // console.log('unsubscribe : ', key)
+        if (!this.callbacks.has(key)) console.error(`No such RAF to delete : ${key}`)
+
+        this.callbacks.delete(key)
     }
 
     render = (time = 0) => {
@@ -36,6 +42,10 @@ class RAF {
 const instance = new RAF()
 export default instance
 
-// module.hot.dispose(() => {
-//     cancelAnimationFrame(instance.rafID)
-// })
+
+if (module.hot) module.hot.dispose(() => {
+    for (const iterator of instance.callbacks.keys()) {
+        instance.unsubscribe(iterator)
+    }
+    cancelAnimationFrame(instance.rafID)
+})

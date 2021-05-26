@@ -41,14 +41,14 @@ const routes = [
       transition: {
         delay: 2700,
         out: () => {
-          store.state.scene.TrashcanScene.Trashcan.drop();
+          // store.state.sceneManager.TrashcanScene.Trashcan.drop();
           store.commit("setHideLanding", true)
           fadeBackground({ routeName: "IntroHello" });
           store.commit('setDarkenScrollDownArrow', false)
 
           setTimeout(() => {
             store.commit('setDarkenScrollDownArrow', true);
-            store.state.scene.TrashcanScene.Trashcan.out()
+            // store.state.sceneManager.TrashcanScene.Trashcan.out()
           }, 1700)
         }
       }
@@ -56,14 +56,18 @@ const routes = [
   },
   {
     path: '/1', component: IntroHello, name: "IntroHello", color: PALETTE.WHITE, meta: {
-      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 1000, out: () => { store.state.scene.HandWaveScene.Hand.out() } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
+        delay: 1000, out: () => {
+          // store.state.sceneManager.HandWaveScene.Hand.out()
+        }
+      }
     }
   },
   {
     path: '/2', component: IntroGuess, name: "IntroGuess", color: PALETTE.LIGHTPINK, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
         delay: 800, out: () => {
-          store.state.scene.CrystalBallScene.CrystalBall.out()
+          // store.state.sceneManager.CrystalBallScene.CrystalBall.out()
         }
       }
     }
@@ -71,9 +75,9 @@ const routes = [
   {
     path: '/3', component: IntroThreatened, name: "IntroThreatened", color: PALETTE.VIOLET, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: false }, transition: {
-        delay: 1100, out: () => {
-          store.state.scene.HereCryEmojiScene.Here.out()
-          store.state.scene.HereCryEmojiScene.SadEmoji.out()
+        delay: 1000, out: () => {
+          // store.state.sceneManager.HereCryEmojiScene.Here.out()
+          // store.state.sceneManager.HereCryEmojiScene.SadEmoji.out()
         }
       }
     }
@@ -85,7 +89,11 @@ const routes = [
   },
   {
     path: '/5', component: DefinitionOne, name: "DefinitionOne", color: PALETTE.ORANGE, meta: {
-      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: { delay: 0, out: () => { } }
+      scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
+        delay: 1000, out: () => {
+          // store.state.sceneManager.EmojiSmileScene.Emoji.out()
+        }
+      }
     }
   },
   {
@@ -102,7 +110,7 @@ const routes = [
     path: '/8', component: DefinitionFour, name: "DefinitionFour", color: PALETTE.YELLOW, meta: {
       scroll: { disabled: false }, transition: {
         delay: 1150, out: () => {
-          store.state.scene.TreeScene.Tree.out()
+          // store.state.sceneManager.TreeScene.Tree.out()
         }
       }
     }
@@ -141,7 +149,7 @@ const routes = [
     path: '/15', component: EndOne, name: "EndOne", color: PALETTE.YELLOW, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
         delay: 1000, out: () => {
-          store.state.scene.DistraughtEmojiScene.Emoji.out()
+          // store.state.sceneManager.DistraughtEmojiScene.Emoji.out()
         }
       }
     }
@@ -150,7 +158,7 @@ const routes = [
     path: '/16', component: EndTwo, name: "EndTwo", color: PALETTE.LIGHTPINK, meta: {
       scroll: { disabled: false, darkenScrollDownArrow: true }, transition: {
         delay: 1000, out: () => {
-          store.state.scene.HandOKScene.Hand.out()
+          // store.state.sceneManager.HandOKScene.Hand.out()
         }
       }
     }

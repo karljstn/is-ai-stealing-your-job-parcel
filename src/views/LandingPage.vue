@@ -6,7 +6,7 @@
 							<p>Let's begin !</p>
 					</div>
 					<div :class="getParagraphsClass">
-						<save-rect :rectName="rect">
+						<save-rect rectName="LandingPage">
 							<SplitText ref="scroll" text="Scroll"></SplitText>
 							<span>&nbsp;</span>
 							<SplitText ref="to" text="to"></SplitText>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { RECTS } from '~/constants/RECTS';
+// import { RECTS } from '~/constants/RECTS';
 import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
@@ -39,7 +39,7 @@ export default Vue.extend({
 	name: 'landing-page',
 	data() {
 		return {
-			rect: RECTS.LANDING,
+			// rect: RECTS.LANDING,
 			show: true,
 		};
 	},
@@ -57,8 +57,8 @@ export default Vue.extend({
 		store.commit('setDarkenScrollDownArrow', false);
 
 		// Three
-		store.state.scene?.TrashcanScene.start();
-		store.state.scene?.TrashcanScene.Trashcan.in()
+		// store.state.sceneManager?.TrashcanScene.start();
+		// store.state.sceneManager?.TrashcanScene.Trashcan.in()
 
 		// Text animations
 		const refs: any[] = Object.values(this.$refs);
@@ -86,7 +86,7 @@ export default Vue.extend({
 		fadeBackground({ routeName: 'LandingPage' });
 	},
 	destroyed() {
-		store.state.scene?.TrashcanScene.destroy();
+		// store.state.sceneManager?.TrashcanScene.destroy();
 	},
 	components: {
 		QuestionForm,
