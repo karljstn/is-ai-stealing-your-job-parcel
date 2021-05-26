@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler"
-import background from '~/assets/Sounds/icial.mp3'
-import scrollTo from '~/assets/Sounds/scrollto.mp3'
+import background from '~/assets/Sounds/bg_v2.mp3'
+import scrollTo from '~/assets/Sounds/scrollto_v2.mp3'
 
 export const SOUNDS = {
     background: new Howl({
