@@ -15,7 +15,7 @@
       v-show="this.showUI"
       ref="explanationCounter"
       class="explanation-counter"
-      ><span>{{ this.tutorialCount }}</span
+      ><span class="count">{{ this.tutorialCount }}</span
       >/6</span
     >
     <span
@@ -195,6 +195,10 @@ export default Vue.extend({
     left: 15px;
     font-size: 0.8em;
     // transition: all 0.5s;
+
+    .count {
+      font-size: 1em;
+    }
   }
 
   .next-button {

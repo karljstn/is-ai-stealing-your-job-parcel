@@ -29,7 +29,7 @@ export default Vue.extend({
     penaltyAnimation: any;
   } {
     return {
-      countdown: 60,
+      countdown: 120,
       interval: 0,
       min: 0,
       sec: 0,

@@ -16,11 +16,15 @@
 
       <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
-      <Toolbar :progress="this.progress"></Toolbar>
+      <Toolbar
+        :progress="this.progress"
+        :timerCanStart="this.timerCanStart"
+        :help="this.help"
+      ></Toolbar>
 
       <Confirm v-if="this.confirm"></Confirm>
 
-      <!-- <button v-on:click="this.log" class="log">Log</button> -->
+      <button v-on:click="this.log" class="log">Log</button>
 
       <Timer
         :timerCanStart="this.timerCanStart"
@@ -62,6 +66,8 @@ import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
 import Countdown from "./Radiologist/Tutorial/Countdown.vue";
 import Help from "./Radiologist/Tutorial/Help.vue";
 import EndScreen from "./Radiologist/EndScreen.vue";
+
+import Skeleton from "~/three/Games/Radiologist/Skeleton";
 
 import Timer from "./Radiologist/Timer.vue";
 
@@ -106,6 +112,8 @@ export default Vue.extend({
       return store.state.radiologist.gameEnded ? "game-fade" : "";
     },
     progress() {
+      console.log("progress update", store.state.radiologist.progress);
+
       return store.state.radiologist.progress;
     },
   },
@@ -210,6 +218,7 @@ export default Vue.extend({
         onComplete: this.showCountdown,
       });
 
+      console.log("tutorial complete");
       this.tutorialCount = -1;
     },
     showCountdown() {
@@ -219,6 +228,8 @@ export default Vue.extend({
     hideCountdown() {
       this.countdown = false;
       this.timerCanStart = true;
+
+      Skeleton.addFirstSkeleton();
     },
   },
 });

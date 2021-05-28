@@ -16,7 +16,7 @@ import Vue from "vue";
 import store from "~/store";
 
 export default Vue.extend({
-  props: ["duration", "index", "removeFolder"],
+  props: ["duration", "index", "removeFolder", "help"],
   data(): {
     progress: number;
     interval: any;
@@ -36,14 +36,14 @@ export default Vue.extend({
     this.progress++;
 
     this.interval = setInterval(() => {
-      // console.log(this.progress + "/" + this.duration, this.index);
-
-      if (this.progress === this.duration) {
-        store.state.radiologist.penalty();
-        this.removeFolder(this.index);
-        clearInterval(this.interval);
+      if (!this.help) {
+        if (this.progress === this.duration) {
+          store.state.radiologist.penalty();
+          this.removeFolder(this.index, "auto");
+          clearInterval(this.interval);
+        }
+        this.progress++;
       }
-      this.progress++;
     }, 1000);
   },
   destroyed() {
