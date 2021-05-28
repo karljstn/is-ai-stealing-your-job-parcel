@@ -1,3 +1,6 @@
+import { Material } from "three";
+import { onRect } from "~types";
+
 export interface ThreeObject {
   object3d: THREE.Object3D;
   update(dt: number): void;
@@ -16,12 +19,16 @@ export interface ThreeGroup {
 }
 
 export interface ThreeGLTF {
-  initialize({ }): void
-  update(dt: number): void
-  destroy(): void
+  initialize(
+    rectElement?: HTMLElement,
+    onRect?: onRect,
+    material?: Material
+  ): void;
+  update(dt: number): void;
+  destroy(): void;
 }
 
 export interface ViewInterface {
-  start(): void
-  destroy(): void
+  start(rectElement?: HTMLElement, onRect?: onRect): void;
+  destroy(): void;
 }

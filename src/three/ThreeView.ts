@@ -1,64 +1,90 @@
 import { PerspectiveCamera, Scene } from "three";
+import { MATERIALS } from "~constants/MATERIALS";
 import { ViewInterface } from "~interfaces/Three";
-import { BasedGLTF, TweenedGLTF, MousedGLTF } from '~three/Meshes/GLTF'
+import { BasedGLTF, TweenedGLTF, MousedGLTF } from "~three/Meshes/GLTF";
 import { GLTF_TYPE, onRect, VIEW, Viewport, VIEW_MESH } from "~types";
 
 type ThreeViewConstructor = {
-	viewport: Viewport, scene: Scene, camera: PerspectiveCamera, viewData: VIEW, rect: HTMLElement, onRect: onRect
-}
+  viewport: Viewport;
+  scene: Scene;
+  camera: PerspectiveCamera;
+  viewData: VIEW;
+  rectElement?: HTMLElement;
+  onRect?: onRect;
+};
 
 class ThreeView implements ViewInterface {
-	viewport: Viewport
-	scene: Scene
-	camera: PerspectiveCamera
-	view: VIEW
-	rect: HTMLElement
-	onRect: onRect
+  viewport: Viewport;
+  scene: Scene;
+  camera: PerspectiveCamera;
+  view: VIEW;
+  rectElement: HTMLElement;
+  onRect: onRect;
 
-	constructor({ viewport, scene, camera, viewData, rect, onRect }: ThreeViewConstructor) {
-		this.viewport = viewport
-		this.scene = scene
-		this.camera = camera
-		this.view = viewData
-		this.rect = rect
-		this.onRect = onRect
-	}
+  constructor({
+    viewport,
+    scene,
+    camera,
+    viewData,
+    rectElement,
+    onRect,
+  }: ThreeViewConstructor) {
+    this.viewport = viewport;
+    this.scene = scene;
+    this.camera = camera;
+    this.view = viewData;
+    this.rectElement = rectElement;
+    this.onRect = onRect;
+  }
 
-	getMesh = (MESH: VIEW_MESH) => {
-		const { scene, viewport, rect, camera } = this
+  getMesh = (MESH: VIEW_MESH) => {
+    const { scene, viewport, rectElement, camera } = this;
 
-		switch (MESH.TYPE) {
-			case GLTF_TYPE.BASE:
-				return new BasedGLTF({ scene, viewport })
+    switch (MESH.TYPE) {
+      case GLTF_TYPE.BASE:
+        return new BasedGLTF({ scene, viewport, camera, MODEL: MESH.MODEL });
 
-			case GLTF_TYPE.TWEENED:
-				return new TweenedGLTF({ scene, viewport })
+      case GLTF_TYPE.TWEENED:
+        return new TweenedGLTF({ scene, viewport, camera, MODEL: MESH.MODEL });
 
-			case GLTF_TYPE.MOUSED:
-				return new MousedGLTF({ scene, viewport, camera, MODEL: MESH.MODEL, rect, onRect: this.onRect })
+      case GLTF_TYPE.MOUSED:
+        return new MousedGLTF({
+          scene,
+          viewport,
+          camera,
+          MODEL: MESH.MODEL,
+          rectElement,
+          onRect: this.onRect,
+        });
 
-			default:
-				return null;
-		}
-	}
+      default:
+        return null;
+    }
+  };
 
-	start = () => {
-		const meshes: (BasedGLTF | TweenedGLTF | MousedGLTF)[] = []
+  start = (rectElement?: HTMLElement, onRect?: onRect) => {
+    const meshes: (BasedGLTF | TweenedGLTF | MousedGLTF)[] = [];
 
-		for (const MESH of this.view.MESHES) {
-			meshes.push(this.getMesh(MESH))
-		}
+    for (const MESH of this.view.MESHES) {
+      meshes.push(this.getMesh(MESH));
+    }
 
-		for (const mesh of meshes) {
-			const forced = mesh as MousedGLTF //TODO: Implement other meshes
+    for (const mesh of meshes) {
+      const forced = mesh as MousedGLTF; //TODO: Implement other meshes
 
-			mesh.load(forced.MODEL.URL).then(() => mesh.initialize())
-		}
-	}
+      mesh
+        .load(forced.MODEL.URL)
+        .then(() =>
+          mesh.initialize(
+            rectElement,
+            onRect,
+            MATERIALS.GET_FRESNEL_BAKED(forced.MODEL)
+          )
+        );
+    }
+  };
 
-	destroy = () => {
-
-	}
+  destroy = () => {};
 }
 
-export default ThreeView
+export default ThreeView;
