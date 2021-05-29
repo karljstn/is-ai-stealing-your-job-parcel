@@ -9,7 +9,7 @@ export const MATERIALS = {
 
     const tex = new TextureLoader().load(MODEL.TEXTURE);
     tex.flipY = false;
-    const mat = new ShaderMaterial({
+    return new ShaderMaterial({
       vertexShader: vertex,
       fragmentShader: fragment,
       uniforms: {
@@ -22,6 +22,5 @@ export const MATERIALS = {
         },
       },
     });
-    return mat;
   },
 };
