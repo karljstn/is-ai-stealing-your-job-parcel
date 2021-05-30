@@ -1,8 +1,17 @@
-import { AnimationClip, Group, Material, Mesh, PerspectiveCamera, Scene, Vector3 } from "three";
+import {
+  AnimationClip,
+  Group,
+  Material,
+  Mesh,
+  PerspectiveCamera,
+  Scene,
+  Vector3,
+} from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFConstructor, IDLE_TYPE, MODEL, onRect, Viewport } from "~types";
 import LoadManager from "~/three/Singletons/LoadManager";
 import { getViewport, rectToThree } from "~util";
+import RAF from "~singletons/RAF";
 
 abstract class BaseGLTF {
   params: { [name: string]: any };
@@ -13,8 +22,8 @@ abstract class BaseGLTF {
   rectElement: HTMLElement;
   onRect: onRect;
   MODEL: MODEL;
-  MATERIAL: Material
-  RAFKey: string
+  MATERIAL: Material;
+  RAFKey: string;
   originalPos: Vector3;
 
   group: Group;
@@ -24,12 +33,20 @@ abstract class BaseGLTF {
   rectToThree: ReturnType<typeof rectToThree>;
   rectName: string;
 
-  constructor({ scene, viewport, camera, offset, idle, MODEL, MATERIAL }: GLTFConstructor) {
+  constructor({
+    scene,
+    viewport,
+    camera,
+    offset,
+    idle,
+    MODEL,
+    MATERIAL,
+  }: GLTFConstructor) {
     this.params = {
       base: {
         offset,
         scale: MODEL.BASE_SCALE,
-        idle
+        idle,
       },
     };
 
@@ -54,6 +71,13 @@ abstract class BaseGLTF {
           gltf.scene.scale.setScalar(0);
           this.group = gltf.scene;
           this.animations = gltf.animations;
+
+          this.group.position.add(this.params.base.offset.position);
+          this.originalPos.copy(this.group.position);
+          this.group.rotation.setFromVector3(this.params.base.offset.rotation);
+          this.scene.add(this.group);
+          this.setMaterial(this.MATERIAL);
+
           this.isLoaded = true;
 
           resolve();

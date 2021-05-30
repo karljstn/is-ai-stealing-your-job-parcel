@@ -9,11 +9,11 @@ export const VIEWS: VIEW[] = [
       URL: "~/assets/Lottie/6. AI IS.json",
       SCALE: 1,
     },
-    MESHES: [
+    GLTF_MESHES: [
       {
         TYPE: GLTF_TYPE.MOUSED,
         MODEL: MODELS.EMOJI_CRY,
-        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_CRY)
+        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_CRY),
       },
     ],
   },

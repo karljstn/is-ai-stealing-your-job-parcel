@@ -74,16 +74,16 @@ export enum GLTF_TYPE {
 export enum IDLE_TYPE {
   SINUS,
 }
-export type VIEW_MESH = {
-  TYPE: GLTF_TYPE
-  MODEL: MODEL
-  MATERIAL?: Material
+export type VIEW_GLTF = {
+  TYPE: GLTF_TYPE;
+  MODEL: MODEL;
+  MATERIAL?: Material;
 };
 
 export type VIEW = {
   ROUTE_NAME: string;
   LOTTIE: { URL: string; SCALE: number };
-  MESHES: VIEW_MESH[];
+  GLTF_MESHES: VIEW_GLTF[];
 };
 
 export type MODEL = { URL: string; BASE_SCALE: number; TEXTURE?: string };

@@ -19,15 +19,12 @@ export interface ThreeGroup {
 }
 
 export interface InitGLTF {
-  rectElement?: HTMLElement,
-  onRect?: onRect,
+  rectElement?: HTMLElement;
+  onRect?: onRect;
 }
 
 export interface ThreeGLTF {
-  initialize({
-    rectElement,
-    onRect,
-  }: InitGLTF): void;
+  initRectGLTF({ rectElement, onRect }: InitGLTF): void;
   update(dt: number): void;
   destroy(): void;
 }

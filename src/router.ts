@@ -103,9 +103,9 @@ const routes = [
           const view = store.state.sceneManager.threeViews.get(
             VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroThreatened")
           );
-          for (const mesh of view.meshes) {
-            const tweened = mesh as TweenedGLTF
-            if (typeof tweened.out !== "undefined") tweened.out()
+          for (const mesh of view.gltfMeshes) {
+            const tweened = mesh as TweenedGLTF;
+            if (typeof tweened.out !== "undefined") tweened.out();
           }
         },
       },
@@ -118,7 +118,7 @@ const routes = [
     color: PALETTE.YELLOW,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 0, out: () => {} },
     },
   },
   {
@@ -143,7 +143,7 @@ const routes = [
     color: PALETTE.WHITE,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -153,7 +153,7 @@ const routes = [
     color: PALETTE.BLACK,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -178,7 +178,7 @@ const routes = [
     color: PALETTE.ORANGE,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 0, out: () => {} },
     },
   },
   {
@@ -188,7 +188,7 @@ const routes = [
     color: PALETTE.VIOLET,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 0, out: () => {} },
     },
   },
   {
@@ -198,7 +198,7 @@ const routes = [
     color: PALETTE.YELLOW,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 0, out: () => {} },
     },
   },
   {
@@ -208,7 +208,7 @@ const routes = [
     color: PALETTE.LIGHTPINK,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 0, out: () => {} },
     },
   },
   {
@@ -218,7 +218,7 @@ const routes = [
     color: PALETTE.LIGHTPINK,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -227,7 +227,7 @@ const routes = [
     name: "GameTwo",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -267,7 +267,7 @@ const routes = [
     color: PALETTE.ORANGE,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -277,7 +277,7 @@ const routes = [
     color: PALETTE.WHITE,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -287,7 +287,7 @@ const routes = [
     color: PALETTE.BLACK,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -297,7 +297,7 @@ const routes = [
     color: PALETTE.LIGHTPINK,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -306,7 +306,7 @@ const routes = [
     name: "OutroRessources",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -315,7 +315,7 @@ const routes = [
     name: "OutroShare",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -324,7 +324,7 @@ const routes = [
     name: "OutroTakeAction",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -333,7 +333,7 @@ const routes = [
     name: "Credits",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
 ];

@@ -29,7 +29,15 @@ abstract class TweenGLTF extends BaseGLTF {
   tweenRAFKey: string;
   transition: ThreeMeshTransition;
 
-  constructor({ scene, viewport, camera, offset, idle, MODEL, MATERIAL }: GLTFConstructor) {
+  constructor({
+    scene,
+    viewport,
+    camera,
+    offset,
+    idle,
+    MODEL,
+    MATERIAL,
+  }: GLTFConstructor) {
     super({ scene, viewport, camera, offset, idle, MODEL, MATERIAL });
 
     this.tweenRAFKey = (performance.now() * Math.random()).toString();
@@ -53,8 +61,8 @@ abstract class TweenGLTF extends BaseGLTF {
 
   setTransition = (
     scaleScalar: number,
-    position: Vector3,
-    offset: Vector3 = new Vector3(),
+    // position: Vector3,
+    // offset: Vector3 = new Vector3(),
     delay = { in: 0, out: 0 },
     duration = 0.3
   ) => {

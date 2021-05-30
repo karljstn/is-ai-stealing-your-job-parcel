@@ -1,8 +1,8 @@
 import { Material, PerspectiveCamera, Scene } from "three";
 import { MATERIALS } from "~constants/MATERIALS";
 import { InitGLTF, ViewInterface } from "~interfaces/Three";
-import { BasedGLTF, TweenedGLTF, MousedGLTF } from "~three/Meshes/GLTF";
-import { GLTF_TYPE, onRect, VIEW, Viewport, VIEW_MESH } from "~types";
+import { BasedGLTF, TweenedGLTF, MousedTweenedGLTF } from "~three/Meshes/GLTF";
+import { GLTF_TYPE, onRect, VIEW, Viewport, VIEW_GLTF } from "~types";
 
 type ThreeViewConstructor = {
   viewport: Viewport;
@@ -20,7 +20,7 @@ class ThreeView implements ViewInterface {
   view: VIEW;
   rectElement: HTMLElement;
   onRect: onRect;
-  meshes: (BasedGLTF | TweenedGLTF | MousedGLTF)[]
+  gltfMeshes: (BasedGLTF | TweenedGLTF | MousedTweenedGLTF)[];
 
   constructor({
     viewport,
@@ -36,12 +36,12 @@ class ThreeView implements ViewInterface {
     this.view = viewData;
     this.rectElement = rectElement;
     this.onRect = onRect;
-    this.meshes = []
+    this.gltfMeshes = [];
   }
 
-  generateMeshFromConstant = (MESH: VIEW_MESH) => {
+  generateGLTFMeshFromConstant = (MESH: VIEW_GLTF) => {
     const { scene, viewport, rectElement, camera, onRect } = this;
-    const { MODEL, MATERIAL } = MESH
+    const { MODEL, MATERIAL } = MESH;
 
     switch (MESH.TYPE) {
       case GLTF_TYPE.BASE:
@@ -51,7 +51,7 @@ class ThreeView implements ViewInterface {
         return new TweenedGLTF({ scene, viewport, camera, MODEL, MATERIAL });
 
       case GLTF_TYPE.MOUSED:
-        return new MousedGLTF({
+        return new MousedTweenedGLTF({
           scene,
           viewport,
           camera,
@@ -67,25 +67,21 @@ class ThreeView implements ViewInterface {
   };
 
   start = ({ rectElement, onRect }: InitGLTF) => {
-    for (const MESH of this.view.MESHES) {
-      this.meshes.push(this.generateMeshFromConstant(MESH));
+    for (const MESH of this.view.GLTF_MESHES) {
+      this.gltfMeshes.push(this.generateGLTFMeshFromConstant(MESH));
     }
 
-    for (const mesh of this.meshes) {
-      const forced = mesh as MousedGLTF; //TODO: Implement other meshes
-
-      mesh
-        .load(forced.MODEL.URL)
-        .then(() =>
-          mesh.initialize({
-            rectElement,
-            onRect,
-          })
-        );
+    for (const gltf of this.gltfMeshes) {
+      gltf.load(gltf.MODEL.URL).then(() =>
+        gltf.initRectGLTF({
+          rectElement,
+          onRect,
+        })
+      );
     }
   };
 
-  destroy = () => { };
+  destroy = () => {};
 }
 
 export default ThreeView;

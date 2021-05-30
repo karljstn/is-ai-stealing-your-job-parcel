@@ -24,11 +24,11 @@ export class BasedGLTF extends BaseGLTF implements ThreeGLTF {
     super({ scene, viewport, camera, offset, MODEL, MATERIAL });
   }
 
-  initialize() { }
+  initRectGLTF() {}
 
-  update() { }
+  update() {}
 
-  destroy() { }
+  destroy() {}
 }
 
 export class TweenedGLTF extends TweenGLTF implements ThreeGLTF {
@@ -47,16 +47,14 @@ export class TweenedGLTF extends TweenGLTF implements ThreeGLTF {
     super({ scene, viewport, camera, offset, MODEL, MATERIAL });
   }
 
-  initialize() { }
+  initRectGLTF() {}
 
-  update() { }
+  update() {}
 
-  destroy() { }
+  destroy() {}
 }
 
-export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
-  rectElement: HTMLElement;
-  onRect: onRect;
+export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
   delay: { in: number; out: number };
 
   isMoving: boolean;
@@ -94,62 +92,35 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     this.mappedMouse = new Vector3();
   }
 
-  initialize = ({
-    rectElement,
-    onRect }: InitGLTF
-  ) => {
+  initRectGLTF = ({ rectElement, onRect }: InitGLTF) => {
     this.rectElement = rectElement;
     this.onRect = onRect;
 
-    if (this.rectElement) {
-      this.manageRect();
-    } else {
-      this.setTransition(
-        this.MODEL.BASE_SCALE,
-        this.group.position,
-        new Vector3(0, 0, 0),
-        {
-          in: this.delay.in,
-          out: this.delay.out,
-        }
-      );
-    }
+    this.manageRect();
 
-    this.group.position.add(this.params.base.offset.position);
-    this.originalPos.copy(this.group.position);
-    this.group.rotation.setFromVector3(this.params.base.offset.rotation);
-
-    this.setMaterial(this.MATERIAL);
-
-    this.scene.add(this.group);
     RAF.subscribe(this.RAFKey, this.update);
+
     this.tweaks();
-    window.addEventListener("resize", this.manageResize);
+    window.addEventListener("resize", this.manageRect);
 
     this.in();
   };
 
-  tweaks = () => { };
+  tweaks = () => {};
 
   update = (dt: number = 0) => {
     if (this.params.base.idle.enabled === false) return;
     this.group.rotation.z =
       this.params.base.offset.rotation.z +
       Math.sin(performance.now() * this.params.sinus.frequency) *
-      this.params.sinus.amplitude;
+        this.params.sinus.amplitude;
   };
 
   destroy = () => {
     this.scene.remove(this.group);
     window.removeEventListener("resize", this.resize);
-    window.removeEventListener("resize", this.manageResize);
+    window.removeEventListener("resize", this.manageRect);
     RAF.unsubscribe(this.RAFKey);
-  };
-
-  private manageResize = () => {
-    // Viewport from constructor seems to be cached, seem to need to resize here instead of parent
-    this.viewport = getViewport(this.camera);
-    this.manageRect();
   };
 
   private manageRect = () => {
@@ -163,12 +134,10 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
 
     if (hasTransitioned) this.group.scale.setScalar(this.MODEL.BASE_SCALE * h);
     else
-      this.setTransition(
-        this.MODEL.BASE_SCALE * h,
-        this.group.position,
-        new Vector3(0, 0, 0),
-        { in: this.delay.in, out: this.delay.out }
-      );
+      this.setTransition(this.MODEL.BASE_SCALE * h, {
+        in: this.delay.in,
+        out: this.delay.out,
+      });
 
     if (typeof this.onRect !== "function") return;
     this.onRect(x, y, w, h, this.group, this.viewport);
