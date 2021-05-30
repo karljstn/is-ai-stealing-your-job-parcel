@@ -1,4 +1,4 @@
-import { Group, PerspectiveCamera, Scene, Vector3 } from "three";
+import { Group, Material, PerspectiveCamera, Scene, Vector3 } from "three";
 import MainScene from "~three/MainController";
 import { CustomEase } from "gsap/all";
 import Tweakpane from "tweakpane";
@@ -75,8 +75,9 @@ export enum IDLE_TYPE {
   SINUS,
 }
 export type VIEW_MESH = {
-  TYPE: GLTF_TYPE;
-  MODEL: MODEL;
+  TYPE: GLTF_TYPE
+  MODEL: MODEL
+  MATERIAL?: Material
 };
 
 export type VIEW = {
@@ -101,6 +102,7 @@ export type GLTFConstructor = {
   viewport: Viewport;
   camera: PerspectiveCamera;
   MODEL: MODEL;
+  MATERIAL: Material;
   rectElement?: HTMLElement;
   onRect?: onRect;
   delay?: { in: number; out: number };

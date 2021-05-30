@@ -30,6 +30,7 @@ import Credits from "~views/5_Epilogue/5_EpilogueCredits.vue";
 import store from "~store";
 import { fadeBackground } from "~util";
 import { VIEWS } from "~constants/VIEWS";
+import { TweenedGLTF } from "~three/Meshes/GLTF";
 
 Vue.use(VueRouter);
 
@@ -99,9 +100,13 @@ const routes = [
       transition: {
         delay: 1000,
         out: () => {
-          store.state.sceneManager.threeViews.get(
+          const view = store.state.sceneManager.threeViews.get(
             VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroThreatened")
           );
+          for (const mesh of view.meshes) {
+            const tweened = mesh as TweenedGLTF
+            if (typeof tweened.out !== "undefined") tweened.out()
+          }
         },
       },
     },
@@ -113,7 +118,7 @@ const routes = [
     color: PALETTE.YELLOW,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 0, out: () => {} },
+      transition: { delay: 0, out: () => { } },
     },
   },
   {
@@ -138,7 +143,7 @@ const routes = [
     color: PALETTE.WHITE,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -148,7 +153,7 @@ const routes = [
     color: PALETTE.BLACK,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -173,7 +178,7 @@ const routes = [
     color: PALETTE.ORANGE,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => {} },
+      transition: { delay: 0, out: () => { } },
     },
   },
   {
@@ -183,7 +188,7 @@ const routes = [
     color: PALETTE.VIOLET,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => {} },
+      transition: { delay: 0, out: () => { } },
     },
   },
   {
@@ -193,7 +198,7 @@ const routes = [
     color: PALETTE.YELLOW,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => {} },
+      transition: { delay: 0, out: () => { } },
     },
   },
   {
@@ -203,7 +208,7 @@ const routes = [
     color: PALETTE.LIGHTPINK,
     meta: {
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => {} },
+      transition: { delay: 0, out: () => { } },
     },
   },
   {
@@ -213,7 +218,7 @@ const routes = [
     color: PALETTE.LIGHTPINK,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -222,7 +227,7 @@ const routes = [
     name: "GameTwo",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -262,7 +267,7 @@ const routes = [
     color: PALETTE.ORANGE,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -272,7 +277,7 @@ const routes = [
     color: PALETTE.WHITE,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -282,7 +287,7 @@ const routes = [
     color: PALETTE.BLACK,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -292,7 +297,7 @@ const routes = [
     color: PALETTE.LIGHTPINK,
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -301,7 +306,7 @@ const routes = [
     name: "OutroRessources",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -310,7 +315,7 @@ const routes = [
     name: "OutroShare",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -319,7 +324,7 @@ const routes = [
     name: "OutroTakeAction",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -328,7 +333,7 @@ const routes = [
     name: "Credits",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
 ];

@@ -1,4 +1,5 @@
 import { GLTF_TYPE, VIEW } from "~types";
+import { MATERIALS } from "./MATERIALS";
 import { MODELS } from "./MODELS";
 
 export const VIEWS: VIEW[] = [
@@ -12,6 +13,7 @@ export const VIEWS: VIEW[] = [
       {
         TYPE: GLTF_TYPE.MOUSED,
         MODEL: MODELS.EMOJI_CRY,
+        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_CRY)
       },
     ],
   },

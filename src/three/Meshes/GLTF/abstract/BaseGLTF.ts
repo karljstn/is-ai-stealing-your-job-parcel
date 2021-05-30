@@ -1,6 +1,6 @@
-import { AnimationClip, Group, PerspectiveCamera, Scene } from "three";
+import { AnimationClip, Group, Material, Mesh, PerspectiveCamera, Scene, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { GLTFConstructor, MODEL, onRect, Viewport } from "~types";
+import { GLTFConstructor, IDLE_TYPE, MODEL, onRect, Viewport } from "~types";
 import LoadManager from "~/three/Singletons/LoadManager";
 import { getViewport, rectToThree } from "~util";
 
@@ -13,6 +13,9 @@ abstract class BaseGLTF {
   rectElement: HTMLElement;
   onRect: onRect;
   MODEL: MODEL;
+  MATERIAL: Material
+  RAFKey: string
+  originalPos: Vector3;
 
   group: Group;
   animations: AnimationClip[];
@@ -21,11 +24,12 @@ abstract class BaseGLTF {
   rectToThree: ReturnType<typeof rectToThree>;
   rectName: string;
 
-  constructor({ scene, viewport, camera, offset, MODEL }: GLTFConstructor) {
+  constructor({ scene, viewport, camera, offset, idle, MODEL, MATERIAL }: GLTFConstructor) {
     this.params = {
       base: {
         offset,
         scale: MODEL.BASE_SCALE,
+        idle
       },
     };
 
@@ -33,6 +37,9 @@ abstract class BaseGLTF {
     this.viewport = viewport;
     this.camera = camera;
     this.MODEL = MODEL;
+    this.MATERIAL = MATERIAL;
+    this.RAFKey = (performance.now() * Math.random()).toString();
+    this.originalPos = new Vector3();
 
     this.group = new Group();
     this.loader = new GLTFLoader(LoadManager.manager);
@@ -58,12 +65,17 @@ abstract class BaseGLTF {
 
   start = (url: string, cb: () => void) => {
     if (!this.isLoaded) {
-      this.load(url)
-        .then(() => {})
-        .then(cb);
+      this.load(url).then(cb);
     } else {
       cb();
     }
+  };
+
+  setMaterial = (material: Material) => {
+    this.group.traverse((object3D) => {
+      const mesh = object3D as Mesh;
+      if (mesh.material) mesh.material = material;
+    });
   };
 
   setFromRect = (el: HTMLElement) =>
@@ -73,7 +85,7 @@ abstract class BaseGLTF {
     this.viewport = getViewport(this.camera);
   };
 
-  setEvents = () => {
+  protected setEvents = () => {
     window.addEventListener("resize", this.resize);
   };
 }

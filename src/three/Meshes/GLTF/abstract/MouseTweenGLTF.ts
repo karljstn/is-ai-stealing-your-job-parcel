@@ -14,8 +14,8 @@ abstract class MouseTweenGLTF extends TweenGLTF {
     scalar: number;
   };
 
-  constructor({ scene, viewport, camera, offset, MODEL }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL });
+  constructor({ scene, viewport, camera, offset, idle, MODEL, MATERIAL }: GLTFConstructor) {
+    super({ scene, viewport, camera, offset, idle, MODEL, MATERIAL });
 
     this.mouseRAFKey = (performance.now() * Math.random()).toString();
     this.mouse = {

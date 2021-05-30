@@ -29,8 +29,8 @@ abstract class TweenGLTF extends BaseGLTF {
   tweenRAFKey: string;
   transition: ThreeMeshTransition;
 
-  constructor({ scene, viewport, camera, offset, MODEL }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL });
+  constructor({ scene, viewport, camera, offset, idle, MODEL, MATERIAL }: GLTFConstructor) {
+    super({ scene, viewport, camera, offset, idle, MODEL, MATERIAL });
 
     this.tweenRAFKey = (performance.now() * Math.random()).toString();
     this.transition = {

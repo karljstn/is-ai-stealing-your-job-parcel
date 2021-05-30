@@ -1,5 +1,5 @@
 import { Color, Material, Mesh, Vector3 } from "three";
-import { ThreeGLTF } from "~interfaces/Three";
+import { InitGLTF, ThreeGLTF } from "~interfaces/Three";
 import BaseGLTF from "~three/Meshes/GLTF/abstract/BaseGLTF";
 import MouseTweenGLTF from "~three/Meshes/GLTF/abstract/MouseTweenGLTF";
 import TweenGLTF from "~three/Meshes/GLTF/abstract/TweenGLTF";
@@ -14,20 +14,21 @@ export class BasedGLTF extends BaseGLTF implements ThreeGLTF {
     viewport,
     camera,
     MODEL,
+    MATERIAL,
     rectElement = null,
     onRect = null,
     delay = { in: 0, out: 0 },
     offset = { rotation: new Vector3(), position: new Vector3() },
     idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL });
+    super({ scene, viewport, camera, offset, MODEL, MATERIAL });
   }
 
-  initialize() {}
+  initialize() { }
 
-  update() {}
+  update() { }
 
-  destroy() {}
+  destroy() { }
 }
 
 export class TweenedGLTF extends TweenGLTF implements ThreeGLTF {
@@ -36,32 +37,29 @@ export class TweenedGLTF extends TweenGLTF implements ThreeGLTF {
     viewport,
     camera,
     MODEL,
+    MATERIAL,
     rectElement = null,
     onRect = null,
     delay = { in: 0, out: 0 },
     offset = { rotation: new Vector3(), position: new Vector3() },
     idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL });
+    super({ scene, viewport, camera, offset, MODEL, MATERIAL });
   }
 
-  initialize() {}
+  initialize() { }
 
-  update() {}
+  update() { }
 
-  destroy() {}
+  destroy() { }
 }
 
 export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
-  MODEL: MODEL;
-  RAFKey: string;
   rectElement: HTMLElement;
   onRect: onRect;
   delay: { in: number; out: number };
-  idle: { enabled: boolean; type: IDLE_TYPE.SINUS };
 
   isMoving: boolean;
-  originalPos: Vector3;
   mappedMouse: Vector3;
 
   constructor({
@@ -69,13 +67,14 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     viewport,
     camera,
     MODEL,
+    MATERIAL,
     rectElement = null,
     onRect = null,
     delay = { in: 0, out: 0 },
     offset = { rotation: new Vector3(), position: new Vector3() },
     idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL });
+    super({ scene, viewport, camera, offset, idle, MODEL, MATERIAL });
 
     this.params.sinus = {
       amplitude: 0.1,
@@ -86,22 +85,18 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
       color: new Color(PALETTE.WHITE),
     };
 
-    this.MODEL = MODEL;
-    this.RAFKey = (performance.now() * Math.random()).toString();
     this.rectElement = rectElement;
     this.onRect = onRect;
     this.delay = delay;
-    this.idle = idle;
 
     this.isMoving = false;
-    this.originalPos = new Vector3();
+
     this.mappedMouse = new Vector3();
   }
 
-  initialize = (
-    rectElement: HTMLElement,
-    onRect: onRect,
-    material: Material
+  initialize = ({
+    rectElement,
+    onRect }: InitGLTF
   ) => {
     this.rectElement = rectElement;
     this.onRect = onRect;
@@ -124,8 +119,7 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     this.originalPos.copy(this.group.position);
     this.group.rotation.setFromVector3(this.params.base.offset.rotation);
 
-    // Set baked material
-    this.setMaterial(material);
+    this.setMaterial(this.MATERIAL);
 
     this.scene.add(this.group);
     RAF.subscribe(this.RAFKey, this.update);
@@ -135,14 +129,14 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     this.in();
   };
 
-  tweaks = () => {};
+  tweaks = () => { };
 
   update = (dt: number = 0) => {
-    if (this.idle.enabled === false) return;
+    if (this.params.base.idle.enabled === false) return;
     this.group.rotation.z =
       this.params.base.offset.rotation.z +
       Math.sin(performance.now() * this.params.sinus.frequency) *
-        this.params.sinus.amplitude;
+      this.params.sinus.amplitude;
   };
 
   destroy = () => {
@@ -156,13 +150,6 @@ export class MousedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     // Viewport from constructor seems to be cached, seem to need to resize here instead of parent
     this.viewport = getViewport(this.camera);
     this.manageRect();
-  };
-
-  private setMaterial = (mat: Material) => {
-    this.group.traverse((object3D) => {
-      const mesh = object3D as Mesh;
-      if (mesh.material) mesh.material = mat;
-    });
   };
 
   private manageRect = () => {

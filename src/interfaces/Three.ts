@@ -18,17 +18,21 @@ export interface ThreeGroup {
   update(dt: number): void;
 }
 
+export interface InitGLTF {
+  rectElement?: HTMLElement,
+  onRect?: onRect,
+}
+
 export interface ThreeGLTF {
-  initialize(
-    rectElement?: HTMLElement,
-    onRect?: onRect,
-    material?: Material
-  ): void;
+  initialize({
+    rectElement,
+    onRect,
+  }: InitGLTF): void;
   update(dt: number): void;
   destroy(): void;
 }
 
 export interface ViewInterface {
-  start(rectElement?: HTMLElement, onRect?: onRect): void;
+  start({ rectElement, onRect }: InitGLTF): void;
   destroy(): void;
 }
