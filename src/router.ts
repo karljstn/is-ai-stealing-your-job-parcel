@@ -39,8 +39,9 @@ const routes = [
     path: "/",
     component: LandingPage,
     name: "LandingPage",
-    color: PALETTE.WHITE,
+
     meta: {
+      color: PALETTE.WHITE,
       scroll: {
         disabled: false,
       },
@@ -64,8 +65,8 @@ const routes = [
     path: "/1",
     component: IntroHello,
     name: "IntroHello",
-    color: PALETTE.WHITE,
     meta: {
+      color: PALETTE.WHITE,
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 1000,
@@ -79,8 +80,8 @@ const routes = [
     path: "/2",
     component: IntroGuess,
     name: "IntroGuess",
-    color: PALETTE.LIGHTPINK,
     meta: {
+      color: PALETTE.LIGHTPINK,
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 800,
@@ -94,19 +95,19 @@ const routes = [
     path: "/3",
     component: IntroThreatened,
     name: "IntroThreatened",
-    color: PALETTE.VIOLET,
     meta: {
+      color: PALETTE.VIOLET,
       scroll: { disabled: false, darkenScrollDownArrow: false },
       transition: {
         delay: 1000,
         out: () => {
-          const view = store.state.sceneManager.threeViews.get(
-            VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroThreatened")
-          );
-          for (const mesh of view.gltfMeshes) {
-            const tweened = mesh as TweenedGLTF;
-            if (typeof tweened.out !== "undefined") tweened.out();
-          }
+          // const view = store.state.sceneManager.threeViews.get(
+          //   VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroThreatened")
+          // );
+          // for (const mesh of view.gltfMeshes) {
+          //   const tweened = mesh as TweenedGLTF;
+          //   if (typeof tweened.out !== "undefined") tweened.out();
+          // }
         },
       },
     },
@@ -115,8 +116,8 @@ const routes = [
     path: "/4",
     component: IntroQuestion,
     name: "IntroQuestion",
-    color: PALETTE.YELLOW,
     meta: {
+      color: PALETTE.YELLOW,
       scroll: { disabled: true },
       transition: { delay: 0, out: () => {} },
     },
@@ -125,8 +126,8 @@ const routes = [
     path: "/5",
     component: DefinitionOne,
     name: "DefinitionOne",
-    color: PALETTE.ORANGE,
     meta: {
+      color: PALETTE.ORANGE,
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 1000,
@@ -140,8 +141,8 @@ const routes = [
     path: "/6",
     component: DefinitionTwo,
     name: "DefinitionTwo",
-    color: PALETTE.WHITE,
     meta: {
+      color: PALETTE.WHITE,
       scroll: { disabled: true },
       transition: { delay: 1000, out: () => {} },
     },
@@ -150,8 +151,8 @@ const routes = [
     path: "/7",
     component: DefinitionThree,
     name: "DefinitionThree",
-    color: PALETTE.BLACK,
     meta: {
+      color: PALETTE.BLACK,
       scroll: { disabled: false },
       transition: { delay: 1000, out: () => {} },
     },
@@ -160,8 +161,8 @@ const routes = [
     path: "/8",
     component: DefinitionFour,
     name: "DefinitionFour",
-    color: PALETTE.YELLOW,
     meta: {
+      color: PALETTE.YELLOW,
       scroll: { disabled: false },
       transition: {
         delay: 1150,
@@ -175,8 +176,8 @@ const routes = [
     path: "/9",
     component: DefinitionFive,
     name: "DefinitionFive",
-    color: PALETTE.ORANGE,
     meta: {
+      color: PALETTE.ORANGE,
       scroll: { disabled: false },
       transition: { delay: 0, out: () => {} },
     },
@@ -185,8 +186,8 @@ const routes = [
     path: "/10",
     component: DefinitionSix,
     name: "DefinitionSix",
-    color: PALETTE.VIOLET,
     meta: {
+      color: PALETTE.VIOLET,
       scroll: { disabled: false },
       transition: { delay: 0, out: () => {} },
     },
@@ -195,8 +196,8 @@ const routes = [
     path: "/11",
     component: DefinitionSeven,
     name: "DefinitionSeven",
-    color: PALETTE.YELLOW,
     meta: {
+      color: PALETTE.YELLOW,
       scroll: { disabled: false },
       transition: { delay: 0, out: () => {} },
     },
@@ -205,8 +206,8 @@ const routes = [
     path: "/12",
     component: DefinitionEight,
     name: "DefinitionEight",
-    color: PALETTE.LIGHTPINK,
     meta: {
+      color: PALETTE.LIGHTPINK,
       scroll: { disabled: false },
       transition: { delay: 0, out: () => {} },
     },
@@ -215,8 +216,8 @@ const routes = [
     path: "/13",
     component: GameOne,
     name: "GameOne",
-    color: PALETTE.LIGHTPINK,
     meta: {
+      color: PALETTE.LIGHTPINK,
       scroll: { disabled: true },
       transition: { delay: 1000, out: () => {} },
     },
@@ -234,8 +235,8 @@ const routes = [
     path: "/15",
     component: EndOne,
     name: "EndOne",
-    color: PALETTE.YELLOW,
     meta: {
+      color: PALETTE.YELLOW,
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 1000,
@@ -249,8 +250,8 @@ const routes = [
     path: "/16",
     component: EndTwo,
     name: "EndTwo",
-    color: PALETTE.LIGHTPINK,
     meta: {
+      color: PALETTE.LIGHTPINK,
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 1000,
@@ -264,8 +265,8 @@ const routes = [
     path: "/17",
     component: EndThree,
     name: "EndThree",
-    color: PALETTE.ORANGE,
     meta: {
+      color: PALETTE.ORANGE,
       scroll: { disabled: true },
       transition: { delay: 1000, out: () => {} },
     },
@@ -274,8 +275,8 @@ const routes = [
     path: "/18",
     component: EndFour,
     name: "EndFour",
-    color: PALETTE.WHITE,
     meta: {
+      color: PALETTE.WHITE,
       scroll: { disabled: true },
       transition: { delay: 1000, out: () => {} },
     },
@@ -284,8 +285,8 @@ const routes = [
     path: "/19",
     component: EndFive,
     name: "EndFive",
-    color: PALETTE.BLACK,
     meta: {
+      color: PALETTE.BLACK,
       scroll: { disabled: true },
       transition: { delay: 1000, out: () => {} },
     },
@@ -294,8 +295,8 @@ const routes = [
     path: "/outro",
     component: Outro,
     name: "Outro",
-    color: PALETTE.LIGHTPINK,
     meta: {
+      color: PALETTE.LIGHTPINK,
       scroll: { disabled: true },
       transition: { delay: 1000, out: () => {} },
     },

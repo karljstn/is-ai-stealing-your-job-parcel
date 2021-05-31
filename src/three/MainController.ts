@@ -281,8 +281,6 @@ export default class MainController {
 
     this.viewport = getViewport(this.camera);
 
-    // console.log(this.viewport.width)
-
     // if (this.Loader)
     //   this.Loader.fullScreenPlane.uniforms.uAspectHorizontal.value =
     //     window.innerWidth / window.innerHeight

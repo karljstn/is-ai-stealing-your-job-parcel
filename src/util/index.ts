@@ -1,20 +1,20 @@
-import { PerspectiveCamera } from "three"
-import router from "~router"
+import { PerspectiveCamera } from "three";
+import router from "~router";
 
 /**
  * @returns Average of an array
  * @type {Number}
  */
 export function getAverage(arr: Array<number>) {
-  let sum = 0
+  let sum = 0;
 
   for (let index = 0; index < arr.length; index++) {
-    sum = sum + arr[index]
+    sum = sum + arr[index];
   }
 
-  const avg = sum / arr.length
+  const avg = sum / arr.length;
 
-  return avg !== Infinity ? avg : 0
+  return avg !== Infinity ? avg : 0;
 }
 
 /**
@@ -22,7 +22,7 @@ export function getAverage(arr: Array<number>) {
  * @type {Number}
  */
 export function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value))
+  return Math.min(max, Math.max(min, value));
 }
 
 /**
@@ -30,38 +30,51 @@ export function clamp(value: number, min: number, max: number) {
  * getMaxFPS().then(fps => ...);
  */
 export const getMaxFPS = () =>
-  new Promise(resolve =>
-    requestAnimationFrame(t1 => requestAnimationFrame(t2 => resolve(1000 / (t2 - t1)))),
-  )
+  new Promise((resolve) =>
+    requestAnimationFrame((t1) =>
+      requestAnimationFrame((t2) => resolve(1000 / (t2 - t1)))
+    )
+  );
 
 export const getViewport = (camera: PerspectiveCamera) => {
-  const fov = camera.fov * (Math.PI / 180)
-  const height = 2 * Math.tan(fov / 2) * camera.position.z
-  const width = height * camera.aspect
+  const fov = camera.fov * (Math.PI / 180);
+  const height = 2 * Math.tan(fov / 2) * camera.position.z;
+  const width = height * camera.aspect;
 
   return {
     height,
     width,
-  }
-}
+  };
+};
 
-export const rectToThree = (viewport: { width: number, height: number }, rect: DOMRect) => ({
-  x: -viewport.width / 2 + ((rect.left / window.innerWidth) * viewport.width),
-  y: viewport.height / 2 - ((rect.top / window.innerHeight) * viewport.height),
+export const rectToThree = (
+  viewport: { width: number; height: number },
+  rect: DOMRect
+) => ({
+  x: -viewport.width / 2 + (rect.left / window.innerWidth) * viewport.width,
+  y: viewport.height / 2 - (rect.top / window.innerHeight) * viewport.height,
   w: viewport.width * (rect.width / window.innerWidth),
-  h: viewport.height * (rect.height / window.innerHeight)
-})
+  h: viewport.height * (rect.height / window.innerHeight),
+});
 
 export function round(value: number, significantNumbers: number) {
-  return Number.parseFloat(value.toFixed(significantNumbers))
+  return Number.parseFloat(value.toFixed(significantNumbers));
 }
 
-export function fadeBackground({ color, routeName }: { color?: string, routeName?: string }) {
+export function fadeBackground({
+  color,
+  routeName,
+}: {
+  color?: string;
+  routeName?: string;
+}) {
   if (color) {
-    document.body.style.backgroundColor = color
+    document.body.style.backgroundColor = color;
   } else {
-    const route: any = router.options.routes?.find((route) => route.name === routeName)
-    document.body.style.backgroundColor = route.color
+    const route: any = router.options.routes?.find(
+      (route) => route.name === routeName
+    );
+    document.body.style.backgroundColor = route.meta.color;
   }
 }
 /**
@@ -69,7 +82,7 @@ export function fadeBackground({ color, routeName }: { color?: string, routeName
  * @type {Number}
  */
 export function normalize(val: number, max: number, min: number) {
-  return (val - min) / (max - min)
+  return (val - min) / (max - min);
 }
 
 export function map(
@@ -77,13 +90,11 @@ export function map(
   in_min: number,
   in_max: number,
   out_min: number,
-  out_max: number,
+  out_max: number
 ) {
-  return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+  return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
 
 export function lerp(start: number, end: number, alpha: number) {
-  return (1 - alpha) * start + alpha * end
+  return (1 - alpha) * start + alpha * end;
 }
-
-

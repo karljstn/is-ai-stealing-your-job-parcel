@@ -9,8 +9,6 @@ type ThreeMeshTransition = {
   value: number;
   factor: number;
   target: {
-    // position: Vector3,
-    // offset: Vector3,
     scale: Vector3;
   };
   speed: number;
@@ -23,6 +21,7 @@ type ThreeMeshTransition = {
     default: ReturnType<typeof BezierEasing>;
   };
   active: boolean;
+  timeouts: NodeJS.Timeout[];
 };
 
 abstract class TweenGLTF extends BaseGLTF {
@@ -35,18 +34,22 @@ abstract class TweenGLTF extends BaseGLTF {
     camera,
     offset,
     idle,
-    MODEL,
-    MATERIAL,
+    GLTF,
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, idle, MODEL, MATERIAL });
+    super({
+      scene,
+      viewport,
+      camera,
+      offset,
+      idle,
+      GLTF,
+    });
 
     this.tweenRAFKey = (performance.now() * Math.random()).toString();
     this.transition = {
       value: 0,
       factor: 0,
       target: {
-        // position: new Vector3(),
-        // offset: new Vector3(),
         scale: new Vector3(),
       },
       speed: 0.04,
@@ -54,6 +57,7 @@ abstract class TweenGLTF extends BaseGLTF {
       duration: 0.3,
       eases: { default: new BezierEasing(0.42, 0, 0.58, 1) },
       active: false,
+      timeouts: [],
     };
 
     raf.subscribe(this.tweenRAFKey, this.tween);
@@ -61,8 +65,6 @@ abstract class TweenGLTF extends BaseGLTF {
 
   setTransition = (
     scaleScalar: number,
-    // position: Vector3,
-    // offset: Vector3 = new Vector3(),
     delay = { in: 0, out: 0 },
     duration = 0.3
   ) => {
@@ -70,18 +72,16 @@ abstract class TweenGLTF extends BaseGLTF {
 
     this.transition.target.scale.setScalar(scaleScalar);
 
-    //TODO: implement offset
-    // this.transition.target.position.copy(position)
-    // this.transition.target.offset.copy(offset)
-
     this.transition.delay = delay;
     this.transition.duration = duration;
   };
 
   in = () => {
-    setTimeout(() => {
-      this.transition.factor = this.transition.speed;
-    }, this.transition.delay.in * 1000);
+    this.transition.timeouts.push(
+      setTimeout(() => {
+        this.transition.factor = this.transition.speed;
+      }, this.transition.delay.in * 1000)
+    );
   };
 
   out = () => {
@@ -99,12 +99,7 @@ abstract class TweenGLTF extends BaseGLTF {
 
     if (value > 0 && value < 1) {
       this.transition.active = true;
-      const eased = this.transition.eases.default(value);
-      this.group.scale.set(
-        this.transition.target.scale.x * eased,
-        this.transition.target.scale.y * eased,
-        this.transition.target.scale.z * eased
-      );
+      this.tweenScale();
     }
 
     if (value === 0 || value === 1) {
@@ -112,7 +107,23 @@ abstract class TweenGLTF extends BaseGLTF {
     }
   };
 
+  tweenScale = () => {
+    const eased = this.transition.eases.default(this.transition.value);
+    this.group.scale.set(
+      this.transition.target.scale.x * eased,
+      this.transition.target.scale.y * eased,
+      this.transition.target.scale.z * eased
+    );
+  };
+
+  killTimeouts = () => {
+    for (const timeout of this.transition.timeouts) {
+      clearTimeout(timeout);
+    }
+  };
+
   killTween = () => {
+    this.killTimeouts();
     raf.unsubscribe(this.tweenRAFKey);
   };
 }

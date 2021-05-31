@@ -1,27 +1,28 @@
-import { Color, Material, Mesh, Vector3 } from "three";
+import { Color, Vector3 } from "three";
 import { InitGLTF, ThreeGLTF } from "~interfaces/Three";
 import BaseGLTF from "~three/Meshes/GLTF/abstract/BaseGLTF";
 import MouseTweenGLTF from "~three/Meshes/GLTF/abstract/MouseTweenGLTF";
 import TweenGLTF from "~three/Meshes/GLTF/abstract/TweenGLTF";
-import { GLTFConstructor, IDLE_TYPE, MODEL, onRect } from "~types";
+import { GLTFConstructor, IDLE_TYPE } from "~types";
 import { PALETTE } from "~constants/PALETTE";
 import RAF from "~singletons/RAF";
-import { getViewport, rectToThree } from "~util";
+import { rectToThree } from "~util";
 
 export class BasedGLTF extends BaseGLTF implements ThreeGLTF {
   constructor({
     scene,
     viewport,
     camera,
-    MODEL,
-    MATERIAL,
-    rectElement = null,
-    onRect = null,
-    delay = { in: 0, out: 0 },
+    GLTF,
     offset = { rotation: new Vector3(), position: new Vector3() },
-    idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL, MATERIAL });
+    super({
+      scene,
+      viewport,
+      camera,
+      offset,
+      GLTF,
+    });
   }
 
   initRectGLTF() {}
@@ -36,15 +37,16 @@ export class TweenedGLTF extends TweenGLTF implements ThreeGLTF {
     scene,
     viewport,
     camera,
-    MODEL,
-    MATERIAL,
-    rectElement = null,
-    onRect = null,
-    delay = { in: 0, out: 0 },
+    GLTF,
     offset = { rotation: new Vector3(), position: new Vector3() },
-    idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, MODEL, MATERIAL });
+    super({
+      scene,
+      viewport,
+      camera,
+      offset,
+      GLTF,
+    });
   }
 
   initRectGLTF() {}
@@ -64,19 +66,24 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     scene,
     viewport,
     camera,
-    MODEL,
-    MATERIAL,
+    GLTF,
     rectElement = null,
     onRect = null,
-    delay = { in: 0, out: 0 },
     offset = { rotation: new Vector3(), position: new Vector3() },
     idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
-    super({ scene, viewport, camera, offset, idle, MODEL, MATERIAL });
+    super({
+      scene,
+      viewport,
+      camera,
+      offset,
+      idle,
+      GLTF,
+    });
 
     this.params.sinus = {
-      amplitude: 0.1,
-      frequency: 0.00304,
+      amplitude: 0.12,
+      frequency: 0.004,
     };
     this.params.fresnel = {
       width: 0.4,
@@ -85,7 +92,8 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
 
     this.rectElement = rectElement;
     this.onRect = onRect;
-    this.delay = delay;
+    this.delay =
+      typeof GLTF.DELAY !== "undefined" ? GLTF.DELAY : { in: 0, out: 0 };
 
     this.isMoving = false;
 
@@ -104,11 +112,22 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     window.addEventListener("resize", this.manageRect);
 
     this.in();
+    this.playAllAnims();
   };
 
   tweaks = () => {};
 
+  destroy = () => {
+    this.scene.remove(this.group);
+    this.killUpdateMouse();
+    this.killTween();
+    window.removeEventListener("resize", this.resize);
+    window.removeEventListener("resize", this.manageRect);
+    RAF.unsubscribe(this.RAFKey);
+  };
+
   update = (dt: number = 0) => {
+    this.mixer.update(dt);
     if (this.params.base.idle.enabled === false) return;
     this.group.rotation.z =
       this.params.base.offset.rotation.z +
@@ -116,18 +135,13 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
         this.params.sinus.amplitude;
   };
 
-  destroy = () => {
-    this.scene.remove(this.group);
-    window.removeEventListener("resize", this.resize);
-    window.removeEventListener("resize", this.manageRect);
-    RAF.unsubscribe(this.RAFKey);
-  };
-
   private manageRect = () => {
     const { x, y, w, h } = rectToThree(
       this.viewport,
       this.rectElement.getBoundingClientRect()
     );
+
+    this.group.position.copy(this.GET_OFFSET_FROM_RECT({ x, y, w, h }));
 
     const hasTransitioned =
       !this.transition.active && this.transition.factor > 0;
@@ -140,6 +154,7 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
       });
 
     if (typeof this.onRect !== "function") return;
+
     this.onRect(x, y, w, h, this.group, this.viewport);
   };
 }

@@ -39,24 +39,34 @@ class ThreeView implements ViewInterface {
     this.gltfMeshes = [];
   }
 
-  generateGLTFMeshFromConstant = (MESH: VIEW_GLTF) => {
+  generateGLTFMeshFromConstant = (GLTF: VIEW_GLTF) => {
     const { scene, viewport, rectElement, camera, onRect } = this;
-    const { MODEL, MATERIAL } = MESH;
 
-    switch (MESH.TYPE) {
+    switch (GLTF.TYPE) {
       case GLTF_TYPE.BASE:
-        return new BasedGLTF({ scene, viewport, camera, MODEL, MATERIAL });
+        return new BasedGLTF({
+          scene,
+          viewport,
+          camera,
+          GLTF,
+          onRect,
+        });
 
       case GLTF_TYPE.TWEENED:
-        return new TweenedGLTF({ scene, viewport, camera, MODEL, MATERIAL });
+        return new TweenedGLTF({
+          scene,
+          viewport,
+          camera,
+          GLTF,
+          onRect,
+        });
 
       case GLTF_TYPE.MOUSED:
         return new MousedTweenedGLTF({
           scene,
           viewport,
           camera,
-          MODEL,
-          MATERIAL,
+          GLTF,
           rectElement,
           onRect,
         });
@@ -67,8 +77,8 @@ class ThreeView implements ViewInterface {
   };
 
   start = ({ rectElement, onRect }: InitGLTF) => {
-    for (const MESH of this.view.GLTF_MESHES) {
-      this.gltfMeshes.push(this.generateGLTFMeshFromConstant(MESH));
+    for (const VIEW_GLTF of this.view.GLTF_MESHES) {
+      this.gltfMeshes.push(this.generateGLTFMeshFromConstant(VIEW_GLTF));
     }
 
     for (const gltf of this.gltfMeshes) {
@@ -81,7 +91,11 @@ class ThreeView implements ViewInterface {
     }
   };
 
-  destroy = () => {};
+  destroy = () => {
+    for (const gltf of this.gltfMeshes) {
+      gltf.destroy();
+    }
+  };
 }
 
 export default ThreeView;

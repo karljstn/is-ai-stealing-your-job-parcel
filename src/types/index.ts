@@ -74,9 +74,24 @@ export enum GLTF_TYPE {
 export enum IDLE_TYPE {
   SINUS,
 }
+
+export type GET_OFFSET_FROM_RECT = ({
+  x,
+  y,
+  w,
+  h,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}) => Vector3;
+
 export type VIEW_GLTF = {
   TYPE: GLTF_TYPE;
   MODEL: MODEL;
+  GET_OFFSET_FROM_RECT: GET_OFFSET_FROM_RECT;
+  DELAY?: { in: number; out: number };
   MATERIAL?: Material;
 };
 
@@ -86,7 +101,12 @@ export type VIEW = {
   GLTF_MESHES: VIEW_GLTF[];
 };
 
-export type MODEL = { URL: string; BASE_SCALE: number; TEXTURE?: string };
+export type MODEL = {
+  URL: string;
+  BASE_SCALE: number;
+  ANIMATION_SPEED?: number;
+  TEXTURE?: string;
+};
 
 export type onRect = (
   x: number,
@@ -101,8 +121,7 @@ export type GLTFConstructor = {
   scene: Scene;
   viewport: Viewport;
   camera: PerspectiveCamera;
-  MODEL: MODEL;
-  MATERIAL: Material;
+  GLTF: VIEW_GLTF;
   rectElement?: HTMLElement;
   onRect?: onRect;
   delay?: { in: number; out: number };
