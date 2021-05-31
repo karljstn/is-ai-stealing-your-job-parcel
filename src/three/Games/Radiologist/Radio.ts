@@ -259,7 +259,7 @@ export default class Radio implements ThreeGroup {
     confirm = (res: boolean) => {
         if (res) {
 
-
+            store.state.radiologist.addFolder()
             store.state.radiologist.removeFolder(this.progress)
 
             this.progress++
@@ -274,8 +274,6 @@ export default class Radio implements ThreeGroup {
                 this.endGame()
                 return
             }
-
-            store.state.radiologist.addFolder()
 
             if (this.selectedMesh === Skeleton.errorMesh) {
                 Skeleton.errorMesh = null
