@@ -23,7 +23,7 @@ export default Vue.extend({
   mounted() {
     const tl = gsap.timeline({
       onComplete: () => {
-        // this.$router.push("15");
+        this.$router.push("15");
       },
     });
     tl.to(this.$refs.endScreen1, { duration: 1, opacity: 1 });

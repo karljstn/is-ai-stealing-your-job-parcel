@@ -18,7 +18,7 @@
       <div class="wrapper">
         <span class="cases">{{ this.progress }}</span>
         <span class="processed"
-          >files <br />
+          >file{{ this.progress < 2 ? "" : "s" }} <br />
           processed</span
         >
       </div>

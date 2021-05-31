@@ -14,6 +14,10 @@
 
       <!-- <NotificationManager></NotificationManager> -->
 
+      <!-- <div class="lottie">
+        <lottie-animation :animationData="lottieURL" :loop="false" />
+      </div> -->
+
       <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
       <Toolbar
@@ -58,6 +62,9 @@ import store from "~/store";
 import Side from "./Radiologist/Side.vue";
 import ButtonsRight from "./Radiologist/ButtonsRight.vue";
 
+import lottie from "~/assets/Lottie/Radiologist/decompte.json";
+import LottieAnimation from "lottie-web-vue";
+
 import Toolbar from "./Radiologist/Toolbar.vue";
 import Confirm from "./Radiologist/Confirm.vue";
 import ToggleTutorial from "./Radiologist/Tutorial/ToggleTutorial.vue";
@@ -82,6 +89,7 @@ export default Vue.extend({
     timerCanStart: boolean;
     timerPause: boolean;
     HIDE: boolean;
+    lottieURL: string;
   } {
     return {
       //progress of the tutorial
@@ -98,6 +106,8 @@ export default Vue.extend({
       timerPause: false,
 
       HIDE: false,
+
+      lottieURL: lottie,
     };
   },
 
@@ -176,6 +186,7 @@ export default Vue.extend({
     Confirm,
     Help,
     EndScreen,
+    LottieAnimation,
   },
 
   methods: {

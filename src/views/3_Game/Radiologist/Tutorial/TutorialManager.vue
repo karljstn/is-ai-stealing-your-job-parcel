@@ -59,9 +59,6 @@ export default Vue.extend({
       scale: 1,
       delay: 1,
     });
-    console.log(this.$refs.tutorialContent);
-
-    // this.$refs.tutorialContent.classList.add("tutorial-container-active");
   },
   watch: {
     tutorialCount(newValue) {
