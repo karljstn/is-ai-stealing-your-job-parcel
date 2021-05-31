@@ -239,8 +239,6 @@ export default class Radio implements ThreeGroup {
         console.log('____________________________')
 
         console.log(this.controls.getPolarAngle())
-
-
     }
 
     gameState(state: string, cond: boolean) {
@@ -260,16 +258,24 @@ export default class Radio implements ThreeGroup {
 
     confirm = (res: boolean) => {
         if (res) {
-            this.progress++
-            store.commit("updateProgress", this.progress)
 
-            if (this.progress === 5) {
+
+            store.state.radiologist.removeFolder(this.progress)
+
+            this.progress++
+            console.log('update progress from the store')
+            store.commit("updateProgress", this.progress)
+            console.log('___________________________________')
+
+            if (this.progress === 5 && !this.gameEnded) {
                 this.gameEnded = true
                 store.commit("setConfirmPopup", false)
 
                 this.endGame()
                 return
             }
+
+            store.state.radiologist.addFolder()
 
             if (this.selectedMesh === Skeleton.errorMesh) {
                 Skeleton.errorMesh = null
@@ -283,7 +289,7 @@ export default class Radio implements ThreeGroup {
             } else {
                 console.log("RADIOLOGIST GAME: WRONG ANSWER")
 
-                store.state.radiologist.penalty()
+                // store.state.radiologist.penalty()
                 this.nextCase()
                 // console.log(this.currentIntersect.object)
             }

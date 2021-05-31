@@ -51,7 +51,6 @@ export default Vue.extend({
   },
   watch: {
     progress(newVal) {
-      console.log(newVal);
       this.usedAI = false;
     },
   },

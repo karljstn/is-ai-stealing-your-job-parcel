@@ -51,6 +51,8 @@ export type StoreState = {
     confirm: boolean,
     confirmCallback: Function | null,
     penalty: Function,
+    removeFolder: Function,
+    addFolder: Function,
     gameEnded: boolean,
     results: {
       AIused: number,

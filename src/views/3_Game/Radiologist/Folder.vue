@@ -30,7 +30,7 @@ export default Vue.extend({
   },
   mounted() {
     if (this.progress === this.duration) {
-      this.removeFolder(this.index);
+      // this.removeFolder(this.index);
       clearInterval(this.interval);
     }
     this.progress++;
@@ -38,8 +38,9 @@ export default Vue.extend({
     this.interval = setInterval(() => {
       if (!this.help) {
         if (this.progress === this.duration) {
-          store.state.radiologist.penalty();
-          this.removeFolder(this.index, "auto");
+          // store.state.radiologist.penalty();
+
+          store.state.scene.radio.confirm(true);
           clearInterval(this.interval);
         }
         this.progress++;
@@ -47,6 +48,8 @@ export default Vue.extend({
     }, 1000);
   },
   destroyed() {
+    console.log("CLEAR IN THE DESTROYED");
+
     clearInterval(this.interval);
   },
 });

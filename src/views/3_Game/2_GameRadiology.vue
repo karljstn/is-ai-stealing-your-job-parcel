@@ -112,7 +112,7 @@ export default Vue.extend({
       return store.state.radiologist.gameEnded ? "game-fade" : "";
     },
     progress() {
-      console.log("progress update", store.state.radiologist.progress);
+      // console.log("progress update", store.state.radiologist.progress);
 
       return store.state.radiologist.progress;
     },

@@ -53,6 +53,10 @@ export default Vue.extend({
       timeElapsed: 0,
     };
   },
+  mounted() {
+    store.commit("setRemoveFolder", this.removeFolder);
+    store.commit("setAddFolder", this.addFolder);
+  },
   watch: {
     timerCanStart(newVal) {
       if (newVal) this.start();
@@ -61,32 +65,28 @@ export default Vue.extend({
       if (newVal === 5) clearInterval(this.interval);
     },
     help(newVal) {
-      console.log("help", newVal);
-
       if (newVal) {
         clearInterval(this.ticker);
         clearInterval(this.interval);
-        console.log("clearing intervals");
-        console.log("time elapsed", this.timeElapsed);
       } else {
         const timer = (this.intervalDuration - this.timeElapsed) * 1000;
-        this.timeElapsed = 0;
 
-        console.log("new timer is", timer);
+        // console.log("new timer is", timer);
 
         this.ticker = setInterval(() => {
           this.timeElapsed++;
         }, 1000);
 
         this.interval = setTimeout(() => {
-          console.log("setTimeOut with the remaining seconds");
+          // console.log("setTimeOut with the remaining seconds");
           if (this.index < 5) this.addFolder();
+          this.timeElapsed = 0;
           // clearInterval(this.interval);
-
-          console.log("set the new timer with 24 seconds");
+          // console.log("set the new timer with 24 seconds");
           this.interval = setInterval(() => {
-            console.log("test here");
+            // console.log("test here");
             if (this.index < 5) this.addFolder();
+            this.timeElapsed = 0;
           }, this.intervalDuration * 1000);
         }, timer);
       }
@@ -94,46 +94,35 @@ export default Vue.extend({
   },
   computed: {
     progress() {
-      if (
-        store.state.radiologist.progress > 0 &&
-        store.state.radiologist.progress < 5
-      ) {
-        this.removeFolder(store.state.radiologist.progress, "manual");
-        this.addFolder();
-      }
       return store.state.radiologist.progress;
     },
   },
   methods: {
-    start() {
+    start() {=
       this.addFolder();
 
       this.ticker = setInterval(() => {
         this.timeElapsed++;
       }, 1000);
-      this.interval = setInterval(() => {
-        console.log("add folder interval launched in the start");
 
-        if (this.index < 5) this.addFolder();
+      this.interval = setInterval(() => {
+        if (this.index < 5) {
+          this.addFolder();
+        }
       }, this.intervalDuration * 1000);
     },
-    checkInterval() {
-      if (this.index < 5) this.addFolder();
-    },
     addFolder() {
-      this.casesPending.push({
-        duration: this.duration,
-        index: this.index++,
-      });
-    },
-    removeFolder(index: number, mode: string) {
-      console.log("remove folder number", index, mode);
-
-      if (mode === "auto") {
-        store.state.scene.radio.confirm(true);
+      if (this.index < 5) {
+        this.casesPending.push({
+          duration: this.duration,
+          index: this.index++,
+        });
       }
-
-      const i = this.casesPending.findIndex((elem) => elem.index === index);
+    },
+    removeFolder(index: number) {
+      const i = this.casesPending.findIndex(
+        (elem: any) => elem.index === index
+      );
       this.casesPending.splice(i, 1);
     },
   },
