@@ -14,13 +14,13 @@ import DefinitionFour from "~views/2_Definition/4_Definition.vue";
 import DefinitionFive from "~views/2_Definition/5_Definition.vue";
 import DefinitionSix from "~views/2_Definition/6_Definition.vue";
 import DefinitionSeven from "~views/2_Definition/7_Definition.vue";
-import DefinitionEight from "~views/2_Definition/8_Definition.vue";
+// import DefinitionEight from "~views/2_Definition/8_Definition.vue";
 import GameOne from "~/views/3_Game/1_GameChoice.vue";
 import GameTwo from "~/views/3_Game/2_GameRadiology.vue";
 import EndOne from "~views/4_End/1_EndHard.vue";
 import EndTwo from "~views/4_End/2_EndExample.vue";
 import EndThree from "~views/4_End/3_EndArticle.vue";
-import EndFour from "~views/4_End/4_EndChangedYourMind.vue";
+// import EndFour from "~views/4_End/4_EndChangedYourMind.vue";
 import EndFive from "~views/4_End/5_EndRemedy.vue";
 import Outro from "~views/5_Epilogue/1_EpilogueMenu.vue";
 import OutroRessources from "~views/5_Epilogue/2_EpilogueRessources.vue";
@@ -65,7 +65,6 @@ const routes = [
 
           setTimeout(() => {
             store.commit("setDarkenScrollDownArrow", true);
-            // store.state.sceneManager.TrashcanScene.Trashcan.out()
           }, 1700);
         },
       },
@@ -81,7 +80,17 @@ const routes = [
       transition: {
         delay: 1000,
         out: () => {
-          // store.state.sceneManager.HandWaveScene.Hand.out()
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
         },
       },
     },
@@ -96,7 +105,17 @@ const routes = [
       transition: {
         delay: 800,
         out: () => {
-          // store.state.sceneManager.CrystalBallScene.CrystalBall.out()
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
         },
       },
     },
@@ -111,13 +130,17 @@ const routes = [
       transition: {
         delay: 1000,
         out: () => {
-          // const view = store.state.sceneManager.threeViews.get(
-          //   VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroThreatened")
-          // );
-          // for (const mesh of view.gltfMeshes) {
-          //   const tweened = mesh as TweenedGLTF;
-          //   if (typeof tweened.out !== "undefined") tweened.out();
-          // }
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
         },
       },
     },
@@ -141,9 +164,7 @@ const routes = [
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 1000,
-        out: () => {
-          // store.state.sceneManager.EmojiSmileScene.Emoji.out()
-        },
+        out: () => {},
       },
     },
   },
@@ -176,9 +197,7 @@ const routes = [
       scroll: { disabled: false },
       transition: {
         delay: 1000,
-        out: () => {
-          // store.state.sceneManager.TreeScene.Tree.out()
-        },
+        out: () => {},
       },
     },
   },
@@ -212,6 +231,7 @@ const routes = [
       transition: { delay: 1000, out: () => {} },
     },
   },
+  // Lottie doesn't work rn
   // {
   //   path: "/12",
   //   component: DefinitionEight,
@@ -281,18 +301,18 @@ const routes = [
       transition: { delay: 1000, out: () => {} },
     },
   },
+  // {
+  //   path: "/17",
+  //   component: EndFour,
+  //   name: "EndFour",
+  //   meta: {
+  //     color: PALETTE.WHITE,
+  //     scroll: { disabled: true },
+  //     transition: { delay: 1000, out: () => {} },
+  //   },
+  // },
   {
     path: "/17",
-    component: EndFour,
-    name: "EndFour",
-    meta: {
-      color: PALETTE.WHITE,
-      scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
-    },
-  },
-  {
-    path: "/18",
     component: EndFive,
     name: "EndFive",
     meta: {

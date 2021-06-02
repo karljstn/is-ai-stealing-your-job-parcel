@@ -1,37 +1,24 @@
 <template>
-	<section>
-		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="false" />
-		</div>
-	</section>
+  <section>
+    <LottieThree routeName="EndOne" :lottieURL="lottie" lottieScale="1" />
+  </section>
 </template>
 
-<script>
-import Vue from 'vue';
-import { fadeBackground } from '~util';
-import lottie from '~/assets/Lottie/12._HARD_TO_BELIEVE.json';
-import LottieAnimation from 'lottie-web-vue';
-import store from '~store';
+<script lang="ts">
+import Vue from "vue";
+import LottieThree from "~components/Common/LottieThree.vue";
+import Lottie from "~/assets/Lottie/12._HARD_TO_BELIEVE.json";
 
 export default Vue.extend({
-	components: { LottieAnimation },
-	data() {
-		return {
-			lottieURL: lottie,
-		};
-	},
-	mounted() {
-		fadeBackground({ routeName: 'EndOne' });
-		store.state.sceneManager.DistraughtEmojiScene.start();
-	},
-	destroyed() {
-		store.state.sceneManager.DistraughtEmojiScene.destroy();
-	},
+  data() {
+    return {
+      lottie: Lottie,
+    };
+  },
+  components: {
+    LottieThree,
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-.lottie {
-	width: 500px;
-}
-</style>
+<style lang="scss" scoped></style>
