@@ -1,13 +1,13 @@
 <template>
-	<div class="container">
-		<Navigation></Navigation>
-		<CanvasThree></CanvasThree>
-		<MuteButton></MuteButton>
-		<ScrollDownArrow></ScrollDownArrow>
-		<ScrollController>
-			<router-view></router-view>
-		</ScrollController>
-	</div>
+  <div class="container">
+    <Navigation></Navigation>
+    <CanvasThree></CanvasThree>
+    <MuteButton></MuteButton>
+    <ScrollDownArrow></ScrollDownArrow>
+    <ScrollController>
+      <router-view></router-view>
+    </ScrollController>
+  </div>
 </template>
 
 <script lang="js">
@@ -81,5 +81,3 @@ export default Vue.extend({
 		}
 })
 </script>
-
-<style lang="scss"></style>
