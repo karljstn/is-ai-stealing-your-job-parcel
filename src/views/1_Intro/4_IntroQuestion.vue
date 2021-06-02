@@ -25,7 +25,6 @@ import QuestionForm from "~/components/UI/QuestionForm";
 import SaveRect from "~/components/Common/SaveRect.vue";
 import Vue from "vue";
 import { fadeBackground } from "~util";
-import store from "~store";
 
 export default Vue.extend({
   components: {
@@ -35,10 +34,10 @@ export default Vue.extend({
   },
   mounted() {
     fadeBackground({ routeName: "IntroQuestion" });
-    store.state.sceneManager.EmojisScene.start();
+
   },
   destroyed() {
-    store.state.sceneManager.EmojisScene.destroy();
+
   },
 });
 </script>

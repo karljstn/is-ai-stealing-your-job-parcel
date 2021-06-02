@@ -106,7 +106,7 @@ export type VIEW_GLTF = {
   DELAY?: { in: number; out: number };
   MATERIAL?: Material;
   IDLE?: IDLE;
-  ON_START?: (group: Group) => void;
+  ON_START?: (group: Group, viewport: Viewport, binding: any) => void;
 };
 
 export type VIEW = {

@@ -1,5 +1,5 @@
 import { Group, Vector3 } from "three";
-import { GLTF_TYPE, VIEW } from "~types";
+import { GLTF_TYPE, VIEW, Viewport } from "~types";
 import { MATERIALS } from "./MATERIALS";
 import { MODELS } from "./MODELS";
 
@@ -11,9 +11,9 @@ export const VIEWS: VIEW[] = [
         TYPE: GLTF_TYPE.TWEENED,
         MODEL: MODELS.TRASHCAN,
         IDLE: { enabled: false },
-        ON_START: (group: Group) => {
-          group.rotation.y += Math.PI / 2;
-          group.position.y -= 0.5;
+        ON_START: (group: Group, viewport: Viewport) => {
+          group.rotateY(-Math.PI / 2)
+          group.position.y = -viewport.height / 2.7
         },
       },
     ],
@@ -39,6 +39,9 @@ export const VIEWS: VIEW[] = [
         GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
           new Vector3(x + w / 1.83, y - h / 10, 0),
         DELAY: { in: 0.5, out: 0 },
+        ON_START: (group: Group, viewport: Viewport, binding: any) => {
+          binding.playAllAnims()
+        },
       },
     ],
   },

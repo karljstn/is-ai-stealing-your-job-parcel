@@ -32,14 +32,14 @@ export class TweenedGLTF extends TweenGLTF {
     RAF.subscribe(this.RAFKey, this.update);
     this.setEvents();
     this.in();
-    this.playAllAnims();
+    // this.playAllAnims();
 
     if (!this.rectElement) {
       this.manageNoRect();
       window.addEventListener("resize", this.manageNoRect);
     }
 
-    this.ON_START(this.group, this.viewport);
+    if (this.ON_START) this.ON_START(this.group, this.viewport, this);
   };
 
   destroy() {
@@ -58,7 +58,7 @@ export class TweenedGLTF extends TweenGLTF {
     this.group.rotation.z =
       this.params.base.offset.rotation.z +
       Math.sin(performance.now() * this.params.sinus.frequency) *
-        this.params.sinus.amplitude;
+      this.params.sinus.amplitude;
   };
 
   private manageRect = () => {
@@ -117,7 +117,7 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     this.group.rotation.z =
       this.params.base.offset.rotation.z +
       Math.sin(performance.now() * this.params.sinus.frequency) *
-        this.params.sinus.amplitude;
+      this.params.sinus.amplitude;
   };
 
   private manageRect = () => {

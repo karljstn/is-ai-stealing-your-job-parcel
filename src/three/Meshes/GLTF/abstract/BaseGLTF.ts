@@ -31,7 +31,7 @@ abstract class BaseGLTF {
   MODEL: MODEL;
   MATERIAL: Material;
   GET_OFFSET_FROM_RECT: GET_OFFSET_FROM_RECT;
-  ON_START: (group: Group, viewport: Viewport) => void;
+  ON_START: (group: Group, viewport: Viewport, binding: any) => void;
   RAFKey: string;
   originalPos: Vector3;
 

@@ -1,45 +1,24 @@
 <template>
 	<section>
-		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="false" />
-		</div>
+		<LottieThree routeName="DefinitionOne" :lottieURL="lottie" lottieScale="1" />
 	</section>
 </template>
 
-<script>
-import Button from '~/components/UI/Button';
-import QuestionForm from '~/components/UI/QuestionForm';
-import SaveRect from '~/components/Common/SaveRect.vue';
+<script lang="ts">
 import Vue from 'vue';
-import { fadeBackground } from '~util';
-import lottie from '~/assets/Lottie/4. WELL LET ME TELL.json';
-import LottieAnimation from 'lottie-web-vue';
-import store from '~store';
+import LottieThree from '~components/Common/LottieThree.vue';
+import Lottie from '~/assets/Lottie/4. WELL LET ME TELL.json';
 
 export default Vue.extend({
 	data() {
 		return {
-			lottieURL: lottie,
+			lottie: Lottie,
 		};
 	},
 	components: {
-		SaveRect,
-		QuestionForm,
-		Button,
-		LottieAnimation,
-	},
-	mounted() {
-		store.state.sceneManager.EmojiSmileScene.start();
-		fadeBackground({ routeName: 'DefinitionOne' });
-	},
-	destroyed() {
-		store.state.sceneManager.EmojiSmileScene.destroy();
+		LottieThree,
 	},
 });
 </script>
 
-<style lang="scss" scoped>
-.lottie {
-	width: 600px;
-}
-</style>
+<style lang="scss" scoped></style>
