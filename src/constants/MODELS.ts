@@ -25,6 +25,7 @@ import penPaper from "~assets/Models/pen-paper/Stylo.glb";
 import penPaperBake from "~assets/Models/pen-paper/bake.jpg";
 import tree from "~assets/Models/tree/TREE.glb";
 import { MODEL } from "~types";
+import { LoopOnce } from "three";
 
 export const MODELS: { [name: string]: MODEL } = {
   HAND_WAVE: {
@@ -87,7 +88,9 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   SLOT_MACHINE: {
     URL: slotMachine,
-    BASE_SCALE: 0.15,
+    BASE_SCALE: 0.16,
+    ANIMATION_SPEED: 0.0008,
+    ANIMATION_LOOP: LoopOnce,
   },
   HAND_OK: {
     URL: handOkay,
@@ -96,7 +99,7 @@ export const MODELS: { [name: string]: MODEL } = {
   HERE: {
     URL: here,
     BASE_SCALE: 0.1,
-    ANIMATION_SPEED: 0.001,
+    ANIMATION_SPEED: 0.0008,
   },
   QUESTION_MARK: {
     URL: questionMark,

@@ -1,34 +1,28 @@
 <template>
-	<section>
-		<div class="lottie">
-			<lottie-animation :animationData="lottieURL" :loop="false" />
-		</div>
-	</section>
+  <section>
+    <LottieThree
+      routeName="DefinitionSeven"
+      :lottieURL="lottie"
+      lottieScale="1"
+    />
+  </section>
 </template>
 
-<script>
-import Vue from 'vue';
-import { fadeBackground } from '~util';
-import lottieURL from '~/assets/Lottie/10. IT CAN LEARN.json';
-import LottieAnimation from 'lottie-web-vue';
+<script lang="ts">
+import Vue from "vue";
+import LottieThree from "~components/Common/LottieThree.vue";
+import Lottie from "~/assets/Lottie/10. IT CAN LEARN.json";
 
 export default Vue.extend({
-	data() {
-		return {
-			lottieURL,
-		};
-	},
-	components: {
-		LottieAnimation,
-	},
-	mounted() {
-		fadeBackground({ routeName: 'DefinitionSeven' });
-	},
+  data() {
+    return {
+      lottie: Lottie,
+    };
+  },
+  components: {
+    LottieThree,
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-.lottie {
-	width: 560px;
-}
-</style>
+<style lang="scss" scoped></style>

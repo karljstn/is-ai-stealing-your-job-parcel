@@ -82,15 +82,13 @@ export default Vue.extend({
 
       fadeBackground({ routeName: 'LandingPage' });
 
-      const viewData = VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage')
-      const manager = store.state.sceneManager
-      const threeView = manager.threeViews.get(viewData);
-      // console.log(threeView)
+      const threeView = store.state.sceneManager.threeViews.get(VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage'))
       threeView.start()
     })
 	},
 	destroyed() {
-		// store.state.sceneManager?.TrashcanScene.destroy();
+    const threeView = store.state.sceneManager.threeViews.get(VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage'))
+		threeView.destroy()
 	},
 	components: {
 		QuestionForm,

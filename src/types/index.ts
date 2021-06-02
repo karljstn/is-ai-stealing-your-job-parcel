@@ -7,6 +7,8 @@ import {
   LoopOnce,
   LoopPingPong,
   Group,
+  Raycaster,
+  Intersection,
 } from "three";
 import MainScene from "~three/MainController";
 import { CustomEase } from "gsap/all";
@@ -76,9 +78,9 @@ export type StoreState = {
 };
 
 export enum GLTF_TYPE {
-  BASE,
   MOUSED,
   TWEENED,
+  WRITING,
 }
 
 export enum IDLE_TYPE {
@@ -107,6 +109,9 @@ export type VIEW_GLTF = {
   MATERIAL?: Material;
   IDLE?: IDLE;
   ON_START?: (group: Group, viewport: Viewport, binding: any) => void;
+  ON_UPDATE?: (binding: any, dt?: number) => void;
+  ON_RAYCAST?: (intersects: Intersection[]) => void;
+  ON_CLICK?: (binding: any) => void;
 };
 
 export type VIEW = {
@@ -128,6 +133,7 @@ export type GLTFConstructor = {
   viewport: Viewport;
   camera: PerspectiveCamera;
   GLTF: VIEW_GLTF;
+  raycaster: Raycaster;
   offset?: {
     position: Vector3;
     rotation: Vector3;
@@ -140,6 +146,7 @@ export type ThreeViewConstructor = {
   camera: PerspectiveCamera;
   viewData: VIEW;
   rectElement?: HTMLElement;
+  raycaster: Raycaster;
 };
 
 export type ThreeMeshTransition = {

@@ -173,12 +173,13 @@ export default class MainController {
 
     // Will be started in Vue
     for (const VIEW of VIEWS) {
-      const { viewport, scene, camera, threeViews } = this;
+      const { viewport, scene, camera, threeViews, raycaster } = this;
       const ThreeViewObject = new ThreeView({
         viewport,
         scene,
         camera,
         viewData: VIEW,
+        raycaster,
       });
 
       threeViews.set(VIEW, ThreeViewObject);

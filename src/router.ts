@@ -129,7 +129,7 @@ const routes = [
     meta: {
       color: PALETTE.YELLOW,
       scroll: { disabled: true },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 0, out: () => {} },
     },
   },
   {
@@ -152,9 +152,9 @@ const routes = [
     component: DefinitionTwo,
     name: "DefinitionTwo",
     meta: {
-      color: PALETTE.WHITE,
+      color: PALETTE.PINK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -164,7 +164,7 @@ const routes = [
     meta: {
       color: PALETTE.BLACK,
       scroll: { disabled: false },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -175,7 +175,7 @@ const routes = [
       color: PALETTE.YELLOW,
       scroll: { disabled: false },
       transition: {
-        delay: 1150,
+        delay: 1000,
         out: () => {
           // store.state.sceneManager.TreeScene.Tree.out()
         },
@@ -189,7 +189,7 @@ const routes = [
     meta: {
       color: PALETTE.ORANGE,
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -199,7 +199,7 @@ const routes = [
     meta: {
       color: PALETTE.VIOLET,
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -209,40 +209,40 @@ const routes = [
     meta: {
       color: PALETTE.YELLOW,
       scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
+  // {
+  //   path: "/12",
+  //   component: DefinitionEight,
+  //   name: "DefinitionEight",
+  //   meta: {
+  //     color: PALETTE.LIGHTPINK,
+  //     scroll: { disabled: false },
+  //     transition: { delay: 1000, out: () => {} },
+  //   },
+  // },
   {
     path: "/12",
-    component: DefinitionEight,
-    name: "DefinitionEight",
-    meta: {
-      color: PALETTE.LIGHTPINK,
-      scroll: { disabled: false },
-      transition: { delay: 0, out: () => { } },
-    },
-  },
-  {
-    path: "/13",
     component: GameOne,
     name: "GameOne",
     meta: {
       color: PALETTE.LIGHTPINK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
-    path: "/14",
+    path: "/13",
     component: GameTwo,
     name: "GameTwo",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
-    path: "/15",
+    path: "/14",
     component: EndOne,
     name: "EndOne",
     meta: {
@@ -257,7 +257,7 @@ const routes = [
     },
   },
   {
-    path: "/16",
+    path: "/15",
     component: EndTwo,
     name: "EndTwo",
     meta: {
@@ -272,33 +272,33 @@ const routes = [
     },
   },
   {
-    path: "/17",
+    path: "/16",
     component: EndThree,
     name: "EndThree",
     meta: {
       color: PALETTE.ORANGE,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
-    path: "/18",
+    path: "/17",
     component: EndFour,
     name: "EndFour",
     meta: {
       color: PALETTE.WHITE,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
-    path: "/19",
+    path: "/18",
     component: EndFive,
     name: "EndFive",
     meta: {
       color: PALETTE.BLACK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -308,7 +308,7 @@ const routes = [
     meta: {
       color: PALETTE.LIGHTPINK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -317,7 +317,7 @@ const routes = [
     name: "OutroRessources",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -326,7 +326,7 @@ const routes = [
     name: "OutroShare",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -335,7 +335,7 @@ const routes = [
     name: "OutroTakeAction",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
   {
@@ -344,7 +344,7 @@ const routes = [
     name: "Credits",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => { } },
+      transition: { delay: 1000, out: () => {} },
     },
   },
 ];

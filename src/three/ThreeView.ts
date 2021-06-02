@@ -1,6 +1,9 @@
-import { PerspectiveCamera, Scene } from "three";
+import { PerspectiveCamera, Raycaster, Scene } from "three";
 import { ViewInterface } from "~interfaces/Three";
-import { TweenedGLTF, MousedTweenedGLTF } from "~three/Meshes/GLTF";
+import WritingGLTF, {
+  TweenedGLTF,
+  MousedTweenedGLTF,
+} from "~three/Meshes/GLTF";
 import {
   GLTF_TYPE,
   ThreeViewConstructor,
@@ -15,7 +18,8 @@ class ThreeView implements ViewInterface {
   camera: PerspectiveCamera;
   view: VIEW;
   rectElement: HTMLElement;
-  gltfMeshes: (TweenedGLTF | MousedTweenedGLTF)[];
+  gltfMeshes: (TweenedGLTF | MousedTweenedGLTF | WritingGLTF)[];
+  raycaster: Raycaster;
 
   constructor({
     viewport,
@@ -23,17 +27,19 @@ class ThreeView implements ViewInterface {
     camera,
     viewData,
     rectElement,
+    raycaster,
   }: ThreeViewConstructor) {
     this.viewport = viewport;
     this.scene = scene;
     this.camera = camera;
     this.view = viewData;
     this.rectElement = rectElement;
+    this.raycaster = raycaster;
     this.gltfMeshes = [];
   }
 
   generateGLTFMeshFromConstant = (GLTF: VIEW_GLTF) => {
-    const { scene, viewport, camera } = this;
+    const { scene, viewport, camera, raycaster } = this;
 
     switch (GLTF.TYPE) {
       case GLTF_TYPE.TWEENED:
@@ -42,6 +48,7 @@ class ThreeView implements ViewInterface {
           viewport,
           camera,
           GLTF,
+          raycaster,
         });
 
       case GLTF_TYPE.MOUSED:
@@ -50,7 +57,11 @@ class ThreeView implements ViewInterface {
           viewport,
           camera,
           GLTF,
+          raycaster,
         });
+
+      case GLTF_TYPE.WRITING:
+        return new WritingGLTF({ scene, viewport, camera, GLTF, raycaster });
 
       default:
         return null;

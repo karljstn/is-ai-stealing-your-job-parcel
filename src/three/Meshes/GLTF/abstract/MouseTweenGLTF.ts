@@ -14,13 +14,21 @@ abstract class MouseTweenGLTF extends TweenGLTF {
     scalar: number;
   };
 
-  constructor({ scene, viewport, camera, offset, GLTF }: GLTFConstructor) {
+  constructor({
+    scene,
+    viewport,
+    camera,
+    offset,
+    GLTF,
+    raycaster,
+  }: GLTFConstructor) {
     super({
       scene,
       viewport,
       camera,
       offset,
       GLTF,
+      raycaster,
     });
 
     this.mouseRAFKey = (performance.now() * Math.random()).toString();
@@ -47,7 +55,6 @@ abstract class MouseTweenGLTF extends TweenGLTF {
       this.mouse.current.lerp(this.mouse.target, this.mouse.lerp);
       this.mouse.current.add(this.mouse.offset);
       this.mouse.current.multiplyScalar(this.mouse.scalar);
-      this.group.lookAt(this.mouse.current.x, this.mouse.current.y, 1);
     }
   };
 

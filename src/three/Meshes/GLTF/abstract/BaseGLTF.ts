@@ -3,10 +3,12 @@ import {
   AnimationClip,
   AnimationMixer,
   Group,
+  Intersection,
   LoopRepeat,
   Material,
   Mesh,
   PerspectiveCamera,
+  Raycaster,
   Scene,
   Vector3,
 } from "three";
@@ -20,6 +22,7 @@ import {
 } from "~types";
 import LoadManager from "~/three/Singletons/LoadManager";
 import { getViewport, rectToThree } from "~util";
+import MouseController from "~singletons/MouseController";
 
 abstract class BaseGLTF {
   params: { [name: string]: any };
@@ -32,6 +35,12 @@ abstract class BaseGLTF {
   MATERIAL: Material;
   GET_OFFSET_FROM_RECT: GET_OFFSET_FROM_RECT;
   ON_START: (group: Group, viewport: Viewport, binding: any) => void;
+  ON_UPDATE: (binding: any, dt: number) => void;
+  ON_RAYCAST: (binding: any) => void;
+  ON_CLICK: (binding: any) => void;
+  raycaster: Raycaster;
+  intersects: Intersection[];
+
   RAFKey: string;
   originalPos: Vector3;
 
@@ -44,15 +53,33 @@ abstract class BaseGLTF {
   rectToThree: ReturnType<typeof rectToThree>;
   rectName: string;
 
-  constructor({ scene, viewport, camera, offset, GLTF }: GLTFConstructor) {
-    const { MODEL, MATERIAL, GET_OFFSET_FROM_RECT, ON_START } = GLTF;
+  constructor({
+    scene,
+    viewport,
+    camera,
+    offset,
+    GLTF,
+    raycaster,
+  }: GLTFConstructor) {
+    const {
+      MODEL,
+      MATERIAL,
+      GET_OFFSET_FROM_RECT,
+      ON_START,
+      ON_UPDATE,
+      ON_RAYCAST,
+      ON_CLICK,
+    } = GLTF;
     this.params = {
       base: {
         offset,
         scale: MODEL.BASE_SCALE,
         idle: GLTF.IDLE ? GLTF.IDLE : { enabled: true, type: IDLE_TYPE.SINUS },
       },
-      animation: { timeScale: MODEL.ANIMATION_SPEED, loop: LoopRepeat },
+      animation: {
+        timeScale: MODEL.ANIMATION_SPEED ? MODEL.ANIMATION_SPEED : 0.0008,
+        loop: MODEL.ANIMATION_LOOP ? MODEL.ANIMATION_LOOP : LoopRepeat,
+      },
       sinus: {
         amplitude: 0.12,
         frequency: 0.004,
@@ -66,6 +93,10 @@ abstract class BaseGLTF {
     this.MATERIAL = MATERIAL;
     this.GET_OFFSET_FROM_RECT = GET_OFFSET_FROM_RECT;
     this.ON_START = ON_START;
+    this.ON_UPDATE = ON_UPDATE;
+    this.ON_RAYCAST = ON_RAYCAST;
+    this.ON_CLICK = ON_CLICK;
+    this.raycaster = raycaster;
 
     this.RAFKey = (performance.now() * Math.random()).toString();
     this.originalPos = new Vector3();
@@ -119,9 +150,9 @@ abstract class BaseGLTF {
   };
 
   playAllAnims = () => {
-    this.actions?.forEach((action) => {
+    for (const action of this.actions) {
       action.play();
-    });
+    }
   };
 
   setMaterial = (material: Material) => {
@@ -140,12 +171,39 @@ abstract class BaseGLTF {
     this.group.position.copy(this.GET_OFFSET_FROM_RECT({ x, y, w, h }));
   };
 
+  click = () => this.ON_CLICK(this);
+
   resize = (e: Event) => {
     this.viewport = getViewport(this.camera);
     if (this.rectElement) this.setFromRect();
   };
 
+  protected update = (dt: number = 0) => {
+    this.mixer.update(dt);
+
+    if (this.ON_UPDATE) this.ON_UPDATE(this, dt);
+
+    if (this.ON_RAYCAST) {
+      this.raycaster.setFromCamera(MouseController.mouseVec2, this.camera);
+
+      this.intersects = this.raycaster.intersectObjects(
+        this.group.children,
+        true
+      );
+
+      this.ON_RAYCAST(this.intersects);
+    }
+
+    if (this.params.base.idle.enabled === true) {
+      this.group.rotation.z =
+        this.params.base.offset.rotation.z +
+        Math.sin(performance.now() * this.params.sinus.frequency) *
+          this.params.sinus.amplitude;
+    }
+  };
+
   protected setEvents = () => {
+    if (this.ON_CLICK) window.addEventListener("click", this.click);
     window.addEventListener("resize", this.resize);
   };
 }
