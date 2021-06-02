@@ -1,7 +1,17 @@
-import { Group, Material, PerspectiveCamera, Scene, Vector3 } from "three";
+import {
+  Material,
+  PerspectiveCamera,
+  Scene,
+  Vector3,
+  LoopRepeat,
+  LoopOnce,
+  LoopPingPong,
+  Group,
+} from "three";
 import MainScene from "~three/MainController";
 import { CustomEase } from "gsap/all";
 import Tweakpane from "tweakpane";
+import BezierEasing from "bezier-easing";
 
 export type Viewport = {
   height: number;
@@ -75,6 +85,8 @@ export enum IDLE_TYPE {
   SINUS,
 }
 
+export type IDLE = { enabled: boolean; type?: IDLE_TYPE };
+
 export type GET_OFFSET_FROM_RECT = ({
   x,
   y,
@@ -90,44 +102,61 @@ export type GET_OFFSET_FROM_RECT = ({
 export type VIEW_GLTF = {
   TYPE: GLTF_TYPE;
   MODEL: MODEL;
-  GET_OFFSET_FROM_RECT: GET_OFFSET_FROM_RECT;
+  GET_OFFSET_FROM_RECT?: GET_OFFSET_FROM_RECT;
   DELAY?: { in: number; out: number };
   MATERIAL?: Material;
+  IDLE?: IDLE;
+  ON_START?: (group: Group) => void;
 };
 
 export type VIEW = {
   ROUTE_NAME: string;
-  LOTTIE: { URL: string; SCALE: number };
   GLTF_MESHES: VIEW_GLTF[];
+  LOTTIE?: { URL: string; SCALE: number };
 };
 
 export type MODEL = {
   URL: string;
   BASE_SCALE: number;
-  ANIMATION_SPEED?: number;
   TEXTURE?: string;
+  ANIMATION_SPEED?: number;
+  ANIMATION_LOOP?: typeof LoopRepeat | typeof LoopOnce | typeof LoopPingPong;
 };
-
-export type onRect = (
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  group: Group,
-  viewport: Viewport
-) => void;
 
 export type GLTFConstructor = {
   scene: Scene;
   viewport: Viewport;
   camera: PerspectiveCamera;
   GLTF: VIEW_GLTF;
-  rectElement?: HTMLElement;
-  onRect?: onRect;
-  delay?: { in: number; out: number };
   offset?: {
     position: Vector3;
     rotation: Vector3;
   };
-  idle?: { enabled: boolean; type: IDLE_TYPE };
+};
+
+export type ThreeViewConstructor = {
+  viewport: Viewport;
+  scene: Scene;
+  camera: PerspectiveCamera;
+  viewData: VIEW;
+  rectElement?: HTMLElement;
+};
+
+export type ThreeMeshTransition = {
+  value: number;
+  factor: number;
+  target: {
+    scale: Vector3;
+  };
+  speed: number;
+  delay: {
+    in: number;
+    out: number;
+  };
+  duration: number;
+  eases: {
+    default: ReturnType<typeof BezierEasing>;
+  };
+  active: boolean;
+  timeouts: NodeJS.Timeout[];
 };

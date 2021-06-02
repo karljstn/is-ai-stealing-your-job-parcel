@@ -15,14 +15,7 @@ import store from "~store";
 import { VIEWS } from "~constants/VIEWS";
 
 export default Vue.extend({
-  props: [
-    "routeName",
-    "lottieURL",
-    "lottieScale",
-    "onMount",
-    "onDestroy",
-    "onRect",
-  ],
+  props: ["routeName", "lottieURL", "lottieScale", "onMount", "onDestroy"],
   data() {
     return {
       viewData: VIEWS.find((VIEW) => VIEW.ROUTE_NAME === this.routeName),
@@ -37,11 +30,10 @@ export default Vue.extend({
 
     this.$nextTick(() => {
       const manager = store.state.sceneManager;
-      const { viewData, onRect } = this;
-      const threeView = manager.threeViews.get(viewData);
+      const threeView = manager.threeViews.get(this.viewData);
       const rectElement = this.$refs.rect;
 
-      threeView.start({ rectElement, onRect });
+      threeView.start(rectElement);
 
       fadeBackground({ routeName: this.routeName });
 
@@ -68,11 +60,11 @@ export default Vue.extend({
   max-width: 600px;
   transition: all 0.3s ease-in-out;
   &.out-previous {
-    transform: translate3d(0, -5%, 0);
+    transform: translate3d(0, 5%, 0);
     opacity: 0;
   }
   &.out-next {
-    transform: translate3d(0, 5%, 0);
+    transform: translate3d(0, -5%, 0);
     opacity: 0;
   }
 }

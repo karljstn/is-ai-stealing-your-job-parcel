@@ -14,20 +14,12 @@ abstract class MouseTweenGLTF extends TweenGLTF {
     scalar: number;
   };
 
-  constructor({
-    scene,
-    viewport,
-    camera,
-    offset,
-    idle,
-    GLTF,
-  }: GLTFConstructor) {
+  constructor({ scene, viewport, camera, offset, GLTF }: GLTFConstructor) {
     super({
       scene,
       viewport,
       camera,
       offset,
-      idle,
       GLTF,
     });
 
@@ -60,7 +52,7 @@ abstract class MouseTweenGLTF extends TweenGLTF {
   };
 
   killUpdateMouse = () => {
-    raf.unsubscribe(this.tweenRAFKey);
+    raf.unsubscribe(this.mouseRAFKey);
   };
 }
 

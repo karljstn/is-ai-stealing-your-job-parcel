@@ -3,7 +3,6 @@ import {
   AnimationClip,
   AnimationMixer,
   Group,
-  LoopOnce,
   LoopRepeat,
   Material,
   Mesh,
@@ -15,8 +14,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
   GET_OFFSET_FROM_RECT,
   GLTFConstructor,
+  IDLE_TYPE,
   MODEL,
-  onRect,
   Viewport,
 } from "~types";
 import LoadManager from "~/three/Singletons/LoadManager";
@@ -29,10 +28,10 @@ abstract class BaseGLTF {
   viewport: Viewport;
   camera: PerspectiveCamera;
   rectElement: HTMLElement;
-  onRect: onRect;
   MODEL: MODEL;
   MATERIAL: Material;
   GET_OFFSET_FROM_RECT: GET_OFFSET_FROM_RECT;
+  ON_START: (group: Group, viewport: Viewport) => void;
   RAFKey: string;
   originalPos: Vector3;
 
@@ -45,21 +44,18 @@ abstract class BaseGLTF {
   rectToThree: ReturnType<typeof rectToThree>;
   rectName: string;
 
-  constructor({
-    scene,
-    viewport,
-    camera,
-    offset,
-    idle,
-    GLTF,
-  }: GLTFConstructor) {
-    const { MODEL, MATERIAL, GET_OFFSET_FROM_RECT } = GLTF;
+  constructor({ scene, viewport, camera, offset, GLTF }: GLTFConstructor) {
+    const { MODEL, MATERIAL, GET_OFFSET_FROM_RECT, ON_START } = GLTF;
     this.params = {
       base: {
         offset,
         scale: MODEL.BASE_SCALE,
-        idle,
-        animation: { timeScale: MODEL.ANIMATION_SPEED, loop: LoopRepeat },
+        idle: GLTF.IDLE ? GLTF.IDLE : { enabled: true, type: IDLE_TYPE.SINUS },
+      },
+      animation: { timeScale: MODEL.ANIMATION_SPEED, loop: LoopRepeat },
+      sinus: {
+        amplitude: 0.12,
+        frequency: 0.004,
       },
     };
 
@@ -69,6 +65,7 @@ abstract class BaseGLTF {
     this.MODEL = MODEL;
     this.MATERIAL = MATERIAL;
     this.GET_OFFSET_FROM_RECT = GET_OFFSET_FROM_RECT;
+    this.ON_START = ON_START;
 
     this.RAFKey = (performance.now() * Math.random()).toString();
     this.originalPos = new Vector3();
@@ -89,15 +86,14 @@ abstract class BaseGLTF {
           this.animations = gltf.animations;
 
           this.mixer = new AnimationMixer(this.group);
-          this.mixer.timeScale = this.params.base.animation.timeScale;
-          this.animations.forEach((anim) => {
-            if (!this.mixer) return;
+          this.mixer.timeScale = this.params.animation.timeScale;
 
+          for (const anim of this.animations) {
             const clipAction = this.mixer.clipAction(anim);
-            clipAction.loop = this.params.base.animation.loop;
+            clipAction.loop = this.params.animation.loop;
             clipAction.clampWhenFinished = true;
-            this.actions?.push(clipAction);
-          });
+            this.actions.push(clipAction);
+          }
 
           this.group.position.add(this.params.base.offset.position);
           this.originalPos.copy(this.group.position);
@@ -135,11 +131,18 @@ abstract class BaseGLTF {
     });
   };
 
-  setFromRect = (el: HTMLElement) =>
-    rectToThree(this.viewport, el.getBoundingClientRect());
+  getFromRect = () => {
+    return rectToThree(this.viewport, this.rectElement.getBoundingClientRect());
+  };
+
+  setFromRect = () => {
+    const { x, y, w, h } = this.getFromRect();
+    this.group.position.copy(this.GET_OFFSET_FROM_RECT({ x, y, w, h }));
+  };
 
   resize = (e: Event) => {
     this.viewport = getViewport(this.camera);
+    if (this.rectElement) this.setFromRect();
   };
 
   protected setEvents = () => {

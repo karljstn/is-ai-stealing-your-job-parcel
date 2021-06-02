@@ -24,7 +24,6 @@
 </template>
 
 <script lang="ts">
-// import { RECTS } from '~/constants/RECTS';
 import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
@@ -34,15 +33,16 @@ import Vue from 'vue';
 import store from '~/store';
 import gsap from 'gsap';
 import { fadeBackground } from '~util';
+import { VIEWS } from '~constants/VIEWS';
 
 export default Vue.extend({
 	name: 'landing-page',
 	data() {
 		return {
-			// rect: RECTS.LANDING,
 			show: true,
 		};
 	},
+  
 	computed:{
 		getLetsBeginClass(){
 			return !store.state.hideLanding ? "begin" : "begin fadeOut"
@@ -56,34 +56,38 @@ export default Vue.extend({
 		store.commit("setHideLanding", false)
 		store.commit('setDarkenScrollDownArrow', false);
 
-		// Three
-		// store.state.sceneManager?.TrashcanScene.start();
-		// store.state.sceneManager?.TrashcanScene.Trashcan.in()
+    this.$nextTick(() => {
+      // Text animations
+      const refs: any[] = Object.values(this.$refs);
+      const elements: HTMLElement[] = refs.map(ref => ref.$refs.container);
+      const timelineSettings = {
+        staggerValue: 0.1,
+      };
 
-		// Text animations
-		const refs: any[] = Object.values(this.$refs);
-		const elements: HTMLElement[] = refs.map(ref => ref.$refs.container);
-		const timelineSettings = {
-			staggerValue: 0.1,
-		};
+      const timeline = gsap.timeline({ paused: true, repeat: -1 });
+      timeline.addLabel('show').set(elements, { opacity: 1, stagger: timelineSettings.staggerValue });
+      timeline.addLabel('hide').set(elements, { opacity: 0, stagger: timelineSettings.staggerValue });
+      setTimeout(() => {
+        refs[0].wobble();
+        timeline.tweenFromTo('show', 'hide');
+      }, 500);
 
-		const timeline = gsap.timeline({ paused: true, repeat: -1 });
-		timeline.addLabel('show').set(elements, { opacity: 1, stagger: timelineSettings.staggerValue });
-		timeline.addLabel('hide').set(elements, { opacity: 0, stagger: timelineSettings.staggerValue });
-		setTimeout(() => {
-			refs[0].wobble();
-			timeline.tweenFromTo('show', 'hide');
-		}, 500);
+      // Tweaks
+      const folder = store.state.tweakpane?.addFolder({ title: 'Text', expanded: false });
+      const button = folder?.addButton({ title: 'Toggle' });
+      button?.on('click', () => {
+        this.show = !this.show;
+        this.show ? timeline.tweenFromTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
+      });
 
-		// Tweaks
-		const folder = store.state.tweakpane?.addFolder({ title: 'Text', expanded: false });
-		const button = folder?.addButton({ title: 'Toggle' });
-		button?.on('click', () => {
-			this.show = !this.show;
-			this.show ? timeline.tweenFromTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
-		});
+      fadeBackground({ routeName: 'LandingPage' });
 
-		fadeBackground({ routeName: 'LandingPage' });
+      const viewData = VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage')
+      const manager = store.state.sceneManager
+      const threeView = manager.threeViews.get(viewData);
+      // console.log(threeView)
+      threeView.start()
+    })
 	},
 	destroyed() {
 		// store.state.sceneManager?.TrashcanScene.destroy();

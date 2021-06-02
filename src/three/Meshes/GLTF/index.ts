@@ -1,14 +1,11 @@
-import { Color, Vector3 } from "three";
-import { InitGLTF, ThreeGLTF } from "~interfaces/Three";
-import BaseGLTF from "~three/Meshes/GLTF/abstract/BaseGLTF";
+import { Vector3 } from "three";
+import { ThreeGLTF } from "~interfaces/Three";
 import MouseTweenGLTF from "~three/Meshes/GLTF/abstract/MouseTweenGLTF";
 import TweenGLTF from "~three/Meshes/GLTF/abstract/TweenGLTF";
-import { GLTFConstructor, IDLE_TYPE } from "~types";
-import { PALETTE } from "~constants/PALETTE";
+import { GLTFConstructor } from "~types";
 import RAF from "~singletons/RAF";
-import { rectToThree } from "~util";
 
-export class BasedGLTF extends BaseGLTF implements ThreeGLTF {
+export class TweenedGLTF extends TweenGLTF {
   constructor({
     scene,
     viewport,
@@ -25,97 +22,84 @@ export class BasedGLTF extends BaseGLTF implements ThreeGLTF {
     });
   }
 
-  initRectGLTF() {}
+  initRect = (rectElement: HTMLElement) => {
+    this.rectElement = rectElement;
+    this.manageRect();
+    window.addEventListener("resize", this.manageRect);
+  };
 
-  update() {}
+  initGLTF = () => {
+    RAF.subscribe(this.RAFKey, this.update);
+    this.setEvents();
+    this.in();
+    this.playAllAnims();
 
-  destroy() {}
-}
+    if (!this.rectElement) {
+      this.manageNoRect();
+      window.addEventListener("resize", this.manageNoRect);
+    }
 
-export class TweenedGLTF extends TweenGLTF implements ThreeGLTF {
-  constructor({
-    scene,
-    viewport,
-    camera,
-    GLTF,
-    offset = { rotation: new Vector3(), position: new Vector3() },
-  }: GLTFConstructor) {
-    super({
-      scene,
-      viewport,
-      camera,
-      offset,
-      GLTF,
-    });
+    this.ON_START(this.group, this.viewport);
+  };
+
+  destroy() {
+    this.scene.remove(this.group);
+    this.killTween();
+    RAF.unsubscribe(this.RAFKey);
+    window.removeEventListener("resize", this.resize);
+    window.removeEventListener("resize", this.manageRect);
+    window.removeEventListener("resize", this.manageNoRect);
   }
 
-  initRectGLTF() {}
+  private update = (dt: number = 0) => {
+    this.mixer.update(dt);
 
-  update() {}
+    if (this.params.base.idle.enabled === false) return;
+    this.group.rotation.z =
+      this.params.base.offset.rotation.z +
+      Math.sin(performance.now() * this.params.sinus.frequency) *
+        this.params.sinus.amplitude;
+  };
 
-  destroy() {}
+  private manageRect = () => {
+    this.setFromRect();
+    this.manageTweenRect(this.getFromRect().h);
+  };
+
+  private manageNoRect = () => {
+    this.setTransition(this.MODEL.BASE_SCALE);
+  };
 }
 
 export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
-  delay: { in: number; out: number };
-
-  isMoving: boolean;
-  mappedMouse: Vector3;
-
   constructor({
     scene,
     viewport,
     camera,
     GLTF,
-    rectElement = null,
-    onRect = null,
     offset = { rotation: new Vector3(), position: new Vector3() },
-    idle = { enabled: true, type: IDLE_TYPE.SINUS },
   }: GLTFConstructor) {
     super({
       scene,
       viewport,
       camera,
       offset,
-      idle,
       GLTF,
     });
-
-    this.params.sinus = {
-      amplitude: 0.12,
-      frequency: 0.004,
-    };
-    this.params.fresnel = {
-      width: 0.4,
-      color: new Color(PALETTE.WHITE),
-    };
-
-    this.rectElement = rectElement;
-    this.onRect = onRect;
-    this.delay =
-      typeof GLTF.DELAY !== "undefined" ? GLTF.DELAY : { in: 0, out: 0 };
-
-    this.isMoving = false;
-
-    this.mappedMouse = new Vector3();
   }
 
-  initRectGLTF = ({ rectElement, onRect }: InitGLTF) => {
+  initRect = (rectElement: HTMLElement) => {
     this.rectElement = rectElement;
-    this.onRect = onRect;
-
     this.manageRect();
-
-    RAF.subscribe(this.RAFKey, this.update);
-
-    this.tweaks();
     window.addEventListener("resize", this.manageRect);
+  };
 
+  initGLTF = () => {
+    RAF.subscribe(this.RAFKey, this.update);
+    this.setEvents();
     this.in();
     this.playAllAnims();
   };
-
-  tweaks = () => {};
 
   destroy = () => {
     this.scene.remove(this.group);
@@ -126,8 +110,9 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     RAF.unsubscribe(this.RAFKey);
   };
 
-  update = (dt: number = 0) => {
+  private update = (dt: number = 0) => {
     this.mixer.update(dt);
+
     if (this.params.base.idle.enabled === false) return;
     this.group.rotation.z =
       this.params.base.offset.rotation.z +
@@ -136,25 +121,45 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
   };
 
   private manageRect = () => {
-    const { x, y, w, h } = rectToThree(
-      this.viewport,
-      this.rectElement.getBoundingClientRect()
-    );
-
-    this.group.position.copy(this.GET_OFFSET_FROM_RECT({ x, y, w, h }));
-
-    const hasTransitioned =
-      !this.transition.active && this.transition.factor > 0;
-
-    if (hasTransitioned) this.group.scale.setScalar(this.MODEL.BASE_SCALE * h);
-    else
-      this.setTransition(this.MODEL.BASE_SCALE * h, {
-        in: this.delay.in,
-        out: this.delay.out,
-      });
-
-    if (typeof this.onRect !== "function") return;
-
-    this.onRect(x, y, w, h, this.group, this.viewport);
+    this.setFromRect();
+    this.manageTweenRect(this.getFromRect().h);
   };
 }
+
+// export class BasedGLTF extends BaseGLTF {
+//   constructor({
+//     scene,
+//     viewport,
+//     camera,
+//     GLTF,
+//     offset = { rotation: new Vector3(), position: new Vector3() },
+//   }: GLTFConstructor) {
+//     super({
+//       scene,
+//       viewport,
+//       camera,
+//       offset,
+//       GLTF,
+//     });
+//   }
+
+//   initRect = (rectElement: HTMLElement) => {
+//     this.rectElement = rectElement;
+//     this.setFromRect();
+//   };
+
+//   initGLTF = () => {
+//     RAF.subscribe(this.RAFKey, this.update);
+//     this.playAllAnims();
+//   };
+
+//   destroy() {
+//     this.scene.remove(this.group);
+//     window.removeEventListener("resize", this.resize);
+//     RAF.unsubscribe(this.RAFKey);
+//   }
+
+//   private update = (dt: number = 0) => {
+//     this.mixer.update(dt);
+//   };
+// }

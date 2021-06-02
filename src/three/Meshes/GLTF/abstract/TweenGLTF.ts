@@ -1,47 +1,20 @@
 import { Vector3 } from "three";
-import { GLTFConstructor } from "~types";
-import { clamp } from "~util";
+import { GLTFConstructor, ThreeMeshTransition } from "~types";
+import { clamp, rectToThree } from "~util";
 import BaseGLTF from "./BaseGLTF";
 import BezierEasing from "bezier-easing";
 import raf from "~singletons/RAF";
-
-type ThreeMeshTransition = {
-  value: number;
-  factor: number;
-  target: {
-    scale: Vector3;
-  };
-  speed: number;
-  delay: {
-    in: number;
-    out: number;
-  };
-  duration: number;
-  eases: {
-    default: ReturnType<typeof BezierEasing>;
-  };
-  active: boolean;
-  timeouts: NodeJS.Timeout[];
-};
 
 abstract class TweenGLTF extends BaseGLTF {
   tweenRAFKey: string;
   transition: ThreeMeshTransition;
 
-  constructor({
-    scene,
-    viewport,
-    camera,
-    offset,
-    idle,
-    GLTF,
-  }: GLTFConstructor) {
+  constructor({ scene, viewport, camera, offset, GLTF }: GLTFConstructor) {
     super({
       scene,
       viewport,
       camera,
       offset,
-      idle,
       GLTF,
     });
 
@@ -53,7 +26,7 @@ abstract class TweenGLTF extends BaseGLTF {
         scale: new Vector3(),
       },
       speed: 0.04,
-      delay: { in: 0, out: 0 },
+      delay: typeof GLTF.DELAY !== "undefined" ? GLTF.DELAY : { in: 0, out: 0 },
       duration: 0.3,
       eases: { default: new BezierEasing(0.42, 0, 0.58, 1) },
       active: false,
@@ -63,16 +36,10 @@ abstract class TweenGLTF extends BaseGLTF {
     raf.subscribe(this.tweenRAFKey, this.tween);
   }
 
-  setTransition = (
-    scaleScalar: number,
-    delay = { in: 0, out: 0 },
-    duration = 0.3
-  ) => {
+  setTransition = (scaleScalar: number, duration = 0.3) => {
     if (!this.group) return;
 
     this.transition.target.scale.setScalar(scaleScalar);
-
-    this.transition.delay = delay;
     this.transition.duration = duration;
   };
 
@@ -114,6 +81,14 @@ abstract class TweenGLTF extends BaseGLTF {
       this.transition.target.scale.y * eased,
       this.transition.target.scale.z * eased
     );
+  };
+
+  manageTweenRect = (h: number) => {
+    const hasTransitioned =
+      !this.transition.active && this.transition.factor > 0;
+
+    if (hasTransitioned) this.group.scale.setScalar(this.MODEL.BASE_SCALE * h);
+    else this.setTransition(this.MODEL.BASE_SCALE * h);
   };
 
   killTimeouts = () => {

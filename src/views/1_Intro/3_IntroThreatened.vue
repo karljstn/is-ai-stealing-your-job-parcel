@@ -4,7 +4,6 @@
       routeName="IntroThreatened"
       :lottieURL="lottie"
       lottieScale="1"
-      :onRect="this.onRect"
     />
   </section>
 </template>
@@ -13,13 +12,11 @@
 import Vue from "vue";
 import LottieThree from "~components/Common/LottieThree.vue";
 import Lottie from "~/assets/Lottie/3. YOURE HERE BECAUSE.json";
-import { Group } from "three";
 
 export default Vue.extend({
   data() {
     return {
       lottie: Lottie,
-      onRect: (x: number, y: number, w: number, h: number, group: Group) => {},
     };
   },
   components: {

@@ -1,9 +1,23 @@
-import { Vector3 } from "three";
+import { Group, Vector3 } from "three";
 import { GLTF_TYPE, VIEW } from "~types";
 import { MATERIALS } from "./MATERIALS";
 import { MODELS } from "./MODELS";
 
 export const VIEWS: VIEW[] = [
+  {
+    ROUTE_NAME: "LandingPage",
+    GLTF_MESHES: [
+      {
+        TYPE: GLTF_TYPE.TWEENED,
+        MODEL: MODELS.TRASHCAN,
+        IDLE: { enabled: false },
+        ON_START: (group: Group) => {
+          group.rotation.y += Math.PI / 2;
+          group.position.y -= 0.5;
+        },
+      },
+    ],
+  },
   {
     ROUTE_NAME: "IntroThreatened",
     LOTTIE: {
@@ -12,7 +26,7 @@ export const VIEWS: VIEW[] = [
     },
     GLTF_MESHES: [
       {
-        TYPE: GLTF_TYPE.MOUSED,
+        TYPE: GLTF_TYPE.TWEENED,
         MODEL: MODELS.EMOJI_CRY,
         MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_CRY),
         GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>

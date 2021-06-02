@@ -1,17 +1,13 @@
-import { Material, PerspectiveCamera, Scene } from "three";
-import { MATERIALS } from "~constants/MATERIALS";
-import { InitGLTF, ViewInterface } from "~interfaces/Three";
-import { BasedGLTF, TweenedGLTF, MousedTweenedGLTF } from "~three/Meshes/GLTF";
-import { GLTF_TYPE, onRect, VIEW, Viewport, VIEW_GLTF } from "~types";
-
-type ThreeViewConstructor = {
-  viewport: Viewport;
-  scene: Scene;
-  camera: PerspectiveCamera;
-  viewData: VIEW;
-  rectElement?: HTMLElement;
-  onRect?: onRect;
-};
+import { PerspectiveCamera, Scene } from "three";
+import { ViewInterface } from "~interfaces/Three";
+import { TweenedGLTF, MousedTweenedGLTF } from "~three/Meshes/GLTF";
+import {
+  GLTF_TYPE,
+  ThreeViewConstructor,
+  VIEW,
+  Viewport,
+  VIEW_GLTF,
+} from "~types";
 
 class ThreeView implements ViewInterface {
   viewport: Viewport;
@@ -19,8 +15,7 @@ class ThreeView implements ViewInterface {
   camera: PerspectiveCamera;
   view: VIEW;
   rectElement: HTMLElement;
-  onRect: onRect;
-  gltfMeshes: (BasedGLTF | TweenedGLTF | MousedTweenedGLTF)[];
+  gltfMeshes: (TweenedGLTF | MousedTweenedGLTF)[];
 
   constructor({
     viewport,
@@ -28,37 +23,25 @@ class ThreeView implements ViewInterface {
     camera,
     viewData,
     rectElement,
-    onRect,
   }: ThreeViewConstructor) {
     this.viewport = viewport;
     this.scene = scene;
     this.camera = camera;
     this.view = viewData;
     this.rectElement = rectElement;
-    this.onRect = onRect;
     this.gltfMeshes = [];
   }
 
   generateGLTFMeshFromConstant = (GLTF: VIEW_GLTF) => {
-    const { scene, viewport, rectElement, camera, onRect } = this;
+    const { scene, viewport, camera } = this;
 
     switch (GLTF.TYPE) {
-      case GLTF_TYPE.BASE:
-        return new BasedGLTF({
-          scene,
-          viewport,
-          camera,
-          GLTF,
-          onRect,
-        });
-
       case GLTF_TYPE.TWEENED:
         return new TweenedGLTF({
           scene,
           viewport,
           camera,
           GLTF,
-          onRect,
         });
 
       case GLTF_TYPE.MOUSED:
@@ -67,8 +50,6 @@ class ThreeView implements ViewInterface {
           viewport,
           camera,
           GLTF,
-          rectElement,
-          onRect,
         });
 
       default:
@@ -76,18 +57,19 @@ class ThreeView implements ViewInterface {
     }
   };
 
-  start = ({ rectElement, onRect }: InitGLTF) => {
+  start = (rectElement: HTMLElement = undefined) => {
     for (const VIEW_GLTF of this.view.GLTF_MESHES) {
-      this.gltfMeshes.push(this.generateGLTFMeshFromConstant(VIEW_GLTF));
+      const gltfMesh = this.generateGLTFMeshFromConstant(VIEW_GLTF);
+      this.gltfMeshes.push(gltfMesh);
     }
 
     for (const gltf of this.gltfMeshes) {
-      gltf.load(gltf.MODEL.URL).then(() =>
-        gltf.initRectGLTF({
-          rectElement,
-          onRect,
-        })
-      );
+      if (rectElement)
+        gltf
+          .load(gltf.MODEL.URL)
+          .then(() => gltf.initRect(rectElement))
+          .then(() => gltf.initGLTF());
+      else gltf.load(gltf.MODEL.URL).then(() => gltf.initGLTF());
     }
   };
 
