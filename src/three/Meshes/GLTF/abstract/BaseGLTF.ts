@@ -81,6 +81,7 @@ abstract class BaseGLTF {
         loop: MODEL.ANIMATION_LOOP ? MODEL.ANIMATION_LOOP : LoopRepeat,
       },
       sinus: {
+        factor: 1,
         amplitude: 0.12,
         frequency: 0.004,
       },
@@ -197,8 +198,13 @@ abstract class BaseGLTF {
     if (this.params.base.idle.enabled === true) {
       this.group.rotation.z =
         this.params.base.offset.rotation.z +
-        Math.sin(performance.now() * this.params.sinus.frequency) *
-          this.params.sinus.amplitude;
+        Math.sin(
+          performance.now() *
+            this.params.sinus.frequency *
+            this.params.sinus.factor
+        ) *
+          this.params.sinus.amplitude *
+          this.params.sinus.factor;
     }
   };
 

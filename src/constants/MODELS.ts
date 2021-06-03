@@ -1,4 +1,4 @@
-import handWave from "~assets/Models/hand-wave/Hand-anim-v4.glb";
+import handWave from "~assets/Models/hand-wave/Hand-anim-v5.glb";
 import handOkay from "~assets/Models/hand-ok/HAND_OK_ANIM_V2.glb";
 import trashcan from "~assets/Models/trashcan/v10_POUBELLE_4.glb";
 import bakedTrashcan from "~assets/Models/trashcan/bakedTrashcanV2.glb";
@@ -61,7 +61,7 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   EMOJI_SAD: {
     URL: emojiSad,
-    BASE_SCALE: 0.08,
+    BASE_SCALE: 0.1,
     TEXTURE: emojiSadBake,
   },
   EMOJI_DISTRAUGHT: {
@@ -76,7 +76,7 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   CRYSTAL_BALL: {
     URL: crystal,
-    BASE_SCALE: 0.075,
+    BASE_SCALE: 0.5,
   },
   PENCIL: {
     URL: pencil,

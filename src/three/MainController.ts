@@ -21,7 +21,6 @@ import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
 import Benchmark from "./Benchmark";
 import { VIEWS } from "~constants/VIEWS";
 import Radio from "./Games/Radiologist/Radio";
-import { ViewInterface } from "~interfaces/Three";
 import ThreeView from "./ThreeView";
 
 export default class MainController {

@@ -68,7 +68,7 @@ export default Vue.extend({
 					this.isProgressionReady = true
 				}, store.state.load.minLoaderDuration);
 
-				SOUNDS.background.volume(0.28).play()
+				SOUNDS.background_begin.volume(0.28).play()
 
 				timeout = setTimeout(() => {
 					SOUNDS.scrollTo.volume(0.44).play()
@@ -76,7 +76,7 @@ export default Vue.extend({
 			});
 		},
 		destroyed() {
-			SOUNDS.background.stop()
+			SOUNDS.background_begin.stop()
 			clearTimeout(timeout)
 		}
 })
