@@ -68,10 +68,10 @@ export default Vue.extend({
 					this.isProgressionReady = true
 				}, store.state.load.minLoaderDuration);
 
-				// SOUNDS.background.volume(0.2).play()
+				SOUNDS.background.volume(0.28).play()
 
 				timeout = setTimeout(() => {
-					// SOUNDS.scrollTo.play()
+					SOUNDS.scrollTo.volume(0.44).play()
 				}, 4000);
 			});
 		},

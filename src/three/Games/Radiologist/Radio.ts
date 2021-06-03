@@ -367,7 +367,7 @@ export default class Radio implements ThreeGroup {
                 this.skeletonScene.remove(Skeleton.currentSkeleton)
                 console.log("skeleton remove")
                 raf.unsubscribe("radioUpdate")
-                // router.push('10')
+
                 this.camera.position.z = 1
 
                 this.controls.dispose()

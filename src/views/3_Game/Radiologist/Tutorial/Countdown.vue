@@ -68,6 +68,7 @@ export default Vue.extend({
     transform: translate(-200px, 0);
     text-align: center;
     opacity: 0;
+    color: white;
   }
 }
 </style>

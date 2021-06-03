@@ -10,12 +10,6 @@
       <Step4 v-if="this.tutorialCount === 4"></Step4>
       <Step5 v-if="this.tutorialCount === 5"></Step5>
       <Step6 v-if="this.tutorialCount === 6"></Step6>
-
-      <!-- <Explanation
-        v-if="this.tutorialCount === 4"
-        v-bind:text="`Click to select the area on the x-ray where there is a lesion.`"
-        v-bind:img="`~/assets/Games/Radiologist/Icons/ai.png`"
-      ></Explanation> -->
     </div>
     <span
       v-show="this.showUI"
