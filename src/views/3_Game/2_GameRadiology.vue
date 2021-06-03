@@ -13,10 +13,29 @@
       ></ButtonsRight>
 
       <!-- <NotificationManager></NotificationManager> -->
-
-      <!-- <div class="lottie">
-        <lottie-animation :animationData="lottieURL" :loop="false" />
-      </div> -->
+      <GameCursor></GameCursor>
+      <div class="lottie">
+        <lottie-animation
+          ref="decompte"
+          :animationData="lottieDecompteURL"
+          :loop="false"
+          :autoPlay="false"
+          @complete="this.hideCountdown"
+        />
+      </div>
+      <div class="lottie">
+        <lottie-animation
+          ref="timesup"
+          :animationData="lottieTimesUpURL"
+          :loop="false"
+          :autoPlay="false"
+          @complete="this.timesUpCompleted"
+        />
+      </div>
+      <NextPatientAnimation
+        v-if="this.nextPatient"
+        :nextPatientCallback="this.animationCompleted"
+      ></NextPatientAnimation>
 
       <Help v-if="this.help" :toggleHelp="this.toggleHelp"></Help>
 
@@ -48,10 +67,8 @@
         v-bind:hideTutorial="this.hideTutorial"
         ref="tutorialManager"
       ></TutorialManager>
-
-      <Countdown v-if="this.countdown" :hide="this.hideCountdown"></Countdown>
     </div>
-    <EndScreen v-if="this.gameEnded"></EndScreen>
+    <EndScreen v-if="this.endScreen"></EndScreen>
   </section>
 </template>
 
@@ -62,7 +79,8 @@ import store from "~/store";
 import Side from "./Radiologist/Side.vue";
 import ButtonsRight from "./Radiologist/ButtonsRight.vue";
 
-import lottie from "~/assets/Lottie/Radiologist/decompte.json";
+import lottieDecompteURL from "~/assets/Lottie/Radiologist/decompte.json";
+import lottieTimesUpURL from "~/assets/Lottie/Radiologist/timesup.json";
 import LottieAnimation from "lottie-web-vue";
 
 import Toolbar from "./Radiologist/Toolbar.vue";
@@ -70,9 +88,11 @@ import Confirm from "./Radiologist/Confirm.vue";
 import ToggleTutorial from "./Radiologist/Tutorial/ToggleTutorial.vue";
 import NotificationManager from "./Radiologist/Notifications/NotificationManager.vue";
 import TutorialManager from "./Radiologist/Tutorial/TutorialManager.vue";
-import Countdown from "./Radiologist/Tutorial/Countdown.vue";
+import NextPatientAnimation from "./NextPatientAnimation.vue";
+// import Countdown from "./Radiologist/Tutorial/Countdown.vue";
 import Help from "./Radiologist/Tutorial/Help.vue";
 import EndScreen from "./Radiologist/EndScreen.vue";
+import GameCursor from "./Radiologist/GameCursor.vue";
 
 import Skeleton from "~/three/Games/Radiologist/Skeleton";
 
@@ -88,8 +108,11 @@ export default Vue.extend({
     countdown: boolean;
     timerCanStart: boolean;
     timerPause: boolean;
+    endScreen: boolean;
     HIDE: boolean;
-    lottieURL: string;
+    lottieDecompteURL: string;
+    nextPatient: boolean;
+    lottieTimesUpURL: string;
   } {
     return {
       //progress of the tutorial
@@ -105,9 +128,14 @@ export default Vue.extend({
       timerCanStart: false,
       timerPause: false,
 
+      endScreen: false,
+
       HIDE: false,
 
-      lottieURL: lottie,
+      lottieDecompteURL: lottieDecompteURL,
+      // lottieNextPatientURL: lottieNextPatientURL,
+      nextPatient: false,
+      lottieTimesUpURL: lottieTimesUpURL,
     };
   },
 
@@ -119,10 +147,11 @@ export default Vue.extend({
       return store.state.radiologist.gameEnded;
     },
     getClassForContainer() {
-      return store.state.radiologist.gameEnded ? "game-fade" : "";
+      return this.endScreen ? "game-fade" : "";
     },
     progress() {
       // console.log("progress update", store.state.radiologist.progress);
+      // console.log("progress update");
 
       return store.state.radiologist.progress;
     },
@@ -130,6 +159,15 @@ export default Vue.extend({
 
   watch: {
     tutorialCount(newVal) {},
+    progress() {
+      console.log("progress updated", this.progress);
+      setTimeout(() => {
+        if (this.progress < 5) this.nextPatient = true;
+      }, 500);
+    },
+    gameEnded() {
+      if (this.gameEnded) this.$refs.timesup.play();
+    },
   },
 
   mounted() {
@@ -179,7 +217,8 @@ export default Vue.extend({
     Side,
     ToggleTutorial,
     TutorialManager,
-    Countdown,
+    // Countdown,
+    NextPatientAnimation,
     ButtonsRight,
     Timer,
     Toolbar,
@@ -187,6 +226,7 @@ export default Vue.extend({
     Help,
     EndScreen,
     LottieAnimation,
+    GameCursor,
   },
 
   methods: {
@@ -210,37 +250,31 @@ export default Vue.extend({
         else this.timerPause = false;
       }
     },
-    // showTutorial() {
-    //   if (this.timerCanStart) {
-    //     this.timerPause = true;
-    //     this.tutorialCount = 1;
-    //     const manager: any = this.$refs.tutorialManager;
-    //     gsap.to(manager.$el, {
-    //       duration: 0.3,
-    //       scale: 1,
-    //     });
-    //   }
-    // },
     hideTutorial() {
       const manager: any = this.$refs.tutorialManager;
       gsap.to(manager.$el, {
         duration: 0.3,
         scale: 0,
-        onComplete: this.showCountdown,
+        onComplete: this.$refs.decompte.play,
       });
 
       console.log("tutorial complete");
       this.tutorialCount = -1;
     },
-    showCountdown() {
-      if (!this.timerCanStart) this.countdown = true;
-      else this.timerPause = false;
-    },
     hideCountdown() {
-      this.countdown = false;
+      // console.log(this.$refs.lottieContainer.classList.add('lottie'));
+
       this.timerCanStart = true;
 
       Skeleton.addFirstSkeleton();
+    },
+
+    animationCompleted() {
+      this.nextPatient = false;
+      console.log("go false", this.nextPatient);
+    },
+    timesUpCompleted() {
+      this.endScreen = true;
     },
   },
 });
@@ -254,6 +288,14 @@ section {
   height: initial;
   display: initial;
 
+  .lottie {
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0) scale(0.8);
+    pointer-events: none;
+  }
   .log {
     position: absolute;
     bottom: 0;

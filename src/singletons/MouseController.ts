@@ -5,11 +5,13 @@ class MouseController {
 	mouseVec3: Vector3 // Useful for distance and lookAt() logic
 	mouseVec2: Vector2 // Useful for raycasts
 	mouseVec3Viewport: Vector3 // Useful for responsive
+	mouseVec2Viewport: Vector2 // For the cursor in the game
 
 	constructor() {
 		this.mouseVec3 = new Vector3()
 		this.mouseVec2 = new Vector2()
 		this.mouseVec3Viewport = new Vector3()
+		this.mouseVec2Viewport = new Vector2()
 
 		this.setEvents()
 	}
@@ -25,6 +27,9 @@ class MouseController {
 
 		this.mouseVec2.x = this.mouseVec3.x
 		this.mouseVec2.y = this.mouseVec3.y
+
+		this.mouseVec2Viewport.x = e.clientX
+		this.mouseVec2Viewport.y = e.clientY
 	}
 
 	setEvents = () => {

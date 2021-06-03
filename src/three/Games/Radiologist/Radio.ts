@@ -119,10 +119,7 @@ export default class Radio implements ThreeGroup {
 
         this.gameRunning = false
 
-        const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial())
-        // this.group.add(mesh)
 
-        // mesh.position.y = 3.5
 
         this.controls.addEventListener("start", () => {
             this.mouseDown = true
@@ -168,7 +165,7 @@ export default class Radio implements ThreeGroup {
 
     init() {
         raf.subscribe("radioUpdate", this.update)
-        this.camera.position.set(0, 0, 30)
+        this.camera.position.set(0, 0, 25)
         this.controls.saveState()
 
         Skeleton.init(this.skeletonScene)

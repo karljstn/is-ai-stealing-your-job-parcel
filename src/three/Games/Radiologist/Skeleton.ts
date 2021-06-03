@@ -137,8 +137,11 @@ class Skeleton {
             duration: 0.5,
             y: -20,
             onComplete: () => {
-                controls.reset()
-                this.nextSkeleton(progress)
+                setTimeout(() => {
+
+                    controls.reset()
+                    this.nextSkeleton(progress)
+                }, 1500)
             }
         })
 

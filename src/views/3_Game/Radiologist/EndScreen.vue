@@ -23,13 +23,13 @@ export default Vue.extend({
   mounted() {
     const tl = gsap.timeline({
       onComplete: () => {
-        this.$router.push("15");
+        // this.$router.push("15");
       },
     });
     tl.to(this.$refs.endScreen1, { duration: 1, opacity: 1 });
     tl.to(this.$refs.endScreen1, { duration: 1, opacity: 0, delay: 3 });
     tl.to(this.$refs.endScreen2, { duration: 1, opacity: 1 });
-    tl.to(this.$refs.endScreen2, { duration: 1, opacity: 0, delay: 3 });
+    // tl.to(this.$refs.endScreen2, { duration: 1, opacity: 0, delay: 3 });
   },
   computed: {
     results() {
@@ -45,7 +45,7 @@ export default Vue.extend({
   .end-screen-2 {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 54%;
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
