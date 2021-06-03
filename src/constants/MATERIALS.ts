@@ -1,4 +1,9 @@
-import { Color, ShaderMaterial, TextureLoader } from "three";
+import {
+  Color,
+  MeshLambertMaterial,
+  ShaderMaterial,
+  TextureLoader,
+} from "three";
 import { MODEL } from "~types";
 import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
@@ -23,4 +28,6 @@ export const MATERIALS = {
       },
     });
   },
+  GET_LAMBERT: (color: string = "#F4933B") =>
+    new MeshLambertMaterial({ color }),
 };

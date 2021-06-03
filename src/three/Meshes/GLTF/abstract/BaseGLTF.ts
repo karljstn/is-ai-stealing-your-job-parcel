@@ -36,7 +36,7 @@ abstract class BaseGLTF {
   GET_OFFSET_FROM_RECT: GET_OFFSET_FROM_RECT;
   ON_START: (group: Group, viewport: Viewport, binding: any) => void;
   ON_UPDATE: (binding: any, dt: number) => void;
-  ON_RAYCAST: (binding: any) => void;
+  ON_RAYCAST: (intersection: Intersection[], binding: any) => void;
   ON_CLICK: (binding: any) => void;
   raycaster: Raycaster;
   intersects: Intersection[];
@@ -191,7 +191,7 @@ abstract class BaseGLTF {
         true
       );
 
-      this.ON_RAYCAST(this.intersects);
+      this.ON_RAYCAST(this.intersects, this);
     }
 
     if (this.params.base.idle.enabled === true) {

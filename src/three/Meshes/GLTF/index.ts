@@ -180,9 +180,6 @@ export class WritingGLTF extends TweenGLTF {
     this.setPencilEvents();
     this.manageNoRect();
 
-    this.params.sinus.frequency *= 0.5;
-    this.params.sinus.amplitude *= 0.5;
-
     if (this.ON_START) this.ON_START(this.group, this.viewport, this);
   };
 

@@ -110,7 +110,7 @@ export type VIEW_GLTF = {
   IDLE?: IDLE;
   ON_START?: (group: Group, viewport: Viewport, binding: any) => void;
   ON_UPDATE?: (binding: any, dt?: number) => void;
-  ON_RAYCAST?: (intersects: Intersection[]) => void;
+  ON_RAYCAST?: (intersects: Intersection[], binding: any) => void;
   ON_CLICK?: (binding: any) => void;
 };
 

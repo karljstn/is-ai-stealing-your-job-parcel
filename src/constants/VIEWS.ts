@@ -20,6 +20,36 @@ export const VIEWS: VIEW[] = [
     ],
   },
   {
+    ROUTE_NAME: "IntroHello",
+    GLTF_MESHES: [
+      {
+        TYPE: GLTF_TYPE.MOUSED,
+        MODEL: MODELS.HAND_WAVE,
+        MATERIAL: MATERIALS.GET_LAMBERT(),
+        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
+          new Vector3(x + w, y - h / 10, 0),
+        DELAY: { in: 2, out: 0 },
+        ON_START: (group: Group, viewport: Viewport, binding: any) => {
+          // binding.playAllAnims();
+          binding.params.sinus.frequency *= 0.5;
+          binding.params.sinus.amplitude *= 0.5;
+        },
+        ON_UPDATE: (binding: any) =>
+          binding.group.lookAt(
+            binding.mouse.current.x,
+            binding.mouse.current.y,
+            1
+          ),
+        ON_RAYCAST: (intersects, binding) => {
+          if (intersects.length) {
+            // console.log(binding.actions[0]);
+            binding.actions[0].play();
+          }
+        },
+      },
+    ],
+  },
+  {
     ROUTE_NAME: "IntroThreatened",
     LOTTIE: {
       URL: "~/assets/Lottie/6. AI IS.json",
@@ -58,6 +88,10 @@ export const VIEWS: VIEW[] = [
       {
         TYPE: GLTF_TYPE.WRITING,
         MODEL: MODELS.PENCIL,
+        ON_START: (group, viewport, binding) => {
+          binding.params.sinus.frequency *= 0.5;
+          binding.params.sinus.amplitude *= 0.5;
+        },
       },
     ],
   },

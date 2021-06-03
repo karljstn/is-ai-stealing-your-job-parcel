@@ -25,12 +25,14 @@ import penPaper from "~assets/Models/pen-paper/Stylo.glb";
 import penPaperBake from "~assets/Models/pen-paper/bake.jpg";
 import tree from "~assets/Models/tree/TREE.glb";
 import { MODEL } from "~types";
-import { LoopOnce } from "three";
+import { LoopOnce, LoopRepeat } from "three";
 
 export const MODELS: { [name: string]: MODEL } = {
   HAND_WAVE: {
     URL: handWave,
-    BASE_SCALE: 0.0285,
+    BASE_SCALE: 0.14,
+    ANIMATION_LOOP: LoopRepeat,
+    ANIMATION_SPEED: 0.0008,
   },
   TRASHCAN: {
     URL: trashcan,
