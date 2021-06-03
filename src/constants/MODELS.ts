@@ -35,6 +35,8 @@ export const MODELS: { [name: string]: MODEL } = {
   TRASHCAN: {
     URL: trashcan,
     BASE_SCALE: 0.12,
+    ANIMATION_SPEED: 0.001,
+    ANIMATION_LOOP: LoopOnce,
   },
   BAKED_TRASHCAN: {
     URL: bakedTrashcan,

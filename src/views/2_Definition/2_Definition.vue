@@ -103,8 +103,8 @@ section {
   }
 
   .canvas-container {
-    width: 110px;
-    height: 110px;
+    width: 90px;
+    height: 90px;
     clip-path: polygon(
       50% 0%,
       80% 10%,
@@ -123,8 +123,8 @@ section {
     align-items: center;
 
     canvas {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       clip-path: polygon(
         50% 0%,
         80% 10%,

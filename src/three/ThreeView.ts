@@ -25,14 +25,14 @@ class ThreeView implements ViewInterface {
     viewport,
     scene,
     camera,
-    viewData,
+    VIEW,
     rectElement,
     raycaster,
   }: ThreeViewConstructor) {
     this.viewport = viewport;
     this.scene = scene;
     this.camera = camera;
-    this.view = viewData;
+    this.view = VIEW;
     this.rectElement = rectElement;
     this.raycaster = raycaster;
     this.gltfMeshes = [];
@@ -88,6 +88,7 @@ class ThreeView implements ViewInterface {
     for (const gltf of this.gltfMeshes) {
       gltf.destroy();
     }
+    this.gltfMeshes = [];
   };
 }
 

@@ -144,7 +144,7 @@ export type ThreeViewConstructor = {
   viewport: Viewport;
   scene: Scene;
   camera: PerspectiveCamera;
-  viewData: VIEW;
+  VIEW: VIEW;
   rectElement?: HTMLElement;
   raycaster: Raycaster;
 };

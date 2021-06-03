@@ -180,6 +180,9 @@ export class WritingGLTF extends TweenGLTF {
     this.setPencilEvents();
     this.manageNoRect();
 
+    this.params.sinus.frequency *= 0.5;
+    this.params.sinus.amplitude *= 0.5;
+
     if (this.ON_START) this.ON_START(this.group, this.viewport, this);
   };
 
@@ -207,6 +210,12 @@ export class WritingGLTF extends TweenGLTF {
       .lerp(current, this.params.eases.rotation(this.params.rotation.factor));
 
     this.group.rotation.setFromVector3(target);
+
+    if (this.params.base.idle.enabled === true) {
+      this.group.rotation.z +=
+        Math.sin(performance.now() * this.params.sinus.frequency) *
+        this.params.sinus.amplitude;
+    }
 
     if (f === 1 && !store.state.isPencilWriting)
       store.commit("setPencilWriting", true);

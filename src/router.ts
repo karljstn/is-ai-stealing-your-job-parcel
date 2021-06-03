@@ -46,7 +46,7 @@ const routes = [
         disabled: false,
       },
       transition: {
-        delay: 2700,
+        delay: 2600,
         out: () => {
           // Execute code for every single gltf
           for (const VIEW of VIEWS) {
@@ -56,6 +56,10 @@ const routes = [
 
               if (typeof tweened.playAllAnims !== "undefined")
                 tweened.playAllAnims();
+
+              setTimeout(() => {
+                tweened.out();
+              }, 1400);
             }
           }
 

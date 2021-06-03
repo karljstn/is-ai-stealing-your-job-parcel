@@ -178,7 +178,7 @@ export default class MainController {
         viewport,
         scene,
         camera,
-        viewData: VIEW,
+        VIEW,
         raycaster,
       });
 
