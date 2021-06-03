@@ -12,9 +12,9 @@ import {
   Vector3,
   WebGLRenderer,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "./CustomControls";
 import { clamp, getViewport } from "~/util/";
-import { MainSceneParams, VIEW, Viewport } from "~/types/";
+import { MainControllerParams, VIEW, Viewport } from "~/types/";
 import store from "~/store";
 import { RAFS } from "~constants/RAFS";
 import { TpChangeEvent } from "tweakpane/dist/types/api/tp-event";
@@ -25,7 +25,7 @@ import { ViewInterface } from "~interfaces/Three";
 import ThreeView from "./ThreeView";
 
 export default class MainController {
-  params: MainSceneParams;
+  params: MainControllerParams;
   viewport: Viewport;
   w: number;
   h: number;

@@ -100,8 +100,7 @@ class Skeleton {
             )
 
             if (i === 3) {
-                console.log("fourth model")
-                this.skeletons[i].rotation.y = -Math.PI / 2
+                // this.skeletons[i].rotation.y = -Math.PI / 2
             }
 
             this.textureLoader.load(this.skeletonsInfos[i].BAKE, texture => {
@@ -138,8 +137,11 @@ class Skeleton {
             duration: 0.5,
             y: -20,
             onComplete: () => {
-                controls.reset()
-                this.nextSkeleton(progress)
+                setTimeout(() => {
+
+                    controls.reset()
+                    this.nextSkeleton(progress)
+                }, 1500)
             }
         })
 
@@ -179,10 +181,17 @@ class Skeleton {
         })
 
         this.isAnimating = false
-        this.skeletonScene.add(this.currentSkeleton)
-        console.log("skeleton add")
 
-        this.transitionIn(this.currentSkeleton)
+        if (this.progress > 0) {
+            this.skeletonScene.add(this.currentSkeleton)
+            this.transitionIn(this.currentSkeleton)
+            console.log("skeleton add")
+        }
+    }
+
+    addFirstSkeleton() {
+        this.skeletonScene.add(this.skeletons[0])
+        this.transitionIn(this.skeletons[0])
     }
 
     getShader() {
@@ -201,11 +210,11 @@ class Skeleton {
     heartbeat = () => {
         this.heart.scale.set(
             this.heartBaseScale +
-                (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
             this.heartBaseScale +
-                (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
+            (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE,
             this.heartBaseScale +
-                (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE
+            (Math.sin(Date.now() / 200) + 1) / this.skeletonsInfos[this.progress].HEART_SCALE
         )
     }
 }

@@ -44,7 +44,7 @@ class Foreground {
             depthTest: false,
             fragmentShader: fragment,
             vertexShader: vertex,
-
+            transparent: true
             // depthWrite: false
         })
 

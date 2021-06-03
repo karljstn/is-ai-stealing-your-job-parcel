@@ -32,6 +32,8 @@ const store = new Vuex.Store({
       confirm: false,
       confirmCallback: null,
       penalty: () => { },
+      removeFolder: () => { },
+      addFolder: () => { },
       gameEnded: false,
       results: {
         AIused: 0,
@@ -89,6 +91,12 @@ const store = new Vuex.Store({
     },
     setPenalty(state, payload) {
       state.radiologist.penalty = payload
+    },
+    setRemoveFolder(state, payload) {
+      state.radiologist.removeFolder = payload
+    },
+    setAddFolder(state, payload) {
+      state.radiologist.addFolder = payload
     },
     setGameEnded(state, payload) {
       state.radiologist.gameEnded = payload

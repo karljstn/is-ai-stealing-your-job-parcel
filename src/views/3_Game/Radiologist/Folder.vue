@@ -16,7 +16,7 @@ import Vue from "vue";
 import store from "~/store";
 
 export default Vue.extend({
-  props: ["duration", "index", "removeFolder"],
+  props: ["duration", "index", "removeFolder", "help"],
   data(): {
     progress: number;
     interval: any;
@@ -30,23 +30,26 @@ export default Vue.extend({
   },
   mounted() {
     if (this.progress === this.duration) {
-      this.removeFolder(this.index);
+      // this.removeFolder(this.index);
       clearInterval(this.interval);
     }
     this.progress++;
 
     this.interval = setInterval(() => {
-      // console.log(this.progress + "/" + this.duration, this.index);
+      if (!this.help) {
+        if (this.progress === this.duration) {
+          // store.state.radiologist.penalty();
 
-      if (this.progress === this.duration) {
-        store.state.radiologist.penalty();
-        this.removeFolder(this.index);
-        clearInterval(this.interval);
+          store.state.sceneManager.radio.confirm(true);
+          clearInterval(this.interval);
+        }
+        this.progress++;
       }
-      this.progress++;
     }, 1000);
   },
   destroyed() {
+    console.log("CLEAR IN THE DESTROYED");
+
     clearInterval(this.interval);
   },
 });

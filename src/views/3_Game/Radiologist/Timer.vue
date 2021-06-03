@@ -1,10 +1,11 @@
 <template>
   <div class="timer-container">
-    <img
+    <!-- <img
       src="~/assets/Games/Radiologist/Icons/Clock/02-clock.png"
       class="clock"
       alt=""
-    />
+    /> -->
+    <div class="clock"></div>
     <div class="timer">
       <span>{{ this.min }}:{{ this.sec }}</span>
     </div>
@@ -29,7 +30,7 @@ export default Vue.extend({
     penaltyAnimation: any;
   } {
     return {
-      countdown: 60,
+      countdown: 120,
       interval: 0,
       min: 0,
       sec: 0,
@@ -126,19 +127,23 @@ export default Vue.extend({
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
 
   .clock {
-    width: 117px;
+    width: 110px;
     height: 126px;
+    background-image: url("~/assets/Games/Radiologist/Icons/Clock/02-clock.png");
+    background-size: contain;
+    background-repeat: no-repeat;
     -webkit-filter: drop-shadow(1px 1px 1px #000);
     filter: drop-shadow(1px 1px 1px #000);
 
-    position: relative;
-    right: 35px;
-    bottom: 35%;
+    position: absolute;
+    // right: 35px;
+    left: -35px;
+    bottom: 0;
   }
 
   .timer {
-    position: relative;
-    right: 20px;
+    position: absolute;
+    right: 15px;
     font-size: 2em;
   }
 

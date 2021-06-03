@@ -45,7 +45,7 @@ export default Vue.extend({
   .end-screen-2 {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 54%;
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;

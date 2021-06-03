@@ -6,7 +6,8 @@ import Clipboard from "./Clipboard"
 import Foreground from "./Foreground"
 import Background from "./Background"
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { OrbitControls } from "../../CustomControls"
 
 import raf from "~singletons/RAF"
 import store from "~/store"
@@ -16,7 +17,6 @@ import gsap from "gsap"
 import router from "~router"
 
 let coef = 0
-
 const params = {
     //2 is 0.5 seconds
     fresnelSpeed: 4,
@@ -63,6 +63,7 @@ export default class Radio implements ThreeGroup {
 
     clock: THREE.Clock
 
+
     gameRunning: boolean
 
     constructor(
@@ -75,7 +76,6 @@ export default class Radio implements ThreeGroup {
         clock: THREE.Clock
     ) {
         this.group = new THREE.Group()
-
         this.controls = controls
 
         this.aiUsed = 0
@@ -91,6 +91,10 @@ export default class Radio implements ThreeGroup {
         this.controls.enabled = false
         // this.controls.enablePan = false
         this.controls.enableDamping = true
+        this.controls.gameStarted = false
+
+        this.controls.minPolarAngle = Math.PI * 0.1
+        this.controls.maxPolarAngle = Math.PI * 0.9
 
         this.pane = pane
 
@@ -115,10 +119,7 @@ export default class Radio implements ThreeGroup {
 
         this.gameRunning = false
 
-        const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial())
-        // this.group.add(mesh)
 
-        // mesh.position.y = 3.5
 
         this.controls.addEventListener("start", () => {
             this.mouseDown = true
@@ -164,7 +165,7 @@ export default class Radio implements ThreeGroup {
 
     init() {
         raf.subscribe("radioUpdate", this.update)
-        this.camera.position.set(0, 0, 30)
+        this.camera.position.set(0, 0, 25)
         this.controls.saveState()
 
         Skeleton.init(this.skeletonScene)
@@ -175,6 +176,7 @@ export default class Radio implements ThreeGroup {
 
         Clipboard.load(this.group, this.progress)
     }
+
 
     nextCase() {
         if (!this.gameEnded) {
@@ -230,6 +232,10 @@ export default class Radio implements ThreeGroup {
 
     log() {
         console.log(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+
+        console.log('____________________________')
+
+        console.log(this.controls.getPolarAngle())
     }
 
     gameState(state: string, cond: boolean) {
@@ -249,10 +255,16 @@ export default class Radio implements ThreeGroup {
 
     confirm = (res: boolean) => {
         if (res) {
-            this.progress++
-            store.commit("updateProgress", this.progress)
 
-            if (this.progress === 5) {
+            store.state.radiologist.addFolder()
+            store.state.radiologist.removeFolder(this.progress)
+
+            this.progress++
+            console.log('update progress from the store')
+            store.commit("updateProgress", this.progress)
+            console.log('___________________________________')
+
+            if (this.progress === 5 && !this.gameEnded) {
                 this.gameEnded = true
                 store.commit("setConfirmPopup", false)
 
@@ -272,17 +284,20 @@ export default class Radio implements ThreeGroup {
             } else {
                 console.log("RADIOLOGIST GAME: WRONG ANSWER")
 
-                store.state.radiologist.penalty()
+                // store.state.radiologist.penalty()
                 this.nextCase()
                 // console.log(this.currentIntersect.object)
             }
         }
 
-        gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
-            duration: 0.2,
-            value: 1
-        })
+        if (this.currentIntersect) {
 
+            gsap.to(this.currentIntersect.object.material.uniforms.uFresnelWidth, {
+                duration: 0.2,
+                value: 1
+            })
+
+        }
         this.currentIntersect = null
         this.gameRunning = true
         store.commit("setConfirmPopup", false)
@@ -314,27 +329,30 @@ export default class Radio implements ThreeGroup {
             })
 
             this.aiUsed++
-            this.controls.enableDamping = false
+            // this.controls.enableDamping = false
             this.controls.enabled = false
-            this.controls.autoRotate = true
+            this.controls.usedAI = true
+            // this.controls.autoRotate = true
 
             console.log("AI USED")
+            console.log('radius before the lerp', this.controls.radius)
 
-            gsap.to(this.controls.target, {
-                duration: 1.5,
-                y: AI_CAMERA_VALUES[this.progress],
-                onComplete: () => {
-                    this.controls.enabled = true
-                    this.controls.autoRotate = false
-                    this.controls.enableDamping = true
-                }
-            })
 
-            gsap.to(this.camera.position, {
-                duration: 1.5,
-                y: AI_CAMERA_VALUES[this.progress],
-                z: 4
-            })
+            raf.subscribe('lerpControls', this.lerpControls)
+        }
+    }
+
+    lerpControls = () => {
+        this.controls.target.y += (AI_CAMERA_VALUES[this.progress] - this.controls.target.y) * 0.025
+        this.camera.position.y += (AI_CAMERA_VALUES[this.progress] - this.camera.position.y) * 0.025
+
+        this.controls.radius += (5 - this.controls.radius) * 0.025
+        console.log('radius when lerping', this.controls.radius)
+
+        if (Math.abs(this.controls.target.y - AI_CAMERA_VALUES[this.progress]) < 0.01) {
+            raf.unsubscribe('lerpControls')
+            this.controls.enabled = true
+            this.controls.usedAI = false
         }
     }
 
@@ -360,7 +378,6 @@ export default class Radio implements ThreeGroup {
             duration: 0.5,
             onComplete: () => {
                 store.commit("setGameEnded", true)
-                // store.commit("incrementProgression")
                 Skeleton.isAnimating = false
 
                 this.group.remove(Clipboard.mesh)
@@ -420,6 +437,7 @@ export default class Radio implements ThreeGroup {
         const delta = this.clock.getDelta()
 
         this.controls.update()
+
 
         if (Skeleton.loaded) {
             if (this.gameRunning) {

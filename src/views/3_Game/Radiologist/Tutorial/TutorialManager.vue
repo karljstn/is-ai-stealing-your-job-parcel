@@ -1,6 +1,6 @@
 <template>
-  <div class="tutorial-container">
-    <div class="content" ref="tutorialContainer">
+  <div class="tutorial-container" ref="tutorialContainer">
+    <div class="content" ref="tutorialContent">
       <Welcome v-if="this.tutorialCount === 0"></Welcome>
 
       <Step1 v-if="this.tutorialCount === 1"></Step1>
@@ -15,7 +15,7 @@
       v-show="this.showUI"
       ref="explanationCounter"
       class="explanation-counter"
-      ><span>{{ this.tutorialCount }}</span
+      ><span class="count">{{ this.tutorialCount }}</span
       >/6</span
     >
     <span
@@ -52,12 +52,20 @@ export default Vue.extend({
       showUI: false,
     };
   },
+  mounted() {
+    gsap.to(this.$refs.tutorialContainer, {
+      duration: 0.2,
+      opacity: 1,
+      scale: 1,
+      delay: 1,
+    });
+  },
   watch: {
     tutorialCount(newValue) {
       if (newValue === 1) {
         this.showUI = true;
 
-        gsap.to(this.$refs.tutorialContainer, {
+        gsap.to(this.$refs.tutorialContent, {
           duration: 0.2,
           opacity: 1,
         });
@@ -102,7 +110,7 @@ export default Vue.extend({
         },
       });
 
-      gsap.to(this.$refs.tutorialContainer, {
+      gsap.to(this.$refs.tutorialContent, {
         duration: 0.2,
         opacity: 0,
       });
@@ -121,7 +129,7 @@ export default Vue.extend({
       });
     },
     fadeIn() {
-      gsap.to(this.$refs.tutorialContainer, {
+      gsap.to(this.$refs.tutorialContent, {
         duration: 0.2,
         opacity: 1,
       });
@@ -150,7 +158,7 @@ export default Vue.extend({
         this.showUI = false;
       }
 
-      gsap.to(this.$refs.tutorialContainer, {
+      gsap.to(this.$refs.tutorialContent, {
         duration: 0.2,
         opacity: 0,
         onComplete: this.setTutorialCount,
@@ -167,7 +175,8 @@ export default Vue.extend({
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0) scale(0);
+  opacity: 0;
   // width: 40%;
   // height: 36vh;
   background-color: white;
@@ -195,6 +204,10 @@ export default Vue.extend({
     left: 15px;
     font-size: 0.8em;
     // transition: all 0.5s;
+
+    .count {
+      font-size: 1em;
+    }
   }
 
   .next-button {

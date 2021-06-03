@@ -10,7 +10,7 @@ import {
   Raycaster,
   Intersection,
 } from "three";
-import MainScene from "~three/MainController";
+import MainController from "~three/MainController";
 import { CustomEase } from "gsap/all";
 import Tweakpane from "tweakpane";
 import BezierEasing from "bezier-easing";
@@ -20,7 +20,7 @@ export type Viewport = {
   width: number;
 };
 
-export type MainSceneParams = {
+export type MainControllerParams = {
   maxFPS: number;
   readyFPS: boolean;
   averageFPS: number;
@@ -54,7 +54,7 @@ export type StoreState = {
     pauseBeforeLoaderDuration: number;
   };
   eases: Map<string, typeof CustomEase>;
-  sceneManager: MainScene | null;
+  sceneManager: MainController | null;
   rects: Map<string, DOMRect>;
   tweakpane: Tweakpane | null;
   radiologist: {
@@ -62,6 +62,8 @@ export type StoreState = {
     confirm: boolean;
     confirmCallback: Function | null;
     penalty: Function;
+    removeFolder: Function;
+    addFolder: Function;
     gameEnded: boolean;
     results: {
       AIused: number;

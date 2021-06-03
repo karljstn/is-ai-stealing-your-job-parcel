@@ -8,6 +8,7 @@
           :duration="casesInfo.duration"
           :index="casesInfo.index"
           :removeFolder="removeFolder"
+          :help="help"
         ></Folder>
       </transition-group>
     </div>
@@ -17,7 +18,7 @@
       <div class="wrapper">
         <span class="cases">{{ this.progress }}</span>
         <span class="processed"
-          >files <br />
+          >file{{ this.progress < 2 ? "" : "s" }} <br />
           processed</span
         >
       </div>
@@ -32,46 +33,96 @@ import Folder from "./Folder.vue";
 import store from "~/store";
 
 export default Vue.extend({
-  props: ["progress"],
-  data(): { casesPending: Object[]; duration: number; index: number } {
+  props: ["timerCanStart", "help"],
+  data(): {
+    casesPending: Object[];
+    duration: number;
+    intervalDuration: number;
+    index: number;
+    interval: any;
+    ticker: any;
+    timeElapsed: number;
+  } {
     return {
       casesPending: [],
-      duration: 20,
+      duration: 30,
+      intervalDuration: 24,
       index: 0,
+      interval: 0,
+      ticker: 0,
+      timeElapsed: 0,
     };
   },
   mounted() {
-    setTimeout(() => {
-      this.addFolder(this.duration);
-    }, 1000);
+    store.commit("setRemoveFolder", this.removeFolder);
+    store.commit("setAddFolder", this.addFolder);
+  },
+  watch: {
+    timerCanStart(newVal) {
+      if (newVal) this.start();
+    },
+    index(newVal) {
+      if (newVal === 5) clearInterval(this.interval);
+    },
+    help(newVal) {
+      if (newVal) {
+        clearInterval(this.ticker);
+        clearInterval(this.interval);
+      } else {
+        const timer = (this.intervalDuration - this.timeElapsed) * 1000;
 
-    setTimeout(() => {
-      this.addFolder(this.duration);
-    }, 11000);
+        // console.log("new timer is", timer);
 
-    setTimeout(() => {
-      this.addFolder(this.duration);
-    }, 21000);
+        this.ticker = setInterval(() => {
+          this.timeElapsed++;
+        }, 1000);
 
-    setTimeout(() => {
-      this.addFolder(this.duration);
-    }, 31000);
-    setTimeout(() => {
-      this.addFolder(this.duration);
-    }, 41000);
+        this.interval = setTimeout(() => {
+          // console.log("setTimeOut with the remaining seconds");
+          if (this.index < 5) this.addFolder();
+          this.timeElapsed = 0;
+          // clearInterval(this.interval);
+          // console.log("set the new timer with 24 seconds");
+          this.interval = setInterval(() => {
+            // console.log("test here");
+            if (this.index < 5) this.addFolder();
+            this.timeElapsed = 0;
+          }, this.intervalDuration * 1000);
+        }, timer);
+      }
+    },
+  },
+  computed: {
+    progress() {
+      return store.state.radiologist.progress;
+    },
   },
   methods: {
-    addFolder(duration: number) {
-      this.casesPending.push({
-        duration: duration,
-        index: this.index++,
-      });
+    start() {=
+      this.addFolder();
+
+      this.ticker = setInterval(() => {
+        this.timeElapsed++;
+      }, 1000);
+
+      this.interval = setInterval(() => {
+        if (this.index < 5) {
+          this.addFolder();
+        }
+      }, this.intervalDuration * 1000);
+    },
+    addFolder() {
+      if (this.index < 5) {
+        this.casesPending.push({
+          duration: this.duration,
+          index: this.index++,
+        });
+      }
     },
     removeFolder(index: number) {
-      //   store.state.scene.radio.progress++;
-      //   store.state.scene.radio.nextCase();
-
-      const i = this.casesPending.findIndex((elem) => elem.index === index);
+      const i = this.casesPending.findIndex(
+        (elem: any) => elem.index === index
+      );
       this.casesPending.splice(i, 1);
     },
   },
