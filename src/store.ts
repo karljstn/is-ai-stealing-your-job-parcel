@@ -34,6 +34,7 @@ const store = new Vuex.Store({
       penalty: () => { },
       removeFolder: () => { },
       addFolder: () => { },
+      updateCursor: () => {},
       gameEnded: false,
       results: {
         AIused: 0,
@@ -97,6 +98,9 @@ const store = new Vuex.Store({
     },
     setAddFolder(state, payload) {
       state.radiologist.addFolder = payload
+    },
+    setUpdateCursor(state, payload){
+      state.radiologist.updateCursor = payload
     },
     setGameEnded(state, payload) {
       state.radiologist.gameEnded = payload

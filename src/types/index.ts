@@ -64,6 +64,7 @@ export type StoreState = {
     penalty: Function;
     removeFolder: Function;
     addFolder: Function;
+    updateCursor: Function;
     gameEnded: boolean;
     results: {
       AIused: number;

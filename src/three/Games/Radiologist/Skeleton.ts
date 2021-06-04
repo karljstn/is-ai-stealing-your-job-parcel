@@ -154,7 +154,9 @@ class Skeleton {
     nextSkeleton(progress: number) {
         this.progress = progress
 
-        raf.unsubscribe("heartbeat")
+        if(this.progress !== 0) raf.unsubscribe("heartbeat")
+        
+        
         this.errorMesh = null
         this.skeletonScene.remove(this.currentSkeleton)
 

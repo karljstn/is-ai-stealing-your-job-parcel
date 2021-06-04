@@ -13,7 +13,7 @@
       ></ButtonsRight>
 
       <!-- <NotificationManager></NotificationManager> -->
-      <GameCursor></GameCursor>
+      <GameCursor :timerPause="this.timerPause"></GameCursor>
       <div class="lottie">
         <lottie-animation
           ref="decompte"
@@ -61,7 +61,6 @@
       ></ToggleTutorial>
 
       <TutorialManager
-        v-if="!this.HIDE"
         v-bind:tutorialCount="tutorialCount"
         v-bind:setTutorialCount="this.setTutorialCount"
         v-bind:hideTutorial="this.hideTutorial"
@@ -109,7 +108,6 @@ export default Vue.extend({
     timerCanStart: boolean;
     timerPause: boolean;
     endScreen: boolean;
-    HIDE: boolean;
     lottieDecompteURL: string;
     nextPatient: boolean;
     lottieTimesUpURL: string;
@@ -130,7 +128,6 @@ export default Vue.extend({
 
       endScreen: false,
 
-      HIDE: false,
 
       lottieDecompteURL: lottieDecompteURL,
       // lottieNextPatientURL: lottieNextPatientURL,
@@ -171,9 +168,8 @@ export default Vue.extend({
   },
 
   mounted() {
-    if (this.HIDE) {
-      this.timerCanStart = true;
-    }
+      // this.timerCanStart = true;
+    
     document.body.style.overflowX = "hidden";
     // const ease = store.state.eases.get("test");
     // const uniforms =

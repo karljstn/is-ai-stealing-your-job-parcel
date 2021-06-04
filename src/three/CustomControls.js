@@ -8,12 +8,16 @@ import {
 	Vector3
 } from 'three'
 
+
+import store from '~/store'
 // This set of controls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
 //
 //    Orbit - left mouse / touch: one-finger move
 //    Zoom - middle mouse, or mousewheel / touch: two-finger spread or squish
 //    Pan - right mouse, or left mouse + ctrl/meta/shiftKey, or arrow keys / touch: two-finger move
+
+let mouseCoords = new Vector2()
 
 var OrbitControls = function (object, domElement) {
 
@@ -26,6 +30,8 @@ var OrbitControls = function (object, domElement) {
 	// Set to false to disable this control
 	this.enabled = true
 	this.usedAI = false
+
+	this.mouse = new Vector2()
 
 	// "target" sets the location of focus, where the object orbits around
 	this.target = new Vector3()
@@ -156,6 +162,15 @@ var OrbitControls = function (object, domElement) {
 
 
 		return function update() {
+
+			this.mouse = mouseCoords
+
+			if(this.enabled){
+					
+					// console.log(state);
+					store.state.radiologist.updateCursor(state)
+				
+			}
 
 			var position = scope.object.position
 
@@ -433,8 +448,9 @@ var OrbitControls = function (object, domElement) {
 
 		var offset = new Vector3()
 
-		return function pan(deltaX, deltaY) {
+	
 
+		return function pan(deltaX, deltaY) {
 			var element = scope.domElement
 
 			if (scope.object.isPerspectiveCamera) {
@@ -950,17 +966,18 @@ var OrbitControls = function (object, domElement) {
 		}
 
 		if (state !== STATE.NONE) {
-
 			scope.domElement.ownerDocument.addEventListener('pointermove', onPointerMove)
 			scope.domElement.ownerDocument.addEventListener('pointerup', onPointerUp)
 
 			scope.dispatchEvent(startEvent)
-
 		}
 
 	}
 
 	function onMouseMove(event) {
+		mouseCoords.x = event.clientX
+		mouseCoords.y = event.clientY
+		// console.log(event.target);
 
 		if (scope.enabled === false) return
 
@@ -1012,7 +1029,7 @@ var OrbitControls = function (object, domElement) {
 	}
 
 	function onMouseWheel(event) {
-
+		// store.state.radiologist.updateCursor(1)
 		if (scope.enabled === false || scope.enableZoom === false || (state !== STATE.NONE && state !== STATE.ROTATE)) return
 
 		event.preventDefault()
