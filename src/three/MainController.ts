@@ -131,7 +131,7 @@ export default class MainController {
     this.radio = new Radio(
       this.camera,
       this.raycaster,
-      MouseController.mouseVec2,
+      MouseController.Vec2,
       this.controls,
       this.pane,
       this.renderer,
@@ -292,6 +292,7 @@ export default class MainController {
 
   render = (dt = 0) => {
     this.renderer.render(this.scene, this.camera);
+    this.raycaster.setFromCamera(MouseController.Vec2, this.camera);
     this.Benchmark?.checkFPS(dt);
     MouseController.setFromViewport(this.viewport);
     // this.Loader && this.Loader.update(dt)

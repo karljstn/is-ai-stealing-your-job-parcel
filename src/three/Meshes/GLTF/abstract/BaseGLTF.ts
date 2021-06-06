@@ -10,6 +10,7 @@ import {
   PerspectiveCamera,
   Raycaster,
   Scene,
+  ShaderMaterial,
   Vector3,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -23,6 +24,7 @@ import {
 import LoadManager from "~/three/Singletons/LoadManager";
 import { getViewport, rectToThree } from "~util";
 import MouseController from "~singletons/MouseController";
+import gsap from "gsap";
 
 abstract class BaseGLTF {
   params: { [name: string]: any };
@@ -42,8 +44,6 @@ abstract class BaseGLTF {
   intersects: Intersection[];
 
   RAFKey: string;
-  originalPos: Vector3;
-
   group: Group;
   animations: AnimationClip[];
   actions: AnimationAction[];
@@ -52,6 +52,8 @@ abstract class BaseGLTF {
   isLoaded: boolean;
   rectToThree: ReturnType<typeof rectToThree>;
   rectName: string;
+  isResetting: boolean;
+  groupOriginalPosition: Vector3;
 
   constructor({
     scene,
@@ -100,12 +102,12 @@ abstract class BaseGLTF {
     this.raycaster = raycaster;
 
     this.RAFKey = (performance.now() * Math.random()).toString();
-    this.originalPos = new Vector3();
     this.group = new Group();
     this.animations = [];
     this.actions = [];
     this.loader = new GLTFLoader(LoadManager.manager);
     this.isLoaded = false;
+    this.isResetting = false;
   }
 
   load = (url: string) =>
@@ -115,8 +117,9 @@ abstract class BaseGLTF {
         (gltf) => {
           gltf.scene.scale.setScalar(0);
           this.group = gltf.scene;
-          this.animations = gltf.animations;
+          this.groupOriginalPosition = this.group.position;
 
+          this.animations = gltf.animations;
           this.mixer = new AnimationMixer(this.group);
           this.mixer.timeScale = this.params.animation.timeScale;
 
@@ -128,7 +131,6 @@ abstract class BaseGLTF {
           }
 
           this.group.position.add(this.params.base.offset.position);
-          this.originalPos.copy(this.group.position);
           this.group.rotation.setFromVector3(this.params.base.offset.rotation);
           this.scene.add(this.group);
           if (this.MATERIAL) this.setMaterial(this.MATERIAL);
@@ -156,6 +158,52 @@ abstract class BaseGLTF {
     }
   };
 
+  hoverFresnel = (toggle: boolean) => {
+    if (!this.group) return;
+
+    if (toggle) {
+      this.group.traverse((obj) => {
+        const mesh = obj as Mesh;
+        const mat = mesh.material as ShaderMaterial;
+
+        if (mat) {
+          gsap.to(mat.uniforms.uFresnelWidth, { value: 0.5, duration: 1.2 });
+        }
+      });
+    } else {
+      this.group.traverse((obj) => {
+        const mesh = obj as Mesh;
+        const mat = mesh.material as ShaderMaterial;
+
+        if (mat) {
+          gsap.to(mat.uniforms.uFresnelWidth, { value: 0, duration: 0.75 });
+        }
+      });
+    }
+  };
+
+  reset = (duration = 0) => {
+    this.isResetting = true;
+    this.group.traverse((obj) => {
+      for (const tween of obj.userData.tweens) {
+        tween && tween.kill();
+      }
+
+      gsap.to(obj.position, {
+        duration,
+        x: obj.userData.original.position.x,
+        y: obj.userData.original.position.y,
+        z: obj.userData.original.position.z,
+      });
+      gsap.to(obj.rotation, {
+        duration,
+        x: obj.userData.original.rotation.x,
+        y: obj.userData.original.rotation.y,
+        z: obj.userData.original.rotation.z,
+      });
+    });
+  };
+
   setMaterial = (material: Material) => {
     this.group.traverse((object3D) => {
       const mesh = object3D as Mesh;
@@ -169,7 +217,8 @@ abstract class BaseGLTF {
 
   setFromRect = () => {
     const { x, y, w, h } = this.getFromRect();
-    this.group.position.copy(this.GET_OFFSET_FROM_RECT({ x, y, w, h }));
+    if (this.GET_OFFSET_FROM_RECT)
+      this.group.position.copy(this.GET_OFFSET_FROM_RECT({ x, y, w, h }));
   };
 
   click = () => this.ON_CLICK(this);
@@ -185,8 +234,6 @@ abstract class BaseGLTF {
     if (this.ON_UPDATE) this.ON_UPDATE(this, dt);
 
     if (this.ON_RAYCAST) {
-      this.raycaster.setFromCamera(MouseController.mouseVec2, this.camera);
-
       this.intersects = this.raycaster.intersectObjects(
         this.group.children,
         true

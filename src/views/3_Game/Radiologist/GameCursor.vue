@@ -6,7 +6,6 @@
 import Vue from "vue";
 import MouseController from "~/singletons/MouseController";
 import RAF from "~/singletons/RAF";
-import store from "~/store";
 import gsap from "gsap";
 export default Vue.extend({
   mounted() {
@@ -41,12 +40,8 @@ export default Vue.extend({
       //  (e.clientX / window.innerWidth) * 2 - 1
 
       gsap.to(this.$refs.cursor, {
-        x:
-          MouseController.mouseVec2Viewport.x -
-          this.$refs.cursor.offsetWidth / 2,
-        y:
-          MouseController.mouseVec2Viewport.y -
-          this.$refs.cursor.offsetHeight / 1,
+        x: MouseController.mouseVec2Raw.x - this.$refs.cursor.offsetWidth / 2,
+        y: MouseController.mouseVec2Raw.y - this.$refs.cursor.offsetHeight / 1,
       });
     },
   },
