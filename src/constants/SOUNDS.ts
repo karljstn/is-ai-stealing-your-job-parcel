@@ -1,12 +1,14 @@
 import { Howl } from "howler";
-import background from "~/assets/Sounds/bg_music_begin.mp3";
-import scrollTo from "~/assets/Sounds/scrollto.mp3";
+import minigameMusic from "~/assets/Sounds/General/music/la_musique_du_jeu_ouais.mp3";
+import backgroundMusic from "~/assets/Sounds/General/music/la_musique_du_site_ouais.mp3";
+import scrollToThrowYourBiasesAway from "~/assets/Sounds/General/voices/ai/michael/1.scrollto_michael.mp3";
 
 export const SOUNDS = {
-  background_begin: new Howl({
-    src: background,
+  backgroundMusic: new Howl({
+    src: backgroundMusic,
   }),
-  scrollTo: new Howl({
-    src: scrollTo,
+  minigameMusic: new Howl({
+    src: minigameMusic,
   }),
+  scrollToThrowYourBiasesAway: new Howl({ src: scrollToThrowYourBiasesAway }),
 };

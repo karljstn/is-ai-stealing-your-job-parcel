@@ -38,7 +38,7 @@
     </div>
     <div class="form">
       <QuestionForm>
-        <Button value="yes">Next</Button>
+        <button><img src="~/assets/Images/Arrow 1.svg" alt="arrow" /></button>
       </QuestionForm>
     </div>
   </section>
@@ -63,6 +63,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .article {
+  max-width: 1200px;
   width: 85vw;
   position: relative;
 
@@ -114,6 +115,16 @@ export default Vue.extend({
   /* Hide scrollbar for Chrome, Safari and Opera */
   .article__content::-webkit-scrollbar {
     display: none;
+  }
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  svg {
+    cursor: pointer;
   }
 }
 

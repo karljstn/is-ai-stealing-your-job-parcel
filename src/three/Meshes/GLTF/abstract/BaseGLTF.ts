@@ -233,12 +233,11 @@ abstract class BaseGLTF {
 
     if (this.ON_UPDATE) this.ON_UPDATE(this, dt);
 
+    this.intersects = this.raycaster.intersectObjects(
+      this.group.children,
+      true
+    );
     if (this.ON_RAYCAST) {
-      this.intersects = this.raycaster.intersectObjects(
-        this.group.children,
-        true
-      );
-
       this.ON_RAYCAST(this.intersects, this);
     }
 

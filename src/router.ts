@@ -20,8 +20,8 @@ import GameTwo from "~/views/3_Game/2_GameRadiology.vue";
 import EndOne from "~views/4_End/1_EndHard.vue";
 import EndTwo from "~views/4_End/2_EndExample.vue";
 import EndThree from "~views/4_End/3_EndArticle.vue";
-// import EndFour from "~views/4_End/4_EndChangedYourMind.vue";
-import EndFive from "~views/4_End/5_EndRemedy.vue";
+import EndFive from "~views/4_End/4_EndRemedy.vue";
+import EndSix from "~views/4_End/5_EndChangedYourMind.vue";
 import Outro from "~views/5_Epilogue/1_EpilogueMenu.vue";
 import OutroRessources from "~views/5_Epilogue/2_EpilogueRessources.vue";
 import OutroShare from "~views/5_Epilogue/3_EpilogueShare.vue";
@@ -464,13 +464,53 @@ const routes = [
     },
   },
   {
+    path: "/18",
+    component: EndSix,
+    name: "EndSix",
+    meta: {
+      color: PALETTE.BLACK,
+      scroll: { disabled: false },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
+    },
+  },
+  {
     path: "/outro",
     component: Outro,
     name: "Outro",
     meta: {
       color: PALETTE.LIGHTPINK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   {

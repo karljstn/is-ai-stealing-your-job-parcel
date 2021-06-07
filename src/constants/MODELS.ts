@@ -25,8 +25,19 @@ import penPaper from "~assets/Models/pen-paper/Stylo2.glb";
 import penPaperBake from "~assets/Models/pen-paper/bake.jpg";
 import tree from "~assets/Models/tree/TREE2.glb";
 import handSmall from "~assets/Models/hand-small/HAND PETIT_2_fixorigin.glb";
+import outroClock from "~assets/Models/outro-clock/CLOCK.glb";
+
+import random from "canvas-sketch-util/random";
+import m8ball1 from "~assets/Models/magic-8/MAGIC 8-Artificial intelli-what _ blend.glb";
+import m8ball2 from "~assets/Models/magic-8/MAGIC 8-Humanity is doomed .glb";
+import m8ball3 from "~assets/Models/magic-8/MAGIC 8-Lots of people are going to lose their jobs.glb";
+import m8ball4 from "~assets/Models/magic-8/MAGIC 8-No machine is going to replace ME !.glb";
+import m8ball5 from "~assets/Models/magic-8/MAGIC 8-Nothing will really change .glb";
+import m8ball6 from "~assets/Models/magic-8/MAGIC 8-Our lives will improve.glb";
+import m8ball7 from "~assets/Models/magic-8/MAGIC 8-Things will even themselves out.glb";
+
 import { MODEL } from "~types";
-import { LoopOnce, LoopRepeat } from "three";
+import { LoopOnce, LoopPingPong } from "three";
 
 export const MODELS: { [name: string]: MODEL } = {
   HAND_WAVE: {
@@ -126,4 +137,46 @@ export const MODELS: { [name: string]: MODEL } = {
     BASE_SCALE: 0.07,
     ANIMATION_LOOP: LoopOnce,
   },
+  OUTRO_CLOCK: {
+    URL: outroClock,
+    BASE_SCALE: 0.25,
+    ANIMATION_LOOP: LoopPingPong,
+  },
+};
+
+const rand = random;
+
+export const GET_MAGIC_8_BALL = () => {
+  const getUrl = () => {
+    switch (rand.rangeFloor(1, 6)) {
+      case 1:
+        return m8ball1;
+
+      case 2:
+        return m8ball2;
+
+      case 3:
+        return m8ball3;
+
+      case 4:
+        return m8ball4;
+
+      case 5:
+        return m8ball5;
+
+      case 6:
+        return m8ball6;
+
+      case 7:
+        return m8ball7;
+
+      default:
+        return m8ball1;
+    }
+  };
+  return {
+    URL: getUrl(),
+    BASE_SCALE: 0.4,
+    ANIMATION_LOOP: LoopOnce,
+  };
 };
