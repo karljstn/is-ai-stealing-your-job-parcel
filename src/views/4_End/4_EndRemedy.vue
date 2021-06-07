@@ -154,16 +154,16 @@ export default Vue.extend({
       entries.forEach(({ target, isIntersecting }) => {
         // do something ...
         if (target.className === "section-1") {
-          console.log("target 1", isIntersecting);
+          // console.log("target 1", isIntersecting);
           if (isIntersecting) fadeBackground({ color: "#FBF3EA" });
         }
         if (target.className === "section-2") {
           if (isIntersecting) fadeBackground({ color: "#F1B932" });
-          console.log("target 2", isIntersecting);
+          // console.log("target 2", isIntersecting);
         }
         if (target.className === "section-3") {
           if (isIntersecting) fadeBackground({ color: "#5D34FE" });
-          console.log("target 3", isIntersecting);
+          // console.log("target 3", isIntersecting);
         }
         // console.log(target);
         // console.log(isIntersecting);

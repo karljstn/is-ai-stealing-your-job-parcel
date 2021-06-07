@@ -36,28 +36,14 @@ export default Vue.extend({
   },
 
   destroyed() {
-    console.log("clear interval");
-
     clearInterval(this.interval);
-  },
-  methods: {
-    // clock() {
-    //   this.interval = setInterval(() => {
-    //     console.log("mounted");
-    //     if (this.progress === this.duration) {
-    //       console.log("clear interval");
-    //       clearInterval(this.interval);
-    //     }
-    //     this.progress++;
-    //   });
-    // },
   },
 });
 </script>
 
 <style lang="scss" scoped>
 .notification-content {
-  font-size: 0.9em;
+  font-size: 0.5em;
 }
 .bar {
   position: absolute;

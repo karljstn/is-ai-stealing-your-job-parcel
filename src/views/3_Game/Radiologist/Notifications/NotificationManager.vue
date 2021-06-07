@@ -23,6 +23,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Notification from "./Notification.vue";
+import store from '~/store'
 
 export default Vue.extend({
   data(): { notifications: Object[]; index: number } {
@@ -32,10 +33,13 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.addNotification(5000, "bonjour");
+    // this.addNotification(5000, "bonjour");
+    // this.addNotification(5000, "bonjour");
     // setTimeout(() => {
     //   this.addNotification(2000, "bonsoir");
     // }, 1000);
+
+    store.commit('setAddNotification', this.addNotification)
   },
   components: {
     Notification,

@@ -32,6 +32,12 @@ import Folder from "./Folder.vue";
 
 import store from "~/store";
 
+const notifications = [
+  'A new file just arrived, hurry and finish the one you are treating!',
+  'And one more file!',
+  `Wow, that's a lot of files accumulating...`
+]
+
 export default Vue.extend({
   props: ["timerCanStart", "help"],
   data(): {
@@ -42,6 +48,7 @@ export default Vue.extend({
     interval: any;
     ticker: any;
     timeElapsed: number;
+    notification: number
   } {
     return {
       casesPending: [],
@@ -51,6 +58,7 @@ export default Vue.extend({
       interval: 0,
       ticker: 0,
       timeElapsed: 0,
+      notification: 0
     };
   },
   mounted() {
@@ -98,7 +106,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    start() {=
+    start() {
       this.addFolder();
 
       this.ticker = setInterval(() => {
@@ -117,6 +125,9 @@ export default Vue.extend({
           duration: this.duration,
           index: this.index++,
         });
+
+        store.state.radiologist.addNotification(15000, notifications[this.notification])
+        this.notification++
       }
     },
     removeFolder(index: number) {

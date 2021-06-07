@@ -70,6 +70,7 @@ export type StoreState = {
     addFolder: Function;
     updateCursor: Function;
     canvasClass: Function;
+    addNotification: Function;
     gameEnded: boolean;
     results: {
       AIused: number;

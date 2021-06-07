@@ -1,9 +1,12 @@
 <template>
+
+
 <div class="ressource-wrapper">
     <div class="ressource" v-on:click="active = !active">
         <span class="subtitle">{{data.name}}</span>
         <span class="toggle" :class="active ? 'toggle-active' : ''"></span>
     </div>
+        <transition name="slide-fade">
     <div class="content" v-if="active">
         <a
         v-for="(item, index) in data.data"
@@ -14,7 +17,9 @@
         {{item.title}}
         </a>
     </div>
+        </transition>
 </div>
+
 
 </template>
 
@@ -32,6 +37,18 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.slide-fade-enter-active {
+  transition: all .3;
+}
+.slide-fade-leave-active {
+  transition: all .3s;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
     .ressource-wrapper{
         border-bottom: solid white 1px;
             padding: 10px 0;
