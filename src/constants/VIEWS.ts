@@ -9,9 +9,9 @@ import {
 import router from "~router";
 import store from "~store";
 import { GLTF_TYPE, VIEW, Viewport } from "~types";
-import { clamp } from "~util";
+import { clamp, map } from "~util";
 import { MATERIALS } from "./MATERIALS";
-import { MODELS } from "./MODELS";
+import { MODELS, GET_MAGIC_8_BALL } from "./MODELS";
 import MouseController from "~singletons/MouseController";
 import gsap from "gsap";
 import { PALETTE } from "./PALETTE";
@@ -24,9 +24,10 @@ export const VIEWS: VIEW[] = [
         TYPE: GLTF_TYPE.TWEENED,
         MODEL: MODELS.TRASHCAN,
         IDLE: { enabled: false },
-        ON_START: (group: Group, viewport: Viewport) => {
+        ON_START: (group: Group, viewport: Viewport, binding) => {
           group.rotateY(-Math.PI / 2);
           group.position.y = -viewport.height / 2.7;
+          binding.params.sinus.amplitude *= 1.5;
         },
         ON_RAYCAST: (intersections, binding) => {
           if (!!intersections[0]) {
@@ -461,6 +462,7 @@ export const VIEWS: VIEW[] = [
     GLTF_MESHES: [
       {
         TYPE: GLTF_TYPE.TWEENED,
+        DELAY: { in: 1.2, out: 0 },
         MODEL: MODELS.EMOJI_DISTRAUGHT,
         GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
           new Vector3(x + w / 2 + w / 3.5, y - h + h / 4, 0),
@@ -505,6 +507,108 @@ export const VIEWS: VIEW[] = [
         ON_RAYCAST: (intersects, binding) => {
           if (intersects.length) {
             binding.playAllAnims();
+          }
+        },
+      },
+    ],
+  },
+  {
+    ROUTE_NAME: "EndSix",
+    ON_START: (view) => {
+      const light = new PointLight();
+      light.position.x = view.viewport.width / 4;
+      light.position.y = view.viewport.height / 4;
+      light.position.z = 1;
+      light.intensity = 5;
+      view.scene.add(light);
+      view.objects.push(light);
+    },
+    ON_DESTROY: (view) => {
+      for (const object of view.objects) {
+        view.scene.remove(object);
+      }
+    },
+    GLTF_MESHES: [
+      {
+        DELAY: { in: 0, out: 0 },
+        TYPE: GLTF_TYPE.MOUSED,
+        MODEL: GET_MAGIC_8_BALL(),
+        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
+          new Vector3(x + w / 2, y - h / 2, 0),
+        ON_START: (g, v, b) => {
+          b.params.sinus.frequency *= 0.5;
+        },
+        ON_CLICK: (binding) => {
+          if (binding.intersects.length) {
+            binding.playAllAnims();
+          }
+        },
+        ON_RAYCAST: (intersects) => {
+          if (intersects.length) {
+            document.querySelector("html").classList.add("cursor-pointer");
+          } else {
+            document.querySelector("html").classList.remove("cursor-pointer");
+          }
+        },
+      },
+    ],
+  },
+
+  {
+    ROUTE_NAME: "Outro",
+    ON_START: (view) => {
+      const light = new PointLight();
+      light.position.x = 0.1;
+      light.position.y = 0.54;
+      light.position.z = 0.1;
+      light.intensity = 0.66;
+      view.scene.add(light);
+      view.objects.push(light);
+    },
+    ON_DESTROY: (view) => {
+      for (const object of view.objects) {
+        view.scene.remove(object);
+      }
+    },
+    GLTF_MESHES: [
+      {
+        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
+          new Vector3(x + w * 1.05, y - h / 2, 0),
+        DELAY: { in: 0, out: 0 },
+        TYPE: GLTF_TYPE.TWEENED,
+        MODEL: MODELS.OUTRO_CLOCK,
+        ON_START: (g, v, b) => {
+          b.group.rotateY(-Math.PI / 6);
+          b.group.rotateX(-Math.PI / 8);
+          b.playAllAnims();
+          b.params.sinus.frequency *= 0.5;
+        },
+        ON_RAYCAST: (intersects, binding) => {
+          if (intersects.length) {
+            binding.playAllAnims();
+
+            const object = binding.group;
+
+            if (object.userData.tweens[0]) return; //is tweening
+
+            const factor = clamp(MouseController.speed - 0.95, 0, 3.5);
+            const duration = clamp(0.25 * factor, 0.25, 3);
+            const target = map(
+              Math.random() * factor,
+              0,
+              3,
+              -Math.PI / 5,
+              Math.PI / 5
+            );
+
+            object.userData.tweens[0] = gsap.to(object.rotation, {
+              duration,
+              x: target,
+              y: target,
+              onComplete: () => {
+                object.userData.tweens[0] = null;
+              },
+            });
           }
         },
       },

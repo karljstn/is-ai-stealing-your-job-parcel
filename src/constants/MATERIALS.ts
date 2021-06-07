@@ -5,8 +5,10 @@ import {
   TextureLoader,
 } from "three";
 import { MODEL } from "~types";
-import fragment from "~shaders/bakedFresnelEven/fragment.glsl";
-import vertex from "~shaders/bakedFresnelEven/vertex.glsl";
+import bakedFresnelFragment from "~shaders/bakedFresnelEven/fragment.glsl";
+import bakedFresnelVertex from "~shaders/bakedFresnelEven/vertex.glsl";
+import fresnelFragment from "~shaders/fresnel/fragment.glsl";
+import fresnelVertex from "~shaders/fresnel/vertex.glsl";
 
 export const MATERIALS = {
   GET_FRESNEL_BAKED: (MODEL: MODEL) => {
@@ -15,8 +17,8 @@ export const MATERIALS = {
     const tex = new TextureLoader().load(MODEL.TEXTURE);
     tex.flipY = false;
     return new ShaderMaterial({
-      vertexShader: vertex,
-      fragmentShader: fragment,
+      vertexShader: bakedFresnelVertex,
+      fragmentShader: bakedFresnelFragment,
       uniforms: {
         uMap: { value: tex },
         uFresnelColor: {
@@ -28,6 +30,17 @@ export const MATERIALS = {
       },
     });
   },
-  GET_LAMBERT: (color: string = "#F4933B") =>
-    new MeshLambertMaterial({ color }),
+  GET_FRESNEL: (color = "#fff") =>
+    new ShaderMaterial({
+      vertexShader: bakedFresnelVertex,
+      fragmentShader: bakedFresnelFragment,
+      uniforms: {
+        uFresnelColor: {
+          value: new Color(color),
+        },
+        uFresnelWidth: {
+          value: 0,
+        },
+      },
+    }),
 };

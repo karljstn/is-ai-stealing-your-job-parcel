@@ -63,6 +63,7 @@ export default Vue.extend({
 
 	&.hide {
 		opacity: 0;
+    pointer-events: none;
 	}
 
 	p {
