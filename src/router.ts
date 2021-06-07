@@ -521,15 +521,6 @@ const routes = [
     },
   },
   {
-    path: "/outro/ressources",
-    component: Ressources,
-    name: "OutroRessources",
-    meta: {
-      scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
-    },
-  },
-  {
     path: "/outro/share",
     component: OutroShare,
     name: "OutroShare",

@@ -18,7 +18,7 @@
 
         <span>Play again</span></router-link
       >
-      <router-link to="/outro/ressources"
+      <router-link to="/ressources"
         ><svg
           width="131"
           height="52"
