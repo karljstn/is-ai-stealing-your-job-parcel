@@ -10,6 +10,7 @@ import { Vector2 } from "three";
 import { PALETTE } from "~constants/PALETTE";
 // import n from 'noisejs';
 // const noise = new n.Noise(Math.random());
+import AudioController from "~/singletons/AudioController";
 
 export default Vue.extend({
   name: "CanvasThree",
@@ -51,6 +52,8 @@ export default Vue.extend({
       current.set(scaled.x, scaled.y);
 
       if (mapped.x > 0 && mapped.x < 1 && mapped.y > 0 && mapped.y < 1) {
+        AudioController.play("pen");
+
         const d = origin.distanceTo(current);
         if (d > params.finishDistance && !store.state.isPencilFinished) {
           store.commit("setPencilFinished", true);

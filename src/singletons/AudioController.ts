@@ -1,39 +1,45 @@
-import { SOUNDS, SOUND } from '~/constants/SOUNDS'
-// import { Howl } from 'howler'
+import { SOUNDS, SOUND, getSound } from "~/constants/SOUNDS";
 
-class AudioController{
-    activeSounds: SOUND[]
+//TODO: factorize get sound and unique check
+class AudioController {
+  activeSounds: SOUND[];
 
-    constructor(){
-        this.activeSounds = []
-    }
+  constructor() {
+    this.activeSounds = [];
+  }
 
-    play = (id: string) => {
-        console.log('zebi');
-        
-        const sound = SOUNDS.find(SOUND => SOUND.id === id)
-        if(!sound) return new Error('azy mec ton son id est pete')
+  play = (id: string) => {
+    const sound = getSound(id);
+    if (!sound) return new Error("wrong sound id");
 
-        const active = this.activeSounds.find(activeSound => activeSound.id === sound.id)
-        
-        if(sound.isUnique && !!active) return null
+    const active = this.activeSounds.find(
+      (activeSound) => activeSound.id === sound.id
+    );
+    if (sound.isUnique && !!active) return null; // Already playing and is tagged as isUnique
 
-        this.activeSounds.push(sound)
-        sound.howl.play()
-        console.log('play')
-        
-        sound.howl.on('end', () => {
-            console.log(this.activeSounds)
-            const activeIndex = this.activeSounds.findIndex(activeSound => activeSound.id === sound.id)
+    this.activeSounds.push(sound);
+    sound.howl.play();
+    sound.howl.on("end", () => {
+      const activeIndex = this.activeSounds.findIndex(
+        (activeSound) => activeSound.id === sound.id
+      );
 
-            if(activeIndex) this.activeSounds.splice(activeIndex, 1)
+      if (activeIndex) this.activeSounds.splice(activeIndex, 1);
+    });
+  };
 
-            console.log(this.activeSounds)
-        });
+  stop = (id: string) => {
+    const sound = getSound(id);
+    if (!sound) return new Error("wrong sound id");
 
-        return null
-    }
+    const active = this.activeSounds.find(
+      (activeSound) => activeSound.id === sound.id
+    );
+    if (!active) return; // Not playing
+
+    active.howl.stop();
+  };
 }
 
-const instance = new AudioController()
-export default instance
+const instance = new AudioController();
+export default instance;

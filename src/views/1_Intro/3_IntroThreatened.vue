@@ -4,6 +4,8 @@
       routeName="IntroThreatened"
       :lottieURL="lottie"
       lottieScale="1"
+      voiceID="youreHere"
+      :voiceDelay="1450"
     />
   </section>
 </template>

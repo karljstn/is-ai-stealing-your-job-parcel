@@ -19,14 +19,17 @@
   </section>
 </template>
 
-<script>
-import Button from "~/components/UI/Button";
-import QuestionForm from "~/components/UI/QuestionForm";
-import CanvasDraw from "~/components/Canvas/CanvasDraw";
+<script lang="ts">
+import Button from "~/components/UI/Button.vue";
+import QuestionForm from "~/components/UI/QuestionForm.vue";
+import CanvasDraw from "~/components/Canvas/CanvasDraw.vue";
 import Vue from "vue";
 import store from "~store";
 import { fadeBackground } from "~util";
 import { VIEWS } from "~constants/VIEWS";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
   components: {
@@ -63,12 +66,19 @@ export default Vue.extend({
         }, 1000);
       }
     }, 64);
+
+    voiceTimeout = setTimeout(
+      () => AudioController.play("firstandforemost"),
+      100
+    );
   },
   destroyed() {
     const threeView = store.state.sceneManager.threeViews.get(
       VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "DefinitionTwo")
     );
     threeView.destroy();
+    clearTimeout(voiceTimeout);
+    AudioController.stop("firstandforemost");
   },
 });
 </script>
@@ -103,8 +113,8 @@ section {
   }
 
   .canvas-container {
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
     clip-path: polygon(
       50% 0%,
       80% 10%,
@@ -123,8 +133,8 @@ section {
     align-items: center;
 
     canvas {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       clip-path: polygon(
         50% 0%,
         80% 10%,

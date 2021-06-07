@@ -15,10 +15,13 @@ import { MODELS, GET_MAGIC_8_BALL } from "./MODELS";
 import MouseController from "~singletons/MouseController";
 import gsap from "gsap";
 import { PALETTE } from "./PALETTE";
+import { getSound, SOUNDS } from "./SOUNDS";
+import AudioController from "~/singletons/AudioController";
 
 export const VIEWS: VIEW[] = [
   {
     ROUTE_NAME: "LandingPage",
+    VOICE: getSound("scrollToThrowYourBiasesAway"),
     GLTF_MESHES: [
       {
         TYPE: GLTF_TYPE.TWEENED,
@@ -227,15 +230,25 @@ export const VIEWS: VIEW[] = [
         MODEL: MODELS.EMOJI_GLASSES,
         MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_GLASSES),
         DELAY: { in: 0.0, out: 0 },
-        ON_START: (group, viewport) => {
-          group.position.x -= viewport.width / 6.5;
-          group.position.y -= viewport.height / 10;
+        ON_START: (group, viewport, binding) => {
+          // group.position.x -= viewport.width / 6.5;
+          // group.position.y -= viewport.height / 10;
+
+          //TODO: fix this abomination
+          const el = document.getElementById("yes");
+
+          if (el) {
+            const { x, y, w, h } = binding.getFromRect(el);
+            group.position.x = x + w / 2;
+            group.position.y = y - h / 2;
+          }
         },
         ON_RAYCAST: (intersects, binding) => {
           if (intersects.length) {
-            //for some reason this needs to be different that the other raycast
+            //for some reason this needs to be different than the other raycast
             document.querySelector("html").style.cursor = "pointer";
             binding.hoverFresnel(true);
+            AudioController.play("confiant");
           } else {
             document.querySelector("html").style.cursor = "";
             binding.hoverFresnel(false);
@@ -259,14 +272,21 @@ export const VIEWS: VIEW[] = [
         MODEL: MODELS.EMOJI_SAD,
         MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_SAD),
         DELAY: { in: 0.5, out: 0 },
-        ON_START: (group, viewport) => {
-          group.position.x += viewport.width / 5.8;
-          group.position.y -= viewport.height / 10;
+        ON_START: (group, viewport, binding) => {
+          //TODO: fix this abomination
+          const el = document.getElementById("no");
+
+          if (el) {
+            const { x, y, w, h } = binding.getFromRect(el);
+            group.position.x = x + w / 2;
+            group.position.y = y - h / 2;
+          }
         },
         ON_RAYCAST: (intersects, binding) => {
           if (intersects.length) {
             document.querySelector("html").classList.add("cursor-pointer");
             binding.hoverFresnel(true);
+            AudioController.play("inquiet");
           } else {
             document.querySelector("html").classList.remove("cursor-pointer");
             binding.hoverFresnel(false);

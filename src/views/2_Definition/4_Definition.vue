@@ -4,6 +4,8 @@
       routeName="DefinitionFour"
       :lottieURL="lottie"
       lottieScale="1"
+      voiceID="devicesthatperceivetheirenvironment"
+      :voiceDelay="1050"
     />
   </section>
 </template>

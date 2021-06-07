@@ -211,8 +211,8 @@ abstract class BaseGLTF {
     });
   };
 
-  getFromRect = () => {
-    return rectToThree(this.viewport, this.rectElement.getBoundingClientRect());
+  getFromRect = (el = this.rectElement) => {
+    return rectToThree(this.viewport, el.getBoundingClientRect());
   };
 
   setFromRect = () => {

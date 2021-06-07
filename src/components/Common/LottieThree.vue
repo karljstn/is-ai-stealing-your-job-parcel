@@ -13,9 +13,12 @@ import LottieAnimation from "lottie-web-vue";
 import SaveRect from "~components/Common/SaveRect.vue";
 import store from "~store";
 import { VIEWS } from "~constants/VIEWS";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
-  props: ["routeName", "lottieURL", "lottieScale", "onMount", "onDestroy"],
+  props: ["routeName", "lottieURL", "lottieScale", "voiceID", "voiceDelay"],
   components: {
     LottieAnimation,
     SaveRect,
@@ -28,18 +31,20 @@ export default Vue.extend({
 
     this.$nextTick(() => {
       const rectElement = this.$refs.rect;
-
       if (threeView) threeView.start(rectElement);
 
       fadeBackground({ routeName: this.routeName });
 
-      if (typeof this.onMount === "function") this.onMount();
+      if (this.voiceID)
+        voiceTimeout = setTimeout(
+          () => AudioController.play(this.voiceID),
+          this.voiceDelay
+        );
 
       // Hot reloading
       if (!module.hot) return;
       module.hot.dispose(() => {
         threeView.destroy();
-        if (typeof this.onDestroy === "function") this.onDestroy();
       });
     });
   },
@@ -49,8 +54,10 @@ export default Vue.extend({
     );
 
     if (threeView) threeView.destroy();
-
-    if (typeof this.onDestroy === "function") this.onDestroy();
+    if (this.voiceID) {
+      clearTimeout(voiceTimeout);
+      AudioController.stop(this.voiceID);
+    }
   },
 });
 </script>
