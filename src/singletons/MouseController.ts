@@ -1,48 +1,47 @@
-import { Vector2, Vector3 } from "three"
-import { Viewport } from "~types"
-import store from '~/store'
+import { Vector2, Vector3 } from "three";
+import { Viewport } from "~types";
 
 class MouseController {
-	mouseVec3: Vector3 // Useful for distance and lookAt() logic
-	mouseVec2: Vector2 // Useful for raycasts
-	mouseVec3Viewport: Vector3 // Useful for responsive
-	mouseVec2Viewport: Vector2 // For the cursor in the game
-	elemDOM: HTMLElement
+  Vec3: Vector3; // Useful for distance and lookAt() logic
+  Vec2: Vector2; // Useful for raycasts
+  Vec3Viewport: Vector3; // Useful for responsive
+  raw: { current: Vector2; previous: Vector2 }; // For the cursor in the game
+  speed: number;
 
-	constructor() {
-		this.mouseVec3 = new Vector3()
-		this.mouseVec2 = new Vector2()
-		this.mouseVec3Viewport = new Vector3()
-		this.mouseVec2Viewport = new Vector2()
+  constructor() {
+    this.Vec3 = new Vector3();
+    this.Vec2 = new Vector2();
+    this.Vec3Viewport = new Vector3();
+    this.raw = { current: new Vector2(), previous: new Vector2() };
+    this.speed = 0;
 
-		this.elemDOM = null
+    this.setEvents();
+  }
 
-		this.setEvents()
-	}
+  setFromViewport = (viewport: Viewport) => {
+    this.Vec3Viewport.x = this.Vec3.x * (viewport.width / 2);
+    this.Vec3Viewport.y = this.Vec3.y * (viewport.height / 2);
+  };
 
-	setFromViewport = (viewport: Viewport) => {
-		this.mouseVec3Viewport.x = this.mouseVec3.x * (viewport.width / 2)
-		this.mouseVec3Viewport.y = this.mouseVec3.y * (viewport.height / 2)
-	}
+  mousemove = (e: MouseEvent) => {
+    this.Vec3.x = (e.clientX / window.innerWidth) * 2 - 1;
+    this.Vec3.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-	mousemove = (e: MouseEvent) => {
-		this.mouseVec3.x = (e.clientX / window.innerWidth) * 2 - 1
-		this.mouseVec3.y = -(e.clientY / window.innerHeight) * 2 + 1
+    this.Vec2.x = this.Vec3.x;
+    this.Vec2.y = this.Vec3.y;
 
-		this.mouseVec2.x = this.mouseVec3.x
-		this.mouseVec2.y = this.mouseVec3.y
+    this.raw.previous.copy(this.raw.current);
 
-		this.mouseVec2Viewport.x = e.clientX
-		this.mouseVec2Viewport.y = e.clientY
+    this.raw.current.x = e.clientX;
+    this.raw.current.y = e.clientY;
 
-		this.elemDOM = e.target.nodeName
-		// if(e.target.nodeName !== 'CANVAS') 
-	}
+    this.speed = this.raw.previous.distanceTo(this.raw.current);
+  };
 
-	setEvents = () => {
-		window.addEventListener("mousemove", this.mousemove)
-	}
+  setEvents = () => {
+    window.addEventListener("mousemove", this.mousemove);
+  };
 }
 
-const instance = new MouseController()
-export default instance
+const instance = new MouseController();
+export default instance;

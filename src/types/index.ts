@@ -14,6 +14,10 @@ import MainController from "~three/MainController";
 import { CustomEase } from "gsap/all";
 import Tweakpane from "tweakpane";
 import BezierEasing from "bezier-easing";
+import ThreeView from "~three/ThreeView";
+import BaseGLTF from "~three/Meshes/GLTF/abstract/BaseGLTF";
+import TweenGLTF from "~three/Meshes/GLTF/abstract/TweenGLTF";
+import MouseTweenGLTF from "~three/Meshes/GLTF/abstract/MouseTweenGLTF";
 
 export type Viewport = {
   height: number;
@@ -111,16 +115,28 @@ export type VIEW_GLTF = {
   DELAY?: { in: number; out: number };
   MATERIAL?: Material;
   IDLE?: IDLE;
-  ON_START?: (group: Group, viewport: Viewport, binding: any) => void;
-  ON_UPDATE?: (binding: any, dt?: number) => void;
-  ON_RAYCAST?: (intersects: Intersection[], binding: any) => void;
-  ON_CLICK?: (binding: any) => void;
+  ON_START?: (
+    group: Group,
+    viewport: Viewport,
+    binding: BaseGLTF | TweenGLTF | MouseTweenGLTF
+  ) => void;
+  ON_UPDATE?: (
+    binding: BaseGLTF | TweenGLTF | MouseTweenGLTF,
+    dt?: number
+  ) => void;
+  ON_RAYCAST?: (
+    intersects: Intersection[],
+    binding: BaseGLTF | TweenGLTF | MouseTweenGLTF
+  ) => void;
+  ON_CLICK?: (binding: BaseGLTF | TweenGLTF | MouseTweenGLTF) => void;
 };
 
 export type VIEW = {
   ROUTE_NAME: string;
   GLTF_MESHES: VIEW_GLTF[];
   LOTTIE?: { URL: string; SCALE: number };
+  ON_START?: (view: ThreeView) => void;
+  ON_DESTROY?: (view: ThreeView) => void;
 };
 
 export type MODEL = {

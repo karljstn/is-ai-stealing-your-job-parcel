@@ -47,6 +47,14 @@ export class TweenedGLTF extends TweenGLTF {
     }
 
     if (this.ON_START) this.ON_START(this.group, this.viewport, this);
+
+    this.group.traverse((obj) => {
+      obj.userData.tweens = [];
+      obj.userData.original = {
+        position: new Vector3().copy(obj.position),
+        rotation: new Vector3().copy(obj.rotation.toVector3()),
+      };
+    });
   };
 
   destroy() {
@@ -105,6 +113,13 @@ export class MousedTweenedGLTF extends MouseTweenGLTF implements ThreeGLTF {
     }
 
     if (this.ON_START) this.ON_START(this.group, this.viewport, this);
+
+    this.group.traverse((obj) => {
+      obj.userData.original = {
+        position: obj.position,
+        rotation: obj.rotation,
+      };
+    });
   };
 
   destroy = () => {
@@ -149,7 +164,7 @@ export class WritingGLTF extends TweenGLTF {
       raycaster,
     });
 
-    this.mouse = MouseController.mouseVec3;
+    this.mouse = MouseController.Vec3;
     this.params.rotation = {
       resting: new Vector3(Math.PI, 0, Math.PI * 0.3),
       writing: new Vector3(Math.PI * 1.2, 0, Math.PI * 0.2),

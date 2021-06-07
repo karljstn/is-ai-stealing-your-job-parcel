@@ -1,4 +1,4 @@
-import { PerspectiveCamera, Raycaster, Scene } from "three";
+import { Object3D, PerspectiveCamera, Raycaster, Scene } from "three";
 import { ViewInterface } from "~interfaces/Three";
 import WritingGLTF, {
   TweenedGLTF,
@@ -19,6 +19,7 @@ class ThreeView implements ViewInterface {
   view: VIEW;
   rectElement: HTMLElement;
   gltfMeshes: (TweenedGLTF | MousedTweenedGLTF | WritingGLTF)[];
+  objects: Object3D[];
   raycaster: Raycaster;
 
   constructor({
@@ -36,6 +37,7 @@ class ThreeView implements ViewInterface {
     this.rectElement = rectElement;
     this.raycaster = raycaster;
     this.gltfMeshes = [];
+    this.objects = [];
   }
 
   generateGLTFMeshFromConstant = (GLTF: VIEW_GLTF) => {
@@ -82,6 +84,9 @@ class ThreeView implements ViewInterface {
           .then(() => gltf.initGLTF());
       else gltf.load(gltf.MODEL.URL).then(() => gltf.initGLTF());
     }
+
+    if (!this.view.ON_START) return;
+    this.view.ON_START(this);
   };
 
   destroy = () => {
@@ -89,6 +94,9 @@ class ThreeView implements ViewInterface {
       gltf.destroy();
     }
     this.gltfMeshes = [];
+
+    if (!this.view.ON_DESTROY) return;
+    this.view.ON_DESTROY(this);
   };
 }
 

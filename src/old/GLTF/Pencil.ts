@@ -20,7 +20,7 @@ class Pencil extends TweenGLTF implements ThreeGLTF {
     super(scene, viewport);
     this.scene = scene;
     this.viewport = viewport;
-    this.mouse = MouseController.mouseVec3;
+    this.mouse = MouseController.Vec3;
     this.params = {
       size: MODELS.PENCIL.BASE_SCALE,
       rotation: {

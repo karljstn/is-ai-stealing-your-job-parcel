@@ -51,7 +51,7 @@ abstract class MouseTweenGLTF extends TweenGLTF {
 
   updateMouse = () => {
     if (this.isLoaded) {
-      this.mouse.target.copy(MouseController.mouseVec3Viewport);
+      this.mouse.target.copy(MouseController.Vec3Viewport);
       this.mouse.current.lerp(this.mouse.target, this.mouse.lerp);
       this.mouse.current.add(this.mouse.offset);
       this.mouse.current.multiplyScalar(this.mouse.scalar);

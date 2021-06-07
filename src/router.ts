@@ -46,7 +46,7 @@ const routes = [
         disabled: false,
       },
       transition: {
-        delay: 2600,
+        delay: 3100,
         out: () => {
           // Execute code for every single gltf
           for (const VIEW of VIEWS) {
@@ -54,12 +54,16 @@ const routes = [
               .gltfMeshes) {
               const tweened = gltf as TweenedGLTF;
 
-              if (typeof tweened.playAllAnims !== "undefined")
-                tweened.playAllAnims();
+              tweened.reset(0.25);
 
               setTimeout(() => {
-                tweened.out();
-              }, 1400);
+                if (typeof tweened.playAllAnims !== "undefined")
+                  tweened.playAllAnims();
+
+                setTimeout(() => {
+                  tweened.out();
+                }, 1400);
+              }, 500);
             }
           }
 
@@ -156,7 +160,22 @@ const routes = [
     meta: {
       color: PALETTE.YELLOW,
       scroll: { disabled: true },
-      transition: { delay: 0, out: () => {} },
+      transition: {
+        delay: 0,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   {
@@ -168,7 +187,19 @@ const routes = [
       scroll: { disabled: false, darkenScrollDownArrow: true },
       transition: {
         delay: 1000,
-        out: () => {},
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
       },
     },
   },
@@ -188,8 +219,23 @@ const routes = [
     name: "DefinitionThree",
     meta: {
       color: PALETTE.BLACK,
-      scroll: { disabled: false },
-      transition: { delay: 1000, out: () => {} },
+      scroll: { disabled: false, darkenScrollDownArrow: true },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   {
@@ -197,11 +243,23 @@ const routes = [
     component: DefinitionFour,
     name: "DefinitionFour",
     meta: {
-      color: PALETTE.YELLOW,
+      color: PALETTE.LIGHTPINK,
       scroll: { disabled: false },
       transition: {
         delay: 1000,
-        out: () => {},
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
       },
     },
   },
@@ -212,7 +270,22 @@ const routes = [
     meta: {
       color: PALETTE.ORANGE,
       scroll: { disabled: false },
-      transition: { delay: 1000, out: () => {} },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   {
@@ -222,7 +295,22 @@ const routes = [
     meta: {
       color: PALETTE.VIOLET,
       scroll: { disabled: false },
-      transition: { delay: 1000, out: () => {} },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   {
@@ -230,9 +318,24 @@ const routes = [
     component: DefinitionSeven,
     name: "DefinitionSeven",
     meta: {
-      color: PALETTE.YELLOW,
+      color: PALETTE.WHITE,
       scroll: { disabled: false },
-      transition: { delay: 1000, out: () => {} },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   // Lottie doesn't work rn
@@ -275,7 +378,17 @@ const routes = [
       transition: {
         delay: 1000,
         out: () => {
-          // store.state.sceneManager.DistraughtEmojiScene.Emoji.out()
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
         },
       },
     },
@@ -290,7 +403,17 @@ const routes = [
       transition: {
         delay: 1000,
         out: () => {
-          // store.state.sceneManager.HandOKScene.Hand.out()
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
         },
       },
     },
@@ -302,7 +425,22 @@ const routes = [
     meta: {
       color: PALETTE.ORANGE,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: {
+        delay: 1000,
+        out: () => {
+          // Execute code for every single gltf
+          for (const VIEW of VIEWS) {
+            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+              .gltfMeshes) {
+              const tweened = gltf as TweenedGLTF;
+
+              if (typeof tweened.out !== "undefined") tweened.out();
+              if (typeof tweened.killTimeouts !== "undefined")
+                tweened.killTimeouts();
+            }
+          }
+        },
+      },
     },
   },
   // {
