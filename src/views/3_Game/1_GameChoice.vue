@@ -49,13 +49,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import Button from "~/components/UI/Button.vue";
 import QuestionForm from "~/components/UI/QuestionForm.vue";
 import { VIEWS } from "~constants/VIEWS";
 import store from "~store";
 import { fadeBackground } from "~util";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
   components: {
@@ -68,12 +71,15 @@ export default Vue.extend({
       VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "GameOne")
     );
     threeView.start();
+    voiceTimeout = setTimeout(() => AudioController.play("inyouropinion"), 500);
   },
   destroyed() {
     const threeView = store.state.sceneManager.threeViews.get(
       VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "GameOne")
     );
     threeView.destroy();
+    AudioController.stop("inyouropinion");
+    clearTimeout(voiceTimeout);
   },
 });
 </script>

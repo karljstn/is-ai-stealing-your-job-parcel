@@ -1,5 +1,6 @@
 import { Howl } from "howler";
 import random from "canvas-sketch-util/random";
+import AudioController from "~/singletons/AudioController";
 
 // Music
 import minigameMusic from "~/assets/Sounds/General/music/la_musique_du_jeu_ouais.mp3";
@@ -127,6 +128,8 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: slotMachine,
       loop: false,
+      volume: 0.2,
+      rate: 0.8,
     }),
     isUnique: true,
   },
@@ -144,8 +147,9 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: wobble,
       loop: false,
+      volume: 0.3,
     }),
-    isUnique: true,
+    isUnique: false,
   },
   //Voices
   {
@@ -216,6 +220,15 @@ export const SOUNDS: SOUND[] = [
     isUnique: true,
   },
   {
+    id: "aiisthestudy",
+    howl: new Howl({
+      src: getRandomSource([aiisthestudy, aiisthestudybis]),
+      volume: voices.volume,
+      rate: voices.rate,
+    }),
+    isUnique: true,
+  },
+  {
     id: "devicesthatperceivetheirenvironment",
     howl: new Howl({
       src: getRandomSource([
@@ -228,9 +241,21 @@ export const SOUNDS: SOUND[] = [
     isUnique: true,
   },
   {
+    id: "ivealreadylostyouhaventi",
+    howl: new Howl({
+      src: getRandomSource([
+        ivealreadylostyouhaventi,
+        ivealreadylostyouhaventibis,
+      ]),
+      volume: voices.volume,
+      rate: voices.rate,
+    }),
+    isUnique: true,
+  },
+  {
     id: "basically",
     howl: new Howl({
-      src: getRandomSource([basically, devicesthatperceivetheirenvironmentBis]),
+      src: basically,
       volume: voices.volume,
       rate: voices.rate,
     }),
@@ -314,6 +339,9 @@ export const SOUNDS: SOUND[] = [
       src: whatdoweknow,
       volume: voices.volume,
       rate: voices.rate,
+      onend: () => {
+        AudioController.play("inaperfect");
+      },
     }),
     isUnique: true,
   },

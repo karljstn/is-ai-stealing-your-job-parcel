@@ -7,7 +7,6 @@ import {
   Vector3,
 } from "three";
 import router from "~router";
-import store from "~store";
 import { GLTF_TYPE, VIEW, Viewport } from "~types";
 import { clamp, map } from "~util";
 import { MATERIALS } from "./MATERIALS";
@@ -17,6 +16,8 @@ import gsap from "gsap";
 import { PALETTE } from "./PALETTE";
 import { getSound, SOUNDS } from "./SOUNDS";
 import AudioController from "~/singletons/AudioController";
+
+let wobbleRateInterval: any;
 
 export const VIEWS: VIEW[] = [
   {
@@ -31,6 +32,10 @@ export const VIEWS: VIEW[] = [
           group.rotateY(-Math.PI / 2);
           group.position.y = -viewport.height / 2.7;
           binding.params.sinus.amplitude *= 1.5;
+
+          wobbleRateInterval = setInterval(() => {
+            getSound("wobble").howl.rate(Math.random() + 0.75);
+          }, 1000);
         },
         ON_RAYCAST: (intersections, binding) => {
           if (!!intersections[0]) {
@@ -46,6 +51,8 @@ export const VIEWS: VIEW[] = [
               binding.isResetting
             )
               return;
+
+            AudioController.play("wobble");
 
             const factor = clamp((MouseController.speed - 0.95) * 3, 0, 3.5);
             const duration = clamp(0.25 * factor, 0.25, 3);
@@ -104,6 +111,9 @@ export const VIEWS: VIEW[] = [
         },
       },
     ],
+    ON_DESTROY: (view) => {
+      clearInterval(wobbleRateInterval);
+    },
   },
   {
     ROUTE_NAME: "IntroHello",
@@ -460,18 +470,29 @@ export const VIEWS: VIEW[] = [
           setTimeout(() => {
             binding.playAllAnims();
           }, 200);
+
+          setTimeout(() => {
+            AudioController.play("slotMachine");
+          }, 1800);
         },
         ON_RAYCAST: (intersects) => {
           if (intersects.length) {
-            document.querySelector("html").classList.add("cursor-pointer");
+            document.querySelector("canvas").style.pointerEvents = "initial";
+            document.querySelector("html").style.cursor = "pointer";
+            // document.querySelector("html").classList.add("cursor-pointer");
           } else {
-            document.querySelector("html").classList.remove("cursor-pointer");
+            document.querySelector("canvas").style.pointerEvents = "none";
+            document.querySelector("html").style.cursor = "";
+
+            // document.querySelector("html").classList.remove("cursor-pointer");
           }
         },
         ON_CLICK: (binding) => {
           if (binding.intersects.length) {
             router.push("13");
-            document.querySelector("html").classList.remove("cursor-pointer");
+            document.querySelector("canvas").style.pointerEvents = "none";
+
+            document.querySelector("html").style.cursor = "";
           }
         },
       },
@@ -561,6 +582,7 @@ export const VIEWS: VIEW[] = [
         ON_CLICK: (binding) => {
           if (binding.intersects.length) {
             binding.playAllAnims();
+            AudioController.play("wobble");
           }
         },
         ON_RAYCAST: (intersects) => {
@@ -584,11 +606,16 @@ export const VIEWS: VIEW[] = [
       light.intensity = 0.66;
       view.scene.add(light);
       view.objects.push(light);
+
+      wobbleRateInterval = setInterval(() => {
+        getSound("wobble").howl.rate(Math.random() + 0.75);
+      }, 1000);
     },
     ON_DESTROY: (view) => {
       for (const object of view.objects) {
         view.scene.remove(object);
       }
+      clearInterval(wobbleRateInterval);
     },
     GLTF_MESHES: [
       {
@@ -610,6 +637,8 @@ export const VIEWS: VIEW[] = [
             const object = binding.group;
 
             if (object.userData.tweens[0]) return; //is tweening
+
+            AudioController.play("wobble");
 
             const factor = clamp(MouseController.speed - 0.95, 0, 3.5);
             const duration = clamp(0.25 * factor, 0.25, 3);

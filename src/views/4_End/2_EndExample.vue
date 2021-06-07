@@ -1,6 +1,12 @@
 <template>
   <section>
-    <LottieThree routeName="EndTwo" :lottieURL="lottie" lottieScale="1" />
+    <LottieThree
+      routeName="EndTwo"
+      :lottieURL="lottie"
+      lottieScale="1"
+      voiceID="thisisasimpleexample"
+      :voiceDelay="1050"
+    />
   </section>
 </template>
 

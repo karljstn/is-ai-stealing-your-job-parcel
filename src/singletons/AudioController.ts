@@ -39,6 +39,8 @@ class AudioController {
 
     active.howl.stop();
   };
+
+  isPlaying = (id: string) => {};
 }
 
 const instance = new AudioController();

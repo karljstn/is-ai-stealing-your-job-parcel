@@ -67,7 +67,7 @@ export default Vue.extend({
 					this.isProgressionReady = true
 				}, store.state.load.minLoaderDuration);
 
-				AudioController.play('backgroundMusic')
+				// AudioController.play('backgroundMusic')
 			});
 		},
 		destroyed() {

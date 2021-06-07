@@ -132,11 +132,21 @@
   </section>
 </template>
 
-<script>
-import Button from "~/components/UI/Button";
-import QuestionForm from "~/components/UI/QuestionForm";
+<script lang="ts">
+import Button from "~/components/UI/Button.vue";
+import QuestionForm from "~/components/UI/QuestionForm.vue";
 import Vue from "vue";
 import { fadeBackground } from "~util";
+import AudioController from "~/singletons/AudioController";
+import { PALETTE } from "~constants/PALETTE";
+import { getSound } from "~constants/SOUNDS";
+
+const voiceIDs = {
+  section1: "inrealitythefutureis",
+  section2: "infacteven",
+  section3: "whatdoweknow",
+  section3bis: "inaperfect",
+};
 
 export default Vue.extend({
   data() {
@@ -149,29 +159,44 @@ export default Vue.extend({
     Button,
   },
   methods: {
-    onElementObserved(entries) {
-      console.log(entries);
+    onElementObserved(entries: IntersectionObserverEntry[]) {
+      // console.log(entries);
       entries.forEach(({ target, isIntersecting }) => {
         // do something ...
         if (target.className === "section-1") {
-          console.log("target 1", isIntersecting);
-          if (isIntersecting) fadeBackground({ color: "#FBF3EA" });
+          if (isIntersecting) {
+            fadeBackground({ color: PALETTE.WHITE });
+            this.speak(voiceIDs.section1);
+          }
+          // console.log("target 1", isIntersecting);
         }
         if (target.className === "section-2") {
-          if (isIntersecting) fadeBackground({ color: "#F1B932" });
-          console.log("target 2", isIntersecting);
+          if (isIntersecting) {
+            fadeBackground({ color: PALETTE.YELLOW });
+            this.speak(voiceIDs.section2);
+          }
+          // console.log("target 2", isIntersecting);
         }
         if (target.className === "section-3") {
-          if (isIntersecting) fadeBackground({ color: "#5D34FE" });
-          console.log("target 3", isIntersecting);
+          if (isIntersecting) {
+            fadeBackground({ color: PALETTE.VIOLET });
+            this.speak(voiceIDs.section3);
+          }
+          // console.log("target 3", isIntersecting);
         }
         // console.log(target);
         // console.log(isIntersecting);
       });
     },
+    speak(id: string) {
+      AudioController.play(id);
+      for (const voiceID of Object.values(voiceIDs)) {
+        if (voiceID !== id) AudioController.stop(voiceID);
+      }
+    },
   },
   mounted() {
-    console.log(this.$refs.section1);
+    // console.log(this.$refs.section1);
     this.observer = new IntersectionObserver(this.onElementObserved, {
       threshold: 0.1,
     });
@@ -184,7 +209,9 @@ export default Vue.extend({
     this.observer.unobserve(this.$refs.section1);
     this.observer.unobserve(this.$refs.section2);
     this.observer.unobserve(this.$refs.section3);
-    // document.body.classList.remove("white-nav");
+    for (const voiceID of Object.values(voiceIDs)) {
+      AudioController.stop(voiceID);
+    }
   },
 });
 </script>

@@ -4,13 +4,13 @@
       routeName="DefinitionThree"
       :lottieURL="lottie"
       lottieScale="1"
+      voiceID="aiisthestudy"
+      :voiceDelay="1050"
     />
   </section>
 </template>
 
 <script lang="ts">
-// voiceID="wellletmetellyou" :voiceDelay="1450"
-
 import Vue from "vue";
 import LottieThree from "~components/Common/LottieThree.vue";
 import Lottie from "~/assets/Lottie/6. AI IS.json";
