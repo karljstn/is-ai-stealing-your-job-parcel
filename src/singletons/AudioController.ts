@@ -1,4 +1,5 @@
 import { SOUNDS, SOUND, getSound } from "~/constants/SOUNDS";
+import router from "~router";
 
 //TODO: factorize get sound and unique check
 class AudioController {
@@ -40,7 +41,23 @@ class AudioController {
     active.howl.stop();
   };
 
-  isPlaying = (id: string) => {};
+  manageMusic = () => {
+    const getCurrentRoute = () => {
+      if (location.hash === "#/") {
+        return router.getRoutes().find((route) => route.name === "LandingPage");
+      } else {
+        return router
+          .getRoutes()
+          .find((route) => route.path === location.hash.substring(1));
+      }
+    };
+
+    const currentRoute = getCurrentRoute();
+
+    if (currentRoute.name === "LandingPage") return;
+
+    this.play("backgroundMusic");
+  };
 }
 
 const instance = new AudioController();

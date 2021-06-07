@@ -79,6 +79,7 @@ export default Vue.extend({
     );
     threeView.destroy();
     AudioController.stop("inyouropinion");
+    AudioController.stop("slotMachine");
     clearTimeout(voiceTimeout);
   },
 });

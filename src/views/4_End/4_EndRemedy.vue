@@ -206,9 +206,10 @@ export default Vue.extend({
     this.observer.observe(this.$refs.section3);
   },
   destroyed() {
-    this.observer.unobserve(this.$refs.section1);
-    this.observer.unobserve(this.$refs.section2);
-    this.observer.unobserve(this.$refs.section3);
+    //TODO: fix this, these don't work, need object or something
+    // this.observer.unobserve(this.$refs.section1);
+    // this.observer.unobserve(this.$refs.section2);
+    // this.observer.unobserve(this.$refs.section3);
     for (const voiceID of Object.values(voiceIDs)) {
       AudioController.stop(voiceID);
     }

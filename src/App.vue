@@ -68,10 +68,12 @@ export default Vue.extend({
 				}, store.state.load.minLoaderDuration);
 
 				// AudioController.play('backgroundMusic')
+        AudioController.manageMusic()
 			});
 		},
 		destroyed() {
 			AudioController.stop('backgroundMusic')
+      AudioController.stop('minigameMusic')
 		}
 })
 </script>

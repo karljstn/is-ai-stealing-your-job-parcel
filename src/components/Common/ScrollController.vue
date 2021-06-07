@@ -11,8 +11,6 @@ import NormalizeWheel from "normalize-wheel";
 import VueRouter, { RouteRecordPublic } from "vue-router";
 import { debounce } from "~util/_index.js";
 import store from "~store";
-import { VIEWS } from "~constants/VIEWS";
-import { TweenedGLTF } from "~three/Meshes/GLTF";
 
 const wait = 150;
 
