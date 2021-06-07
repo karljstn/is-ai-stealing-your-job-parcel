@@ -17,9 +17,6 @@ import { fadeBackground } from '~util';
 import Ressource from './Ressource.vue'
 import ressourcesData from '~/assets/ressources.js'
 
-console.log(ressourcesData);
-
-
 export default Vue.extend({
     data(){
         return{

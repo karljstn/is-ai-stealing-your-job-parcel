@@ -4,9 +4,9 @@
     <CanvasThree></CanvasThree>
     <MuteButton></MuteButton>
     <ScrollDownArrow></ScrollDownArrow>
-    <ScrollController>
+    <!-- <ScrollController> -->
       <router-view></router-view>
-    </ScrollController>
+    <!-- </ScrollController> -->
   </div>
 </template>
 
@@ -27,7 +27,7 @@ import Navigation from '~/components/UI/Navigation.vue';
 import MuteButton from '~/components/UI/MuteButton.vue';
 import ScrollDownArrow from "~/components/UI/ScrollDownArrow.vue"
 import ScrollController from "~/components/Common/ScrollController.vue"
-
+import AudioController from "~/singletons/AudioController"
 import { Howler } from "howler"
 
 gsap.registerPlugin(CustomEase)
@@ -73,6 +73,8 @@ export default Vue.extend({
 				timeout = setTimeout(() => {
 					// SOUNDS.scrollTo.volume(0.44).play()
 				}, 4000);
+
+				// AudioController.play('backgroundMusic')
 			});
 		},
 		destroyed() {

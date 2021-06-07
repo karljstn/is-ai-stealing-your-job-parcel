@@ -516,7 +516,7 @@ const routes = [
   },
   {
     path: "/outro/ressources",
-    component: OutroRessources,
+    component: Ressources,
     name: "OutroRessources",
     meta: {
       scroll: { disabled: true },
