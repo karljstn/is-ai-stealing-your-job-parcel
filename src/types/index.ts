@@ -69,6 +69,7 @@ export type StoreState = {
     removeFolder: Function;
     addFolder: Function;
     updateCursor: Function;
+    canvasClass: Function;
     gameEnded: boolean;
     results: {
       AIused: number;

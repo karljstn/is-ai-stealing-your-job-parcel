@@ -147,9 +147,6 @@ export default Vue.extend({
       return this.endScreen ? "game-fade" : "";
     },
     progress() {
-      // console.log("progress update", store.state.radiologist.progress);
-      // console.log("progress update");
-
       return store.state.radiologist.progress;
     },
   },
@@ -261,7 +258,7 @@ export default Vue.extend({
       // console.log(this.$refs.lottieContainer.classList.add('lottie'));
 
       this.timerCanStart = true;
-
+      
       Skeleton.addFirstSkeleton();
     },
 
@@ -278,6 +275,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "~/styles/_variables.scss";
+
+
 
 section {
   // width: initial;

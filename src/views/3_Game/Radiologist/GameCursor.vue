@@ -47,7 +47,8 @@ export default Vue.extend({
 			case 0:
 				return 'rotate'
       case 1:
-        return 'dolly'
+        // return 'dolly'
+        return ''
       case 2:
         return 'pan'
       case -5:
@@ -60,8 +61,13 @@ export default Vue.extend({
       cursor.target.copy(MouseController.raw.current)
       cursor.current.lerp(cursor.target, 0.8)
 
-      const x = cursor.current.x
-      const y = cursor.current.y - this.$refs.cursor.offsetHeight/2
+      let x = cursor.current.x
+      let y = cursor.current.y - this.$refs.cursor.offsetHeight/2
+
+      if(this.currentState === 'click'){
+        x -= 22
+        y -= 15       
+      }
 
       this.$refs.cursor.style.transform = `translate3d(${x}px, ${y}px, 0px)`
     },
@@ -83,17 +89,20 @@ export default Vue.extend({
 }
 .dolly{
 	background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/zoom.svg");
-  background-color: green;
+
 }
 .rotate {
-  background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/rotate.svg");
-  background-color: red;
+  background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/rotate-game.svg");
+  
 }
 .click {
-  background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/select.svg");
+  width: 50px !important;
+  height: 50px !important;
+  // background-size: 40px;
+  // background-position: -15px -15px;
+  background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/select-game.svg");
 }
 .pan {
-	 background-color: white;
-  background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/move.svg");
+  background-image: url("~/assets/Games/Radiologist/Icons/Tutorial/drag-game.svg");
 }
 </style>

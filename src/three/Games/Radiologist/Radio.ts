@@ -133,8 +133,8 @@ export default class Radio implements ThreeGroup {
                 this.isDragging = true
 
 
-                MouseController.mouseVec2Viewport.x = e.target.mouse.x
-                MouseController.mouseVec2Viewport.y = e.target.mouse.y
+                MouseController.raw.current.x = e.target.mouse.x
+                MouseController.raw.current.y = e.target.mouse.y
                 
                 // MouseController.mouseVec2Viewport.x
 

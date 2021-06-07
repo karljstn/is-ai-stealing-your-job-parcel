@@ -87,6 +87,7 @@ export default Vue.extend({
       }
     },
     startCountdown() {
+      store.state.radiologist.canvasClass('game-active')
       this.convertSeconds();
       this.countdown--;
 
@@ -102,12 +103,13 @@ export default Vue.extend({
       this.countdown = newCountdown;
     },
     stopCountdown() {
-      console.log(this.countdown);
       if (this.countdown <= 0) {
         this.min = "00";
         this.sec = "00";
         store.state.sceneManager?.radio.endGame();
       }
+
+      store.state.radiologist.canvasClass('')
       clearInterval(this.interval);
     },
   },

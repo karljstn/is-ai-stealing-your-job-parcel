@@ -100,7 +100,7 @@ class Skeleton {
             )
 
             if (i === 3) {
-                // this.skeletons[i].rotation.y = -Math.PI / 2
+                this.skeletons[i].rotation.y = -Math.PI / 2
             }
 
             this.textureLoader.load(this.skeletonsInfos[i].BAKE, texture => {

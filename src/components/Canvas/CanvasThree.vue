@@ -1,5 +1,5 @@
 <template>
-	<canvas ref="canvasThree" />
+	<canvas ref="canvasThree" :class="canvasClass" />
 </template>
 
 <script lang="ts">
@@ -9,13 +9,24 @@ import store from '~/store';
 
 export default Vue.extend({
 	name: 'CanvasThree',
+	data(){
+		return{
+			canvasClass: false
+		}
+	},
 	mounted() {
 		const controller = new ThreeMainController(this.$refs.canvasThree, 60);
 		controller.start();
 
 		// if(store.state.devMode.forceRadiologist) scene.startRadiologist()
 		store.commit('setScene', controller);
+		store.commit('setClassCanvas', this.changeCursor)
 	},
+	methods:{
+		changeCursor(canvasClass: string){
+			this.canvasClass = canvasClass
+		}
+	}
 });
 </script>
 
@@ -29,5 +40,10 @@ canvas {
 	outline: none;
 	z-index: $canvas;
 	pointer-events: none;
+	
+}
+
+.game-active{
+	cursor: none;
 }
 </style>
