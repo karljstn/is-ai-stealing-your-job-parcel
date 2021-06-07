@@ -11,6 +11,7 @@
 html,
 body {
   overscroll-behavior-x: none;
+  // cursor: none;
 
   &.cursor-pointer {
     cursor: pointer;

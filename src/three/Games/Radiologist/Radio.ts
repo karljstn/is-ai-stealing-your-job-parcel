@@ -10,6 +10,7 @@ import Background from "./Background"
 import { OrbitControls } from "../../CustomControls"
 
 import raf from "~singletons/RAF"
+import MouseController from "~/singletons/MouseController";
 import store from "~/store"
 
 import { ThreeGroup } from "~/interfaces/Three"
@@ -126,10 +127,16 @@ export default class Radio implements ThreeGroup {
             dragForce = 0
         })
 
-        this.controls.addEventListener("change", () => {
+        this.controls.addEventListener("change", (e) => {
             dragForce += 1
             if (this.mouseDown && dragForce > 15) {
                 this.isDragging = true
+
+
+                MouseController.mouseVec2Viewport.x = e.target.mouse.x
+                MouseController.mouseVec2Viewport.y = e.target.mouse.y
+                
+                // MouseController.mouseVec2Viewport.x
 
                 // if (this.currentIntersect) {
 
@@ -304,8 +311,9 @@ export default class Radio implements ThreeGroup {
     }
 
     onClick() {
-        if (!this.gameEnded && this.currentIntersect && !store.state.radiologist.confirm) {
+        if (this.gameRunning && !this.gameEnded && this.currentIntersect && !store.state.radiologist.confirm) {
             //clicked on something, show popup
+            
             store.commit("setConfirmPopup", true)
             store.commit("setConfirmCallback", this.confirm)
             this.gameRunning = false
@@ -421,6 +429,8 @@ export default class Radio implements ThreeGroup {
             coef += delta * params.fresnelSpeed
             this.currentIntersect.object.material.uniforms.uFresnelWidth.value = 1 - coef
         }
+
+        store.state.radiologist.updateCursor(-5)
     }
 
     fromMeshToBlank() {
