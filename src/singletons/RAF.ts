@@ -40,10 +40,10 @@ class RAF {
 const instance = new RAF();
 export default instance;
 
-if (module.hot)
-  module.hot.dispose(() => {
-    for (const iterator of instance.callbacks.keys()) {
-      instance.unsubscribe(iterator);
-    }
-    cancelAnimationFrame(instance.rafID);
-  });
+// if (module.hot)
+//   module.hot.dispose(() => {
+//     for (const iterator of instance.callbacks.keys()) {
+//       instance.unsubscribe(iterator);
+//     }
+//     cancelAnimationFrame(instance.rafID);
+//   });

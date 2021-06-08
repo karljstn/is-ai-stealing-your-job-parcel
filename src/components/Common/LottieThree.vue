@@ -42,10 +42,10 @@ export default Vue.extend({
         );
 
       // Hot reloading
-      if (!module.hot) return;
-      module.hot.dispose(() => {
-        threeView.destroy();
-      });
+      // if (!module.hot) return;
+      // module.hot.dispose(() => {
+      //   threeView.destroy();
+      // });
     });
   },
   destroyed() {

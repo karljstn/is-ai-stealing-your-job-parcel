@@ -30,8 +30,6 @@ const init = (canvas: HTMLCanvasElement) => {
   let rect: DOMRect;
 
   const setPos = (x: number, y: number) => {
-    console.log("setpos");
-
     if (getCurrentRoute().name !== "DefinitionTwo") return; //TODO: fix  unsubs not actually working
 
     const offset = {
