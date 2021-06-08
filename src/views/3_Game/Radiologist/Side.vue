@@ -1,7 +1,12 @@
 <template>
   <div class="side-container">
     <ul class="infos">
-      <li>Robert Deniro</li>
+      <li v-for="item in this.patient" :key="item">
+        {{ item }}
+      </li>
+
+      <span class="progress">{{ this.progress }}</span>
+      <!-- <li>Robert Deniro</li>
       <li>male</li>
       <li>01/08/1997</li>
       <li>4328 DSIO</li>
@@ -10,7 +15,7 @@
       <li>10:02:91</li>
       <li>Image 1/2</li>
       <li>Serie: 3</li>
-      <li>number 0298716892</li>
+      <li>number 0298716892</li> -->
     </ul>
 
     <div class="range">
@@ -34,11 +39,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
+import patientsData from "~/assets/patients";
 import store from "~/store";
 export default Vue.extend({
+  data() {
+    return {
+      patient: patientsData[0],
+    };
+  },
   mounted() {},
+  computed: {
+    progress() {
+      this.patient = patientsData[store.state.radiologist.progress];
+      return store.state.radiologist.progress;
+    },
+  },
 });
 </script>
 
@@ -57,6 +74,10 @@ ul {
   color: white;
   list-style: none;
   font-weight: lighter;
+}
+
+.progress {
+  display: none;
 }
 
 .infos {

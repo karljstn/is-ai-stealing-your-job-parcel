@@ -165,11 +165,8 @@ var OrbitControls = function (object, domElement) {
 
 			this.mouse = mouseCoords
 
-			if(this.enabled){
-					
-					// console.log(state);
-					store.state.radiologist.updateCursor(state)
-				
+			if (this.enabled) {
+				store.state.radiologist.updateCursor(state)
 			}
 
 			var position = scope.object.position
@@ -235,7 +232,6 @@ var OrbitControls = function (object, domElement) {
 			spherical.radius *= scale
 
 			if (!this.enabled && this.usedAI) {
-				console.log('ALLO')
 				spherical.radius = this.radius
 			} else {
 				this.radius = spherical.radius
@@ -448,7 +444,7 @@ var OrbitControls = function (object, domElement) {
 
 		var offset = new Vector3()
 
-	
+
 
 		return function pan(deltaX, deltaY) {
 			var element = scope.domElement
