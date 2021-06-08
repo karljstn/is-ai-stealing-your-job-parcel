@@ -44,6 +44,7 @@ declare var module: {
 declare module "howler";
 
 declare module "*.mp3";
+declare module "*.wav";
 declare module "*.png";
 declare module "*.jpg";
 declare module "*.jpeg";
@@ -55,6 +56,8 @@ declare module "normalize-wheel";
 
 declare module "lottie-web-vue";
 
-declare module 'noisejs';
+declare module "noisejs";
 
-declare module 'bezier-easing';
+declare module "bezier-easing";
+
+declare module "canvas-sketch-util/random";

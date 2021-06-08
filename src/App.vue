@@ -4,9 +4,9 @@
     <CanvasThree></CanvasThree>
     <MuteButton></MuteButton>
     <ScrollDownArrow></ScrollDownArrow>
-    <!-- <ScrollController> -->
+    <ScrollController>
       <router-view></router-view>
-    <!-- </ScrollController> -->
+    </ScrollController>
   </div>
 </template>
 
@@ -41,7 +41,6 @@ const testEase = CustomEase.create(
 
 store.commit("setEase", { name: "test", ease: testEase })
 
-let timeout;
 let int;
 
 export default Vue.extend({
@@ -68,18 +67,13 @@ export default Vue.extend({
 					this.isProgressionReady = true
 				}, store.state.load.minLoaderDuration);
 
-				// SOUNDS.background_begin.volume(0.28).play()
-
-				timeout = setTimeout(() => {
-					// SOUNDS.scrollTo.volume(0.44).play()
-				}, 4000);
-
 				// AudioController.play('backgroundMusic')
+        AudioController.manageMusic()
 			});
 		},
 		destroyed() {
-			// SOUNDS.background_begin.stop()
-			clearTimeout(timeout)
+			AudioController.stop('backgroundMusic')
+      AudioController.stop('minigameMusic')
 		}
 })
 </script>

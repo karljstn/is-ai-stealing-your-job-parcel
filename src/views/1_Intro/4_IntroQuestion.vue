@@ -5,21 +5,30 @@
         Am I right ?
       </p>
       <div class="answers">
-        <p>Not at all !</p>
-        <p>Yes...</p>
+        <div>
+          <div class="placeholder" id="no"></div>
+          <p>Not at all !</p>
+        </div>
+        <div>
+          <div class="placeholder" id="yes"></div>
+          <p>Yes...</p>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
-<script>
-import Button from "~/components/UI/ButtonEmoji";
-import QuestionForm from "~/components/UI/QuestionForm";
+<script lang="ts">
+import Button from "~/components/UI/ButtonEmoji.vue";
+import QuestionForm from "~/components/UI/QuestionForm.vue";
 import SaveRect from "~/components/Common/SaveRect.vue";
 import Vue from "vue";
 import { fadeBackground } from "~util";
 import store from "~/store";
 import { VIEWS } from "~constants/VIEWS";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
   components: {
@@ -33,12 +42,15 @@ export default Vue.extend({
       VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroQuestion")
     );
     threeView.start();
+    voiceTimeout = setTimeout(() => AudioController.play("amirite"), 1000);
   },
   destroyed() {
     const threeView = store.state.sceneManager.threeViews.get(
       VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "IntroQuestion")
     );
     threeView.destroy();
+    clearTimeout(voiceTimeout);
+    AudioController.stop("amirite");
   },
 });
 </script>
@@ -53,7 +65,7 @@ export default Vue.extend({
 
   .hello {
     font-size: 3.6rem;
-    margin-bottom: 59%;
+    margin-bottom: 9%;
   }
 
   .answers {
@@ -65,5 +77,10 @@ export default Vue.extend({
       font-size: 2rem;
     }
   }
+}
+
+.placeholder {
+  height: 400px;
+  width: 100%;
 }
 </style>

@@ -38,17 +38,33 @@
     </div>
     <div class="form">
       <QuestionForm>
-        <button><img src="~/assets/Images/Arrow 1.svg" alt="arrow" /></button>
+        <button>
+          <svg
+            width="131"
+            height="52"
+            viewBox="0 0 131 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M129.475 28.4749C130.842 27.108 130.842 24.892 129.475 23.5251L107.201 1.25126C105.834 -0.115572 103.618 -0.115572 102.251 1.25126C100.884 2.6181 100.884 4.83418 102.251 6.20101L122.05 26L102.251 45.799C100.884 47.1658 100.884 49.3819 102.251 50.7487C103.618 52.1156 105.834 52.1156 107.201 50.7487L129.475 28.4749ZM0 29.5H127V22.5H0V29.5Z"
+              fill="#EFEFEF"
+            />
+          </svg>
+        </button>
       </QuestionForm>
     </div>
   </section>
 </template>
 
-<script>
-import Button from "~/components/UI/Button";
-import QuestionForm from "~/components/UI/QuestionForm";
+<script lang="ts">
+import Button from "~/components/UI/Button.vue";
+import QuestionForm from "~/components/UI/QuestionForm.vue";
 import Vue from "vue";
 import { fadeBackground } from "~util";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
   components: {
@@ -57,11 +73,21 @@ export default Vue.extend({
   },
   mounted() {
     fadeBackground({ routeName: "EndOne" });
+    voiceTimeout = setTimeout(
+      () => AudioController.play("heresanarticle"),
+      500
+    );
+  },
+  destroyed() {
+    clearTimeout(voiceTimeout);
+    AudioController.stop("heresanarticle");
   },
 });
 </script>
 
 <style lang="scss" scoped>
+@import "~/styles/_variables.scss";
+
 .article {
   max-width: 1200px;
   width: 85vw;
@@ -126,6 +152,10 @@ button {
   svg {
     cursor: pointer;
   }
+}
+
+svg path {
+  fill: $black;
 }
 
 blockquote {

@@ -18,7 +18,7 @@
 
         <span>Play again</span></router-link
       >
-      <router-link to="/outro/ressources"
+      <router-link to="/ressources"
         ><svg
           width="131"
           height="52"
@@ -38,11 +38,14 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import { VIEWS } from "~constants/VIEWS";
 import store from "~store";
 import { fadeBackground } from "~util";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
   components: {},
@@ -54,7 +57,9 @@ export default Vue.extend({
     );
 
     if (threeView) threeView.start(this.$refs.title);
-    else console.error(("view is ", threeView));
+    else console.error(threeView);
+
+    voiceTimeout = setTimeout(() => AudioController.play("nowwhat"), 500);
   },
   destroyed() {
     // Execute code for every single scene
@@ -71,6 +76,9 @@ export default Vue.extend({
         }, 500);
       }
     }
+
+    clearTimeout(voiceTimeout);
+    AudioController.stop("nowwhat");
   },
 });
 </script>

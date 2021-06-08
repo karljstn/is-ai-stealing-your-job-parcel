@@ -15,6 +15,9 @@ import Vue from "vue";
 import { fadeBackground } from "~util";
 import store from "~store";
 import { VIEWS } from "~constants/VIEWS";
+import AudioController from "~/singletons/AudioController";
+
+let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
   mounted() {
@@ -28,6 +31,8 @@ export default Vue.extend({
 
     if (threeView) threeView.start(this.$refs.ball);
     else console.error("view is ", threeView);
+
+    voiceTimeout = setTimeout(() => AudioController.play("whatsyourtake"), 500);
   },
   destroyed() {
     document.body.classList.remove("white-nav");
@@ -43,6 +48,9 @@ export default Vue.extend({
         }, 500);
       }
     }
+
+    clearTimeout(voiceTimeout);
+    AudioController.stop("whatsyourtake");
   },
 });
 </script>

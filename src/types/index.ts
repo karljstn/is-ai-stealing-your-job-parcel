@@ -18,6 +18,7 @@ import ThreeView from "~three/ThreeView";
 import BaseGLTF from "~three/Meshes/GLTF/abstract/BaseGLTF";
 import TweenGLTF from "~three/Meshes/GLTF/abstract/TweenGLTF";
 import MouseTweenGLTF from "~three/Meshes/GLTF/abstract/MouseTweenGLTF";
+import { SOUND } from "~constants/SOUNDS";
 
 export type Viewport = {
   height: number;
@@ -137,6 +138,7 @@ export type VIEW = {
   ROUTE_NAME: string;
   GLTF_MESHES: VIEW_GLTF[];
   LOTTIE?: { URL: string; SCALE: number };
+  VOICE?: SOUND;
   ON_START?: (view: ThreeView) => void;
   ON_DESTROY?: (view: ThreeView) => void;
 };

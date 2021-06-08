@@ -27,11 +27,12 @@ import OutroRessources from "~views/5_Epilogue/2_EpilogueRessources.vue";
 import OutroShare from "~views/5_Epilogue/3_EpilogueShare.vue";
 import OutroTakeAction from "~views/5_Epilogue/4_EpilogueTakeAction.vue";
 import Credits from "~views/5_Epilogue/5_EpilogueCredits.vue";
-import Ressources from '~/views/5_Epilogue/Ressources.vue';
+import Ressources from "~/views/5_Epilogue/Ressources.vue";
 import store from "~store";
 import { fadeBackground } from "~util";
 import { VIEWS } from "~constants/VIEWS";
 import { TweenedGLTF } from "~three/Meshes/GLTF";
+import AudioController from "~/singletons/AudioController";
 
 Vue.use(VueRouter);
 
@@ -58,10 +59,15 @@ const routes = [
               tweened.reset(0.25);
 
               setTimeout(() => {
-                if (typeof tweened.playAllAnims !== "undefined")
-                  tweened.playAllAnims();
+                AudioController.play("trashcanScroll");
+                tweened.playAllAnims();
 
                 setTimeout(() => {
+                  AudioController.play("trashcanDrop");
+                }, 550);
+
+                setTimeout(() => {
+                  AudioController.stop("scrollToThrowYourBiasesAway");
                   tweened.out();
                 }, 1400);
               }, 500);
@@ -512,15 +518,6 @@ const routes = [
           }
         },
       },
-    },
-  },
-  {
-    path: "/outro/ressources",
-    component: Ressources,
-    name: "OutroRessources",
-    meta: {
-      scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
     },
   },
   {

@@ -8,8 +8,8 @@
     <div ref="middle" class="middle disable">
       <router-link to="/credits"> credits </router-link>
       <router-link to="/outro/ressources"> learn more </router-link>
-      <router-link to="/outro/takeaction"> take action </router-link>
-      <router-link to="/outro/share"> share </router-link>
+      <!-- <router-link to="/outro/takeaction"> take action </router-link> -->
+      <!-- <router-link to="/outro/share"> share </router-link> -->
     </div>
     <div class="right">
       <button v-on:click="togglePane">debug</button>
@@ -30,11 +30,11 @@ export default Vue.extend({
     };
   },
   methods: {
-    togglePane: function (event: MouseEvent) {
+    togglePane: function(event: MouseEvent) {
       if (!store.state.tweakpane) return;
       store.state.tweakpane.hidden = !store.state.tweakpane.hidden;
     },
-    toggleMenu: function () {
+    toggleMenu: function() {
       this.isMenu = !this.isMenu;
       if (this.isMenu)
         gsap.to(this.$refs.middle, {

@@ -34,6 +34,9 @@ import store from '~/store';
 import gsap from 'gsap';
 import { fadeBackground } from '~util';
 import { VIEWS } from '~constants/VIEWS';
+import AudioController from "~/singletons/AudioController"
+
+let voiceTimeout : NodeJS.Timeout;
 
 export default Vue.extend({
 	name: 'landing-page',
@@ -80,15 +83,19 @@ export default Vue.extend({
         this.show ? timeline.tweenFromTo('show', 'hide') : timeline.tweenFromTo('hide', 'show');
       });
 
+      //  Background
       fadeBackground({ routeName: 'LandingPage' });
 
+      // ThreeJS
       const threeView = store.state.sceneManager.threeViews.get(VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage'))
       threeView.start()
+
+			voiceTimeout = setTimeout(() => AudioController.play('scrollToThrowYourBiasesAway'), 3000);
     })
 	},
 	destroyed() {
-    const threeView = store.state.sceneManager.threeViews.get(VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage'))
-		threeView.destroy()
+    clearTimeout(voiceTimeout)
+    AudioController.stop('scrollToThrowYourBiasesAway')
 	},
 	components: {
 		QuestionForm,

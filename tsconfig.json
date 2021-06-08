@@ -1,20 +1,20 @@
 {
-	"compilerOptions": {
-		"outDir": "./dist/",
-		"sourceMap": true,
-		"strict": false,
-		"noImplicitReturns": true,
-		"noImplicitAny": true,
-		"noImplicitThis": false,
-		"module": "es6",
-		"moduleResolution": "node",
-		"target": "es2015",
-		"allowJs": true,
-		"baseUrl": "./src",
-		"allowSyntheticDefaultImports": true,
-		"paths": {
-			"~*": ["./*"]
-		}
-	},
-	"include": ["src/**/*", "vue-shim.d.ts"]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "strict": false,
+    "noImplicitReturns": false,
+    "noImplicitAny": true,
+    "noImplicitThis": false,
+    "module": "es6",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "allowJs": true,
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "~*": ["./*"]
+    }
+  },
+  "include": ["src/**/*", "vue-shim.d.ts"]
 }

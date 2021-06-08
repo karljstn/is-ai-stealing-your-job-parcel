@@ -11,8 +11,6 @@ import NormalizeWheel from "normalize-wheel";
 import VueRouter, { RouteRecordPublic } from "vue-router";
 import { debounce } from "~util/_index.js";
 import store from "~store";
-import { VIEWS } from "~constants/VIEWS";
-import { TweenedGLTF } from "~three/Meshes/GLTF";
 
 const wait = 150;
 
@@ -23,7 +21,8 @@ export default Vue.extend({
       const normalized = NormalizeWheel(event);
       const pixelSpeed = normalized.pixelY;
       const index = this.getPathIndex(router);
-      const currentRoute = router.getRoutes()[this.getPathIndex(router)];
+      const currentRoute = this.getCurrentRoute(router);
+
       const transition = this.getTransition(currentRoute.meta);
 
       if (currentRoute && this.getDisabled(currentRoute.meta)) {
@@ -62,6 +61,15 @@ export default Vue.extend({
         return routes[0];
       } else {
         return routes[index - 1];
+      }
+    },
+    getCurrentRoute(router: VueRouter) {
+      if (location.hash === "#/") {
+        return router.getRoutes().find((route) => route.name === "LandingPage");
+      } else {
+        return router
+          .getRoutes()
+          .find((route) => route.path === location.hash.substring(1));
       }
     },
     getPathIndex(router: VueRouter) {
@@ -104,7 +112,7 @@ export default Vue.extend({
   },
   mounted() {
     const debounced = debounce(this.onWheel, wait, true);
-    const currentRoute = router.getRoutes()[this.getPathIndex(router)];
+    const currentRoute = this.getCurrentRoute(router);
 
     if (currentRoute) this.setScrollArrow(currentRoute.meta);
 

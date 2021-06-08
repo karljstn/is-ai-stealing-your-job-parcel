@@ -4,6 +4,8 @@
       routeName="DefinitionSeven"
       :lottieURL="lottie"
       lottieScale="1"
+      voiceID="itcanlearn"
+      :voiceDelay="1250"
     />
   </section>
 </template>
