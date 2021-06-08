@@ -3,7 +3,7 @@
     <LottieThree
       routeName="IntroThreatened"
       :lottieURL="lottie"
-      lottieScale="1"
+      lottieScale="1.2"
       voiceID="youreHere"
       :voiceDelay="1450"
     />

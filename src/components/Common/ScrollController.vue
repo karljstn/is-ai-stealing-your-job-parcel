@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import router from "~/router";
+import router, { getCurrentRoute } from "~/router";
 import NormalizeWheel from "normalize-wheel";
 import VueRouter, { RouteRecordPublic } from "vue-router";
 import { debounce } from "~util/_index.js";
@@ -21,7 +21,7 @@ export default Vue.extend({
       const normalized = NormalizeWheel(event);
       const pixelSpeed = normalized.pixelY;
       const index = this.getPathIndex(router);
-      const currentRoute = this.getCurrentRoute(router);
+      const currentRoute = getCurrentRoute();
 
       const transition = this.getTransition(currentRoute.meta);
 
@@ -63,15 +63,7 @@ export default Vue.extend({
         return routes[index - 1];
       }
     },
-    getCurrentRoute(router: VueRouter) {
-      if (location.hash === "#/") {
-        return router.getRoutes().find((route) => route.name === "LandingPage");
-      } else {
-        return router
-          .getRoutes()
-          .find((route) => route.path === location.hash.substring(1));
-      }
-    },
+
     getPathIndex(router: VueRouter) {
       const r = router as VueRouter & any; // bad type
       const index = parseFloat(r.history.current.path.substring(1));
@@ -112,7 +104,7 @@ export default Vue.extend({
   },
   mounted() {
     const debounced = debounce(this.onWheel, wait, true);
-    const currentRoute = this.getCurrentRoute(router);
+    const currentRoute = getCurrentRoute();
 
     if (currentRoute) this.setScrollArrow(currentRoute.meta);
 

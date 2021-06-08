@@ -59,12 +59,15 @@ const routes = [
               tweened.reset(0.25);
 
               setTimeout(() => {
-                AudioController.play("trashcanScroll");
                 tweened.playAllAnims();
 
                 setTimeout(() => {
+                  AudioController.play("trashcanScroll");
+                }, 200);
+
+                setTimeout(() => {
                   AudioController.play("trashcanDrop");
-                }, 550);
+                }, 750);
 
                 setTimeout(() => {
                   AudioController.stop("scrollToThrowYourBiasesAway");
@@ -562,5 +565,19 @@ const router = new VueRouter({
   mode: "hash",
   routes,
 });
+
+router.afterEach((to, from) => {
+  AudioController.manageRouteMusic(to, from);
+});
+
+export const getCurrentRoute = () => {
+  if (location.hash === "#/") {
+    return router.getRoutes().find((route) => route.name === "LandingPage");
+  } else {
+    return router
+      .getRoutes()
+      .find((route) => route.path === location.hash.substring(1));
+  }
+};
 
 export default router;

@@ -96,6 +96,11 @@ export default Vue.extend({
 	destroyed() {
     clearTimeout(voiceTimeout)
     AudioController.stop('scrollToThrowYourBiasesAway')
+    const threeView = store.state.sceneManager.threeViews.get(
+      VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage')
+    );
+
+    if (threeView) threeView.destroy();
 	},
 	components: {
 		QuestionForm,

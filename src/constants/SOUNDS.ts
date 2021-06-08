@@ -55,7 +55,7 @@ import whatsyourtake from "~/assets/Sounds/General/voices/ai/michael/20_whatsyou
 import nowwhat from "~/assets/Sounds/General/voices/ai/michael/21_nowwhat.wav";
 
 const rand = random;
-const voices = { rate: rand.range(0.98, 1.02), volume: 0.275 };
+const voices = { rate: rand.range(0.98, 1.02), volume: 0.8 };
 
 export const getSound = (id: string) => SOUNDS.find((SOUND) => SOUND.id === id);
 
@@ -75,7 +75,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: backgroundMusic,
       loop: true,
-      volume: 0.5,
+      volume: 0.28,
     }),
     isUnique: true,
   },
@@ -84,6 +84,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: minigameMusic,
       loop: true,
+      volume: 0.28,
     }),
     isUnique: true,
   },
@@ -93,7 +94,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: confiant,
       loop: false,
-      volume: 0.3,
+      volume: 0.15,
     }),
     isUnique: true,
   },
@@ -102,7 +103,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: inquiet,
       loop: false,
-      volume: 0.3,
+      volume: 0.15,
     }),
     isUnique: true,
   },
@@ -111,7 +112,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: trashcanScroll,
       loop: false,
-      volume: 0.5,
+      volume: 0.4,
     }),
     isUnique: true,
   },
@@ -120,6 +121,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: trashcanDrop,
       loop: false,
+      rate: 0.7,
     }),
     isUnique: true,
   },
@@ -128,7 +130,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: slotMachine,
       loop: false,
-      volume: 0.2,
+      volume: 0.15,
       rate: 0.8,
     }),
     isUnique: true,
@@ -147,7 +149,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: wobble,
       loop: false,
-      volume: 0.3,
+      volume: 0.12,
     }),
     isUnique: false,
   },
