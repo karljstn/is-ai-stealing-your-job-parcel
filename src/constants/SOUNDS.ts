@@ -57,6 +57,8 @@ import nowwhat from "~/assets/Sounds/General/voices/ai/michael/21_nowwhat.wav";
 const rand = random;
 const voices = { rate: rand.range(0.98, 1.02), volume: 0.8 };
 
+export const musicVolume = { background: 0.28, minigame: 0.25 };
+
 export const getSound = (id: string) => SOUNDS.find((SOUND) => SOUND.id === id);
 
 export const getRandomSource = (sources: any[]) =>
@@ -75,7 +77,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: backgroundMusic,
       loop: true,
-      volume: 0.28,
+      volume: musicVolume.background,
     }),
     isUnique: true,
   },
@@ -84,7 +86,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: minigameMusic,
       loop: true,
-      volume: 0.28,
+      volume: musicVolume.minigame,
     }),
     isUnique: true,
   },

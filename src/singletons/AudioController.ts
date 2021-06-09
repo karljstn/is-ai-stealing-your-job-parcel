@@ -1,5 +1,5 @@
 import { Route } from "vue-router";
-import { SOUNDS, SOUND, getSound } from "~/constants/SOUNDS";
+import { SOUND, getSound, musicVolume } from "~/constants/SOUNDS";
 import { getCurrentRoute } from "~router";
 
 //TODO: factorize get sound and unique check
@@ -59,25 +59,25 @@ class AudioController {
     // console.log(to, from);
     if (to.name === "LandingPage") {
       // console.log("going to Home");
-      getSound("backgroundMusic").howl.fade(1, 0, 1000);
-      getSound("minigameMusic").howl.fade(1, 0, 1000);
+      getSound("backgroundMusic").howl.fade(musicVolume.background, 0, 1000);
+      getSound("minigameMusic").howl.fade(musicVolume.minigame, 0, 1000);
     } else if (to.name === "GameTwo") {
       // console.log("going to to game");
-      getSound("backgroundMusic").howl.fade(1, 0, 1000);
+      getSound("backgroundMusic").howl.fade(musicVolume.background, 0, 1000);
       this.play("minigameMusic");
       if (getSound("minigameMusic").howl.volume() === 0)
-        getSound("minigameMusic").howl.fade(0, 1, 1000);
+        getSound("minigameMusic").howl.fade(0, musicVolume.minigame, 1000);
     } else if (to.name !== "GameTwo") {
       // console.log("going to somewhere else than game");
       this.play("backgroundMusic");
       if (getSound("backgroundMusic").howl.volume() === 0)
-        getSound("backgroundMusic").howl.fade(0, 1, 1000);
+        getSound("backgroundMusic").howl.fade(0, musicVolume.background, 1000);
 
       if (
         getSound("minigameMusic").howl.playing() &&
         getSound("minigameMusic").howl.volume() != 0
       ) {
-        getSound("minigameMusic").howl.fade(1, 0, 500);
+        getSound("minigameMusic").howl.fade(musicVolume.minigame, 0, 500);
       }
     }
   };
