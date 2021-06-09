@@ -218,6 +218,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "~/styles/_variables.scss";
+
 section {
   padding: 0;
   height: initial;
@@ -349,7 +351,7 @@ section {
     }
 
     h3 {
-      color: white;
+      color: $white;
       font-size: 1.5em;
       font-weight: normal;
       width: 246px;
@@ -359,11 +361,11 @@ section {
       .first-line {
         font-size: inherit;
         position: relative;
-        color: white;
+        color: $white;
         top: 15px;
       }
       .stats {
-        color: white;
+        color: $white;
         font-size: 2em;
         // position: relative;
         // top: 30px;
@@ -377,7 +379,7 @@ section {
       align-items: center;
 
       p {
-        color: white;
+        color: $white;
         font-size: 1.5em;
         width: 510px;
         position: relative;
@@ -392,11 +394,11 @@ section {
         }
 
         .stats {
-          color: white;
+          color: $white;
           font-size: 2.5em;
         }
         .last-line {
-          color: white;
+          color: $white;
           font-size: inherit;
           position: relative;
           bottom: 20px;
@@ -530,10 +532,10 @@ section {
           .percentage {
             font-size: 1.5em;
             line-height: 40px;
-            color: white;
+            color: $white;
           }
           .comment {
-            color: white;
+            color: $white;
             font-size: 0.75em;
             overflow: hidden;
             white-space: nowrap;
@@ -583,14 +585,14 @@ section {
       margin: 50px auto;
 
       h2 {
-        color: white;
+        color: $white;
         font-size: 3.5em;
         font-weight: normal;
         margin-bottom: 20px;
       }
 
       p {
-        color: white;
+        color: $white;
         // width: 755px;
         font-size: 1.5em;
       }
@@ -635,7 +637,7 @@ section {
       margin: auto;
       margin-right: 250px;
       font-weight: normal;
-      color: white;
+      color: $white;
       line-height: 70px;
     }
 
