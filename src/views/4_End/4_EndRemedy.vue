@@ -172,7 +172,8 @@ export default Vue.extend({
         }
         if (target.className === "section-2") {
           if (isIntersecting) {
-            fadeBackground({ color: PALETTE.YELLOW });
+            fadeBackground({ color: PALETTE.DARKYELLOW });
+
             this.speak(voiceIDs.section2);
           }
           // console.log("target 2", isIntersecting);
