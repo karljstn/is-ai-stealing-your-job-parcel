@@ -10,6 +10,7 @@
           :index="notification.index"
           :content="notification.text"
           :vduration="notification.duration"
+          :remove="removeNotification"
         ></Notification>
         <span
           class="close-notification"
@@ -23,7 +24,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Notification from "./Notification.vue";
-import store from '~/store'
+import store from "~/store";
 
 export default Vue.extend({
   data(): { notifications: Object[]; index: number } {
@@ -33,13 +34,7 @@ export default Vue.extend({
     };
   },
   mounted() {
-    // this.addNotification(5000, "bonjour");
-    // this.addNotification(5000, "bonjour");
-    // setTimeout(() => {
-    //   this.addNotification(2000, "bonsoir");
-    // }, 1000);
-
-    store.commit('setAddNotification', this.addNotification)
+    store.commit("setAddNotification", this.addNotification);
   },
   components: {
     Notification,
@@ -51,11 +46,6 @@ export default Vue.extend({
         duration,
         index: this.index++,
       });
-
-      setTimeout(() => {
-        const index = this.index;
-        this.notifications.shift();
-      }, duration + 1000);
     },
     removeNotification(index: number) {
       const i = this.notifications.findIndex((elem) => elem.index === index);

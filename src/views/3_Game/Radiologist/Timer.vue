@@ -92,7 +92,7 @@ export default Vue.extend({
       AudioController.play("penalty");
       if (this.notification < notifications.length) {
         store.state.radiologist.addNotification(
-          15000,
+          7000,
           notifications[this.notification]
         );
         this.notification++;
@@ -114,6 +114,16 @@ export default Vue.extend({
       this.interval = setInterval(() => {
         this.convertSeconds();
         this.countdown--;
+
+        if (this.countdown === 20) {
+          store.state.radiologist.addNotification(
+            5000,
+            `Warning! You have 20 seconds left!`
+          );
+        }
+        if (this.countdown === 10) {
+          store.state.radiologist.addNotification(5000, `10 seconds left...`);
+        }
 
         if (this.countdown === -1) this.stopCountdown();
       }, 1000);

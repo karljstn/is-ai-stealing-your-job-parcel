@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  props: ["index", "content", "vduration"],
+  props: ["index", "content", "vduration", "remove"],
   data(): {
     interval: any;
     progress: number;
@@ -28,6 +28,7 @@ export default Vue.extend({
 
     this.interval = setInterval(() => {
       if (this.progress === this.duration) {
+        this.remove(this.index);
         clearInterval(this.interval);
       }
 

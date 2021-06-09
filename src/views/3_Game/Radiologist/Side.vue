@@ -6,16 +6,7 @@
       </li>
 
       <span class="progress">{{ this.progress }}</span>
-      <!-- <li>Robert Deniro</li>
-      <li>male</li>
-      <li>01/08/1997</li>
-      <li>4328 DSIO</li>
-      <li>CHEST LAT</li>
-      <li>3-March-2019</li>
-      <li>10:02:91</li>
-      <li>Image 1/2</li>
-      <li>Serie: 3</li>
-      <li>number 0298716892</li> -->
+
     </ul>
 
     <div class="range">

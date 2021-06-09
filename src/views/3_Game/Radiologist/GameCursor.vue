@@ -90,6 +90,7 @@ export default Vue.extend({
   background-size: contain;
   background-position: center;
   position: absolute;
+  overflow: hidden;
   z-index: 100;
   pointer-events: none;
   user-select: none;

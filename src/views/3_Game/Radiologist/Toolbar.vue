@@ -128,13 +128,18 @@ export default Vue.extend({
 
         AudioController.play("newfile");
 
-        if (this.notification < notifications.length) {
-          store.state.radiologist.addNotification(
-            15000,
-            notifications[this.notification]
-          );
-          this.notification++;
-        }
+        setTimeout(() => {
+          if (
+            this.notification < notifications.length &&
+            this.casesPending.length > 1
+          ) {
+            store.state.radiologist.addNotification(
+              5000,
+              notifications[this.notification]
+            );
+            this.notification++;
+          }
+        }, 500);
       }
     },
     removeFolder(index: number) {

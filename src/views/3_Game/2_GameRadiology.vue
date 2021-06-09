@@ -129,7 +129,6 @@ export default Vue.extend({
 
       endScreen: false,
 
-
       lottieDecompteURL: lottieDecompteURL,
       // lottieNextPatientURL: lottieNextPatientURL,
       nextPatient: false,
@@ -166,8 +165,8 @@ export default Vue.extend({
   },
 
   mounted() {
-      // this.timerCanStart = true;
-    
+    // this.timerCanStart = true;
+
     document.body.style.overflowX = "hidden";
     // const ease = store.state.eases.get("test");
     // const uniforms =
@@ -259,7 +258,10 @@ export default Vue.extend({
       // console.log(this.$refs.lottieContainer.classList.add('lottie'));
 
       this.timerCanStart = true;
-      store.state.radiologist.addNotification(15000, "You have 30 seconds to process this patient's file. The timer is at the bottom of your screen.")
+      store.state.radiologist.addNotification(
+        15000,
+        "Remember to use the help button if you’re lost."
+      );
       Skeleton.addFirstSkeleton();
     },
 
