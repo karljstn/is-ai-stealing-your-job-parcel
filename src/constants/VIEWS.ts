@@ -476,10 +476,6 @@ export const VIEWS: VIEW[] = [
           binding.mixer.addEventListener("finished", () => {
             binding.params.state = "finished";
           });
-
-          setTimeout(() => {
-            AudioController.play("slotMachine");
-          }, 1800);
         },
         ON_RAYCAST: (intersects) => {
           if (intersects.length) {

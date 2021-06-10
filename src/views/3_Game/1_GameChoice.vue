@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="arrow">
+    <router-link class="arrow" to="/13">
       <svg
         width="131"
         height="52"
@@ -61,7 +61,7 @@
           fill="#EFEFEF"
         />
       </svg>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -87,7 +87,9 @@ export default Vue.extend({
         VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "GameOne")
       );
       threeView.gltfMeshes[0].playAllAnims();
-      AudioController.play("slotMachine");
+      setTimeout(() => {
+        AudioController.play("slotMachine");
+      }, 1800);
       setTimeout(() => {
         this.$refs.arrowSvg.classList.add("show");
       }, 1500);
@@ -226,6 +228,8 @@ export default Vue.extend({
     display: flex;
     width: 100%;
     justify-content: center;
+    position: absolute;
+    bottom: 40px;
     svg {
       opacity: 0;
       transition: opacity 0.25s ease-in-out;
