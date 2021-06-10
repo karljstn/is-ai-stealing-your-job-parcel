@@ -29,6 +29,7 @@ export const VIEWS: VIEW[] = [
       {
         TYPE: GLTF_TYPE.TWEENED,
         MODEL: MODELS.TRASHCAN,
+        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.TRASHCAN),
         IDLE: { enabled: false },
         ON_START: (group: Group, viewport: Viewport, binding) => {
           group.rotateY(-Math.PI / 2);
@@ -91,8 +92,8 @@ export const VIEWS: VIEW[] = [
             obj.rotation.z =
               Math.sin(
                 performance.now() *
-                binding.params.sinus.frequency *
-                binding.params.sinus.factor
+                  binding.params.sinus.frequency *
+                  binding.params.sinus.factor
               ) *
               binding.params.sinus.amplitude *
               binding.params.sinus.factor;
@@ -124,7 +125,8 @@ export const VIEWS: VIEW[] = [
         TYPE: GLTF_TYPE.MOUSED,
         MODEL: MODELS.HAND_WAVE,
         // MATERIAL: MATERIALS.GET_LAMBERT(),
-        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) => new Vector3(x + w * 1.05, y - h, 0),
+        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
+          new Vector3(x + w * 1.05, y - h, 0),
         DELAY: { in: 2, out: 0 },
         ON_START: (group) => {
           group.traverse((obj) => {
@@ -168,21 +170,21 @@ export const VIEWS: VIEW[] = [
             binding.params.base.offset.rotation.z +
             Math.sin(
               performance.now() *
-              binding.params.sinus.frequency *
-              binding.params.sinus.factor
+                binding.params.sinus.frequency *
+                binding.params.sinus.factor
             ) *
-            binding.params.sinus.amplitude *
-            binding.params.sinus.factor;
+              binding.params.sinus.amplitude *
+              binding.params.sinus.factor;
 
           binding.group.rotation.z =
             binding.params.base.offset.rotation.z +
             Math.sin(
               performance.now() *
-              binding.params.sinus.frequency *
-              binding.params.sinus.factor
+                binding.params.sinus.frequency *
+                binding.params.sinus.factor
             ) *
-            binding.params.sinus.amplitude *
-            binding.params.sinus.factor;
+              binding.params.sinus.amplitude *
+              binding.params.sinus.factor;
         },
       },
     ],
@@ -225,17 +227,13 @@ export const VIEWS: VIEW[] = [
           // if (!!intersections[0]) {
           //   const object = intersections[0].object;
           //   // const name = object.name;
-
           //   if (
           //     object.userData.tweens[0]
           //   )
           //     return;
-
           //   AudioController.play("wobble");
-
           //   const factor = 1.5;
           //   const duration = 0.25;
-
           //   object.userData.tweens[0] = gsap.to(object.scale, {
           //     x: factor,
           //     y: factor,
@@ -249,7 +247,6 @@ export const VIEWS: VIEW[] = [
           //   if (binding.group.scale.x !== MODELS.EMOJI_CRY.BASE_SCALE) {
           //     const factor = 1.5;
           //     const duration = 0.25;
-
           //     gsap.to(binding.group.scale, {
           //       x: factor,
           //       y: factor,
@@ -257,9 +254,8 @@ export const VIEWS: VIEW[] = [
           //       duration,
           //     });
           //   }
-
           // }
-        }
+        },
       },
       {
         TYPE: GLTF_TYPE.MOUSED,
@@ -383,8 +379,8 @@ export const VIEWS: VIEW[] = [
             binding.mouse.current.x,
             binding.mouse.current.y,
             1
-          )
-        }
+          );
+        },
       },
     ],
   },
