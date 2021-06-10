@@ -133,7 +133,7 @@
         That being said, try bringing this up to Jeff Bezos.
       </h2>
     </div>
-    <router-link to="/18" class="arrow"></router-link>
+    <router-link to="/15" class="arrow"></router-link>
   </section>
 </template>
 
