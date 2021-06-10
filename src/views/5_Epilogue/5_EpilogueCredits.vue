@@ -1,22 +1,25 @@
 <template>
-	<section>
-		<p>Made by :</p>
-		<ul>
-			<li>Michael de Laborde</li>
-			<li>Karl Justiniano</li>
-			<li>Daria Duvernois</li>
-			<li>Sarah Manzaro</li>
-		</ul>
-		<a @click="$router.go(-1)"><Button>x</Button></a>
-	</section>
+  <section>
+    <picture>
+      <source srcset="~/assets/Images/credits/credits.webp" type="image/webp" />
+      <source srcset="~/assets/Images/credits/credits.png" type="image/png" />
+      <img src="~/assets/Images/credits/credits.png" alt="credits" />
+    </picture>
+    <a @click="$router.go(-1)"><Button>x</Button></a>
+  </section>
 </template>
 
 <script>
-import Vue from 'vue';
-import Button from '~/components/UI/Button';
+import Vue from "vue";
+import Button from "~/components/UI/Button";
+import { PALETTE } from "~constants/PALETTE";
+import { fadeBackground } from "~util";
 
 export default Vue.extend({
-	components: { Button },
+  components: { Button },
+  mounted() {
+    fadeBackground({ color: PALETTE.LIGHTPINK });
+  },
 });
 </script>
 
@@ -24,4 +27,9 @@ export default Vue.extend({
 // li {
 // color: white;
 // }
+section {
+  img {
+    width: 100%;
+  }
+}
 </style>
