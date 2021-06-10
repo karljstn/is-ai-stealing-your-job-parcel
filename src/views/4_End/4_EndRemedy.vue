@@ -201,32 +201,25 @@ export default Vue.extend({
       }
     },
     onElementObserved(entries: IntersectionObserverEntry[]) {
-      // console.log(entries);
       entries.forEach(({ target, isIntersecting }) => {
-        // do something ...
         if (target.className === "section-1") {
           if (isIntersecting) {
             fadeBackground({ color: PALETTE.WHITE });
             this.speak(voiceIDs.section1);
           }
-          // console.log("target 1", isIntersecting);
         }
         if (target.className === "section-2") {
           if (isIntersecting) {
             fadeBackground({ color: PALETTE.YELLOW });
             this.speak(voiceIDs.section2);
           }
-          // console.log("target 2", isIntersecting);
         }
         if (target.className === "section-3") {
           if (isIntersecting) {
             fadeBackground({ color: PALETTE.VIOLET });
             this.speak(voiceIDs.section3);
           }
-          // console.log("target 3", isIntersecting);
         }
-        // console.log(target);
-        // console.log(isIntersecting);
       });
     },
     speak(id: string) {
@@ -237,8 +230,6 @@ export default Vue.extend({
     },
   },
   mounted() {
-    console.log(this.$refs.calendar);
-
     this.parallax = [
       this.$refs.calendar,
       this.$refs.hammer,

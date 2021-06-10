@@ -18,6 +18,7 @@ import Vue from "vue";
 import store from "~/store";
 import gsap from "gsap";
 import AudioController from "~/singletons/AudioController";
+import { getCurrentRoute } from "~router";
 
 const notifications = [
   `5 seconds penalty on the timer! It wasn't the right diagnosis, be careful!`,
@@ -61,6 +62,11 @@ export default Vue.extend({
     });
 
     store.commit("setPenalty", this.applyPenalty);
+    store.commit("setStopChrono", this.stopCountdown);
+  },
+
+  destroyed() {
+    clearInterval(this.interval);
   },
   watch: {
     timerCanStart(newVal) {
@@ -85,8 +91,6 @@ export default Vue.extend({
       else this.sec = sec;
     },
     applyPenalty() {
-      console.log("apply penalty");
-
       this.countdown -= 4;
       this.penaltyAnimation.play();
       AudioController.play("penalty");
@@ -99,8 +103,6 @@ export default Vue.extend({
       }
 
       if (this.countdown <= 0) {
-        console.log("stop countdown");
-
         this.stopCountdown();
       } else {
         this.convertSeconds();
@@ -137,11 +139,11 @@ export default Vue.extend({
         this.min = "00";
         this.sec = "00";
         store.state.sceneManager?.radio.endGame();
-        AudioController.play("timerend");
       }
 
       store.state.radiologist.canvasClass("");
       clearInterval(this.interval);
+      console.log("Yes, I did clear the interval.");
     },
   },
 });

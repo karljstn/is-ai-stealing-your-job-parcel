@@ -5,7 +5,7 @@ import LoadManager from "~/three/Singletons/LoadManager"
 import raf from "~singletons/RAF"
 
 import { RADIOLOGIST } from "~constants/RADIOLOGIST"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { OrbitControls } from "../../CustomControls"
 
 import gsap from "gsap"
 
@@ -200,7 +200,6 @@ class Skeleton {
         if (this.progress > 0) {
             this.skeletonScene.add(this.currentSkeleton)
             this.transitionIn(this.currentSkeleton)
-            console.log("skeleton add")
         }
     }
 

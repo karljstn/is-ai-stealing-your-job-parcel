@@ -48,8 +48,6 @@ export default Vue.extend({
     }, 1000);
   },
   destroyed() {
-    console.log("CLEAR IN THE DESTROYED");
-
     clearInterval(this.interval);
   },
 });
