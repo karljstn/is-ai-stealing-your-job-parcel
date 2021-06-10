@@ -1,7 +1,7 @@
 <template>
   <div class="goal-container">
     <p>
-      Each file has to be processed within a 20 second time limit. Failure to do
+      Each file has to be processed within a 30 second time limit. Failure to do
       so will incur penalties in your overall timer.
     </p>
 

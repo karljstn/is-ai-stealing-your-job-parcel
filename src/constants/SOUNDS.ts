@@ -53,6 +53,11 @@ import inaperfect from "~/assets/Sounds/General/voices/ai/michael/19_inaperfectw
 import whatsyourtake from "~/assets/Sounds/General/voices/ai/michael/20_whatsyourtakeonthistopic.wav";
 import nowwhat from "~/assets/Sounds/General/voices/ai/michael/21_nowwhat.wav";
 
+// Game
+import timerend from "~/assets/Sounds/Radiologist/timer-end-1.mp3";
+import penalty from "~/assets/Sounds/Radiologist/penalty-1.mp3";
+import newfile from "~/assets/Sounds/Radiologist/new-file-1.mp3";
+
 const rand = random;
 const voices = { rate: rand.range(0.98, 1.02), volume: 0.8 };
 
@@ -122,7 +127,8 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: trashcanDrop,
       loop: false,
-      rate: 0.45,
+      rate: 0.6,
+      volume: 0.3,
     }),
     isUnique: true,
   },
@@ -371,5 +377,30 @@ export const SOUNDS: SOUND[] = [
       rate: voices.rate,
     }),
     isUnique: true,
+  },
+  //Game
+  {
+    id: "penalty",
+    howl: new Howl({
+      src: penalty,
+      volume: 0.5,
+    }),
+    isUnique: false,
+  },
+  {
+    id: "timerend",
+    howl: new Howl({
+      src: timerend,
+      volume: 0.5,
+    }),
+    isUnique: false,
+  },
+  {
+    id: "newfile",
+    howl: new Howl({
+      src: newfile,
+      volume: 0.5,
+    }),
+    isUnique: false,
   },
 ];

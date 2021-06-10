@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  props: ["index", "content", "vduration"],
+  props: ["index", "content", "vduration", "remove"],
   data(): {
     interval: any;
     progress: number;
@@ -28,6 +28,7 @@ export default Vue.extend({
 
     this.interval = setInterval(() => {
       if (this.progress === this.duration) {
+        this.remove(this.index);
         clearInterval(this.interval);
       }
 
@@ -36,28 +37,14 @@ export default Vue.extend({
   },
 
   destroyed() {
-    console.log("clear interval");
-
     clearInterval(this.interval);
-  },
-  methods: {
-    // clock() {
-    //   this.interval = setInterval(() => {
-    //     console.log("mounted");
-    //     if (this.progress === this.duration) {
-    //       console.log("clear interval");
-    //       clearInterval(this.interval);
-    //     }
-    //     this.progress++;
-    //   });
-    // },
   },
 });
 </script>
 
 <style lang="scss" scoped>
 .notification-content {
-  font-size: 0.9em;
+  font-size: 0.5em;
 }
 .bar {
   position: absolute;

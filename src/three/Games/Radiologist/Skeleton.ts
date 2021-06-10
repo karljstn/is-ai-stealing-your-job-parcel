@@ -25,6 +25,9 @@ class Skeleton {
     progress: number
     loaded: boolean
 
+    wrongAI2: THREE.Mesh | null
+    wrongAI5: THREE.Mesh | null
+
     errorsNames: string[]
     skeletonsInfos: any
     currentSkeleton: any
@@ -103,6 +106,8 @@ class Skeleton {
                 this.skeletons[i].rotation.y = -Math.PI / 2
             }
 
+
+
             this.textureLoader.load(this.skeletonsInfos[i].BAKE, texture => {
                 texture.flipY = false
                 this.textures.push(texture)
@@ -154,9 +159,9 @@ class Skeleton {
     nextSkeleton(progress: number) {
         this.progress = progress
 
-        if(this.progress !== 0) raf.unsubscribe("heartbeat")
-        
-        
+        if (this.progress !== 0) raf.unsubscribe("heartbeat")
+
+
         this.errorMesh = null
         this.skeletonScene.remove(this.currentSkeleton)
 
@@ -171,6 +176,14 @@ class Skeleton {
 
                 if (mesh.name === this.errorsNames[this.progress]) {
                     this.errorMesh = mesh
+                }
+
+                if (this.progress === 1 && mesh.name === 'colon') {
+                    this.wrongAI2 = mesh
+
+                }
+                if (this.progress === 4 && mesh.name === 'vertebre_3') {
+                    this.wrongAI5 = mesh
                 }
 
                 if (mesh.name === "<3") {

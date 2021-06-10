@@ -36,6 +36,7 @@ const store = new Vuex.Store({
       addFolder: () => { },
       updateCursor: () => {},
       canvasClass: () => {},
+      addNotification: ()=>{},
       gameEnded: false,
       results: {
         AIused: 0,
@@ -108,6 +109,9 @@ const store = new Vuex.Store({
     },
     setClassCanvas(state,payload){
       state.radiologist.canvasClass = payload
+    },
+    setAddNotification(state, payload){
+      state.radiologist.addNotification = payload
     },
     setResults(state, payload) {
       state.radiologist.results = payload

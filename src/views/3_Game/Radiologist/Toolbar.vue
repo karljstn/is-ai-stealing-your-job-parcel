@@ -29,8 +29,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Folder from "./Folder.vue";
-
+import AudioController from "~/singletons/AudioController";
 import store from "~/store";
+
+const notifications = [
+  "A new file just arrived, hurry and finish the one you are treating!",
+  "And one more file!",
+  `Wow, that's a lot of files accumulating...`,
+];
 
 export default Vue.extend({
   props: ["timerCanStart", "help"],
@@ -42,6 +48,7 @@ export default Vue.extend({
     interval: any;
     ticker: any;
     timeElapsed: number;
+    notification: number;
   } {
     return {
       casesPending: [],
@@ -51,6 +58,7 @@ export default Vue.extend({
       interval: 0,
       ticker: 0,
       timeElapsed: 0,
+      notification: 0,
     };
   },
   mounted() {
@@ -98,7 +106,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    start() {=
+    start() {
       this.addFolder();
 
       this.ticker = setInterval(() => {
@@ -117,6 +125,21 @@ export default Vue.extend({
           duration: this.duration,
           index: this.index++,
         });
+
+        AudioController.play("newfile");
+
+        setTimeout(() => {
+          if (
+            this.notification < notifications.length &&
+            this.casesPending.length > 1
+          ) {
+            store.state.radiologist.addNotification(
+              5000,
+              notifications[this.notification]
+            );
+            this.notification++;
+          }
+        }, 500);
       }
     },
     removeFolder(index: number) {

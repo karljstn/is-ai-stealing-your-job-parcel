@@ -12,7 +12,8 @@
         :progress="this.progress"
       ></ButtonsRight>
 
-      <!-- <NotificationManager></NotificationManager> -->
+      <NotificationManager></NotificationManager>
+
       <GameCursor :timerPause="this.timerPause"></GameCursor>
       <div class="lottie">
         <lottie-animation
@@ -47,7 +48,7 @@
 
       <Confirm v-if="this.confirm"></Confirm>
 
-      <button v-on:click="this.log" class="log">Log</button>
+      <!-- <button v-on:click="this.log" class="log">Log</button> -->
 
       <Timer
         :timerCanStart="this.timerCanStart"
@@ -128,7 +129,6 @@ export default Vue.extend({
 
       endScreen: false,
 
-
       lottieDecompteURL: lottieDecompteURL,
       // lottieNextPatientURL: lottieNextPatientURL,
       nextPatient: false,
@@ -154,7 +154,7 @@ export default Vue.extend({
   watch: {
     tutorialCount(newVal) {},
     progress() {
-      console.log("progress updated", this.progress);
+      // console.log("progress updated", this.progress);
       setTimeout(() => {
         if (this.progress < 5) this.nextPatient = true;
       }, 500);
@@ -165,8 +165,8 @@ export default Vue.extend({
   },
 
   mounted() {
-      // this.timerCanStart = true;
-    
+    // this.timerCanStart = true;
+
     document.body.style.overflowX = "hidden";
     // const ease = store.state.eases.get("test");
     // const uniforms =
@@ -223,9 +223,9 @@ export default Vue.extend({
   },
 
   methods: {
-    log() {
-      store.state.sceneManager.radio.log();
-    },
+    // log() {
+    //   store.state.sceneManager.radio.log();
+    // },
     setTutorialCount() {
       if (this.tutorialCount === 6) {
         this.hideTutorial();
@@ -235,7 +235,7 @@ export default Vue.extend({
       this.tutorialCount++;
     },
     toggleHelp(cond: boolean) {
-      console.log(cond);
+      // console.log(cond);
 
       if (this.timerCanStart) {
         this.help = cond;
@@ -251,20 +251,23 @@ export default Vue.extend({
         onComplete: this.$refs.decompte.play,
       });
 
-      console.log("tutorial complete");
+      // console.log("tutorial complete");
       this.tutorialCount = -1;
     },
     hideCountdown() {
       // console.log(this.$refs.lottieContainer.classList.add('lottie'));
 
       this.timerCanStart = true;
-      
+      store.state.radiologist.addNotification(
+        15000,
+        "Remember to use the help button if you’re lost."
+      );
       Skeleton.addFirstSkeleton();
     },
 
     animationCompleted() {
       this.nextPatient = false;
-      console.log("go false", this.nextPatient);
+      // console.log("go false", this.nextPatient);
     },
     timesUpCompleted() {
       this.endScreen = true;
@@ -275,8 +278,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "~/styles/_variables.scss";
-
-
 
 section {
   // width: initial;

@@ -17,6 +17,13 @@
 import Vue from "vue";
 import store from "~/store";
 import gsap from "gsap";
+import AudioController from "~/singletons/AudioController";
+
+const notifications = [
+  `5 seconds penalty on the timer! It wasn't the right diagnosis, be careful!`,
+  `Another 5 seconds penalty! Try harder!`,
+  `And one more penalty...`,
+];
 
 export default Vue.extend({
   props: ["timerCanStart", "timerPause"],
@@ -28,6 +35,7 @@ export default Vue.extend({
     sec: number | string;
     display: string;
     penaltyAnimation: any;
+    notification: number;
   } {
     return {
       countdown: 120,
@@ -36,6 +44,7 @@ export default Vue.extend({
       sec: 0,
       display: "",
       penaltyAnimation: null,
+      notification: 0,
     };
   },
   mounted() {
@@ -76,8 +85,19 @@ export default Vue.extend({
       else this.sec = sec;
     },
     applyPenalty() {
+      console.log("apply penalty");
+
       this.countdown -= 4;
       this.penaltyAnimation.play();
+      AudioController.play("penalty");
+      if (this.notification < notifications.length) {
+        store.state.radiologist.addNotification(
+          7000,
+          notifications[this.notification]
+        );
+        this.notification++;
+      }
+
       if (this.countdown <= 0) {
         console.log("stop countdown");
 
@@ -87,13 +107,23 @@ export default Vue.extend({
       }
     },
     startCountdown() {
-      store.state.radiologist.canvasClass('game-active')
+      store.state.radiologist.canvasClass("game-active");
       this.convertSeconds();
       this.countdown--;
 
       this.interval = setInterval(() => {
         this.convertSeconds();
         this.countdown--;
+
+        if (this.countdown === 20) {
+          store.state.radiologist.addNotification(
+            5000,
+            `Warning! You have 20 seconds left!`
+          );
+        }
+        if (this.countdown === 10) {
+          store.state.radiologist.addNotification(5000, `10 seconds left...`);
+        }
 
         if (this.countdown === -1) this.stopCountdown();
       }, 1000);
@@ -107,9 +137,10 @@ export default Vue.extend({
         this.min = "00";
         this.sec = "00";
         store.state.sceneManager?.radio.endGame();
+        AudioController.play("timerend");
       }
 
-      store.state.radiologist.canvasClass('')
+      store.state.radiologist.canvasClass("");
       clearInterval(this.interval);
     },
   },

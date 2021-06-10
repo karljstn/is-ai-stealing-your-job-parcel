@@ -4,16 +4,18 @@
       <span class="subtitle">{{ data.name }}</span>
       <span class="toggle" :class="active ? 'toggle-active' : ''"></span>
     </div>
-    <div class="content" v-if="active">
-      <a
-        v-for="(item, index) in data.data"
-        :key="index"
-        :href="item.link"
-        target="_blank"
-      >
-        {{ item.title }}
-      </a>
-    </div>
+    <transition name="slide-fade">
+      <div class="content" v-if="active">
+        <a
+          v-for="(item, index) in data.data"
+          :key="index"
+          :href="item.link"
+          target="_blank"
+        >
+          {{ item.title }}
+        </a>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -31,6 +33,18 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
 .ressource-wrapper {
   border-bottom: solid white 1px;
   padding: 10px 0;
