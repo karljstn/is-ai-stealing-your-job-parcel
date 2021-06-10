@@ -84,6 +84,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "~/styles/_variables.scss";
 section {
   cursor: none;
 
@@ -127,7 +128,7 @@ section {
       0% 35%,
       20% 10%
     );
-    background: black;
+    background: $black;
     display: flex;
     justify-content: center;
     align-items: center;

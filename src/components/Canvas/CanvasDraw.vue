@@ -85,7 +85,7 @@ const init = (canvas: HTMLCanvasElement) => {
 
     ctx.lineWidth = params.line.width;
     ctx.lineCap = "round";
-    ctx.strokeStyle = "#000";
+    ctx.strokeStyle = PALETTE.BLACK;
 
     ctx.moveTo(current.x, current.y); // From
     setPos(e.pageX, e.pageY);

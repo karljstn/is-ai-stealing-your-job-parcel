@@ -6,7 +6,7 @@ import {
   PointLight,
   Vector3,
 } from "three";
-import router from "~router";
+import router, { getCurrentRoute } from "~router";
 import { GLTF_TYPE, VIEW, Viewport } from "~types";
 import { clamp, map } from "~util";
 import { MATERIALS } from "./MATERIALS";
@@ -467,9 +467,15 @@ export const VIEWS: VIEW[] = [
           group.rotateY(-Math.PI / 6);
           group.position.y = -viewport.height / 8;
 
-          setTimeout(() => {
-            binding.playAllAnims();
-          }, 200);
+          // setTimeout(() => {
+          //   binding.playAllAnims();
+          // }, 200);
+
+          binding.params.state = "waiting";
+
+          binding.mixer.addEventListener("finished", () => {
+            binding.params.state = "finished";
+          });
 
           setTimeout(() => {
             AudioController.play("slotMachine");
@@ -489,10 +495,11 @@ export const VIEWS: VIEW[] = [
         },
         ON_CLICK: (binding) => {
           if (binding.intersects.length) {
-            router.push("13");
-            document.querySelector("canvas").style.pointerEvents = "none";
-
-            document.querySelector("html").style.cursor = "";
+            if (binding.params.state === "finished") {
+              router.push("13");
+              document.querySelector("canvas").style.pointerEvents = "none";
+              document.querySelector("html").style.cursor = "";
+            }
           }
         },
       },

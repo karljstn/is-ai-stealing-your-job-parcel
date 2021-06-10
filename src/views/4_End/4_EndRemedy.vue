@@ -173,7 +173,6 @@ export default Vue.extend({
         if (target.className === "section-2") {
           if (isIntersecting) {
             fadeBackground({ color: PALETTE.DARKYELLOW });
-
             this.speak(voiceIDs.section2);
           }
           // console.log("target 2", isIntersecting);
@@ -290,7 +289,7 @@ section {
         position: relative;
         right: 65px;
         // font-weight: bold
-        color: black;
+        color: $black;
       }
     }
   }
@@ -352,7 +351,7 @@ section {
     }
 
     h3 {
-      color: $white;
+      color: $black;
       font-size: 1.5em;
       font-weight: normal;
       width: 246px;
@@ -362,11 +361,11 @@ section {
       .first-line {
         font-size: inherit;
         position: relative;
-        color: $white;
+        color: $black;
         top: 15px;
       }
       .stats {
-        color: $white;
+        color: $black;
         font-size: 2em;
         // position: relative;
         // top: 30px;
@@ -380,7 +379,7 @@ section {
       align-items: center;
 
       p {
-        color: $white;
+        color: $black;
         font-size: 1.5em;
         width: 510px;
         position: relative;
@@ -391,15 +390,15 @@ section {
           left: 0;
           width: 105%;
           height: 1px;
-          background-color: black;
+          background-color: $black;
         }
 
         .stats {
-          color: $white;
+          color: $black;
           font-size: 2.5em;
         }
         .last-line {
-          color: $white;
+          color: $black;
           font-size: inherit;
           position: relative;
           bottom: 20px;
@@ -533,10 +532,10 @@ section {
           .percentage {
             font-size: 1.5em;
             line-height: 40px;
-            color: $white;
+            color: $black;
           }
           .comment {
-            color: $white;
+            color: $black;
             font-size: 0.75em;
             overflow: hidden;
             white-space: nowrap;
