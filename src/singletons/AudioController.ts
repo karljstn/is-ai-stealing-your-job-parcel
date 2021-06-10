@@ -1,5 +1,6 @@
-import { SOUNDS, SOUND, getSound } from "~/constants/SOUNDS";
-import router from "~router";
+import { Route } from "vue-router";
+import { SOUND, getSound, musicVolume } from "~/constants/SOUNDS";
+import { getCurrentRoute } from "~router";
 
 //TODO: factorize get sound and unique check
 class AudioController {
@@ -41,22 +42,44 @@ class AudioController {
     active.howl.stop();
   };
 
-  manageMusic = () => {
-    const getCurrentRoute = () => {
-      if (location.hash === "#/") {
-        return router.getRoutes().find((route) => route.name === "LandingPage");
-      } else {
-        return router
-          .getRoutes()
-          .find((route) => route.path === location.hash.substring(1));
-      }
-    };
-
+  manageInitialMusic = () => {
     const currentRoute = getCurrentRoute();
 
     if (currentRoute.name === "LandingPage") return;
+    else if (currentRoute.name !== "GameTwo") {
+      // console.log("started from somewhere else than game");
+      this.play("backgroundMusic");
+    } else {
+      // console.log("started from game");
+      this.play("minigameMusic");
+    }
+  };
 
-    this.play("backgroundMusic");
+  manageRouteMusic = (to: Route, from: Route) => {
+    // console.log(to, from);
+    if (to.name === "LandingPage") {
+      // console.log("going to Home");
+      getSound("backgroundMusic").howl.fade(musicVolume.background, 0, 1000);
+      getSound("minigameMusic").howl.fade(musicVolume.minigame, 0, 1000);
+    } else if (to.name === "GameTwo") {
+      // console.log("going to to game");
+      getSound("backgroundMusic").howl.fade(musicVolume.background, 0, 1000);
+      this.play("minigameMusic");
+      if (getSound("minigameMusic").howl.volume() === 0)
+        getSound("minigameMusic").howl.fade(0, musicVolume.minigame, 1000);
+    } else if (to.name !== "GameTwo") {
+      // console.log("going to somewhere else than game");
+      this.play("backgroundMusic");
+      if (getSound("backgroundMusic").howl.volume() === 0)
+        getSound("backgroundMusic").howl.fade(0, musicVolume.background, 1000);
+
+      if (
+        getSound("minigameMusic").howl.playing() &&
+        getSound("minigameMusic").howl.volume() != 0
+      ) {
+        getSound("minigameMusic").howl.fade(musicVolume.minigame, 0, 500);
+      }
+    }
   };
 }
 

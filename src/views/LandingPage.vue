@@ -90,12 +90,17 @@ export default Vue.extend({
       const threeView = store.state.sceneManager.threeViews.get(VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage'))
       threeView.start()
 
-			voiceTimeout = setTimeout(() => AudioController.play('scrollToThrowYourBiasesAway'), 3000);
+			voiceTimeout = setTimeout(() => AudioController.play('scrollToThrowYourBiasesAway'), 2200);
     })
 	},
 	destroyed() {
     clearTimeout(voiceTimeout)
     AudioController.stop('scrollToThrowYourBiasesAway')
+    const threeView = store.state.sceneManager.threeViews.get(
+      VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage')
+    );
+
+    if (threeView) threeView.destroy();
 	},
 	components: {
 		QuestionForm,
@@ -114,7 +119,7 @@ export default Vue.extend({
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, 0);
-		top: -17%;
+		top: -19%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -173,5 +178,10 @@ export default Vue.extend({
 			text-align: center;
 		}
 	}
+}
+
+.landing-paragraphs > div:nth-child(1) {
+margin-top: -117px;
+transform: scale3d(1.15, 1.15, 1.15);
 }
 </style>
