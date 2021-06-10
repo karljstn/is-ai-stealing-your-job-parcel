@@ -32,7 +32,6 @@ import aiisthestudy from "~/assets/Sounds/General/voices/ai/michael/99_artificia
 import aiisthestudybis from "~/assets/Sounds/General/voices/ai/michael/99bis_artificialintelligenceis.wav";
 import ivealreadylostyouhaventi from "~/assets/Sounds/General/voices/ai/michael/999_ivealreadylostyouhaventi.wav";
 import ivealreadylostyouhaventibis from "~/assets/Sounds/General/voices/ai/michael/999bis_ivealreadylostyouhaventi.wav";
-import devicesthatperceivetheirenvironment from "~/assets/Sounds/General/voices/ai/michael/8_devicesthatperceivetheirenvironment.wav";
 import devicesthatperceivetheirenvironmentBis from "~/assets/Sounds/General/voices/ai/michael/8bis_devicesthatperceivetheirenvironment.wav";
 import basically from "~/assets/Sounds/General/voices/ai/michael/9_basically.wav";
 import itcanlearn from "~/assets/Sounds/General/voices/ai/michael/10_itcanlearn.wav";
@@ -96,7 +95,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: confiant,
       loop: false,
-      volume: 0.15,
+      volume: 0.1,
     }),
     isUnique: true,
   },
@@ -105,7 +104,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: inquiet,
       loop: false,
-      volume: 0.15,
+      volume: 0.1,
     }),
     isUnique: true,
   },
@@ -114,7 +113,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: trashcanScroll,
       loop: false,
-      volume: 0.4,
+      volume: 0.2,
     }),
     isUnique: true,
   },
@@ -123,7 +122,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: trashcanDrop,
       loop: false,
-      rate: 0.7,
+      rate: 0.45,
     }),
     isUnique: true,
   },
@@ -142,7 +141,7 @@ export const SOUNDS: SOUND[] = [
     howl: new Howl({
       src: pen,
       loop: false,
-      volume: 0.4,
+      volume: 0.6,
     }),
     isUnique: true,
   },
@@ -235,10 +234,7 @@ export const SOUNDS: SOUND[] = [
   {
     id: "devicesthatperceivetheirenvironment",
     howl: new Howl({
-      src: getRandomSource([
-        devicesthatperceivetheirenvironment,
-        devicesthatperceivetheirenvironmentBis,
-      ]),
+      src: getRandomSource([devicesthatperceivetheirenvironmentBis]),
       volume: voices.volume,
       rate: voices.rate,
     }),

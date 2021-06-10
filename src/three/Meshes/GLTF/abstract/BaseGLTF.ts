@@ -237,7 +237,7 @@ abstract class BaseGLTF {
       this.group.children,
       true
     );
-    if (this.ON_RAYCAST) {
+    if (this.ON_RAYCAST && MouseController.hasMoved) {
       this.ON_RAYCAST(this.intersects, this);
     }
 

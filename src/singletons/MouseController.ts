@@ -1,3 +1,4 @@
+import { timeStamp } from "node:console";
 import { Vector2, Vector3 } from "three";
 import { Viewport } from "~types";
 
@@ -7,7 +8,8 @@ class MouseController {
   Vec3Viewport: Vector3; // Useful for responsive
   raw: { current: Vector2; previous: Vector2 }; // For the cursor in the game
   speed: number;
-  hoveredNodeName: string
+  hoveredNodeName: string;
+  hasMoved: boolean;
 
   constructor() {
     this.Vec3 = new Vector3();
@@ -15,7 +17,8 @@ class MouseController {
     this.Vec3Viewport = new Vector3();
     this.raw = { current: new Vector2(), previous: new Vector2() };
     this.speed = 0;
-    this.hoveredNodeName = ''
+    this.hoveredNodeName = "";
+    this.hasMoved = false;
 
     this.setEvents();
   }
@@ -26,6 +29,8 @@ class MouseController {
   };
 
   mousemove = (e: MouseEvent) => {
+    if (this.hasMoved === false) this.hasMoved = true;
+
     this.Vec3.x = (e.clientX / window.innerWidth) * 2 - 1;
     this.Vec3.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
@@ -39,8 +44,8 @@ class MouseController {
 
     this.speed = this.raw.previous.distanceTo(this.raw.current);
 
-    const target = e.target as HTMLElement
-    this.hoveredNodeName = target.nodeName
+    const target = e.target as HTMLElement;
+    this.hoveredNodeName = target.nodeName;
   };
 
   setEvents = () => {
