@@ -1,7 +1,7 @@
 import handWave from "~assets/Models/hand-wave/Hand-anim-v5.glb";
 import handOkay from "~assets/Models/hand-ok/HAND_OK_ANIM_V2.glb";
-import trashcan from "~assets/Models/trashcan/v10_POUBELLE_4.glb";
-import bakedTrashcan from "~assets/Models/trashcan/bakedTrashcanV2.glb";
+import trashcan from "~assets/Models/trashcan/new/POUBELLE_6.glb";
+import bakedTrashcan from "~assets/Models/trashcan/new/POUBELLE_6.glb";
 import bakedTrashcanTexture from "~assets/Models/trashcan/bake2.jpg";
 import clipboard from "~assets/Games/Radiologist/Models/clipboard_1.glb";
 import emojiSmile from "~assets/Models/emoji-smile/EMOJI2.glb";
@@ -48,7 +48,7 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   TRASHCAN: {
     URL: trashcan,
-    BASE_SCALE: 0.12,
+    BASE_SCALE: 0.14,
     ANIMATION_SPEED: 0.001,
     ANIMATION_LOOP: LoopOnce,
   },
@@ -68,17 +68,17 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   EMOJI_GLASSES: {
     URL: emojiGlasses,
-    BASE_SCALE: 0.17,
+    BASE_SCALE: 0.21,
     TEXTURE: emojiGlassesBake,
   },
   EMOJI_SAD: {
     URL: emojiSad,
-    BASE_SCALE: 0.17,
+    BASE_SCALE: 0.21,
     TEXTURE: emojiSadBake,
   },
   EMOJI_DISTRAUGHT: {
     URL: emojiDistraught,
-    BASE_SCALE: 0.21,
+    BASE_SCALE: 0.233,
     TEXTURE: emojiDistraughtBake,
   },
   EMOJI_CRY: {
@@ -92,7 +92,7 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   PENCIL: {
     URL: pencil,
-    BASE_SCALE: 0.04,
+    BASE_SCALE: 0.1,
   },
   RADIOLOGIST_BACKGROUND: {
     URL: radiologistBackground,
@@ -104,7 +104,7 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   SLOT_MACHINE: {
     URL: slotMachine,
-    BASE_SCALE: 0.16,
+    BASE_SCALE: 0.19,
     ANIMATION_SPEED: 0.0008,
     ANIMATION_LOOP: LoopOnce,
   },
@@ -134,12 +134,12 @@ export const MODELS: { [name: string]: MODEL } = {
   },
   HAND_SMALL: {
     URL: handSmall,
-    BASE_SCALE: 0.07,
+    BASE_SCALE: 0.06,
     ANIMATION_LOOP: LoopOnce,
   },
   OUTRO_CLOCK: {
     URL: outroClock,
-    BASE_SCALE: 0.25,
+    BASE_SCALE: 0.27,
   },
 };
 
@@ -175,7 +175,7 @@ export const GET_MAGIC_8_BALL = () => {
   };
   return {
     URL: getUrl(),
-    BASE_SCALE: 0.4,
+    BASE_SCALE: 0.44,
     ANIMATION_LOOP: LoopOnce,
   };
 };

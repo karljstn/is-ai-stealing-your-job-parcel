@@ -119,7 +119,7 @@ export default Vue.extend({
 		position: absolute;
 		left: 50%;
 		transform: translate(-50%, 0);
-		top: -17%;
+		top: -19%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -178,5 +178,10 @@ export default Vue.extend({
 			text-align: center;
 		}
 	}
+}
+
+.landing-paragraphs > div:nth-child(1) {
+margin-top: -117px;
+transform: scale3d(1.15, 1.15, 1.15);
 }
 </style>

@@ -4,6 +4,7 @@ import {
   Mesh,
   MeshStandardMaterial,
   PointLight,
+  TextureLoader,
   Vector3,
 } from "three";
 import router, { getCurrentRoute } from "~router";
@@ -16,6 +17,7 @@ import gsap from "gsap";
 import { PALETTE } from "./PALETTE";
 import { getSound, SOUNDS } from "./SOUNDS";
 import AudioController from "~/singletons/AudioController";
+import { MousedTweenedGLTF } from "~three/Meshes/GLTF";
 
 let wobbleRateInterval: any;
 
@@ -30,7 +32,7 @@ export const VIEWS: VIEW[] = [
         IDLE: { enabled: false },
         ON_START: (group: Group, viewport: Viewport, binding) => {
           group.rotateY(-Math.PI / 2);
-          group.position.y = -viewport.height / 2.7;
+          group.position.y = -viewport.height / 2.65;
           binding.params.sinus.amplitude *= 1.5;
 
           wobbleRateInterval = setInterval(() => {
@@ -44,7 +46,7 @@ export const VIEWS: VIEW[] = [
             const position = object.position;
 
             if (
-              name === "POUBELLE" ||
+              name === "TRASH" ||
               name.indexOf("Text") > -1 ||
               object.userData.tweens[0] ||
               object.userData.tweens[1] ||
@@ -81,7 +83,7 @@ export const VIEWS: VIEW[] = [
           binding.group.traverse((obj) => {
             if (
               obj.name === "Scene" ||
-              obj.name === "POUBELLE" ||
+              obj.name === "TRASH" ||
               obj.name.indexOf("Text") > -1
             )
               return;
@@ -89,8 +91,8 @@ export const VIEWS: VIEW[] = [
             obj.rotation.z =
               Math.sin(
                 performance.now() *
-                  binding.params.sinus.frequency *
-                  binding.params.sinus.factor
+                binding.params.sinus.frequency *
+                binding.params.sinus.factor
               ) *
               binding.params.sinus.amplitude *
               binding.params.sinus.factor;
@@ -122,7 +124,7 @@ export const VIEWS: VIEW[] = [
         TYPE: GLTF_TYPE.MOUSED,
         MODEL: MODELS.HAND_WAVE,
         // MATERIAL: MATERIALS.GET_LAMBERT(),
-        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) => new Vector3(x + w, y - h, 0),
+        GET_OFFSET_FROM_RECT: ({ x, y, w, h }) => new Vector3(x + w * 1.05, y - h, 0),
         DELAY: { in: 2, out: 0 },
         ON_START: (group) => {
           group.traverse((obj) => {
@@ -166,21 +168,21 @@ export const VIEWS: VIEW[] = [
             binding.params.base.offset.rotation.z +
             Math.sin(
               performance.now() *
-                binding.params.sinus.frequency *
-                binding.params.sinus.factor
+              binding.params.sinus.frequency *
+              binding.params.sinus.factor
             ) *
-              binding.params.sinus.amplitude *
-              binding.params.sinus.factor;
+            binding.params.sinus.amplitude *
+            binding.params.sinus.factor;
 
           binding.group.rotation.z =
             binding.params.base.offset.rotation.z +
             Math.sin(
               performance.now() *
-                binding.params.sinus.frequency *
-                binding.params.sinus.factor
+              binding.params.sinus.frequency *
+              binding.params.sinus.factor
             ) *
-              binding.params.sinus.amplitude *
-              binding.params.sinus.factor;
+            binding.params.sinus.amplitude *
+            binding.params.sinus.factor;
         },
       },
     ],
@@ -207,12 +209,57 @@ export const VIEWS: VIEW[] = [
     },
     GLTF_MESHES: [
       {
-        TYPE: GLTF_TYPE.TWEENED,
+        TYPE: GLTF_TYPE.MOUSED,
         MODEL: MODELS.EMOJI_CRY,
-        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_CRY),
+        MATERIAL: MATERIALS.GET_BAKED_STANDARD(MODELS.EMOJI_CRY.TEXTURE),
         GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
           new Vector3(x + w / 1.35, y - h / 1.64, 0),
         DELAY: { in: 1.8, out: 0 },
+        ON_UPDATE: (binding: any) =>
+          binding.group.lookAt(
+            binding.mouse.current.x * 0.25,
+            binding.mouse.current.y * 0.25,
+            1
+          ),
+        ON_RAYCAST: (intersections, binding) => {
+          // if (!!intersections[0]) {
+          //   const object = intersections[0].object;
+          //   // const name = object.name;
+
+          //   if (
+          //     object.userData.tweens[0]
+          //   )
+          //     return;
+
+          //   AudioController.play("wobble");
+
+          //   const factor = 1.5;
+          //   const duration = 0.25;
+
+          //   object.userData.tweens[0] = gsap.to(object.scale, {
+          //     x: factor,
+          //     y: factor,
+          //     z: factor,
+          //     duration,
+          //     onComplete: () => {
+          //       object.userData.tweens[0] = null;
+          //     },
+          //   });
+          // } else {
+          //   if (binding.group.scale.x !== MODELS.EMOJI_CRY.BASE_SCALE) {
+          //     const factor = 1.5;
+          //     const duration = 0.25;
+
+          //     gsap.to(binding.group.scale, {
+          //       x: factor,
+          //       y: factor,
+          //       z: factor,
+          //       duration,
+          //     });
+          //   }
+
+          // }
+        }
       },
       {
         TYPE: GLTF_TYPE.MOUSED,
@@ -250,7 +297,7 @@ export const VIEWS: VIEW[] = [
           if (el) {
             const { x, y, w, h } = binding.getFromRect(el);
             group.position.x = x + w / 2;
-            group.position.y = y - h / 2;
+            group.position.y = y - h / 2.5;
           }
         },
         ON_RAYCAST: (intersects, binding) => {
@@ -289,7 +336,7 @@ export const VIEWS: VIEW[] = [
           if (el) {
             const { x, y, w, h } = binding.getFromRect(el);
             group.position.x = x + w / 2;
-            group.position.y = y - h / 2;
+            group.position.y = y - h / 2.5;
           }
         },
         ON_RAYCAST: (intersects, binding) => {
@@ -321,16 +368,23 @@ export const VIEWS: VIEW[] = [
     ROUTE_NAME: "DefinitionOne",
     GLTF_MESHES: [
       {
-        TYPE: GLTF_TYPE.TWEENED,
+        TYPE: GLTF_TYPE.MOUSED,
         MODEL: MODELS.EMOJI_SMILE,
-        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_SMILE),
+        MATERIAL: MATERIALS.GET_BAKED_STANDARD(MODELS.EMOJI_SMILE.TEXTURE),
         DELAY: { in: 4, out: 0 },
         GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
-          new Vector3(x + w - w / 8, y - h + h / 8, 0),
+          new Vector3(x + w - w / 6, y - h + h / 5, 0),
         ON_START: (group, viewport, binding) => {
           // binding.params.sinus.frequency *= 0.5;
           // binding.params.sinus.amplitude *= 0.5;
         },
+        ON_UPDATE: (binding: any) => {
+          binding.group.lookAt(
+            binding.mouse.current.x,
+            binding.mouse.current.y,
+            1
+          )
+        }
       },
     ],
   },
@@ -505,12 +559,18 @@ export const VIEWS: VIEW[] = [
     ROUTE_NAME: "EndOne",
     GLTF_MESHES: [
       {
-        TYPE: GLTF_TYPE.TWEENED,
+        TYPE: GLTF_TYPE.MOUSED,
         DELAY: { in: 1.2, out: 0 },
         MODEL: MODELS.EMOJI_DISTRAUGHT,
         GET_OFFSET_FROM_RECT: ({ x, y, w, h }) =>
-          new Vector3(x + w / 2 + w / 3.5, y - h + h / 4, 0),
-        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_DISTRAUGHT),
+          new Vector3(x + w / 2 + w / 3.5, y - h + h / 3.3, 0),
+        MATERIAL: MATERIALS.GET_BAKED_STANDARD(MODELS.EMOJI_DISTRAUGHT.TEXTURE),
+        ON_UPDATE: (binding: MousedTweenedGLTF) =>
+          binding.group.lookAt(
+            binding.mouse.current.x * 0.25,
+            binding.mouse.current.y * 0.25,
+            1
+          ),
       },
     ],
   },

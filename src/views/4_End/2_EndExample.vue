@@ -1,29 +1,29 @@
 <template>
-  <section>
-    <LottieThree
-      routeName="EndTwo"
-      :lottieURL="lottie"
-      lottieScale="1"
-      voiceID="thisisasimpleexample"
-      :voiceDelay="1050"
-    />
-  </section>
+	<section>
+		<LottieThree
+			routeName="EndTwo"
+			:lottieURL="lottie"
+			lottieScale="0.68"
+			voiceID="thisisasimpleexample"
+			:voiceDelay="1050"
+		/>
+	</section>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import LottieThree from "~components/Common/LottieThree.vue";
-import Lottie from "~/assets/Lottie/13. THIS IS A SIMPLE.json";
+import Vue from 'vue';
+import LottieThree from '~components/Common/LottieThree.vue';
+import Lottie from '~/assets/Lottie/13. THIS IS A SIMPLE.json';
 
 export default Vue.extend({
-  data() {
-    return {
-      lottie: Lottie,
-    };
-  },
-  components: {
-    LottieThree,
-  },
+	data() {
+		return {
+			lottie: Lottie,
+		};
+	},
+	components: {
+		LottieThree,
+	},
 });
 </script>
 

@@ -220,86 +220,86 @@ const routes = [
     meta: {
       color: PALETTE.PINK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
+  // {
+  //   path: "/7",
+  //   component: DefinitionThree,
+  //   name: "DefinitionThree",
+  //   meta: {
+  //     color: PALETTE.BLACK,
+  //     scroll: { disabled: false, darkenScrollDownArrow: true },
+  //     transition: {
+  //       delay: 1000,
+  //       out: () => {
+  //         // Execute code for every single gltf
+  //         for (const VIEW of VIEWS) {
+  //           for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+  //             .gltfMeshes) {
+  //             const tweened = gltf as TweenedGLTF;
+
+  //             if (typeof tweened.out !== "undefined") tweened.out();
+  //             if (typeof tweened.killTimeouts !== "undefined")
+  //               tweened.killTimeouts();
+  //           }
+  //         }
+  //       },
+  //     },
+  //   },
+  // },
+  // {
+  //   path: "/8",
+  //   component: DefinitionFour,
+  //   name: "DefinitionFour",
+  //   meta: {
+  //     color: PALETTE.LIGHTPINK,
+  //     scroll: { disabled: false },
+  //     transition: {
+  //       delay: 1000,
+  //       out: () => {
+  //         // Execute code for every single gltf
+  //         for (const VIEW of VIEWS) {
+  //           for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+  //             .gltfMeshes) {
+  //             const tweened = gltf as TweenedGLTF;
+
+  //             if (typeof tweened.out !== "undefined") tweened.out();
+  //             if (typeof tweened.killTimeouts !== "undefined")
+  //               tweened.killTimeouts();
+  //           }
+  //         }
+  //       },
+  //     },
+  //   },
+  // },
+  // {
+  //   path: "/9",
+  //   component: DefinitionFive,
+  //   name: "DefinitionFive",
+  //   meta: {
+  //     color: PALETTE.ORANGE,
+  //     scroll: { disabled: false },
+  //     transition: {
+  //       delay: 1000,
+  //       out: () => {
+  //         // Execute code for every single gltf
+  //         for (const VIEW of VIEWS) {
+  //           for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
+  //             .gltfMeshes) {
+  //             const tweened = gltf as TweenedGLTF;
+
+  //             if (typeof tweened.out !== "undefined") tweened.out();
+  //             if (typeof tweened.killTimeouts !== "undefined")
+  //               tweened.killTimeouts();
+  //           }
+  //         }
+  //       },
+  //     },
+  //   },
+  // },
   {
     path: "/7",
-    component: DefinitionThree,
-    name: "DefinitionThree",
-    meta: {
-      color: PALETTE.BLACK,
-      scroll: { disabled: false, darkenScrollDownArrow: true },
-      transition: {
-        delay: 1000,
-        out: () => {
-          // Execute code for every single gltf
-          for (const VIEW of VIEWS) {
-            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
-              .gltfMeshes) {
-              const tweened = gltf as TweenedGLTF;
-
-              if (typeof tweened.out !== "undefined") tweened.out();
-              if (typeof tweened.killTimeouts !== "undefined")
-                tweened.killTimeouts();
-            }
-          }
-        },
-      },
-    },
-  },
-  {
-    path: "/8",
-    component: DefinitionFour,
-    name: "DefinitionFour",
-    meta: {
-      color: PALETTE.LIGHTPINK,
-      scroll: { disabled: false },
-      transition: {
-        delay: 1000,
-        out: () => {
-          // Execute code for every single gltf
-          for (const VIEW of VIEWS) {
-            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
-              .gltfMeshes) {
-              const tweened = gltf as TweenedGLTF;
-
-              if (typeof tweened.out !== "undefined") tweened.out();
-              if (typeof tweened.killTimeouts !== "undefined")
-                tweened.killTimeouts();
-            }
-          }
-        },
-      },
-    },
-  },
-  {
-    path: "/9",
-    component: DefinitionFive,
-    name: "DefinitionFive",
-    meta: {
-      color: PALETTE.ORANGE,
-      scroll: { disabled: false },
-      transition: {
-        delay: 1000,
-        out: () => {
-          // Execute code for every single gltf
-          for (const VIEW of VIEWS) {
-            for (const gltf of store.state.sceneManager.threeViews.get(VIEW)
-              .gltfMeshes) {
-              const tweened = gltf as TweenedGLTF;
-
-              if (typeof tweened.out !== "undefined") tweened.out();
-              if (typeof tweened.killTimeouts !== "undefined")
-                tweened.killTimeouts();
-            }
-          }
-        },
-      },
-    },
-  },
-  {
-    path: "/10",
     component: DefinitionSix,
     name: "DefinitionSix",
     meta: {
@@ -324,7 +324,7 @@ const routes = [
     },
   },
   {
-    path: "/11",
+    path: "/8",
     component: DefinitionSeven,
     name: "DefinitionSeven",
     meta: {
@@ -360,26 +360,26 @@ const routes = [
   //   },
   // },
   {
-    path: "/12",
+    path: "/9",
     component: GameOne,
     name: "GameOne",
     meta: {
       color: PALETTE.LIGHTPINK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
-    path: "/13",
+    path: "/10",
     component: GameTwo,
     name: "GameTwo",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
-    path: "/14",
+    path: "/11",
     component: EndOne,
     name: "EndOne",
     meta: {
@@ -404,7 +404,7 @@ const routes = [
     },
   },
   {
-    path: "/15",
+    path: "/12",
     component: EndTwo,
     name: "EndTwo",
     meta: {
@@ -429,7 +429,7 @@ const routes = [
     },
   },
   {
-    path: "/16",
+    path: "/13",
     component: EndThree,
     name: "EndThree",
     meta: {
@@ -464,17 +464,17 @@ const routes = [
   //   },
   // },
   {
-    path: "/17",
+    path: "/14",
     component: EndFive,
     name: "EndFive",
     meta: {
       color: PALETTE.BLACK,
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
-    path: "/18",
+    path: "/15",
     component: EndSix,
     name: "EndSix",
     meta: {
@@ -529,7 +529,7 @@ const routes = [
     name: "OutroShare",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -538,7 +538,7 @@ const routes = [
     name: "OutroTakeAction",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -547,7 +547,7 @@ const routes = [
     name: "Credits",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
   {
@@ -556,7 +556,7 @@ const routes = [
     name: "Ressources",
     meta: {
       scroll: { disabled: true },
-      transition: { delay: 1000, out: () => {} },
+      transition: { delay: 1000, out: () => { } },
     },
   },
 ];

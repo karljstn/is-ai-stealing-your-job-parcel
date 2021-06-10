@@ -1,128 +1,116 @@
 <template>
-  <section>
-    <h2 ref="title">Now, what do you<br />want to do next ?</h2>
-    <nav>
-      <router-link to="/12"
-        ><svg
-          width="131"
-          height="52"
-          viewBox="0 0 131 52"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M129.475 28.4749C130.842 27.108 130.842 24.892 129.475 23.5251L107.201 1.25126C105.834 -0.115572 103.618 -0.115572 102.251 1.25126C100.884 2.6181 100.884 4.83418 102.251 6.20101L122.05 26L102.251 45.799C100.884 47.1658 100.884 49.3819 102.251 50.7487C103.618 52.1156 105.834 52.1156 107.201 50.7487L129.475 28.4749ZM0 29.5H127V22.5H0V29.5Z"
-            fill="#EFEFEF"
-          />
-        </svg>
+	<section>
+		<h2 ref="title">Now, what do you<br />want to do next ?</h2>
+		<nav>
+			<router-link to="/12"
+				><svg width="131" height="52" viewBox="0 0 131 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M129.475 28.4749C130.842 27.108 130.842 24.892 129.475 23.5251L107.201 1.25126C105.834 -0.115572 103.618 -0.115572 102.251 1.25126C100.884 2.6181 100.884 4.83418 102.251 6.20101L122.05 26L102.251 45.799C100.884 47.1658 100.884 49.3819 102.251 50.7487C103.618 52.1156 105.834 52.1156 107.201 50.7487L129.475 28.4749ZM0 29.5H127V22.5H0V29.5Z"
+						fill="#EFEFEF"
+					/>
+				</svg>
 
-        <span>Play again</span></router-link
-      >
-      <router-link to="/ressources"
-        ><svg
-          width="131"
-          height="52"
-          viewBox="0 0 131 52"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M129.475 28.4749C130.842 27.108 130.842 24.892 129.475 23.5251L107.201 1.25126C105.834 -0.115572 103.618 -0.115572 102.251 1.25126C100.884 2.6181 100.884 4.83418 102.251 6.20101L122.05 26L102.251 45.799C100.884 47.1658 100.884 49.3819 102.251 50.7487C103.618 52.1156 105.834 52.1156 107.201 50.7487L129.475 28.4749ZM0 29.5H127V22.5H0V29.5Z"
-            fill="#EFEFEF"
-          />
-        </svg>
+				<span>Play again</span></router-link
+			>
+			<router-link to="/ressources"
+				><svg width="131" height="52" viewBox="0 0 131 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M129.475 28.4749C130.842 27.108 130.842 24.892 129.475 23.5251L107.201 1.25126C105.834 -0.115572 103.618 -0.115572 102.251 1.25126C100.884 2.6181 100.884 4.83418 102.251 6.20101L122.05 26L102.251 45.799C100.884 47.1658 100.884 49.3819 102.251 50.7487C103.618 52.1156 105.834 52.1156 107.201 50.7487L129.475 28.4749ZM0 29.5H127V22.5H0V29.5Z"
+						fill="#EFEFEF"
+					/>
+				</svg>
 
-        <span>Learn more</span></router-link
-      >
-    </nav>
-  </section>
+				<span>Learn more</span></router-link
+			>
+		</nav>
+	</section>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { VIEWS } from "~constants/VIEWS";
-import store from "~store";
-import { fadeBackground } from "~util";
-import AudioController from "~/singletons/AudioController";
+import Vue from 'vue';
+import { VIEWS } from '~constants/VIEWS';
+import store from '~store';
+import { fadeBackground } from '~util';
+import AudioController from '~/singletons/AudioController';
 
 let voiceTimeout: NodeJS.Timeout;
 
 export default Vue.extend({
-  components: {},
-  mounted() {
-    fadeBackground({ routeName: "Outro" });
+	components: {},
+	mounted() {
+		fadeBackground({ routeName: 'Outro' });
 
-    const threeView = store.state.sceneManager.threeViews.get(
-      VIEWS.find((VIEW) => VIEW.ROUTE_NAME === "Outro")
-    );
+		const threeView = store.state.sceneManager.threeViews.get(VIEWS.find(VIEW => VIEW.ROUTE_NAME === 'Outro'));
 
-    if (threeView) threeView.start(this.$refs.title);
-    else console.error(threeView);
+		if (threeView) threeView.start(this.$refs.title);
+		else console.error(threeView);
 
-    voiceTimeout = setTimeout(() => AudioController.play("nowwhat"), 500);
-  },
-  destroyed() {
-    // Execute code for every single scene
-    for (const VIEW of VIEWS) {
-      const threeView = store.state.sceneManager.threeViews.get(VIEW);
-      for (const object of threeView.objects) {
-        threeView.scene.remove(object);
-      }
-      for (const gltf of threeView.gltfMeshes) {
-        if (typeof gltf.out !== "undefined") gltf.out();
-        if (typeof gltf.killTimeouts !== "undefined") gltf.killTimeouts();
-        setTimeout(() => {
-          gltf.destroy();
-        }, 500);
-      }
-    }
+		voiceTimeout = setTimeout(() => AudioController.play('nowwhat'), 500);
+	},
+	destroyed() {
+		// Execute code for every single scene
+		for (const VIEW of VIEWS) {
+			const threeView = store.state.sceneManager.threeViews.get(VIEW);
+			for (const object of threeView.objects) {
+				threeView.scene.remove(object);
+			}
+			for (const gltf of threeView.gltfMeshes) {
+				if (typeof gltf.out !== 'undefined') gltf.out();
+				if (typeof gltf.killTimeouts !== 'undefined') gltf.killTimeouts();
+				setTimeout(() => {
+					gltf.destroy();
+				}, 500);
+			}
+		}
 
-    clearTimeout(voiceTimeout);
-    AudioController.stop("nowwhat");
-  },
+		clearTimeout(voiceTimeout);
+		AudioController.stop('nowwhat');
+	},
 });
 </script>
 
 <style lang="scss" scoped>
-@import "~/styles/_variables.scss";
+@import '~/styles/_variables.scss';
 h2 {
-  font-weight: normal;
-  font-size: 70px;
+	font-weight: normal;
+	font-size: 110px;
+	line-height: 115%;
 }
 nav {
-  margin-top: 100px;
+	margin-top: 100px;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 560px;
-  font-weight: 200;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 58%;
+	font-weight: 200;
 
-  a {
-    display: flex;
-    align-items: center;
+	a {
+		display: flex;
+		align-items: center;
 
-    span {
-      transition: color 0.25s ease-in-out;
-    }
+		span {
+			transition: color 0.25s ease-in-out;
+			font-size: 2.6rem;
+		}
 
-    &:hover {
-      span {
-        color: $orange;
-      }
-      svg path {
-        fill: $orange;
-      }
-    }
+		&:hover {
+			span {
+				color: $orange;
+			}
+			svg path {
+				fill: $orange;
+			}
+		}
 
-    svg {
-      width: 30px;
-      margin-right: 15px;
-      path {
-        fill: $black;
-        transition: fill 0.25s ease-in-out;
-      }
-    }
-  }
+		svg {
+			width: 30px;
+			margin-right: 15px;
+			path {
+				fill: $black;
+				transition: fill 0.25s ease-in-out;
+			}
+		}
+	}
 }
 </style>
