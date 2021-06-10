@@ -90,7 +90,7 @@ export default Vue.extend({
       const threeView = store.state.sceneManager.threeViews.get(VIEWS.find((VIEW) => VIEW.ROUTE_NAME === 'LandingPage'))
       threeView.start()
 
-			voiceTimeout = setTimeout(() => AudioController.play('scrollToThrowYourBiasesAway'), 3000);
+			voiceTimeout = setTimeout(() => AudioController.play('scrollToThrowYourBiasesAway'), 2200);
     })
 	},
 	destroyed() {

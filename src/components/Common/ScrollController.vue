@@ -12,11 +12,12 @@ import VueRouter, { RouteRecordPublic } from "vue-router";
 import { debounce } from "~util/_index.js";
 import store from "~store";
 
-const wait = 150;
+const wait = 2000;
 
 export default Vue.extend({
   methods: {
     onWheel(event: Event) {
+      console.log("wheel");
       const routes = router.getRoutes();
       const normalized = NormalizeWheel(event);
       const pixelSpeed = normalized.pixelY;
