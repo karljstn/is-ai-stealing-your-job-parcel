@@ -25,7 +25,7 @@ import penPaper from "~assets/Models/pen-paper/Stylo2.glb";
 import penPaperBake from "~assets/Models/pen-paper/bake.jpg";
 import tree from "~assets/Models/tree/TREE2.glb";
 import handSmall from "~assets/Models/hand-small/HAND PETIT_2_fixorigin.glb";
-import outroClock from "~assets/Models/outro-clock/CLOCK.glb";
+import outroClock from "~assets/Models/outro-clock/CLOCK_3.glb";
 
 import random from "canvas-sketch-util/random";
 import m8ball1 from "~assets/Models/magic-8/MAGIC 8-Artificial intelli-what _ blend.glb";
@@ -140,7 +140,6 @@ export const MODELS: { [name: string]: MODEL } = {
   OUTRO_CLOCK: {
     URL: outroClock,
     BASE_SCALE: 0.25,
-    ANIMATION_LOOP: LoopPingPong,
   },
 };
 
