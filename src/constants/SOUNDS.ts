@@ -3,8 +3,8 @@ import random from "canvas-sketch-util/random";
 import AudioController from "~/singletons/AudioController";
 
 // Music
-import minigameMusic from "~/assets/Sounds/General/music/la_musique_du_jeu_ouais.mp3";
-import backgroundMusic from "~/assets/Sounds/General/music/bg_music_begin.mp3";
+import minigameMusic from "~/assets/Sounds/General/music/soft_with_tictoc_v2.mp3";
+import backgroundMusic from "~/assets/Sounds/General/music/la_musique_du_jeu_ouais.mp3";
 
 // FX
 import confiant from "~/assets/Sounds/General/fx/Confiant.mp3";
