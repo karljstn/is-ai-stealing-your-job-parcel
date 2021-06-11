@@ -52,7 +52,7 @@ export default Vue.extend({
   } {
     return {
       casesPending: [],
-      duration: 30,
+      duration: 45,
       intervalDuration: 24,
       index: 0,
       interval: 0,
@@ -79,20 +79,17 @@ export default Vue.extend({
       } else {
         const timer = (this.intervalDuration - this.timeElapsed) * 1000;
 
-        // console.log("new timer is", timer);
-
         this.ticker = setInterval(() => {
           this.timeElapsed++;
         }, 1000);
 
         this.interval = setTimeout(() => {
-          // console.log("setTimeOut with the remaining seconds");
           if (this.index < 5) this.addFolder();
           this.timeElapsed = 0;
+
           // clearInterval(this.interval);
-          // console.log("set the new timer with 24 seconds");
+
           this.interval = setInterval(() => {
-            // console.log("test here");
             if (this.index < 5) this.addFolder();
             this.timeElapsed = 0;
           }, this.intervalDuration * 1000);

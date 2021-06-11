@@ -1,10 +1,10 @@
 <template>
-	<div class="container" ref="container">
-		<div v-bind:key="(index + 10) * 1000" v-for="(char, index) in splitted" class="char-container">
-			<span class="placeholder">{{ char }}</span>
-			<span class="char">{{ char }}</span>
-		</div>
-	</div>
+    <div class="container" ref="container">
+        <div v-bind:key="(index + 10) * 1000" v-for="(char, index) in splitted" class="char-container">
+            <span class="placeholder">{{ char }}</span>
+            <span class="char">{{ char }}</span>
+        </div>
+    </div>
 </template>
 
 <script lang="js">
@@ -68,20 +68,20 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .container,
 .char-container {
-	position: relative;
+    position: relative;
 }
 .container {
-	display: inline-flex;
-	opacity: 0;
+    display: inline-flex;
+    opacity: 0;
 }
 span {
-	&.placeholder {
-		visibility: hidden;
-	}
-	&.char {
-		position: absolute;
-		transform: translate(0px, 0%);
-		left: 0;
-	}
+    &.placeholder {
+        visibility: hidden;
+    }
+    &.char {
+        position: absolute;
+        transform: translate(0px, 0%);
+        left: 0;
+    }
 }
 </style>

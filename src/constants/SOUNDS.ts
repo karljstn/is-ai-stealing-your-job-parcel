@@ -102,7 +102,7 @@ export const SOUNDS: SOUND[] = [
       loop: false,
       volume: 0.1,
     }),
-    isUnique: true,
+    isUnique: false,
   },
   {
     id: "inquiet",
@@ -111,7 +111,7 @@ export const SOUNDS: SOUND[] = [
       loop: false,
       volume: 0.1,
     }),
-    isUnique: true,
+    isUnique: false,
   },
   {
     id: "trashcanScroll",

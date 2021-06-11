@@ -97,8 +97,10 @@ import GameCursor from "./Radiologist/GameCursor.vue";
 import Skeleton from "~/three/Games/Radiologist/Skeleton";
 
 import Timer from "./Radiologist/Timer.vue";
+import AudioController from "~/singletons/AudioController";
 
 import gsap from "gsap";
+import { getCurrentRoute } from "~router";
 // import data from "~/assets/Games/Radiologist/data.json";
 
 export default Vue.extend({
@@ -152,35 +154,25 @@ export default Vue.extend({
   },
 
   watch: {
-    tutorialCount(newVal) {},
     progress() {
-      // console.log("progress updated", this.progress);
       setTimeout(() => {
         if (this.progress < 5) this.nextPatient = true;
       }, 500);
     },
     gameEnded() {
-      if (this.gameEnded) this.$refs.timesup.play();
+      if (this.gameEnded) {
+        this.$refs.timesup.play();
+        store.state.radiologist.stopChrono();
+
+        if (getCurrentRoute().name === "GameTwo") {
+          AudioController.play("timerend");
+        }
+      }
     },
   },
 
   mounted() {
-    // this.timerCanStart = true;
-
-    document.body.style.overflowX = "hidden";
-    // const ease = store.state.eases.get("test");
-    // const uniforms =
-    //   store.state.scene &&
-    //   store.state.scene.Loader &&
-    //   store.state.scene.Loader.fullScreenPlane.uniforms;
-    // uniforms &&
-    //   gsap.to(uniforms.uMixFactor, { value: 0, ease: ease, duration: 0.5 });
-
-    // console.log(uniforms?.uMixFactor);
-
-    // console.log(store.state.scene?.scene);
-
-    // store.state.scene?.renderer.setClearColor(0x231f38, 1);
+    document.body.style.overflow = "hidden";
 
     const canvas = document.querySelector("canvas");
     if (canvas) {
@@ -190,15 +182,13 @@ export default Vue.extend({
 
     if (!store.state.devMode.forceRadiologist) {
       store.state.sceneManager?.startRadiologist();
-      // store.state.scene?.Loader?.fullScreenPlane.hide();
     }
   },
   destroyed() {
-    // store.state.scene?.renderer.setClearColor(0x000000, 1);
     if (!store.state.devMode.forceRadiologist) {
       store.state.sceneManager?.destroyRadiologist();
     }
-    document.body.style.overflowX = "visible";
+    document.body.style.overflow = "visible";
     const canvas = document.querySelector("canvas");
     if (canvas) {
       canvas.style.zIndex = "1";
@@ -235,8 +225,6 @@ export default Vue.extend({
       this.tutorialCount++;
     },
     toggleHelp(cond: boolean) {
-      // console.log(cond);
-
       if (this.timerCanStart) {
         this.help = cond;
         if (cond) this.timerPause = true;
@@ -244,6 +232,7 @@ export default Vue.extend({
       }
     },
     hideTutorial() {
+      //Tutorial is completed, hide it.
       const manager: any = this.$refs.tutorialManager;
       gsap.to(manager.$el, {
         duration: 0.3,
@@ -251,12 +240,9 @@ export default Vue.extend({
         onComplete: this.$refs.decompte.play,
       });
 
-      // console.log("tutorial complete");
       this.tutorialCount = -1;
     },
     hideCountdown() {
-      // console.log(this.$refs.lottieContainer.classList.add('lottie'));
-
       this.timerCanStart = true;
       store.state.radiologist.addNotification(
         15000,
@@ -267,7 +253,6 @@ export default Vue.extend({
 
     animationCompleted() {
       this.nextPatient = false;
-      // console.log("go false", this.nextPatient);
     },
     timesUpCompleted() {
       this.endScreen = true;

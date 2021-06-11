@@ -17,7 +17,7 @@ class AudioController {
     const active = this.activeSounds.find(
       (activeSound) => activeSound.id === sound.id
     );
-    if (sound.isUnique && !!active) return null; // Already playing and is tagged as isUnique
+    if (sound.isUnique && !!active || sound.isUnique && sound.howl.playing()) return null; // Already playing and is tagged as isUnique
 
     this.activeSounds.push(sound);
     sound.howl.play();

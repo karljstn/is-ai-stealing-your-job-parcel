@@ -22,12 +22,7 @@ export default Vue.extend({
       lottieURL: lottieNextPatientURL,
     };
   },
-  mounted() {
-    console.log("mounted");
-  },
-  destroyed() {
-    console.log("destroyed");
-  },
+
   components: {
     LottieAnimation,
   },

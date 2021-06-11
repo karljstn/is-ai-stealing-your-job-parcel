@@ -21,6 +21,7 @@
     "noisejs": "^2.1.0",
     "normalize-wheel": "^1.0.1",
     "rafz": "^0.1.14",
+    "splitting": "^1.0.6",
     "src": "^1.1.2",
     "three": "^0.126.1",
     "troika-3d-text": "^0.40.0",

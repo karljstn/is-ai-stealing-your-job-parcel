@@ -34,8 +34,6 @@ export default Vue.extend({
 
       if (MouseController.hoveredNodeName === "CANVAS") {
         if (this.currentState !== newState) {
-          console.log(newState);
-
           this.currentState = newState;
         }
       } else {
@@ -68,13 +66,8 @@ export default Vue.extend({
       cursor.target.copy(MouseController.raw.current);
       cursor.current.lerp(cursor.target, 0.8);
 
-      let x = cursor.current.x;
-      let y = cursor.current.y - this.$refs.cursor.offsetHeight / 2;
-
-      // if(this.currentState === 'click'){
-      //   x -= 22
-      //   y -= 15
-      // }
+      let x = cursor.current.x - this.$refs.cursor.offsetHeight / 2;
+      let y = cursor.current.y - this.$refs.cursor.offsetHeight;
 
       this.$refs.cursor.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
     },

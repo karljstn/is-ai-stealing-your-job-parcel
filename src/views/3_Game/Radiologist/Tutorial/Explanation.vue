@@ -17,9 +17,6 @@ export default Vue.extend({
       src: this.img,
     };
   },
-  mounted() {
-    console.log(this.img);
-  },
 });
 </script>
 

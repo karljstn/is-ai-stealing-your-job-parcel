@@ -17,7 +17,6 @@ import gsap from "gsap"
 
 import AudioController from '~/singletons/AudioController'
 
-// console.log(AudioController)
 
 let coef = 0
 const params = {
@@ -199,12 +198,9 @@ export default class Radio implements ThreeGroup {
 
   patientFile(cond: boolean) {
     this.patientFileOpened = cond
-    console.log(cond)
 
 
     if (cond) {
-      console.log('here')
-
       store.state.radiologist.canvasClass('')
       this.controls.reset()
       this.controls.enabled = false
@@ -249,10 +245,6 @@ export default class Radio implements ThreeGroup {
       this.camera.position.y,
       this.camera.position.z
     )
-
-    console.log("____________________________")
-
-    console.log(this.controls.getPolarAngle())
   }
 
   gameState(state: string, cond: boolean) {
@@ -276,9 +268,7 @@ export default class Radio implements ThreeGroup {
       store.state.radiologist.removeFolder(this.progress)
 
       this.progress++
-      console.log("update progress from the store")
       store.commit("updateProgress", this.progress)
-      console.log("___________________________________")
 
 
 
@@ -296,7 +286,6 @@ export default class Radio implements ThreeGroup {
 
         store.state.radiologist.penalty()
         this.nextCase()
-        // console.log(this.currentIntersect.object)
       }
 
       if (this.progress === 5 && !this.gameEnded) {
@@ -391,9 +380,6 @@ export default class Radio implements ThreeGroup {
     this.gameEnded = true
 
     console.log("END OF THE GAME")
-    console.log("AI was used", this.aiUsed, "times")
-    console.log("You processed", this.progress, "files")
-    console.log("Your diagnosis was right", this.goodAnswers, "times")
 
     const results = {
       AIused: this.aiUsed,
@@ -413,7 +399,6 @@ export default class Radio implements ThreeGroup {
 
         this.group.remove(Clipboard.mesh)
         this.skeletonScene.remove(Skeleton.currentSkeleton)
-        console.log("skeleton remove")
         raf.unsubscribe("radioUpdate")
 
         this.camera.position.z = 1
@@ -466,7 +451,6 @@ export default class Radio implements ThreeGroup {
       value: 1,
     })
 
-    // console.log('mesh to blank');
     store.state.radiologist.updateCursor(0)
   }
 

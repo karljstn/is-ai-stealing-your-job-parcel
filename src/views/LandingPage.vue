@@ -28,7 +28,7 @@ import Button from '~/components/UI/Button.vue';
 import QuestionForm from '~/components/UI/QuestionForm.vue';
 import SaveRect from '~/components/Common/SaveRect.vue';
 import Autoskip from '~components/Common/Autoskip.vue';
-import SplitText from '~components/Common/SplitText.vue';
+import SplitText from '~components/Common/SplitText/SplitText.vue';
 import Vue from 'vue';
 import store from '~/store';
 import gsap from 'gsap';
