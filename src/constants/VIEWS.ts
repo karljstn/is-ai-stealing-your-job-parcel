@@ -18,6 +18,7 @@ import { PALETTE } from "./PALETTE";
 import { getSound, SOUNDS } from "./SOUNDS";
 import AudioController from "~/singletons/AudioController";
 import { MousedTweenedGLTF } from "~three/Meshes/GLTF";
+import { debounce, throttle } from "~util/_index";
 
 let wobbleRateInterval: any;
 
@@ -92,8 +93,8 @@ export const VIEWS: VIEW[] = [
             obj.rotation.z =
               Math.sin(
                 performance.now() *
-                  binding.params.sinus.frequency *
-                  binding.params.sinus.factor
+                binding.params.sinus.frequency *
+                binding.params.sinus.factor
               ) *
               binding.params.sinus.amplitude *
               binding.params.sinus.factor;
@@ -170,21 +171,21 @@ export const VIEWS: VIEW[] = [
             binding.params.base.offset.rotation.z +
             Math.sin(
               performance.now() *
-                binding.params.sinus.frequency *
-                binding.params.sinus.factor
+              binding.params.sinus.frequency *
+              binding.params.sinus.factor
             ) *
-              binding.params.sinus.amplitude *
-              binding.params.sinus.factor;
+            binding.params.sinus.amplitude *
+            binding.params.sinus.factor;
 
           binding.group.rotation.z =
             binding.params.base.offset.rotation.z +
             Math.sin(
               performance.now() *
-                binding.params.sinus.frequency *
-                binding.params.sinus.factor
+              binding.params.sinus.frequency *
+              binding.params.sinus.factor
             ) *
-              binding.params.sinus.amplitude *
-              binding.params.sinus.factor;
+            binding.params.sinus.amplitude *
+            binding.params.sinus.factor;
         },
       },
     ],
@@ -295,13 +296,16 @@ export const VIEWS: VIEW[] = [
             group.position.x = x + w / 2;
             group.position.y = y - h / 2.5;
           }
+
+          binding.params.throttled = throttle(() => { AudioController.play("confiant"); }, 1000)
         },
         ON_RAYCAST: (intersects, binding) => {
           if (intersects.length) {
             //for some reason this needs to be different than the other raycast
             document.querySelector("html").style.cursor = "pointer";
             binding.hoverFresnel(true);
-            AudioController.play("confiant");
+
+            binding.params.throttled()
           } else {
             document.querySelector("html").style.cursor = "";
             binding.hoverFresnel(false);
@@ -326,6 +330,8 @@ export const VIEWS: VIEW[] = [
         MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_SAD),
         DELAY: { in: 0.5, out: 0 },
         ON_START: (group, viewport, binding) => {
+          binding.params.throttled = throttle(() => { AudioController.play("inquiet"); }, 1000)
+
           //TODO: fix this abomination
           const el = document.getElementById("no");
 
@@ -339,7 +345,7 @@ export const VIEWS: VIEW[] = [
           if (intersects.length) {
             document.querySelector("html").classList.add("cursor-pointer");
             binding.hoverFresnel(true);
-            AudioController.play("inquiet");
+            binding.params.throttled()
           } else {
             document.querySelector("html").classList.remove("cursor-pointer");
             binding.hoverFresnel(false);
