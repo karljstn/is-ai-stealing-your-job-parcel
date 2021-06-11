@@ -280,8 +280,8 @@ export const VIEWS: VIEW[] = [
     GLTF_MESHES: [
       {
         TYPE: GLTF_TYPE.MOUSED,
-        MODEL: MODELS.EMOJI_GLASSES,
-        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_GLASSES),
+        MODEL: MODELS.EMOJI_SAD,
+        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_SAD),
         DELAY: { in: 0.0, out: 0 },
         ON_START: (group, viewport, binding) => {
           // group.position.x -= viewport.width / 6.5;
@@ -322,8 +322,8 @@ export const VIEWS: VIEW[] = [
       },
       {
         TYPE: GLTF_TYPE.MOUSED,
-        MODEL: MODELS.EMOJI_SAD,
-        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_SAD),
+        MODEL: MODELS.EMOJI_GLASSES,
+        MATERIAL: MATERIALS.GET_FRESNEL_BAKED(MODELS.EMOJI_GLASSES),
         DELAY: { in: 0.5, out: 0 },
         ON_START: (group, viewport, binding) => {
           //TODO: fix this abomination
