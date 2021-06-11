@@ -42,7 +42,7 @@ export default Vue.extend({
       },
     });
     tl.to(this.$refs.endScreen1, { duration: 1, opacity: 1 });
-    tl.to(this.$refs.endScreen1, { duration: 1, opacity: 0, delay: 3 });
+    tl.to(this.$refs.endScreen1, { duration: 1, opacity: 0, delay: 5 });
     tl.to(this.$refs.endScreen2, { duration: 1, opacity: 1 });
     tl.to(this.$refs.endScreen2, { duration: 1, opacity: 0, delay: 3 });
   },
@@ -129,16 +129,16 @@ export default Vue.extend({
 
   .ai-cursor {
     background-image: url("~/assets/Games/Radiologist/Icons/ai.png");
-    left: 25%;
-    top: 75%;
+    left: 15%;
+    top: 120%;
   }
 
   .folder {
     width: 130px;
     height: 130px;
     background-image: url("~/assets/Games/Radiologist/Icons/File/03-files.png");
-    left: 75%;
-    top: 39%;
+    left: 90%;
+    top: 10%;
     transform: translate(-50%, -50%) rotate(10deg);
   }
 

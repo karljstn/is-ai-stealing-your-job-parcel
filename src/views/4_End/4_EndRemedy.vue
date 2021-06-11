@@ -2,11 +2,11 @@
   <section>
     <div class="section-1" ref="section1">
       <div class="container">
-        <div class="title">
+        <!-- <div class="title">
           <FadeTranslateSplitText
             text="In reality, the future is uncertain."
           ></FadeTranslateSplitText>
-        </div>
+        </div> -->
         <h1 class="in-reality">
           In reality, the future is <span>uncertain</span>.
         </h1>
@@ -342,7 +342,7 @@ section {
   }
 
   .section-2 {
-    padding: 100px;
+    padding: 200px;
     padding-bottom: 0;
     .header-p {
       margin-bottom: 40px;
@@ -404,7 +404,7 @@ section {
       width: 246px;
       position: relative;
       top: 170px;
-      left: 240px;
+      left: 600px;
       .first-line {
         font-size: inherit;
         position: relative;
