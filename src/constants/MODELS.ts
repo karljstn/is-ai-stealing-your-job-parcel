@@ -15,6 +15,7 @@ import emojiDistraughtBake from "~assets/Models/emoji-distraught/bake2.jpg";
 import emojiCry from "~assets/Models/emoji-cry/EMOJI_larme.glb";
 import emojiCryBake from "~assets/Models/emoji-cry/bake_2.jpg";
 import crystal from "~assets/Models/crystalball/BOULE_VOYANTE.glb";
+import crystalMatcap from '~assets/Textures/sphereMatcap.png'
 import pencil from "~assets/Models/pencil/pencil.glb";
 import radiologistBackground from "~assets/Models/radiologist/big-cube-bg.glb";
 import arrow from "~assets/Images/fleche.svg";
@@ -89,6 +90,7 @@ export const MODELS: { [name: string]: MODEL } = {
   CRYSTAL_BALL: {
     URL: crystal,
     BASE_SCALE: 0.5,
+    TEXTURE: crystalMatcap,
   },
   PENCIL: {
     URL: pencil,

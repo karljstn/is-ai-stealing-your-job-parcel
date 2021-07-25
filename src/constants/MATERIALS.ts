@@ -1,6 +1,5 @@
 import {
   Color,
-  MeshLambertMaterial,
   MeshStandardMaterial,
   ShaderMaterial,
   TextureLoader,
@@ -8,9 +7,8 @@ import {
 import { MODEL } from "~types";
 import bakedFresnelFragment from "~shaders/bakedFresnelEven/fragment.glsl";
 import bakedFresnelVertex from "~shaders/bakedFresnelEven/vertex.glsl";
-import fresnelFragment from "~shaders/fresnel/fragment.glsl";
-import fresnelVertex from "~shaders/fresnel/vertex.glsl";
-import { MODELS } from "./MODELS";
+import matcapFragment from "~shaders/matcap/fragment.glsl";
+import matcapVertex from "~shaders/matcap/vertex.glsl";
 
 export const MATERIALS = {
   GET_FRESNEL_BAKED: (MODEL: MODEL) => {
@@ -18,6 +16,7 @@ export const MATERIALS = {
 
     const tex = new TextureLoader().load(MODEL.TEXTURE);
     tex.flipY = false;
+
     return new ShaderMaterial({
       vertexShader: bakedFresnelVertex,
       fragmentShader: bakedFresnelFragment,
@@ -46,9 +45,17 @@ export const MATERIALS = {
       },
     }),
   GET_BAKED_STANDARD: (texPath: string) => {
-    const tex = new TextureLoader().load(texPath)
-    tex.flipY = false
+    const map = new TextureLoader().load(texPath)
+    map.flipY = false
 
-    return new MeshStandardMaterial({ map: tex })
-  }
+    return new MeshStandardMaterial({ map })
+  },
+  GET_MATCAP: (matcapPath: string) =>
+    new ShaderMaterial({
+      vertexShader: matcapVertex,
+      fragmentShader: matcapFragment,
+      uniforms: {
+        uMatcapTexture: { value: new TextureLoader().load(matcapPath) }
+      },
+    }),
 };

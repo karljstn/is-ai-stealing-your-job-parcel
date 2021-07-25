@@ -163,6 +163,9 @@ export const VIEWS: VIEW[] = [
           new Vector3(x + w / 1.9, y - h, 0),
         DELAY: { in: 0.1, out: 0 },
         ON_START: (group, viewport, binding) => {
+          const sphere = group.children.find(obj => obj.name === "Sphere") as Mesh
+          sphere.material = MATERIALS.GET_MATCAP(MODELS.CRYSTAL_BALL.TEXTURE)
+          sphere.material.needsUpdate = true
           binding.params.sinus.frequency *= 0.8;
           binding.params.sinus.amplitude *= 0.8;
         },
@@ -660,7 +663,6 @@ export const VIEWS: VIEW[] = [
       },
     ],
   },
-
   {
     ROUTE_NAME: "Outro",
     ON_START: (view) => {
