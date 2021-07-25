@@ -40,7 +40,7 @@ export default class Radio implements ThreeGroup {
   raycaster: THREE.Raycaster
   mouse: THREE.Vector2
   camera: THREE.PerspectiveCamera
-  controls: OrbitControls
+  controls: OrbitControls | any
 
   patientFileOpened: boolean
 
@@ -128,7 +128,7 @@ export default class Radio implements ThreeGroup {
       dragForce = 0
     })
 
-    this.controls.addEventListener("change", (e) => {
+    this.controls.addEventListener("change", (e: any) => {
       dragForce += 1
       if (this.mouseDown && dragForce > 15) {
         this.isDragging = true
