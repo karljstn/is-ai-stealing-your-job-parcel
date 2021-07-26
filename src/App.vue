@@ -7,6 +7,9 @@
     <ScrollController>
       <router-view></router-view>
     </ScrollController>
+    <div class="mobile-message">
+      <h2>Sorry, this website is only available on desktop devices</h2>
+    </div>
   </div>
 </template>
 
@@ -76,3 +79,26 @@ export default Vue.extend({
 		}
 })
 </script>
+
+<style lang="scss" scoped>
+@media screen and (min-width: 769px) {
+  .mobile-message {
+    display: none;
+  }
+}
+
+.mobile-message {
+  width: 100%;
+  height: 100vh;
+  background: #f7f7f5;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 99999;
+  padding: 10vw;
+
+  h2 {
+    color: #122e35;
+  }
+}
+</style>
