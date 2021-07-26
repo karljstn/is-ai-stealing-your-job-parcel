@@ -116,7 +116,7 @@ class Skeleton {
                     this.loadModels(i + 1)
                 } else {
                     this.loaded = true
-                    console.log("SKELETON AND TEXTURES LOADED")
+                    // console.log("SKELETON AND TEXTURES LOADED")
                     this.nextSkeleton(0)
                 }
             })

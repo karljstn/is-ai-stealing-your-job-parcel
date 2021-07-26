@@ -26,8 +26,8 @@ import ThreeView from "./ThreeView"
 export default class MainController {
   params: MainControllerParams
   viewport: Viewport
-  w: number
-  h: number
+  width: number
+  height: number
   pane: Tweakpane | null
 
   camera: PerspectiveCamera
@@ -64,8 +64,8 @@ export default class MainController {
     }
     this.viewport = { width: 0, height: 0 }
 
-    this.w = window.innerWidth
-    this.h = window.innerHeight
+    this.width = window.innerWidth
+    this.height = window.innerHeight
     const paneEl = document.querySelector(".tp-dfwv")
 
     if (
@@ -78,7 +78,7 @@ export default class MainController {
       // if (store.state.tweakpane) store.state.tweakpane.hidden = true
     } else this.pane = null
 
-    this.camera = new PerspectiveCamera(75, this.w / this.h, 0.1, 5000)
+    this.camera = new PerspectiveCamera(75, this.width / this.height, 0.1, 5000)
     this.camera.fov = this.params.camera.fov
     this.camera.position.copy(this.params.camera.position) //z has to be different than 0 for getViewport to work
 
@@ -88,8 +88,9 @@ export default class MainController {
       canvas,
       antialias: true,
       alpha: true,
+      powerPreference: "high-performance"
     })
-    this.renderer.setSize(this.w, this.h)
+    this.renderer.setSize(this.width, this.height)
     this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2)) //limiter à 2
 
     // this.composer = new EffectComposer(this.renderer)
@@ -249,14 +250,14 @@ export default class MainController {
   };
 
   startRadiologist = () => {
-    console.log("start radiologist game")
+    // console.log("start radiologist game")
     this.radio.init()
     this.scene.add(this.radio.group)
   };
 
   destroyRadiologist = () => {
     this.scene.remove(this.radio.group)
-    this.camera.position.copy(this.params.camera.position)
+    this.camera.position.set(this.params.camera.position.x, this.params.camera.position.y, this.params.camera.position.z)
     RAF.unsubscribe("radioUpdate")
   };
 
@@ -266,13 +267,13 @@ export default class MainController {
   };
 
   resize = () => {
-    this.w = window.innerWidth
-    this.h = window.innerHeight
+    this.width = window.innerWidth
+    this.height = window.innerHeight
 
-    this.camera.aspect = this.w / this.h
+    this.camera.aspect = this.width / this.height
     this.camera.updateProjectionMatrix()
 
-    this.renderer.setSize(this.w, this.h)
+    this.renderer.setSize(this.width, this.height)
     this.renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2))
 
     // this.composer.setSize(this.w, this.h)
@@ -293,15 +294,9 @@ export default class MainController {
   render = (dt = 0) => {
     this.renderer.render(this.scene, this.camera)
     this.raycaster.setFromCamera(MouseController.Vec2, this.camera)
-    this.Benchmark?.checkFPS(dt)
+    // this.Benchmark?.checkFPS(dt)
     MouseController.setFromViewport(this.viewport)
     // this.Loader && this.Loader.update(dt)
     // this.pane && this.pane.refresh()
   };
 }
-
-//TODO: on accept, check if class already instanced
-
-// ^
-// |
-// wtf??

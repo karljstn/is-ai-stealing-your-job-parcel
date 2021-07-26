@@ -17,7 +17,7 @@ const wait = 2000;
 export default Vue.extend({
   methods: {
     onWheel(event: Event) {
-      console.log("wheel");
+      // console.log("wheel");
       const routes = router.getRoutes();
       const normalized = NormalizeWheel(event);
       const pixelSpeed = normalized.pixelY;

@@ -16,6 +16,7 @@ import { ThreeGroup } from "~/interfaces/Three"
 import gsap from "gsap"
 
 import AudioController from '~/singletons/AudioController'
+import { PerspectiveCamera } from "three"
 
 
 let coef = 0
@@ -105,6 +106,7 @@ export default class Radio implements ThreeGroup {
     this.gameEnded = false
 
     this.raycaster = raycaster
+    // this.camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 5000)
     this.camera = camera
     this.mouse = mouse
 
@@ -280,9 +282,9 @@ export default class Radio implements ThreeGroup {
 
         this.nextCase()
 
-        console.log("RADIOLOGIST GAME : GOOD ANSWER")
+        // console.log("RADIOLOGIST GAME : GOOD ANSWER")
       } else {
-        console.log("RADIOLOGIST GAME: WRONG ANSWER")
+        // console.log("RADIOLOGIST GAME: WRONG ANSWER")
 
         store.state.radiologist.penalty()
         this.nextCase()
@@ -379,7 +381,7 @@ export default class Radio implements ThreeGroup {
   endGame() {
     this.gameEnded = true
 
-    console.log("END OF THE GAME")
+    // console.log("END OF THE GAME")
 
     const results = {
       AIused: this.aiUsed,
@@ -457,8 +459,6 @@ export default class Radio implements ThreeGroup {
   update = () => {
     this.updateRenderTarget()
     const delta = this.clock.getDelta()
-
-
 
     if (Skeleton.loaded) {
       if (this.gameRunning) {

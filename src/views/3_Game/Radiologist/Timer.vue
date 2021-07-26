@@ -143,7 +143,7 @@ export default Vue.extend({
 
       store.state.radiologist.canvasClass("");
       clearInterval(this.interval);
-      console.log("Yes, I did clear the interval.");
+      // console.log("Yes, I did clear the interval.");
     },
   },
 });
